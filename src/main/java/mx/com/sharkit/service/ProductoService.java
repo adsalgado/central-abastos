@@ -1,9 +1,12 @@
 package mx.com.sharkit.service;
 
-import mx.com.sharkit.service.dto.ProductoDTO;
-
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import org.springframework.data.domain.Pageable;
+
+import mx.com.sharkit.service.dto.ProductoDTO;
 
 /**
  * Service Interface for managing {@link mx.com.sharkit.domain.Producto}.
@@ -40,4 +43,11 @@ public interface ProductoService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    /**
+     * Get all the productos.
+     *
+     * @return the list of entities.
+     */
+    List<ProductoDTO> searchProductos(Map<String, Object> params, Pageable pageable);
 }

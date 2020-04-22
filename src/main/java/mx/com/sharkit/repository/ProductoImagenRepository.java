@@ -1,8 +1,11 @@
 package mx.com.sharkit.repository;
 
-import mx.com.sharkit.domain.ProductoImagen;
-import org.springframework.data.jpa.repository.*;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import mx.com.sharkit.domain.ProductoImagen;
 
 
 /**
@@ -12,4 +15,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductoImagenRepository extends JpaRepository<ProductoImagen, Long> {
 
+	List<ProductoImagen> findByProductoIdOrderByIdAsc(Long productoId);
+	
 }

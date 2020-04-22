@@ -27,12 +27,20 @@ public class ProductoImagen implements Serializable {
     private User usuarioAlta;
 
     @ManyToOne
+    @JoinColumn(name = "producto_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("productoImagens")
     private Producto producto;
 
+    @Column(name = "producto_id")
+    private Long productoId;
+
     @ManyToOne
+    @JoinColumn(name = "adjunto_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("productoImagens")
     private Adjunto adjunto;
+
+    @Column(name = "adjunto_id")
+    private Long adjuntoId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -94,9 +102,27 @@ public class ProductoImagen implements Serializable {
     public void setAdjunto(Adjunto adjunto) {
         this.adjunto = adjunto;
     }
+    
+    
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
-    @Override
+    public Long getProductoId() {
+		return productoId;
+	}
+
+	public void setProductoId(Long productoId) {
+		this.productoId = productoId;
+	}
+
+	public Long getAdjuntoId() {
+		return adjuntoId;
+	}
+
+	public void setAdjuntoId(Long adjuntoId) {
+		this.adjuntoId = adjuntoId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

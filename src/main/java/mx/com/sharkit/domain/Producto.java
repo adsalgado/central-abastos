@@ -52,17 +52,82 @@ public class Producto implements Serializable {
     @Column(name = "fecha_modificacion")
     private Instant fechaModificacion;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
+    @JoinColumn(name = "adjunto_id", insertable = false, updatable = false)
     private Adjunto adjunto;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @Column(name = "adjunto_id")
+    private Long adjuntoId;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_alta_id", insertable = false, updatable = false)
     private User usuarioAlta;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @Column(name = "usuario_alta_id")
+    private Long usuarioAltaId;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_modificacion_id", insertable = false, updatable = false)
     private User usuarioModificacion;
+
+    @Column(name = "usuario_modificacion_id")
+    private Long usuarioModificacionId;
+
+    @ManyToOne
+    @JoinColumn(name = "proveedor_id", insertable = false, updatable = false)
+    @JsonIgnoreProperties("productos")
+    private Proveedor proveedor;
+
+    @Column(name = "proveedor_id")
+    private Long proveedorId;
+
+    @ManyToOne
+    @JoinColumn(name = "tipo_articulo_id", insertable = false, updatable = false)
+    @JsonIgnoreProperties("productos")
+    private TipoArticulo tipoArticulo;
+
+    @Column(name = "tipo_articulo_id")
+    private Long tipoArticuloId;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id", insertable = false, updatable = false)
+    @JsonIgnoreProperties("productos")
+    private Categoria categoria;
+
+    @Column(name = "categoria_id")
+    private Long categoriaId;
+
+    @ManyToOne
+    @JoinColumn(name = "seccion_id", insertable = false, updatable = false)
+    @JsonIgnoreProperties("productos")
+    private Seccion seccion;
+
+    @Column(name = "seccion_id")
+    private Long seccionId;
+
+    @ManyToOne
+    @JoinColumn(name = "estatus_id", insertable = false, updatable = false)
+    @JsonIgnoreProperties("productos")
+    private Estatus estatus;
+    
+    @Column(name = "estatus_id")
+    private Long estatusId;
+
+    @ManyToOne
+    @JoinColumn(name = "unidad_medida_id", insertable = false, updatable = false)
+    @JsonIgnoreProperties("productos")
+    private UnidadMedida unidadMedida;
+
+    @Column(name = "unidad_medida_id")
+    private Long unidadMedidaId;
+
+    @ManyToOne
+    @JoinColumn(name = "empresa_id", insertable = false, updatable = false)
+    @JsonIgnoreProperties("productos")
+    private Empresa empresa;
+    
+    @Column(name = "empresa_id")
+    private Long empresaId;
 
     @OneToMany(mappedBy = "producto")
     private Set<OfertaProveedor> ofertaProveedors = new HashSet<>();
@@ -82,34 +147,6 @@ public class Producto implements Serializable {
     @OneToMany(mappedBy = "producto")
     private Set<ProductoImagen> productoImagens = new HashSet<>();
 
-    @ManyToOne
-    @JsonIgnoreProperties("productos")
-    private Proveedor proveedor;
-
-    @ManyToOne
-    @JsonIgnoreProperties("productos")
-    private TipoArticulo tipoArticulo;
-
-    @ManyToOne
-    @JsonIgnoreProperties("productos")
-    private Categoria categoria;
-
-    @ManyToOne
-    @JsonIgnoreProperties("productos")
-    private Seccion seccion;
-
-    @ManyToOne
-    @JsonIgnoreProperties("productos")
-    private Estatus estatus;
-
-    @ManyToOne
-    @JsonIgnoreProperties("productos")
-    private UnidadMedida unidadMedida;
-
-    @ManyToOne
-    @JsonIgnoreProperties("productos")
-    private Empresa empresa;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -119,7 +156,87 @@ public class Producto implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
+    public Long getAdjuntoId() {
+		return adjuntoId;
+	}
+
+	public void setAdjuntoId(Long adjuntoId) {
+		this.adjuntoId = adjuntoId;
+	}
+
+	public Long getUsuarioAltaId() {
+		return usuarioAltaId;
+	}
+
+	public void setUsuarioAltaId(Long usuarioAltaId) {
+		this.usuarioAltaId = usuarioAltaId;
+	}
+
+	public Long getUsuarioModificacionId() {
+		return usuarioModificacionId;
+	}
+
+	public void setUsuarioModificacionId(Long usuarioModificacionId) {
+		this.usuarioModificacionId = usuarioModificacionId;
+	}
+
+	public Long getProveedorId() {
+		return proveedorId;
+	}
+
+	public void setProveedorId(Long proveedorId) {
+		this.proveedorId = proveedorId;
+	}
+
+	public Long getTipoArticuloId() {
+		return tipoArticuloId;
+	}
+
+	public void setTipoArticuloId(Long tipoArticuloId) {
+		this.tipoArticuloId = tipoArticuloId;
+	}
+
+	public Long getCategoriaId() {
+		return categoriaId;
+	}
+
+	public void setCategoriaId(Long categoriaId) {
+		this.categoriaId = categoriaId;
+	}
+
+	public Long getSeccionId() {
+		return seccionId;
+	}
+
+	public void setSeccionId(Long seccionId) {
+		this.seccionId = seccionId;
+	}
+
+	public Long getEstatusId() {
+		return estatusId;
+	}
+
+	public void setEstatusId(Long estatusId) {
+		this.estatusId = estatusId;
+	}
+
+	public Long getUnidadMedidaId() {
+		return unidadMedidaId;
+	}
+
+	public void setUnidadMedidaId(Long unidadMedidaId) {
+		this.unidadMedidaId = unidadMedidaId;
+	}
+
+	public Long getEmpresaId() {
+		return empresaId;
+	}
+
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
+	}
+
+	public String getNombre() {
         return nombre;
     }
 
