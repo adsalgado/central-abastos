@@ -1,0 +1,74 @@
+{
+    "name": "Proveedor",
+    "fields": [
+        {
+            "fieldName": "nombre",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 256
+        },
+        {
+            "fieldName": "fechaAlta",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "fechaModificacion",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "proveedor",
+            "relationshipName": "usuarioAlta",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "proveedor",
+            "relationshipName": "usuarioModificacion",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "producto",
+            "otherEntityRelationshipName": "proveedor",
+            "relationshipName": "producto"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "ofertaProveedor",
+            "otherEntityRelationshipName": "proveedor",
+            "relationshipName": "ofertaProveedor"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "inventario",
+            "otherEntityRelationshipName": "proveedor",
+            "relationshipName": "inventario"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "empresa",
+            "otherEntityRelationshipName": "proveedor",
+            "relationshipName": "empresa",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200422152057",
+    "entityTableName": "proveedor",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

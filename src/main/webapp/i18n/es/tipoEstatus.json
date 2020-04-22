@@ -1,0 +1,12 @@
+{
+  "abastosApp": {
+    "TipoEstatus": {
+      "null": "",
+      "ESTATUS_PRODUCTO": "ESTATUS_PRODUCTO",
+      "ESTATUS_CLIENTE": "ESTATUS_CLIENTE",
+      "ESTATUS_PROVEEDOR": "ESTATUS_PROVEEDOR",
+      "ESTATUS_PEDIDO": "ESTATUS_PEDIDO",
+      "ESTATUS_DETALLE_PEDIDO": "ESTATUS_DETALLE_PEDIDO"
+    }
+  }
+}

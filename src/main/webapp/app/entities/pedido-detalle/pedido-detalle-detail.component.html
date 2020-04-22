@@ -1,0 +1,53 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="pedidoDetalle">
+            <h2><span jhiTranslate="abastosApp.pedidoDetalle.detail.title">Pedido Detalle</span> {{pedidoDetalle.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="abastosApp.pedidoDetalle.cantidad">Cantidad</span></dt>
+                <dd>
+                    <span>{{pedidoDetalle.cantidad}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedidoDetalle.totalSinIva">Total Sin Iva</span></dt>
+                <dd>
+                    <span>{{pedidoDetalle.totalSinIva}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedidoDetalle.total">Total</span></dt>
+                <dd>
+                    <span>{{pedidoDetalle.total}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedidoDetalle.pedido">Pedido</span></dt>
+                <dd>
+                    <div *ngIf="pedidoDetalle.pedidoId">
+                        <a [routerLink]="['/pedido', pedidoDetalle.pedidoId, 'view']">{{pedidoDetalle.pedidoId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedidoDetalle.producto">Producto</span></dt>
+                <dd>
+                    <div *ngIf="pedidoDetalle.productoId">
+                        <a [routerLink]="['/producto', pedidoDetalle.productoId, 'view']">{{pedidoDetalle.productoId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedidoDetalle.estatus">Estatus</span></dt>
+                <dd>
+                    <div *ngIf="pedidoDetalle.estatusId">
+                        <a [routerLink]="['/estatus', pedidoDetalle.estatusId, 'view']">{{pedidoDetalle.estatusId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/pedido-detalle', pedidoDetalle.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

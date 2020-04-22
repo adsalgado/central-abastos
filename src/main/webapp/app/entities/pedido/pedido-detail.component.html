@@ -1,0 +1,79 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="pedido">
+            <h2><span jhiTranslate="abastosApp.pedido.detail.title">Pedido</span> {{pedido.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="abastosApp.pedido.totalSinIva">Total Sin Iva</span></dt>
+                <dd>
+                    <span>{{pedido.totalSinIva}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedido.comisionTransportista">Comision Transportista</span></dt>
+                <dd>
+                    <span>{{pedido.comisionTransportista}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedido.comisionPreparador">Comision Preparador</span></dt>
+                <dd>
+                    <span>{{pedido.comisionPreparador}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedido.total">Total</span></dt>
+                <dd>
+                    <span>{{pedido.total}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedido.fechaPedido">Fecha Pedido</span></dt>
+                <dd>
+                    <span>{{pedido.fechaPedido}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedido.fechaPreparacion">Fecha Preparacion</span></dt>
+                <dd>
+                    <span>{{pedido.fechaPreparacion}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedido.fechaCobro">Fecha Cobro</span></dt>
+                <dd>
+                    <span>{{pedido.fechaCobro}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedido.fechaEntrega">Fecha Entrega</span></dt>
+                <dd>
+                    <span>{{pedido.fechaEntrega}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedido.cliente">Cliente</span></dt>
+                <dd>
+                    <div *ngIf="pedido.clienteId">
+                        <a [routerLink]="['/cliente', pedido.clienteId, 'view']">{{pedido.clienteId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedido.estatus">Estatus</span></dt>
+                <dd>
+                    <div *ngIf="pedido.estatusId">
+                        <a [routerLink]="['/estatus', pedido.estatusId, 'view']">{{pedido.estatusId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedido.transportista">Transportista</span></dt>
+                <dd>
+                    <div *ngIf="pedido.transportistaId">
+                        <a [routerLink]="['/transportista', pedido.transportistaId, 'view']">{{pedido.transportistaId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.pedido.recolector">Recolector</span></dt>
+                <dd>
+                    <div *ngIf="pedido.recolectorId">
+                        <a [routerLink]="['/recolector', pedido.recolectorId, 'view']">{{pedido.recolectorId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/pedido', pedido.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

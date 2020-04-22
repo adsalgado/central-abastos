@@ -1,0 +1,107 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="producto">
+            <h2><span jhiTranslate="abastosApp.producto.detail.title">Producto</span> {{producto.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="abastosApp.producto.nombre">Nombre</span></dt>
+                <dd>
+                    <span>{{producto.nombre}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.descripcion">Descripcion</span></dt>
+                <dd>
+                    <span>{{producto.descripcion}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.caracteristicas">Caracteristicas</span></dt>
+                <dd>
+                    <span>{{producto.caracteristicas}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.precioSinIva">Precio Sin Iva</span></dt>
+                <dd>
+                    <span>{{producto.precioSinIva}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.precio">Precio</span></dt>
+                <dd>
+                    <span>{{producto.precio}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.fechaAlta">Fecha Alta</span></dt>
+                <dd>
+                    <span>{{producto.fechaAlta}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.fechaModificacion">Fecha Modificacion</span></dt>
+                <dd>
+                    <span>{{producto.fechaModificacion}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.adjunto">Adjunto</span></dt>
+                <dd>
+                    <div *ngIf="producto.adjuntoId">
+                        <a [routerLink]="['/adjunto', producto.adjuntoId, 'view']">{{producto.adjuntoId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.usuarioAlta">Usuario Alta</span></dt>
+                <dd>
+                    {{producto.usuarioAltaId}}
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.usuarioModificacion">Usuario Modificacion</span></dt>
+                <dd>
+                    {{producto.usuarioModificacionId}}
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.proveedor">Proveedor</span></dt>
+                <dd>
+                    <div *ngIf="producto.proveedorId">
+                        <a [routerLink]="['/proveedor', producto.proveedorId, 'view']">{{producto.proveedorId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.tipoArticulo">Tipo Articulo</span></dt>
+                <dd>
+                    <div *ngIf="producto.tipoArticuloId">
+                        <a [routerLink]="['/tipo-articulo', producto.tipoArticuloId, 'view']">{{producto.tipoArticuloId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.categoria">Categoria</span></dt>
+                <dd>
+                    <div *ngIf="producto.categoriaId">
+                        <a [routerLink]="['/categoria', producto.categoriaId, 'view']">{{producto.categoriaId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.seccion">Seccion</span></dt>
+                <dd>
+                    <div *ngIf="producto.seccionId">
+                        <a [routerLink]="['/seccion', producto.seccionId, 'view']">{{producto.seccionId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.estatus">Estatus</span></dt>
+                <dd>
+                    <div *ngIf="producto.estatusId">
+                        <a [routerLink]="['/estatus', producto.estatusId, 'view']">{{producto.estatusId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.unidadMedida">Unidad Medida</span></dt>
+                <dd>
+                    <div *ngIf="producto.unidadMedidaId">
+                        <a [routerLink]="['/unidad-medida', producto.unidadMedidaId, 'view']">{{producto.unidadMedidaId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.producto.empresa">Empresa</span></dt>
+                <dd>
+                    <div *ngIf="producto.empresaId">
+                        <a [routerLink]="['/empresa', producto.empresaId, 'view']">{{producto.empresaId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/producto', producto.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

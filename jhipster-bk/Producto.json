@@ -1,0 +1,174 @@
+{
+    "name": "Producto",
+    "fields": [
+        {
+            "fieldName": "nombre",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 256
+        },
+        {
+            "fieldName": "descripcion",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 512
+        },
+        {
+            "fieldName": "caracteristicas",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 512
+        },
+        {
+            "fieldName": "precioSinIva",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "precio",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "fechaAlta",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "fechaModificacion",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "adjunto",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "adjunto",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "usuarioAlta",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "usuarioModificacion",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "ofertaProveedor",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "ofertaProveedor"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "carritoCompra",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "carritoCompra"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "carritoHistoricoDetalle",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "carritoCompraDetalle"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "pedidoDetalle",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "pedidoDetalle"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "inventario",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "inventario"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "productoImagen",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "productoImagen"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "proveedor",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "proveedor",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "tipoArticulo",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "tipoArticulo",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "categoria",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "categoria",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "seccion",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "seccion",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "estatus",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "estatus",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "unidadMedida",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "unidadMedida",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "empresa",
+            "otherEntityRelationshipName": "producto",
+            "relationshipName": "empresa",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200422031219",
+    "entityTableName": "producto",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

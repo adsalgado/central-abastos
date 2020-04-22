@@ -1,0 +1,41 @@
+{
+    "name": "CarritoHistoricoDetalle",
+    "fields": [
+        {
+            "fieldName": "cantidad",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "precio",
+            "fieldType": "BigDecimal"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "producto",
+            "otherEntityRelationshipName": "carritoCompraDetalle",
+            "relationshipName": "producto",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "carritoHistorico",
+            "otherEntityRelationshipName": "carritoHistoricoDetalle",
+            "relationshipName": "carritoHistorico",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200422031234",
+    "entityTableName": "carrito_historico_detalle",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

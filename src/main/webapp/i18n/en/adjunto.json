@@ -1,0 +1,29 @@
+{
+  "abastosApp": {
+    "adjunto": {
+      "home": {
+        "title": "Adjuntos",
+        "createLabel": "Create a new Adjunto",
+        "createOrEditLabel": "Create or edit a Adjunto",
+        "notFound": "No Adjuntos found"
+      },
+      "created": "A new Adjunto is created with identifier {{ param }}",
+      "updated": "A Adjunto is updated with identifier {{ param }}",
+      "deleted": "A Adjunto is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Adjunto {{ id }}?"
+      },
+      "detail": {
+        "title": "Adjunto"
+      },
+      "contentType": "Content Type",
+      "size": "Size",
+      "fileName": "File Name",
+      "file": "File",
+      "chat": "Chat",
+      "productoImagen": "Producto Imagen",
+      "usuarioImagen": "Usuario Imagen",
+      "parametrosAplicacion": "Parametros Aplicacion"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+    "name": "TipoArticulo",
+    "fields": [
+        {
+            "fieldName": "nombre",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "producto",
+            "otherEntityRelationshipName": "tipoArticulo",
+            "relationshipName": "producto"
+        }
+    ],
+    "changelogDate": "20200422031221",
+    "entityTableName": "tipo_articulo",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

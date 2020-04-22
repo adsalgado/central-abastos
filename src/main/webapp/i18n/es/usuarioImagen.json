@@ -1,0 +1,24 @@
+{
+  "abastosApp": {
+    "usuarioImagen": {
+      "home": {
+        "title": "Usuario Imagens",
+        "createLabel": "Crear nuevo Usuario Imagen",
+        "createOrEditLabel": "Crear o editar Usuario Imagen",
+        "notFound": "No Usuario Imagens found"
+      },
+      "created": "Un nuevo Usuario Imagen ha sido creado con el identificador {{ param }}",
+      "updated": "Un Usuario Imagen ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Usuario Imagen ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Usuario Imagen {{ id }}?"
+      },
+      "detail": {
+        "title": "Usuario Imagen"
+      },
+      "fechaAlta": "Fecha Alta",
+      "usuario": "Usuario",
+      "adjunto": "Adjunto"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "abastosApp": {
+    "recolectorTarifa": {
+      "home": {
+        "title": "Recolector Tarifas",
+        "createLabel": "Crear nuevo Recolector Tarifa",
+        "createOrEditLabel": "Crear o editar Recolector Tarifa",
+        "notFound": "No Recolector Tarifas found"
+      },
+      "created": "Un nuevo Recolector Tarifa ha sido creado con el identificador {{ param }}",
+      "updated": "Un Recolector Tarifa ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Recolector Tarifa ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Recolector Tarifa {{ id }}?"
+      },
+      "detail": {
+        "title": "Recolector Tarifa"
+      },
+      "rangoMinimo": "Rango Minimo",
+      "rangoMaximo": "Rango Maximo",
+      "precio": "Precio",
+      "recolector": "Recolector"
+    }
+  }
+}

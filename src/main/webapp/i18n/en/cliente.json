@@ -1,0 +1,36 @@
+{
+  "abastosApp": {
+    "cliente": {
+      "home": {
+        "title": "Clientes",
+        "createLabel": "Create a new Cliente",
+        "createOrEditLabel": "Create or edit a Cliente",
+        "notFound": "No Clientes found"
+      },
+      "created": "A new Cliente is created with identifier {{ param }}",
+      "updated": "A Cliente is updated with identifier {{ param }}",
+      "deleted": "A Cliente is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Cliente {{ id }}?"
+      },
+      "detail": {
+        "title": "Cliente"
+      },
+      "nombre": "Nombre",
+      "apellidoPaterno": "Apellido Paterno",
+      "email": "Email",
+      "telefono": "Telefono",
+      "fechaAlta": "Fecha Alta",
+      "fechaModificacion": "Fecha Modificacion",
+      "usuarioAlta": "Usuario Alta",
+      "usuarioModificacion": "Usuario Modificacion",
+      "tarjeta": "Tarjeta",
+      "direccion": "Direccion",
+      "carritoCompra": "Carrito Compra",
+      "carritoHistorico": "Carrito Historico",
+      "pedido": "Pedido",
+      "estatus": "Estatus",
+      "empresa": "Empresa"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "abastosApp": {
+    "historicoPedido": {
+      "home": {
+        "title": "Historico Pedidos",
+        "createLabel": "Crear nuevo Historico Pedido",
+        "createOrEditLabel": "Crear o editar Historico Pedido",
+        "notFound": "No Historico Pedidos found"
+      },
+      "created": "Un nuevo Historico Pedido ha sido creado con el identificador {{ param }}",
+      "updated": "Un Historico Pedido ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Historico Pedido ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Historico Pedido {{ id }}?"
+      },
+      "detail": {
+        "title": "Historico Pedido"
+      },
+      "fechaEstatus": "Fecha Estatus",
+      "pedido": "Pedido"
+    }
+  }
+}

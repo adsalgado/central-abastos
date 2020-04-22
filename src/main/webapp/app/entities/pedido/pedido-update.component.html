@@ -1,0 +1,108 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-pedido-heading" jhiTranslate="abastosApp.pedido.home.createOrEditLabel">Create or edit a Pedido</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.pedido.totalSinIva" for="field_totalSinIva">Total Sin Iva</label>
+                    <input type="number" class="form-control" name="totalSinIva" id="field_totalSinIva"
+                           formControlName="totalSinIva"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.pedido.comisionTransportista" for="field_comisionTransportista">Comision Transportista</label>
+                    <input type="number" class="form-control" name="comisionTransportista" id="field_comisionTransportista"
+                           formControlName="comisionTransportista"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.pedido.comisionPreparador" for="field_comisionPreparador">Comision Preparador</label>
+                    <input type="number" class="form-control" name="comisionPreparador" id="field_comisionPreparador"
+                           formControlName="comisionPreparador"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.pedido.total" for="field_total">Total</label>
+                    <input type="number" class="form-control" name="total" id="field_total"
+                           formControlName="total"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.pedido.fechaPedido" for="field_fechaPedido">Fecha Pedido</label>
+                    <div class="input-group">
+                        <input id="field_fechaPedido" type="text" class="form-control" name="fechaPedido" ngbDatepicker  #fechaPedidoDp="ngbDatepicker" formControlName="fechaPedido"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="fechaPedidoDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.pedido.fechaPreparacion" for="field_fechaPreparacion">Fecha Preparacion</label>
+                    <div class="input-group">
+                        <input id="field_fechaPreparacion" type="text" class="form-control" name="fechaPreparacion" ngbDatepicker  #fechaPreparacionDp="ngbDatepicker" formControlName="fechaPreparacion"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="fechaPreparacionDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.pedido.fechaCobro" for="field_fechaCobro">Fecha Cobro</label>
+                    <div class="input-group">
+                        <input id="field_fechaCobro" type="text" class="form-control" name="fechaCobro" ngbDatepicker  #fechaCobroDp="ngbDatepicker" formControlName="fechaCobro"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="fechaCobroDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.pedido.fechaEntrega" for="field_fechaEntrega">Fecha Entrega</label>
+                    <div class="input-group">
+                        <input id="field_fechaEntrega" type="text" class="form-control" name="fechaEntrega" ngbDatepicker  #fechaEntregaDp="ngbDatepicker" formControlName="fechaEntrega"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="fechaEntregaDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.pedido.cliente" for="field_cliente">Cliente</label>
+                    <select class="form-control" id="field_cliente" name="cliente" formControlName="clienteId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="clienteOption.id" *ngFor="let clienteOption of clientes; trackBy: trackClienteById">{{clienteOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.pedido.estatus" for="field_estatus">Estatus</label>
+                    <select class="form-control" id="field_estatus" name="estatus" formControlName="estatusId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="estatusOption.id" *ngFor="let estatusOption of estatuses; trackBy: trackEstatusById">{{estatusOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.pedido.transportista" for="field_transportista">Transportista</label>
+                    <select class="form-control" id="field_transportista" name="transportista" formControlName="transportistaId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="transportistaOption.id" *ngFor="let transportistaOption of transportistas; trackBy: trackTransportistaById">{{transportistaOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.pedido.recolector" for="field_recolector">Recolector</label>
+                    <select class="form-control" id="field_recolector" name="recolector" formControlName="recolectorId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="recolectorOption.id" *ngFor="let recolectorOption of recolectors; trackBy: trackRecolectorById">{{recolectorOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

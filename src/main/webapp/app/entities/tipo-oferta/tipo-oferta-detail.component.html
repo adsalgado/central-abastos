@@ -1,0 +1,31 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="tipoOferta">
+            <h2><span jhiTranslate="abastosApp.tipoOferta.detail.title">Tipo Oferta</span> {{tipoOferta.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="abastosApp.tipoOferta.nombre">Nombre</span></dt>
+                <dd>
+                    <span>{{tipoOferta.nombre}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.tipoOferta.descripcion">Descripcion</span></dt>
+                <dd>
+                    <span>{{tipoOferta.descripcion}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/tipo-oferta', tipoOferta.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

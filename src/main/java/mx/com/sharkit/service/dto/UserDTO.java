@@ -1,17 +1,20 @@
 package mx.com.sharkit.service.dto;
 
-import mx.com.sharkit.config.Constants;
-
-import mx.com.sharkit.domain.Authority;
-import mx.com.sharkit.domain.User;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
-import javax.validation.constraints.*;
-import java.time.Instant;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import mx.com.sharkit.config.Constants;
+import mx.com.sharkit.domain.Authority;
+import mx.com.sharkit.domain.User;
 
 /**
  * A DTO representing a user, with his authorities.
@@ -34,6 +37,18 @@ public class UserDTO {
     @Email
     @Size(min = 5, max = 254)
     private String email;
+    
+    @Size(max = 50)
+    private String motherLastName;
+
+    @Size(max = 15)
+    private String telefono;
+
+    @Size(max = 1)
+    private String genero;
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate fechaNacimiento;
 
     @Size(max = 256)
     private String imageUrl;
@@ -62,6 +77,10 @@ public class UserDTO {
         this.login = user.getLogin();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
+        this.motherLastName = user.getMotherLastName();
+        this.telefono = user.getTelefono();
+        this.genero = user.getGenero();
+        this.fechaNacimiento = user.getFechaNacimiento();
         this.email = user.getEmail();
         this.activated = user.getActivated();
         this.imageUrl = user.getImageUrl();
@@ -115,7 +134,39 @@ public class UserDTO {
         this.email = email;
     }
 
-    public String getImageUrl() {
+    public String getMotherLastName() {
+		return motherLastName;
+	}
+
+	public void setMotherLastName(String motherLastName) {
+		this.motherLastName = motherLastName;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public LocalDate getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public String getImageUrl() {
         return imageUrl;
     }
 
@@ -185,6 +236,10 @@ public class UserDTO {
             "login='" + login + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
+            ", motherLastName='" + motherLastName + '\'' +
+            ", telefono='" + telefono + '\'' +
+            ", genero='" + genero + '\'' +
+            ", fechaNacimiento='" + fechaNacimiento + '\'' +
             ", email='" + email + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
             ", activated=" + activated +

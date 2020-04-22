@@ -1,0 +1,33 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="historicoPedido">
+            <h2><span jhiTranslate="abastosApp.historicoPedido.detail.title">Historico Pedido</span> {{historicoPedido.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="abastosApp.historicoPedido.fechaEstatus">Fecha Estatus</span></dt>
+                <dd>
+                    <span>{{historicoPedido.fechaEstatus}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.historicoPedido.pedido">Pedido</span></dt>
+                <dd>
+                    <div *ngIf="historicoPedido.pedidoId">
+                        <a [routerLink]="['/pedido', historicoPedido.pedidoId, 'view']">{{historicoPedido.pedidoId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/historico-pedido', historicoPedido.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

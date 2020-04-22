@@ -1,0 +1,42 @@
+{
+    "name": "ProductoImagen",
+    "fields": [
+        {
+            "fieldName": "fechaAlta",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "productoImagen",
+            "relationshipName": "usuarioAlta",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "producto",
+            "otherEntityRelationshipName": "productoImagen",
+            "relationshipName": "producto",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "adjunto",
+            "otherEntityRelationshipName": "productoImagen",
+            "relationshipName": "adjunto",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200422031248",
+    "entityTableName": "producto_imagen",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

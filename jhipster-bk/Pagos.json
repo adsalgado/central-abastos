@@ -1,0 +1,14 @@
+{
+    "name": "Pagos",
+    "fields": [],
+    "relationships": [],
+    "changelogDate": "20200422031246",
+    "entityTableName": "pagos",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,27 @@
+{
+  "abastosApp": {
+    "pedidoDetalle": {
+      "home": {
+        "title": "Pedido Detalles",
+        "createLabel": "Crear nuevo Pedido Detalle",
+        "createOrEditLabel": "Crear o editar Pedido Detalle",
+        "notFound": "No Pedido Detalles found"
+      },
+      "created": "Un nuevo Pedido Detalle ha sido creado con el identificador {{ param }}",
+      "updated": "Un Pedido Detalle ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Pedido Detalle ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Pedido Detalle {{ id }}?"
+      },
+      "detail": {
+        "title": "Pedido Detalle"
+      },
+      "cantidad": "Cantidad",
+      "totalSinIva": "Total Sin Iva",
+      "total": "Total",
+      "pedido": "Pedido",
+      "producto": "Producto",
+      "estatus": "Estatus"
+    }
+  }
+}

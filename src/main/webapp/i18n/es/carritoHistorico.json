@@ -1,0 +1,25 @@
+{
+  "abastosApp": {
+    "carritoHistorico": {
+      "home": {
+        "title": "Carrito Historicos",
+        "createLabel": "Crear nuevo Carrito Historico",
+        "createOrEditLabel": "Crear o editar Carrito Historico",
+        "notFound": "No Carrito Historicos found"
+      },
+      "created": "Un nuevo Carrito Historico ha sido creado con el identificador {{ param }}",
+      "updated": "Un Carrito Historico ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Carrito Historico ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Carrito Historico {{ id }}?"
+      },
+      "detail": {
+        "title": "Carrito Historico"
+      },
+      "nombre": "Nombre",
+      "fechaAlta": "Fecha Alta",
+      "carritoHistoricoDetalle": "Carrito Historico Detalle",
+      "cliente": "Cliente"
+    }
+  }
+}

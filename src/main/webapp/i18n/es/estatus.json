@@ -1,0 +1,28 @@
+{
+  "abastosApp": {
+    "estatus": {
+      "home": {
+        "title": "Estatuses",
+        "createLabel": "Crear nuevo Estatus",
+        "createOrEditLabel": "Crear o editar Estatus",
+        "notFound": "No Estatuses found"
+      },
+      "created": "Un nuevo Estatus ha sido creado con el identificador {{ param }}",
+      "updated": "Un Estatus ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Estatus ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Estatus {{ id }}?"
+      },
+      "detail": {
+        "title": "Estatus"
+      },
+      "tipoEstatus": "Tipo Estatus",
+      "nombre": "Nombre",
+      "producto": "Producto",
+      "ofertaProveedor": "Oferta Proveedor",
+      "cliente": "Cliente",
+      "pedido": "Pedido",
+      "pedidoDetalle": "Pedido Detalle"
+    }
+  }
+}

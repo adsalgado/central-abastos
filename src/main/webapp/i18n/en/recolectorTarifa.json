@@ -1,0 +1,25 @@
+{
+  "abastosApp": {
+    "recolectorTarifa": {
+      "home": {
+        "title": "Recolector Tarifas",
+        "createLabel": "Create a new Recolector Tarifa",
+        "createOrEditLabel": "Create or edit a Recolector Tarifa",
+        "notFound": "No Recolector Tarifas found"
+      },
+      "created": "A new Recolector Tarifa is created with identifier {{ param }}",
+      "updated": "A Recolector Tarifa is updated with identifier {{ param }}",
+      "deleted": "A Recolector Tarifa is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Recolector Tarifa {{ id }}?"
+      },
+      "detail": {
+        "title": "Recolector Tarifa"
+      },
+      "rangoMinimo": "Rango Minimo",
+      "rangoMaximo": "Rango Maximo",
+      "precio": "Precio",
+      "recolector": "Recolector"
+    }
+  }
+}

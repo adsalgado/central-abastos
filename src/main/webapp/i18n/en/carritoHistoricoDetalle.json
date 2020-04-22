@@ -1,0 +1,25 @@
+{
+  "abastosApp": {
+    "carritoHistoricoDetalle": {
+      "home": {
+        "title": "Carrito Historico Detalles",
+        "createLabel": "Create a new Carrito Historico Detalle",
+        "createOrEditLabel": "Create or edit a Carrito Historico Detalle",
+        "notFound": "No Carrito Historico Detalles found"
+      },
+      "created": "A new Carrito Historico Detalle is created with identifier {{ param }}",
+      "updated": "A Carrito Historico Detalle is updated with identifier {{ param }}",
+      "deleted": "A Carrito Historico Detalle is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Carrito Historico Detalle {{ id }}?"
+      },
+      "detail": {
+        "title": "Carrito Historico Detalle"
+      },
+      "cantidad": "Cantidad",
+      "precio": "Precio",
+      "producto": "Producto",
+      "carritoHistorico": "Carrito Historico"
+    }
+  }
+}

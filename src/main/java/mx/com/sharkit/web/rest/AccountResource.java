@@ -61,12 +61,15 @@ public class AccountResource {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
-        if (!checkPasswordLength(managedUserVM.getPassword())) {
-            throw new InvalidPasswordException();
-        }
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
-    }
+		log.debug("managedUserVM: {}", managedUserVM);
+		if (!checkPasswordLength(managedUserVM.getPassword())) {
+			throw new InvalidPasswordException();
+		}
+		User user = userService.registerUser(managedUserVM, managedUserVM.getPassword(), managedUserVM.isActivated(), managedUserVM.getAdjunto());
+		if (!managedUserVM.isActivated()) {
+			mailService.sendActivationEmail(user);
+		}
+	}
 
     /**
      * {@code GET  /activate} : activate the registered user.

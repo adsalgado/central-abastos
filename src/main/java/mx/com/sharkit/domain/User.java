@@ -2,6 +2,7 @@ package mx.com.sharkit.domain;
 
 import mx.com.sharkit.config.Constants;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -49,6 +51,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Size(max = 50)
     @Column(name = "last_name", length = 50)
     private String lastName;
+        
+    @Size(max = 50)
+    @Column(name = "mother_last_name", length = 50)
+    private String motherLastName;
+
+    @Size(max = 15)
+    @Column(name = "telefono", length = 15)
+    private String telefono;
+
+    @Size(max = 1)
+    @Column(name = "genero", length = 1)
+    private String genero;
+
+    @JsonFormat(pattern = "dd/MM/yyyy", locale="es_MX")
+    @Column(name = "fecha_nacimiento")
+    private LocalDate fechaNacimiento;
 
     @Email
     @Size(min = 5, max = 254)
@@ -139,7 +157,39 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.email = email;
     }
 
-    public String getImageUrl() {
+    public String getMotherLastName() {
+		return motherLastName;
+	}
+
+	public void setMotherLastName(String motherLastName) {
+		this.motherLastName = motherLastName;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public LocalDate getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public String getImageUrl() {
         return imageUrl;
     }
 
@@ -217,6 +267,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
             "login='" + login + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
+            ", motherLastName='" + motherLastName + '\'' +
+            ", telefono='" + telefono + '\'' +
+            ", genero='" + genero + '\'' +
+            ", fechaNacimiento='" + fechaNacimiento + '\'' +
             ", email='" + email + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
             ", activated='" + activated + '\'' +

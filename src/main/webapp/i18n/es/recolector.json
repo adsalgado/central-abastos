@@ -1,0 +1,29 @@
+{
+  "abastosApp": {
+    "recolector": {
+      "home": {
+        "title": "Recolectors",
+        "createLabel": "Crear nuevo Recolector",
+        "createOrEditLabel": "Crear o editar Recolector",
+        "notFound": "No Recolectors found"
+      },
+      "created": "Un nuevo Recolector ha sido creado con el identificador {{ param }}",
+      "updated": "Un Recolector ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Recolector ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Recolector {{ id }}?"
+      },
+      "detail": {
+        "title": "Recolector"
+      },
+      "nombre": "Nombre",
+      "fechaAlta": "Fecha Alta",
+      "fechaModificacion": "Fecha Modificacion",
+      "usuarioAlta": "Usuario Alta",
+      "usuarioModificacion": "Usuario Modificacion",
+      "pedido": "Pedido",
+      "recolectorTarifa": "Recolector Tarifa",
+      "empresa": "Empresa"
+    }
+  }
+}

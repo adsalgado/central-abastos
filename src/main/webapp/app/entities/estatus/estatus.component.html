@@ -1,0 +1,59 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="abastosApp.estatus.home.title">Estatuses</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-estatus" [routerLink]="['/estatus/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="abastosApp.estatus.home.createLabel">
+            Create a new Estatus
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="estatuses?.length === 0">
+        <span jhiTranslate="abastosApp.estatus.home.notFound">No estatuses found</span>
+    </div>
+    <div class="table-responsive" *ngIf="estatuses?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="abastosApp.estatus.tipoEstatus">Tipo Estatus</span></th>
+            <th><span jhiTranslate="abastosApp.estatus.nombre">Nombre</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let estatus of estatuses ;trackBy: trackId">
+                <td><a [routerLink]="['/estatus', estatus.id, 'view' ]">{{estatus.id}}</a></td>
+                <td jhiTranslate="{{'abastosApp.TipoEstatus.' + estatus.tipoEstatus}}">{{estatus.tipoEstatus}}</td>
+                <td>{{estatus.nombre}}</td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/estatus', estatus.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/estatus', estatus.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/estatus', { outlets: { popup: estatus.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

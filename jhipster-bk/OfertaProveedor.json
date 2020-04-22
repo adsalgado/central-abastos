@@ -1,0 +1,52 @@
+{
+    "name": "OfertaProveedor",
+    "fields": [
+        {
+            "fieldName": "fechaInicio",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "fechaFin",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "proveedor",
+            "otherEntityRelationshipName": "ofertaProveedor",
+            "relationshipName": "proveedor",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "producto",
+            "otherEntityRelationshipName": "ofertaProveedor",
+            "relationshipName": "producto",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "estatus",
+            "otherEntityRelationshipName": "ofertaProveedor",
+            "relationshipName": "estatus",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "tipoOferta",
+            "otherEntityRelationshipName": "ofertaProveedor",
+            "relationshipName": "tipoOferta",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200422031227",
+    "entityTableName": "oferta_proveedor",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

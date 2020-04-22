@@ -1,0 +1,23 @@
+{
+  "abastosApp": {
+    "tipoArticulo": {
+      "home": {
+        "title": "Tipo Articulos",
+        "createLabel": "Create a new Tipo Articulo",
+        "createOrEditLabel": "Create or edit a Tipo Articulo",
+        "notFound": "No Tipo Articulos found"
+      },
+      "created": "A new Tipo Articulo is created with identifier {{ param }}",
+      "updated": "A Tipo Articulo is updated with identifier {{ param }}",
+      "deleted": "A Tipo Articulo is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Tipo Articulo {{ id }}?"
+      },
+      "detail": {
+        "title": "Tipo Articulo"
+      },
+      "nombre": "Nombre",
+      "producto": "Producto"
+    }
+  }
+}

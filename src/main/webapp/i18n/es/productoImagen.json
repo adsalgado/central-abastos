@@ -1,0 +1,25 @@
+{
+  "abastosApp": {
+    "productoImagen": {
+      "home": {
+        "title": "Producto Imagens",
+        "createLabel": "Crear nuevo Producto Imagen",
+        "createOrEditLabel": "Crear o editar Producto Imagen",
+        "notFound": "No Producto Imagens found"
+      },
+      "created": "Un nuevo Producto Imagen ha sido creado con el identificador {{ param }}",
+      "updated": "Un Producto Imagen ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Producto Imagen ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Producto Imagen {{ id }}?"
+      },
+      "detail": {
+        "title": "Producto Imagen"
+      },
+      "fechaAlta": "Fecha Alta",
+      "usuarioAlta": "Usuario Alta",
+      "producto": "Producto",
+      "adjunto": "Adjunto"
+    }
+  }
+}

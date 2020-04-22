@@ -1,0 +1,55 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="ofertaProveedor">
+            <h2><span jhiTranslate="abastosApp.ofertaProveedor.detail.title">Oferta Proveedor</span> {{ofertaProveedor.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="abastosApp.ofertaProveedor.fechaInicio">Fecha Inicio</span></dt>
+                <dd>
+                    <span>{{ofertaProveedor.fechaInicio}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.ofertaProveedor.fechaFin">Fecha Fin</span></dt>
+                <dd>
+                    <span>{{ofertaProveedor.fechaFin}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.ofertaProveedor.proveedor">Proveedor</span></dt>
+                <dd>
+                    <div *ngIf="ofertaProveedor.proveedorId">
+                        <a [routerLink]="['/proveedor', ofertaProveedor.proveedorId, 'view']">{{ofertaProveedor.proveedorId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.ofertaProveedor.producto">Producto</span></dt>
+                <dd>
+                    <div *ngIf="ofertaProveedor.productoId">
+                        <a [routerLink]="['/producto', ofertaProveedor.productoId, 'view']">{{ofertaProveedor.productoId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.ofertaProveedor.estatus">Estatus</span></dt>
+                <dd>
+                    <div *ngIf="ofertaProveedor.estatusId">
+                        <a [routerLink]="['/estatus', ofertaProveedor.estatusId, 'view']">{{ofertaProveedor.estatusId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.ofertaProveedor.tipoOferta">Tipo Oferta</span></dt>
+                <dd>
+                    <div *ngIf="ofertaProveedor.tipoOfertaId">
+                        <a [routerLink]="['/tipo-oferta', ofertaProveedor.tipoOfertaId, 'view']">{{ofertaProveedor.tipoOfertaId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/oferta-proveedor', ofertaProveedor.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

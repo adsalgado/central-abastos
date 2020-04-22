@@ -1,0 +1,88 @@
+{
+    "name": "Pedido",
+    "fields": [
+        {
+            "fieldName": "totalSinIva",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "comisionTransportista",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "comisionPreparador",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "total",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "fechaPedido",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "fechaPreparacion",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "fechaCobro",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "fechaEntrega",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "pedidoDetalle",
+            "otherEntityRelationshipName": "pedido",
+            "relationshipName": "pedidoDetalle"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "historicoPedido",
+            "otherEntityRelationshipName": "pedido",
+            "relationshipName": "historicoPedido"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "cliente",
+            "otherEntityRelationshipName": "pedido",
+            "relationshipName": "cliente",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "estatus",
+            "otherEntityRelationshipName": "pedido",
+            "relationshipName": "estatus",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "transportista",
+            "otherEntityRelationshipName": "pedido",
+            "relationshipName": "transportista",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "recolector",
+            "otherEntityRelationshipName": "pedido",
+            "relationshipName": "recolector",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200422152106",
+    "entityTableName": "pedido",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

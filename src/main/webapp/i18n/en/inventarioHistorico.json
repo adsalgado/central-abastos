@@ -1,0 +1,28 @@
+{
+  "abastosApp": {
+    "inventarioHistorico": {
+      "home": {
+        "title": "Inventario Historicos",
+        "createLabel": "Create a new Inventario Historico",
+        "createOrEditLabel": "Create or edit a Inventario Historico",
+        "notFound": "No Inventario Historicos found"
+      },
+      "created": "A new Inventario Historico is created with identifier {{ param }}",
+      "updated": "A Inventario Historico is updated with identifier {{ param }}",
+      "deleted": "A Inventario Historico is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Inventario Historico {{ id }}?"
+      },
+      "detail": {
+        "title": "Inventario Historico"
+      },
+      "tipoMovimiento": "Tipo Movimiento",
+      "cantidad": "Cantidad",
+      "totalAnterior": "Total Anterior",
+      "totalFinal": "Total Final",
+      "fechaMovimiento": "Fecha Movimiento",
+      "usuarioMovimiento": "Usuario Movimiento",
+      "inventario": "Inventario"
+    }
+  }
+}

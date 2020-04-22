@@ -1,0 +1,68 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="abastosApp.adjunto.home.title">Adjuntos</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-adjunto" [routerLink]="['/adjunto/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="abastosApp.adjunto.home.createLabel">
+            Create a new Adjunto
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="adjuntos?.length === 0">
+        <span jhiTranslate="abastosApp.adjunto.home.notFound">No adjuntos found</span>
+    </div>
+    <div class="table-responsive" *ngIf="adjuntos?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="abastosApp.adjunto.contentType">Content Type</span></th>
+            <th><span jhiTranslate="abastosApp.adjunto.size">Size</span></th>
+            <th><span jhiTranslate="abastosApp.adjunto.fileName">File Name</span></th>
+            <th><span jhiTranslate="abastosApp.adjunto.file">File</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let adjunto of adjuntos ;trackBy: trackId">
+                <td><a [routerLink]="['/adjunto', adjunto.id, 'view' ]">{{adjunto.id}}</a></td>
+                <td>{{adjunto.contentType}}</td>
+                <td>{{adjunto.size}}</td>
+                <td>{{adjunto.fileName}}</td>
+                <td>
+                    <a *ngIf="adjunto.file" (click)="openFile(adjunto.fileContentType, adjunto.file)">
+                        <img [src]="'data:' + adjunto.fileContentType + ';base64,' + adjunto.file" style="max-height: 30px;" alt="adjunto image"/>
+                    </a>
+                    <span *ngIf="adjunto.file">{{adjunto.fileContentType}}, {{byteSize(adjunto.file)}}</span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/adjunto', adjunto.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/adjunto', adjunto.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/adjunto', { outlets: { popup: adjunto.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

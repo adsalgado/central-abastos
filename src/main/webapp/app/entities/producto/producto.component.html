@@ -1,0 +1,125 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="abastosApp.producto.home.title">Productos</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-producto" [routerLink]="['/producto/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="abastosApp.producto.home.createLabel">
+            Create a new Producto
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="productos?.length === 0">
+        <span jhiTranslate="abastosApp.producto.home.notFound">No productos found</span>
+    </div>
+    <div class="table-responsive" *ngIf="productos?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="abastosApp.producto.nombre">Nombre</span></th>
+            <th><span jhiTranslate="abastosApp.producto.descripcion">Descripcion</span></th>
+            <th><span jhiTranslate="abastosApp.producto.caracteristicas">Caracteristicas</span></th>
+            <th><span jhiTranslate="abastosApp.producto.precioSinIva">Precio Sin Iva</span></th>
+            <th><span jhiTranslate="abastosApp.producto.precio">Precio</span></th>
+            <th><span jhiTranslate="abastosApp.producto.fechaAlta">Fecha Alta</span></th>
+            <th><span jhiTranslate="abastosApp.producto.fechaModificacion">Fecha Modificacion</span></th>
+            <th><span jhiTranslate="abastosApp.producto.adjunto">Adjunto</span></th>
+            <th><span jhiTranslate="abastosApp.producto.usuarioAlta">Usuario Alta</span></th>
+            <th><span jhiTranslate="abastosApp.producto.usuarioModificacion">Usuario Modificacion</span></th>
+            <th><span jhiTranslate="abastosApp.producto.proveedor">Proveedor</span></th>
+            <th><span jhiTranslate="abastosApp.producto.tipoArticulo">Tipo Articulo</span></th>
+            <th><span jhiTranslate="abastosApp.producto.categoria">Categoria</span></th>
+            <th><span jhiTranslate="abastosApp.producto.seccion">Seccion</span></th>
+            <th><span jhiTranslate="abastosApp.producto.estatus">Estatus</span></th>
+            <th><span jhiTranslate="abastosApp.producto.unidadMedida">Unidad Medida</span></th>
+            <th><span jhiTranslate="abastosApp.producto.empresa">Empresa</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let producto of productos ;trackBy: trackId">
+                <td><a [routerLink]="['/producto', producto.id, 'view' ]">{{producto.id}}</a></td>
+                <td>{{producto.nombre}}</td>
+                <td>{{producto.descripcion}}</td>
+                <td>{{producto.caracteristicas}}</td>
+                <td>{{producto.precioSinIva}}</td>
+                <td>{{producto.precio}}</td>
+                <td>{{producto.fechaAlta | date:'medium'}}</td>
+                <td>{{producto.fechaModificacion | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="producto.adjuntoId">
+                        <a [routerLink]="['/adjunto', producto.adjuntoId , 'view' ]" >{{producto.adjuntoId}}</a>
+                    </div>
+                </td>
+                <td>
+                    {{producto.usuarioAltaId}}
+                </td>
+                <td>
+                    {{producto.usuarioModificacionId}}
+                </td>
+                <td>
+                    <div *ngIf="producto.proveedorId">
+                        <a [routerLink]="['/proveedor', producto.proveedorId , 'view' ]" >{{producto.proveedorId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="producto.tipoArticuloId">
+                        <a [routerLink]="['/tipo-articulo', producto.tipoArticuloId , 'view' ]" >{{producto.tipoArticuloId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="producto.categoriaId">
+                        <a [routerLink]="['/categoria', producto.categoriaId , 'view' ]" >{{producto.categoriaId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="producto.seccionId">
+                        <a [routerLink]="['/seccion', producto.seccionId , 'view' ]" >{{producto.seccionId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="producto.estatusId">
+                        <a [routerLink]="['/estatus', producto.estatusId , 'view' ]" >{{producto.estatusId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="producto.unidadMedidaId">
+                        <a [routerLink]="['/unidad-medida', producto.unidadMedidaId , 'view' ]" >{{producto.unidadMedidaId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="producto.empresaId">
+                        <a [routerLink]="['/empresa', producto.empresaId , 'view' ]" >{{producto.empresaId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/producto', producto.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/producto', producto.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/producto', { outlets: { popup: producto.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+{
+    "name": "Notificacion",
+    "fields": [],
+    "relationships": [],
+    "changelogDate": "20200422152116",
+    "entityTableName": "notificacion",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

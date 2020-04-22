@@ -1,0 +1,44 @@
+{
+    "name": "RecolectorTarifa",
+    "fields": [
+        {
+            "fieldName": "rangoMinimo",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "rangoMaximo",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "precio",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "recolector",
+            "otherEntityRelationshipName": "recolectorTarifa",
+            "relationshipName": "recolector",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200422152112",
+    "entityTableName": "recolector_tarifa",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

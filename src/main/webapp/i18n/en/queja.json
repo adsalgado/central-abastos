@@ -1,0 +1,21 @@
+{
+  "abastosApp": {
+    "queja": {
+      "home": {
+        "title": "Quejas",
+        "createLabel": "Create a new Queja",
+        "createOrEditLabel": "Create or edit a Queja",
+        "notFound": "No Quejas found"
+      },
+      "created": "A new Queja is created with identifier {{ param }}",
+      "updated": "A Queja is updated with identifier {{ param }}",
+      "deleted": "A Queja is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Queja {{ id }}?"
+      },
+      "detail": {
+        "title": "Queja"
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="abastosApp.inventarioHistorico.home.title">Inventario Historicos</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-inventario-historico" [routerLink]="['/inventario-historico/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="abastosApp.inventarioHistorico.home.createLabel">
+            Create a new Inventario Historico
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="inventarioHistoricos?.length === 0">
+        <span jhiTranslate="abastosApp.inventarioHistorico.home.notFound">No inventarioHistoricos found</span>
+    </div>
+    <div class="table-responsive" *ngIf="inventarioHistoricos?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="abastosApp.inventarioHistorico.tipoMovimiento">Tipo Movimiento</span></th>
+            <th><span jhiTranslate="abastosApp.inventarioHistorico.cantidad">Cantidad</span></th>
+            <th><span jhiTranslate="abastosApp.inventarioHistorico.totalAnterior">Total Anterior</span></th>
+            <th><span jhiTranslate="abastosApp.inventarioHistorico.totalFinal">Total Final</span></th>
+            <th><span jhiTranslate="abastosApp.inventarioHistorico.fechaMovimiento">Fecha Movimiento</span></th>
+            <th><span jhiTranslate="abastosApp.inventarioHistorico.usuarioMovimiento">Usuario Movimiento</span></th>
+            <th><span jhiTranslate="abastosApp.inventarioHistorico.inventario">Inventario</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let inventarioHistorico of inventarioHistoricos ;trackBy: trackId">
+                <td><a [routerLink]="['/inventario-historico', inventarioHistorico.id, 'view' ]">{{inventarioHistorico.id}}</a></td>
+                <td jhiTranslate="{{'abastosApp.TipoMovimiento.' + inventarioHistorico.tipoMovimiento}}">{{inventarioHistorico.tipoMovimiento}}</td>
+                <td>{{inventarioHistorico.cantidad}}</td>
+                <td>{{inventarioHistorico.totalAnterior}}</td>
+                <td>{{inventarioHistorico.totalFinal}}</td>
+                <td>{{inventarioHistorico.fechaMovimiento | date:'medium'}}</td>
+                <td>
+                    {{inventarioHistorico.usuarioMovimientoId}}
+                </td>
+                <td>
+                    <div *ngIf="inventarioHistorico.inventarioId">
+                        <a [routerLink]="['/inventario', inventarioHistorico.inventarioId , 'view' ]" >{{inventarioHistorico.inventarioId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/inventario-historico', inventarioHistorico.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/inventario-historico', inventarioHistorico.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/inventario-historico', { outlets: { popup: inventarioHistorico.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

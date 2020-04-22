@@ -1,0 +1,27 @@
+{
+  "abastosApp": {
+    "ofertaProveedor": {
+      "home": {
+        "title": "Oferta Proveedors",
+        "createLabel": "Create a new Oferta Proveedor",
+        "createOrEditLabel": "Create or edit a Oferta Proveedor",
+        "notFound": "No Oferta Proveedors found"
+      },
+      "created": "A new Oferta Proveedor is created with identifier {{ param }}",
+      "updated": "A Oferta Proveedor is updated with identifier {{ param }}",
+      "deleted": "A Oferta Proveedor is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Oferta Proveedor {{ id }}?"
+      },
+      "detail": {
+        "title": "Oferta Proveedor"
+      },
+      "fechaInicio": "Fecha Inicio",
+      "fechaFin": "Fecha Fin",
+      "proveedor": "Proveedor",
+      "producto": "Producto",
+      "estatus": "Estatus",
+      "tipoOferta": "Tipo Oferta"
+    }
+  }
+}

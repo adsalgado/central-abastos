@@ -1,0 +1,24 @@
+{
+  "abastosApp": {
+    "parametrosAplicacion": {
+      "home": {
+        "title": "Parametros Aplicacions",
+        "createLabel": "Create a new Parametros Aplicacion",
+        "createOrEditLabel": "Create or edit a Parametros Aplicacion",
+        "notFound": "No Parametros Aplicacions found"
+      },
+      "created": "A new Parametros Aplicacion is created with identifier {{ param }}",
+      "updated": "A Parametros Aplicacion is updated with identifier {{ param }}",
+      "deleted": "A Parametros Aplicacion is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Parametros Aplicacion {{ id }}?"
+      },
+      "detail": {
+        "title": "Parametros Aplicacion"
+      },
+      "clave": "Clave",
+      "descripcion": "Descripcion",
+      "adjunto": "Adjunto"
+    }
+  }
+}

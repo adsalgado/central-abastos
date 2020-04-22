@@ -1,0 +1,24 @@
+{
+  "abastosApp": {
+    "tipoOferta": {
+      "home": {
+        "title": "Tipo Ofertas",
+        "createLabel": "Crear nuevo Tipo Oferta",
+        "createOrEditLabel": "Crear o editar Tipo Oferta",
+        "notFound": "No Tipo Ofertas found"
+      },
+      "created": "Un nuevo Tipo Oferta ha sido creado con el identificador {{ param }}",
+      "updated": "Un Tipo Oferta ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Tipo Oferta ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Tipo Oferta {{ id }}?"
+      },
+      "detail": {
+        "title": "Tipo Oferta"
+      },
+      "nombre": "Nombre",
+      "descripcion": "Descripcion",
+      "ofertaProveedor": "Oferta Proveedor"
+    }
+  }
+}

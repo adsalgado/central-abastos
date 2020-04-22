@@ -1,5 +1,6 @@
 package mx.com.sharkit.web.rest.vm;
 
+import mx.com.sharkit.service.dto.AdjuntoDTO;
 import mx.com.sharkit.service.dto.UserDTO;
 import javax.validation.constraints.Size;
 
@@ -14,7 +15,11 @@ public class ManagedUserVM extends UserDTO {
 
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
+    
+    private boolean activated;
 
+    private AdjuntoDTO adjunto;
+    
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
     }
@@ -26,8 +31,24 @@ public class ManagedUserVM extends UserDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    public boolean isActivated() {
+		return activated;
+	}
 
-    @Override
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+	}
+
+    public AdjuntoDTO getAdjunto() {
+		return adjunto;
+	}
+
+	public void setAdjunto(AdjuntoDTO adjunto) {
+		this.adjunto = adjunto;
+	}
+
+	@Override
     public String toString() {
         return "ManagedUserVM{" + super.toString() + "} ";
     }

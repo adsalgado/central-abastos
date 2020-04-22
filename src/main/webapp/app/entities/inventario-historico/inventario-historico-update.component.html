@@ -1,0 +1,112 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-inventario-historico-heading" jhiTranslate="abastosApp.inventarioHistorico.home.createOrEditLabel">Create or edit a Inventario Historico</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.inventarioHistorico.tipoMovimiento" for="field_tipoMovimiento">Tipo Movimiento</label>
+                    <select class="form-control" name="tipoMovimiento" formControlName="tipoMovimiento" id="field_tipoMovimiento">
+                        <option value="ENTRADA">{{'abastosApp.TipoMovimiento.ENTRADA' | translate}}</option>
+                        <option value="SALIDA">{{'abastosApp.TipoMovimiento.SALIDA' | translate}}</option>
+                    </select>
+                    <div *ngIf="editForm.get('tipoMovimiento').invalid && (editForm.get('tipoMovimiento').dirty || editForm.get('tipoMovimiento').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('tipoMovimiento').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.inventarioHistorico.cantidad" for="field_cantidad">Cantidad</label>
+                    <input type="number" class="form-control" name="cantidad" id="field_cantidad"
+                           formControlName="cantidad"/>
+                    <div *ngIf="editForm.get('cantidad').invalid && (editForm.get('cantidad').dirty || editForm.get('cantidad').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('cantidad').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('cantidad')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.inventarioHistorico.totalAnterior" for="field_totalAnterior">Total Anterior</label>
+                    <input type="number" class="form-control" name="totalAnterior" id="field_totalAnterior"
+                           formControlName="totalAnterior"/>
+                    <div *ngIf="editForm.get('totalAnterior').invalid && (editForm.get('totalAnterior').dirty || editForm.get('totalAnterior').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('totalAnterior').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('totalAnterior')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.inventarioHistorico.totalFinal" for="field_totalFinal">Total Final</label>
+                    <input type="number" class="form-control" name="totalFinal" id="field_totalFinal"
+                           formControlName="totalFinal"/>
+                    <div *ngIf="editForm.get('totalFinal').invalid && (editForm.get('totalFinal').dirty || editForm.get('totalFinal').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('totalFinal').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('totalFinal')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.inventarioHistorico.fechaMovimiento" for="field_fechaMovimiento">Fecha Movimiento</label>
+                    <div class="d-flex">
+                        <input id="field_fechaMovimiento" type="datetime-local" class="form-control" name="fechaMovimiento" formControlName="fechaMovimiento" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                    <div *ngIf="editForm.get('fechaMovimiento').invalid && (editForm.get('fechaMovimiento').dirty || editForm.get('fechaMovimiento').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('fechaMovimiento').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('fechaMovimiento').errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.inventarioHistorico.usuarioMovimiento" for="field_usuarioMovimiento">Usuario Movimiento</label>
+                    <select class="form-control" id="field_usuarioMovimiento" name="usuarioMovimiento" formControlName="usuarioMovimientoId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.inventarioHistorico.inventario" for="field_inventario">Inventario</label>
+                    <select class="form-control" id="field_inventario" name="inventario" formControlName="inventarioId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="inventarioOption.id" *ngFor="let inventarioOption of inventarios; trackBy: trackInventarioById">{{inventarioOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

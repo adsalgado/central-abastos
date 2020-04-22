@@ -1,0 +1,9 @@
+{
+  "abastosApp": {
+    "TipoMovimiento": {
+      "null": "",
+      "ENTRADA": "ENTRADA",
+      "SALIDA": "SALIDA"
+    }
+  }
+}

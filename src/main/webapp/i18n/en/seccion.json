@@ -1,0 +1,24 @@
+{
+  "abastosApp": {
+    "seccion": {
+      "home": {
+        "title": "Seccions",
+        "createLabel": "Create a new Seccion",
+        "createOrEditLabel": "Create or edit a Seccion",
+        "notFound": "No Seccions found"
+      },
+      "created": "A new Seccion is created with identifier {{ param }}",
+      "updated": "A Seccion is updated with identifier {{ param }}",
+      "deleted": "A Seccion is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Seccion {{ id }}?"
+      },
+      "detail": {
+        "title": "Seccion"
+      },
+      "nombre": "Nombre",
+      "producto": "Producto",
+      "empresa": "Empresa"
+    }
+  }
+}

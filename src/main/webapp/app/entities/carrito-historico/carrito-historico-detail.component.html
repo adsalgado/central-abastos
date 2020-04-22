@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="carritoHistorico">
+            <h2><span jhiTranslate="abastosApp.carritoHistorico.detail.title">Carrito Historico</span> {{carritoHistorico.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="abastosApp.carritoHistorico.nombre">Nombre</span></dt>
+                <dd>
+                    <span>{{carritoHistorico.nombre}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.carritoHistorico.fechaAlta">Fecha Alta</span></dt>
+                <dd>
+                    <span>{{carritoHistorico.fechaAlta}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.carritoHistorico.cliente">Cliente</span></dt>
+                <dd>
+                    <div *ngIf="carritoHistorico.clienteId">
+                        <a [routerLink]="['/cliente', carritoHistorico.clienteId, 'view']">{{carritoHistorico.clienteId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/carrito-historico', carritoHistorico.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

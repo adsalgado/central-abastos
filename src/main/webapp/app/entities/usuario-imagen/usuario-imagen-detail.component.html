@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="usuarioImagen">
+            <h2><span jhiTranslate="abastosApp.usuarioImagen.detail.title">Usuario Imagen</span> {{usuarioImagen.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="abastosApp.usuarioImagen.fechaAlta">Fecha Alta</span></dt>
+                <dd>
+                    <span>{{usuarioImagen.fechaAlta}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.usuarioImagen.usuario">Usuario</span></dt>
+                <dd>
+                    {{usuarioImagen.usuarioId}}
+                </dd>
+                <dt><span jhiTranslate="abastosApp.usuarioImagen.adjunto">Adjunto</span></dt>
+                <dd>
+                    <div *ngIf="usuarioImagen.adjuntoId">
+                        <a [routerLink]="['/adjunto', usuarioImagen.adjuntoId, 'view']">{{usuarioImagen.adjuntoId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/usuario-imagen', usuarioImagen.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="abastosApp.pedidoDetalle.home.title">Pedido Detalles</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-pedido-detalle" [routerLink]="['/pedido-detalle/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="abastosApp.pedidoDetalle.home.createLabel">
+            Create a new Pedido Detalle
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="pedidoDetalles?.length === 0">
+        <span jhiTranslate="abastosApp.pedidoDetalle.home.notFound">No pedidoDetalles found</span>
+    </div>
+    <div class="table-responsive" *ngIf="pedidoDetalles?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="abastosApp.pedidoDetalle.cantidad">Cantidad</span></th>
+            <th><span jhiTranslate="abastosApp.pedidoDetalle.totalSinIva">Total Sin Iva</span></th>
+            <th><span jhiTranslate="abastosApp.pedidoDetalle.total">Total</span></th>
+            <th><span jhiTranslate="abastosApp.pedidoDetalle.pedido">Pedido</span></th>
+            <th><span jhiTranslate="abastosApp.pedidoDetalle.producto">Producto</span></th>
+            <th><span jhiTranslate="abastosApp.pedidoDetalle.estatus">Estatus</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let pedidoDetalle of pedidoDetalles ;trackBy: trackId">
+                <td><a [routerLink]="['/pedido-detalle', pedidoDetalle.id, 'view' ]">{{pedidoDetalle.id}}</a></td>
+                <td>{{pedidoDetalle.cantidad}}</td>
+                <td>{{pedidoDetalle.totalSinIva}}</td>
+                <td>{{pedidoDetalle.total}}</td>
+                <td>
+                    <div *ngIf="pedidoDetalle.pedidoId">
+                        <a [routerLink]="['/pedido', pedidoDetalle.pedidoId , 'view' ]" >{{pedidoDetalle.pedidoId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="pedidoDetalle.productoId">
+                        <a [routerLink]="['/producto', pedidoDetalle.productoId , 'view' ]" >{{pedidoDetalle.productoId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="pedidoDetalle.estatusId">
+                        <a [routerLink]="['/estatus', pedidoDetalle.estatusId , 'view' ]" >{{pedidoDetalle.estatusId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/pedido-detalle', pedidoDetalle.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/pedido-detalle', pedidoDetalle.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/pedido-detalle', { outlets: { popup: pedidoDetalle.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+{
+  "abastosApp": {
+    "transportistaTarifa": {
+      "home": {
+        "title": "Transportista Tarifas",
+        "createLabel": "Crear nuevo Transportista Tarifa",
+        "createOrEditLabel": "Crear o editar Transportista Tarifa",
+        "notFound": "No Transportista Tarifas found"
+      },
+      "created": "Un nuevo Transportista Tarifa ha sido creado con el identificador {{ param }}",
+      "updated": "Un Transportista Tarifa ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Transportista Tarifa ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Transportista Tarifa {{ id }}?"
+      },
+      "detail": {
+        "title": "Transportista Tarifa"
+      },
+      "rangoMinimo": "Rango Minimo",
+      "rangoMaximo": "Rango Maximo",
+      "precio": "Precio",
+      "transportista": "Transportista"
+    }
+  }
+}

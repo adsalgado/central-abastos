@@ -1,0 +1,297 @@
+
+
+entity Producto {
+	nombre String required maxlength(256)
+    descripcion String required maxlength(512)
+    caracteristicas String required maxlength(512)
+	precioSinIva BigDecimal required
+    precio BigDecimal required
+    fechaAlta Instant 
+    fechaModificacion Instant
+}
+
+entity UnidadMedida {
+	nombre String required maxlength(56)
+    descripcion String maxlength(256)
+}
+
+entity TipoArticulo {
+	nombre String required maxlength(128)
+}
+
+entity Categoria {
+	nombre String required maxlength(128)
+}
+
+entity Seccion {
+	nombre String required maxlength(128)
+}
+
+entity Estatus {
+	tipoEstatus TipoEstatus
+	nombre String required maxlength(128)
+}
+
+enum TipoEstatus {
+    ESTATUS_PRODUCTO, ESTATUS_CLIENTE, ESTATUS_PROVEEDOR, ESTATUS_PEDIDO, ESTATUS_DETALLE_PEDIDO
+}
+
+entity Adjunto {
+	contentType String maxlength(128)
+    size Long
+    fileName String maxlength(128)
+    file ImageBlob
+}
+
+relationship OneToMany {
+	Proveedor{producto} to Producto{proveedor}
+    TipoArticulo{producto} to Producto{tipoArticulo}
+  	Categoria{producto} to Producto{categoria}
+  	Seccion{producto} to Producto{seccion}
+  	Estatus{producto} to Producto{estatus}
+  	UnidadMedida{producto} to Producto{unidadMedida}
+}
+
+relationship OneToOne {
+	Producto{adjunto} to Adjunto
+}
+
+
+entity Proveedor {
+	nombre String required maxlength(256)
+    fechaAlta Instant 
+    fechaModificacion Instant
+}
+
+entity OfertaProveedor {
+	fechaInicio LocalDate
+    fechaFin LocalDate
+}
+
+entity TipoOferta {
+    nombre String required maxlength(128)
+    descripcion String maxlength(256)
+}
+
+relationship OneToMany {
+	Proveedor{ofertaProveedor} to OfertaProveedor{proveedor}
+	Producto{ofertaProveedor} to OfertaProveedor{producto}
+	Estatus{ofertaProveedor} to OfertaProveedor{estatus}
+	TipoOferta{ofertaProveedor} to OfertaProveedor{tipoOferta}
+}
+
+entity Cliente {
+    nombre String required maxlength(128)
+    apellidoPaterno String required maxlength(128)
+	email String required maxlength(128)
+	telefono String required maxlength(10)
+    fechaAlta Instant 
+    fechaModificacion Instant
+}
+
+entity Tarjeta {
+	numeroTarjeta String required maxlength(20)
+    fechaCaducidad String required maxlength(10)
+	numeroSeguridad String required maxlength(3)
+    fechaAlta LocalDate required
+}
+
+entity Direccion {
+	direccion String required maxlength(256)
+    colonia String maxlength(100)
+    codigoPostal String maxlength(5)
+	geolocalizacion String maxlength(128)
+}
+
+relationship OneToMany {
+	Estatus{cliente} to Cliente{estatus}
+	Cliente{tarjeta} to Tarjeta{cliente}
+	Cliente{direccion} to Direccion{cliente}
+}
+
+entity CarritoCompra {
+	cantidad BigDecimal required 
+	precio BigDecimal  
+}
+
+entity CarritoHistorico {
+	nombre String required maxlength(128)
+	fechaAlta LocalDate required
+}
+entity CarritoHistoricoDetalle {
+	cantidad BigDecimal required 
+	precio BigDecimal  
+}
+
+relationship OneToMany {
+	Cliente{carritoCompra} to CarritoCompra{cliente} 
+	Producto{carritoCompra} to CarritoCompra{producto} 
+    
+	Cliente{CarritoHistorico} to CarritoHistorico{cliente} 
+	Producto{CarritoCompraDetalle} to CarritoHistoricoDetalle{producto}
+	CarritoHistorico{carritoHistoricoDetalle} to CarritoHistoricoDetalle{carritoHistorico}
+}
+
+
+entity Pedido {
+	totalSinIva BigDecimal  
+	comisionTransportista BigDecimal  
+	comisionPreparador BigDecimal  
+	total BigDecimal  
+	fechaPedido LocalDate
+	fechaPreparacion LocalDate
+	fechaCobro LocalDate
+	fechaEntrega LocalDate
+}
+
+entity PedidoDetalle {
+	cantidad BigDecimal  
+	totalSinIva BigDecimal  
+	total BigDecimal  
+}
+
+entity HistoricoPedido {
+	fechaEstatus LocalDate
+}
+
+relationship OneToMany {
+	Cliente{pedido} to Pedido{cliente}
+	Estatus{pedido} to Pedido{estatus}
+	Pedido{pedidoDetalle} to PedidoDetalle{pedido}
+    Producto{pedidoDetalle} to PedidoDetalle{producto}
+	Estatus{pedidoDetalle} to PedidoDetalle{estatus}
+	Pedido{historicoPedido} to HistoricoPedido{pedido}
+}
+
+entity Transportista {
+	nombre String required maxlength(128)
+    fechaAlta Instant 
+    fechaModificacion Instant
+}
+
+entity TransportistaTarifa {
+	rangoMinimo BigDecimal required 
+    rangoMaximo BigDecimal required 
+    precio BigDecimal required 
+}
+
+relationship OneToMany {
+	Transportista{pedido} to Pedido{transportista}
+    Transportista{transportistaTarifa} to TransportistaTarifa{transportista}
+    
+}
+
+entity Recolector {
+	nombre String required maxlength(128)
+    fechaAlta Instant 
+    fechaModificacion Instant
+}
+
+entity RecolectorTarifa {
+	rangoMinimo BigDecimal required 
+    rangoMaximo BigDecimal required 
+    precio BigDecimal required 
+}
+
+relationship OneToMany {
+	Recolector{pedido} to Pedido{recolector}
+    Recolector{recolectorTarifa} to RecolectorTarifa{recolector}  
+}
+
+entity Chat{
+	mensaje String required maxlength(512)
+    fecha Instant required
+}
+
+entity Inventario {
+	total BigDecimal required
+}
+
+entity InventarioHistorico {
+	tipoMovimiento TipoMovimiento required
+    cantidad BigDecimal required
+    totalAnterior BigDecimal required
+    totalFinal BigDecimal required
+    fechaMovimiento Instant required
+}
+
+enum TipoMovimiento {
+	ENTRADA, SALIDA
+}
+
+relationship OneToMany {
+	Proveedor{inventario} to Inventario{proveedor}
+	Producto{inventario} to Inventario{producto}
+	Inventario{inventarioHistorico} to InventarioHistorico{inventario}
+	Adjunto{chat} to Chat{adjunto}
+}
+
+entity Notificacion {}
+
+entity Pagos {}
+
+entity Queja {}
+
+entity ProductoImagen {
+    fechaAlta Instant 
+}
+
+entity UsuarioImagen {
+ 	fechaAlta Instant
+}
+
+
+relationship OneToMany {
+	Producto to ProductoImagen{producto}
+	Adjunto to ProductoImagen{adjunto}
+	Adjunto{usuarioImagen} to UsuarioImagen{adjunto}
+}
+
+relationship OneToOne {
+	InventarioHistorico{usuarioMovimiento} to User{inventarioHistorico}
+	Producto{usuarioAlta} to User{producto}
+	Producto{usuarioModificacion} to User{producto}
+	Proveedor{usuarioAlta} to User{proveedor}
+	Proveedor{usuarioModificacion} to User{proveedor}
+	Cliente{usuarioAlta} to User{cliente}
+	Cliente{usuarioModificacion} to User{cliente}
+	Transportista{usuarioAlta} to User{transportista}
+	Transportista{usuarioModificacion} to User{transportista}
+	Recolector{usuarioAlta} to User{recolector}
+	Recolector{usuarioModificacion} to User{recolector}
+	Chat{usuarioFuente} to User{chat}
+	Chat{usuarioDestino} to User{chat}
+	ProductoImagen{usuarioAlta} to User{productoImagen}
+	UsuarioImagen{usuario} to User{usuarioImagen}
+}
+
+entity ParametrosAplicacion {
+    clave String required maxlength(128)
+    descripcion String maxlength(256)
+    descripcion String maxlength(256)
+    descripcion String maxlength(256)
+}
+
+relationship OneToMany {
+	Adjunto{parametrosAplicacion} to ParametrosAplicacion{adjunto}
+}
+
+entity Empresa {
+	nombre String required maxlength(256)
+}
+
+relationship OneToMany {
+	Empresa to Cliente{empresa}
+	Empresa to Proveedor{empresa}
+	Empresa to Recolector{empresa}
+	Empresa to Transportista{empresa}
+	Empresa to Producto{empresa}
+	Empresa to Categoria{empresa}
+	Empresa to Seccion{empresa}
+}
+
+
+dto * with mapstruct
+service * with serviceImpl
+
+

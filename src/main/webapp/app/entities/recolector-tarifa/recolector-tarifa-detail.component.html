@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="recolectorTarifa">
+            <h2><span jhiTranslate="abastosApp.recolectorTarifa.detail.title">Recolector Tarifa</span> {{recolectorTarifa.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="abastosApp.recolectorTarifa.rangoMinimo">Rango Minimo</span></dt>
+                <dd>
+                    <span>{{recolectorTarifa.rangoMinimo}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.recolectorTarifa.rangoMaximo">Rango Maximo</span></dt>
+                <dd>
+                    <span>{{recolectorTarifa.rangoMaximo}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.recolectorTarifa.precio">Precio</span></dt>
+                <dd>
+                    <span>{{recolectorTarifa.precio}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.recolectorTarifa.recolector">Recolector</span></dt>
+                <dd>
+                    <div *ngIf="recolectorTarifa.recolectorId">
+                        <a [routerLink]="['/recolector', recolectorTarifa.recolectorId, 'view']">{{recolectorTarifa.recolectorId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/recolector-tarifa', recolectorTarifa.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

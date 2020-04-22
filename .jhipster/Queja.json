@@ -1,0 +1,14 @@
+{
+    "name": "Queja",
+    "fields": [],
+    "relationships": [],
+    "changelogDate": "20200422152118",
+    "entityTableName": "queja",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

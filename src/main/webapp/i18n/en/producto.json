@@ -1,0 +1,44 @@
+{
+  "abastosApp": {
+    "producto": {
+      "home": {
+        "title": "Productos",
+        "createLabel": "Create a new Producto",
+        "createOrEditLabel": "Create or edit a Producto",
+        "notFound": "No Productos found"
+      },
+      "created": "A new Producto is created with identifier {{ param }}",
+      "updated": "A Producto is updated with identifier {{ param }}",
+      "deleted": "A Producto is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Producto {{ id }}?"
+      },
+      "detail": {
+        "title": "Producto"
+      },
+      "nombre": "Nombre",
+      "descripcion": "Descripcion",
+      "caracteristicas": "Caracteristicas",
+      "precioSinIva": "Precio Sin Iva",
+      "precio": "Precio",
+      "fechaAlta": "Fecha Alta",
+      "fechaModificacion": "Fecha Modificacion",
+      "adjunto": "Adjunto",
+      "usuarioAlta": "Usuario Alta",
+      "usuarioModificacion": "Usuario Modificacion",
+      "ofertaProveedor": "Oferta Proveedor",
+      "carritoCompra": "Carrito Compra",
+      "carritoCompraDetalle": "Carrito Compra Detalle",
+      "pedidoDetalle": "Pedido Detalle",
+      "inventario": "Inventario",
+      "productoImagen": "Producto Imagen",
+      "proveedor": "Proveedor",
+      "tipoArticulo": "Tipo Articulo",
+      "categoria": "Categoria",
+      "seccion": "Seccion",
+      "estatus": "Estatus",
+      "unidadMedida": "Unidad Medida",
+      "empresa": "Empresa"
+    }
+  }
+}

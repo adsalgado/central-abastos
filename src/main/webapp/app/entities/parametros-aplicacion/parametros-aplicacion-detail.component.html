@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="parametrosAplicacion">
+            <h2><span jhiTranslate="abastosApp.parametrosAplicacion.detail.title">Parametros Aplicacion</span> {{parametrosAplicacion.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="abastosApp.parametrosAplicacion.clave">Clave</span></dt>
+                <dd>
+                    <span>{{parametrosAplicacion.clave}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.parametrosAplicacion.descripcion">Descripcion</span></dt>
+                <dd>
+                    <span>{{parametrosAplicacion.descripcion}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.parametrosAplicacion.adjunto">Adjunto</span></dt>
+                <dd>
+                    <div *ngIf="parametrosAplicacion.adjuntoId">
+                        <a [routerLink]="['/adjunto', parametrosAplicacion.adjuntoId, 'view']">{{parametrosAplicacion.adjuntoId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/parametros-aplicacion', parametrosAplicacion.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="proveedor">
+            <h2><span jhiTranslate="abastosApp.proveedor.detail.title">Proveedor</span> {{proveedor.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="abastosApp.proveedor.nombre">Nombre</span></dt>
+                <dd>
+                    <span>{{proveedor.nombre}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.proveedor.fechaAlta">Fecha Alta</span></dt>
+                <dd>
+                    <span>{{proveedor.fechaAlta}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.proveedor.fechaModificacion">Fecha Modificacion</span></dt>
+                <dd>
+                    <span>{{proveedor.fechaModificacion}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.proveedor.usuarioAlta">Usuario Alta</span></dt>
+                <dd>
+                    {{proveedor.usuarioAltaId}}
+                </dd>
+                <dt><span jhiTranslate="abastosApp.proveedor.usuarioModificacion">Usuario Modificacion</span></dt>
+                <dd>
+                    {{proveedor.usuarioModificacionId}}
+                </dd>
+                <dt><span jhiTranslate="abastosApp.proveedor.empresa">Empresa</span></dt>
+                <dd>
+                    <div *ngIf="proveedor.empresaId">
+                        <a [routerLink]="['/empresa', proveedor.empresaId, 'view']">{{proveedor.empresaId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/proveedor', proveedor.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

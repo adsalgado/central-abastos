@@ -1,0 +1,53 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="inventarioHistorico">
+            <h2><span jhiTranslate="abastosApp.inventarioHistorico.detail.title">Inventario Historico</span> {{inventarioHistorico.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="abastosApp.inventarioHistorico.tipoMovimiento">Tipo Movimiento</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'abastosApp.TipoMovimiento.' + inventarioHistorico.tipoMovimiento}}">{{inventarioHistorico.tipoMovimiento}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.inventarioHistorico.cantidad">Cantidad</span></dt>
+                <dd>
+                    <span>{{inventarioHistorico.cantidad}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.inventarioHistorico.totalAnterior">Total Anterior</span></dt>
+                <dd>
+                    <span>{{inventarioHistorico.totalAnterior}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.inventarioHistorico.totalFinal">Total Final</span></dt>
+                <dd>
+                    <span>{{inventarioHistorico.totalFinal}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.inventarioHistorico.fechaMovimiento">Fecha Movimiento</span></dt>
+                <dd>
+                    <span>{{inventarioHistorico.fechaMovimiento}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.inventarioHistorico.usuarioMovimiento">Usuario Movimiento</span></dt>
+                <dd>
+                    {{inventarioHistorico.usuarioMovimientoId}}
+                </dd>
+                <dt><span jhiTranslate="abastosApp.inventarioHistorico.inventario">Inventario</span></dt>
+                <dd>
+                    <div *ngIf="inventarioHistorico.inventarioId">
+                        <a [routerLink]="['/inventario', inventarioHistorico.inventarioId, 'view']">{{inventarioHistorico.inventarioId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/inventario-historico', inventarioHistorico.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

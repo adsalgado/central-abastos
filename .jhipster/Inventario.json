@@ -1,0 +1,43 @@
+{
+    "name": "Inventario",
+    "fields": [
+        {
+            "fieldName": "total",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "inventarioHistorico",
+            "otherEntityRelationshipName": "inventario",
+            "relationshipName": "inventarioHistorico"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "proveedor",
+            "otherEntityRelationshipName": "inventario",
+            "relationshipName": "proveedor",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "producto",
+            "otherEntityRelationshipName": "inventario",
+            "relationshipName": "producto",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200422152114",
+    "entityTableName": "inventario",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

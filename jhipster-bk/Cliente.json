@@ -1,0 +1,120 @@
+{
+    "name": "Cliente",
+    "fields": [
+        {
+            "fieldName": "nombre",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "apellidoPaterno",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "telefono",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 10
+        },
+        {
+            "fieldName": "fechaAlta",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "fechaModificacion",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "cliente",
+            "relationshipName": "usuarioAlta",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "cliente",
+            "relationshipName": "usuarioModificacion",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "tarjeta",
+            "otherEntityRelationshipName": "cliente",
+            "relationshipName": "tarjeta"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "direccion",
+            "otherEntityRelationshipName": "cliente",
+            "relationshipName": "direccion"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "carritoCompra",
+            "otherEntityRelationshipName": "cliente",
+            "relationshipName": "carritoCompra"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "carritoHistorico",
+            "otherEntityRelationshipName": "cliente",
+            "relationshipName": "carritoHistorico"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "pedido",
+            "otherEntityRelationshipName": "cliente",
+            "relationshipName": "pedido"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "estatus",
+            "otherEntityRelationshipName": "cliente",
+            "relationshipName": "estatus",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "empresa",
+            "otherEntityRelationshipName": "cliente",
+            "relationshipName": "empresa",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200422031229",
+    "entityTableName": "cliente",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

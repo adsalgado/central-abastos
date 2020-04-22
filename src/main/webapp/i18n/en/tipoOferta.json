@@ -1,0 +1,24 @@
+{
+  "abastosApp": {
+    "tipoOferta": {
+      "home": {
+        "title": "Tipo Ofertas",
+        "createLabel": "Create a new Tipo Oferta",
+        "createOrEditLabel": "Create or edit a Tipo Oferta",
+        "notFound": "No Tipo Ofertas found"
+      },
+      "created": "A new Tipo Oferta is created with identifier {{ param }}",
+      "updated": "A Tipo Oferta is updated with identifier {{ param }}",
+      "deleted": "A Tipo Oferta is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Tipo Oferta {{ id }}?"
+      },
+      "detail": {
+        "title": "Tipo Oferta"
+      },
+      "nombre": "Nombre",
+      "descripcion": "Descripcion",
+      "ofertaProveedor": "Oferta Proveedor"
+    }
+  }
+}

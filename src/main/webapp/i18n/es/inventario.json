@@ -1,0 +1,25 @@
+{
+  "abastosApp": {
+    "inventario": {
+      "home": {
+        "title": "Inventarios",
+        "createLabel": "Crear nuevo Inventario",
+        "createOrEditLabel": "Crear o editar Inventario",
+        "notFound": "No Inventarios found"
+      },
+      "created": "Un nuevo Inventario ha sido creado con el identificador {{ param }}",
+      "updated": "Un Inventario ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Inventario ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Inventario {{ id }}?"
+      },
+      "detail": {
+        "title": "Inventario"
+      },
+      "total": "Total",
+      "inventarioHistorico": "Inventario Historico",
+      "proveedor": "Proveedor",
+      "producto": "Producto"
+    }
+  }
+}

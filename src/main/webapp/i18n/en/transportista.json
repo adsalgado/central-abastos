@@ -1,0 +1,29 @@
+{
+  "abastosApp": {
+    "transportista": {
+      "home": {
+        "title": "Transportistas",
+        "createLabel": "Create a new Transportista",
+        "createOrEditLabel": "Create or edit a Transportista",
+        "notFound": "No Transportistas found"
+      },
+      "created": "A new Transportista is created with identifier {{ param }}",
+      "updated": "A Transportista is updated with identifier {{ param }}",
+      "deleted": "A Transportista is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Transportista {{ id }}?"
+      },
+      "detail": {
+        "title": "Transportista"
+      },
+      "nombre": "Nombre",
+      "fechaAlta": "Fecha Alta",
+      "fechaModificacion": "Fecha Modificacion",
+      "usuarioAlta": "Usuario Alta",
+      "usuarioModificacion": "Usuario Modificacion",
+      "pedido": "Pedido",
+      "transportistaTarifa": "Transportista Tarifa",
+      "empresa": "Empresa"
+    }
+  }
+}

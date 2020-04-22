@@ -1,0 +1,24 @@
+{
+  "abastosApp": {
+    "parametrosAplicacion": {
+      "home": {
+        "title": "Parametros Aplicacions",
+        "createLabel": "Crear nuevo Parametros Aplicacion",
+        "createOrEditLabel": "Crear o editar Parametros Aplicacion",
+        "notFound": "No Parametros Aplicacions found"
+      },
+      "created": "Un nuevo Parametros Aplicacion ha sido creado con el identificador {{ param }}",
+      "updated": "Un Parametros Aplicacion ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Parametros Aplicacion ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Parametros Aplicacion {{ id }}?"
+      },
+      "detail": {
+        "title": "Parametros Aplicacion"
+      },
+      "clave": "Clave",
+      "descripcion": "Descripcion",
+      "adjunto": "Adjunto"
+    }
+  }
+}

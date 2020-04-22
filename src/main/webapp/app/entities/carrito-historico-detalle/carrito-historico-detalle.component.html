@@ -1,0 +1,71 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="abastosApp.carritoHistoricoDetalle.home.title">Carrito Historico Detalles</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-carrito-historico-detalle" [routerLink]="['/carrito-historico-detalle/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="abastosApp.carritoHistoricoDetalle.home.createLabel">
+            Create a new Carrito Historico Detalle
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="carritoHistoricoDetalles?.length === 0">
+        <span jhiTranslate="abastosApp.carritoHistoricoDetalle.home.notFound">No carritoHistoricoDetalles found</span>
+    </div>
+    <div class="table-responsive" *ngIf="carritoHistoricoDetalles?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="abastosApp.carritoHistoricoDetalle.cantidad">Cantidad</span></th>
+            <th><span jhiTranslate="abastosApp.carritoHistoricoDetalle.precio">Precio</span></th>
+            <th><span jhiTranslate="abastosApp.carritoHistoricoDetalle.producto">Producto</span></th>
+            <th><span jhiTranslate="abastosApp.carritoHistoricoDetalle.carritoHistorico">Carrito Historico</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let carritoHistoricoDetalle of carritoHistoricoDetalles ;trackBy: trackId">
+                <td><a [routerLink]="['/carrito-historico-detalle', carritoHistoricoDetalle.id, 'view' ]">{{carritoHistoricoDetalle.id}}</a></td>
+                <td>{{carritoHistoricoDetalle.cantidad}}</td>
+                <td>{{carritoHistoricoDetalle.precio}}</td>
+                <td>
+                    <div *ngIf="carritoHistoricoDetalle.productoId">
+                        <a [routerLink]="['/producto', carritoHistoricoDetalle.productoId , 'view' ]" >{{carritoHistoricoDetalle.productoId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="carritoHistoricoDetalle.carritoHistoricoId">
+                        <a [routerLink]="['/carrito-historico', carritoHistoricoDetalle.carritoHistoricoId , 'view' ]" >{{carritoHistoricoDetalle.carritoHistoricoId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/carrito-historico-detalle', carritoHistoricoDetalle.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/carrito-historico-detalle', carritoHistoricoDetalle.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/carrito-historico-detalle', { outlets: { popup: carritoHistoricoDetalle.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

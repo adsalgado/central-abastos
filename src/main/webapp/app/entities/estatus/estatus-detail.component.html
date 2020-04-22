@@ -1,0 +1,31 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="estatus">
+            <h2><span jhiTranslate="abastosApp.estatus.detail.title">Estatus</span> {{estatus.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="abastosApp.estatus.tipoEstatus">Tipo Estatus</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'abastosApp.TipoEstatus.' + estatus.tipoEstatus}}">{{estatus.tipoEstatus}}</span>
+                </dd>
+                <dt><span jhiTranslate="abastosApp.estatus.nombre">Nombre</span></dt>
+                <dd>
+                    <span>{{estatus.nombre}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/estatus', estatus.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity HistoricoPedido.
+    -->
+    <changeSet id="20200422031237-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="pedido_id"
+                                 baseTableName="historico_pedido"
+                                 constraintName="fk_historico_pedido_pedido_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="pedido"/>
+
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,68 @@
+{
+    "name": "Recolector",
+    "fields": [
+        {
+            "fieldName": "nombre",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "fechaAlta",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "fechaModificacion",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "recolector",
+            "relationshipName": "usuarioAlta",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "recolector",
+            "relationshipName": "usuarioModificacion",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "pedido",
+            "otherEntityRelationshipName": "recolector",
+            "relationshipName": "pedido"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "recolectorTarifa",
+            "otherEntityRelationshipName": "recolector",
+            "relationshipName": "recolectorTarifa"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "empresa",
+            "otherEntityRelationshipName": "recolector",
+            "relationshipName": "empresa",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200422152111",
+    "entityTableName": "recolector",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

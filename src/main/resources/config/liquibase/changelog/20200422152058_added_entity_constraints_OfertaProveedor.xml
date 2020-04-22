@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity OfertaProveedor.
+    -->
+    <changeSet id="20200422152058-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="proveedor_id"
+                                 baseTableName="oferta_proveedor"
+                                 constraintName="fk_oferta_proveedor_proveedor_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="proveedor"/>
+
+        <addForeignKeyConstraint baseColumnNames="producto_id"
+                                 baseTableName="oferta_proveedor"
+                                 constraintName="fk_oferta_proveedor_producto_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="producto"/>
+
+        <addForeignKeyConstraint baseColumnNames="estatus_id"
+                                 baseTableName="oferta_proveedor"
+                                 constraintName="fk_oferta_proveedor_estatus_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="estatus"/>
+
+        <addForeignKeyConstraint baseColumnNames="tipo_oferta_id"
+                                 baseTableName="oferta_proveedor"
+                                 constraintName="fk_oferta_proveedor_tipo_oferta_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tipo_oferta"/>
+
+    </changeSet>
+</databaseChangeLog>
