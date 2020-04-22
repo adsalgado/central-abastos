@@ -34,7 +34,6 @@ public class ProductoDTO implements Serializable {
 
     private Instant fechaModificacion;
 
-
     private Long adjuntoId;
 
     private Long usuarioAltaId;
@@ -54,6 +53,20 @@ public class ProductoDTO implements Serializable {
     private Long unidadMedidaId;
 
     private Long empresaId;
+
+    private ProveedorDTO proveedor;
+
+    private TipoArticuloDTO tipoArticulo;
+
+    private CategoriaDTO categoria;
+
+    private SeccionDTO seccion;
+
+    private EstatusDTO estatus;
+
+    private UnidadMedidaDTO unidadMedida;
+
+    private EmpresaDTO empresa;
 
     public Long getId() {
         return id;
@@ -199,7 +212,63 @@ public class ProductoDTO implements Serializable {
         this.empresaId = empresaId;
     }
 
-    @Override
+    public ProveedorDTO getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(ProveedorDTO proveedor) {
+		this.proveedor = proveedor;
+	}
+
+	public TipoArticuloDTO getTipoArticulo() {
+		return tipoArticulo;
+	}
+
+	public void setTipoArticulo(TipoArticuloDTO tipoArticulo) {
+		this.tipoArticulo = tipoArticulo;
+	}
+
+	public CategoriaDTO getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(CategoriaDTO categoria) {
+		this.categoria = categoria;
+	}
+
+	public SeccionDTO getSeccion() {
+		return seccion;
+	}
+
+	public void setSeccion(SeccionDTO seccion) {
+		this.seccion = seccion;
+	}
+
+	public EstatusDTO getEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(EstatusDTO estatus) {
+		this.estatus = estatus;
+	}
+
+	public UnidadMedidaDTO getUnidadMedida() {
+		return unidadMedida;
+	}
+
+	public void setUnidadMedida(UnidadMedidaDTO unidadMedida) {
+		this.unidadMedida = unidadMedida;
+	}
+
+	public EmpresaDTO getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(EmpresaDTO empresa) {
+		this.empresa = empresa;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
