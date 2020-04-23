@@ -19,6 +19,14 @@ public interface CarritoHistoricoDetalleService {
     CarritoHistoricoDetalleDTO save(CarritoHistoricoDetalleDTO carritoHistoricoDetalleDTO);
 
     /**
+     * Save a carritoHistoricoDetalle list.
+     *
+     * @param lstCarritoHistoricoDetalleDTO list entity to save.
+     * @return the persisted entity list.
+     */
+    List<CarritoHistoricoDetalleDTO> saveAll(List<CarritoHistoricoDetalleDTO> lstCarritoHistoricoDetalleDTO);
+
+    /**
      * Get all the carritoHistoricoDetalles.
      *
      * @return the list of entities.

@@ -28,12 +28,20 @@ public class CarritoHistoricoDetalle implements Serializable {
     private BigDecimal precio;
 
     @ManyToOne
+    @JoinColumn(name = "producto_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("carritoCompraDetalles")
     private Producto producto;
+    
+    @Column(name = "producto_id")
+    private Long productoId;
 
     @ManyToOne
+    @JoinColumn(name = "carrito_historico_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("carritoHistoricoDetalles")
     private CarritoHistorico carritoHistorico;
+
+    @Column(name = "carrito_historico_id")
+    private Long carritoHistoricoId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -95,9 +103,27 @@ public class CarritoHistoricoDetalle implements Serializable {
     public void setCarritoHistorico(CarritoHistorico carritoHistorico) {
         this.carritoHistorico = carritoHistorico;
     }
+    
+    
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
-    @Override
+    public Long getProductoId() {
+		return productoId;
+	}
+
+	public void setProductoId(Long productoId) {
+		this.productoId = productoId;
+	}
+
+	public Long getCarritoHistoricoId() {
+		return carritoHistoricoId;
+	}
+
+	public void setCarritoHistoricoId(Long carritoHistoricoId) {
+		this.carritoHistoricoId = carritoHistoricoId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

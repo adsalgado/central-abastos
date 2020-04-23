@@ -1,8 +1,11 @@
 package mx.com.sharkit.service.dto;
-import java.time.LocalDate;
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.CarritoHistorico} entity.
@@ -15,9 +18,7 @@ public class CarritoHistoricoDTO implements Serializable {
     @Size(max = 128)
     private String nombre;
 
-    @NotNull
-    private LocalDate fechaAlta;
-
+    private LocalDateTime fechaAlta;
 
     private Long clienteId;
 
@@ -37,11 +38,11 @@ public class CarritoHistoricoDTO implements Serializable {
         this.nombre = nombre;
     }
 
-    public LocalDate getFechaAlta() {
+    public LocalDateTime getFechaAlta() {
         return fechaAlta;
     }
 
-    public void setFechaAlta(LocalDate fechaAlta) {
+    public void setFechaAlta(LocalDateTime fechaAlta) {
         this.fechaAlta = fechaAlta;
     }
 

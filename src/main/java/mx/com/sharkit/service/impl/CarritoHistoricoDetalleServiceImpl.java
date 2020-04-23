@@ -87,4 +87,18 @@ public class CarritoHistoricoDetalleServiceImpl implements CarritoHistoricoDetal
         log.debug("Request to delete CarritoHistoricoDetalle : {}", id);
         carritoHistoricoDetalleRepository.deleteById(id);
     }
+
+	@Override
+	public List<CarritoHistoricoDetalleDTO> saveAll(List<CarritoHistoricoDetalleDTO> lstCarritoHistoricoDetalleDTO) {
+        
+		List<CarritoHistoricoDetalle> lstCarrito = lstCarritoHistoricoDetalleDTO.stream()
+				.map(dto -> carritoHistoricoDetalleMapper.toEntity(dto))
+				.collect(Collectors.toList());
+		
+		return carritoHistoricoDetalleRepository.saveAll(lstCarrito).stream()
+	            .map(carritoHistoricoDetalleMapper::toDto)
+	            .collect(Collectors.toCollection(LinkedList::new));
+		
+	}
+	
 }

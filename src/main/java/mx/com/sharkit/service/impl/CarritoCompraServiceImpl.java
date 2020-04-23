@@ -106,5 +106,11 @@ public class CarritoCompraServiceImpl implements CarritoCompraService {
 		log.debug("Request to delete CarritoCompra : {}, {}", clienteId, productoId);
         carritoCompraRepository.deleteByClienteIdAndProductoId(clienteId, productoId);
 	}
+
+	@Override
+	public void deleteByClienteId(Long clienteId) {
+		log.debug("Request to delete CarritoCompra : {}, {}", clienteId);
+        carritoCompraRepository.deleteByClienteId(clienteId);
+	}
 	
 }

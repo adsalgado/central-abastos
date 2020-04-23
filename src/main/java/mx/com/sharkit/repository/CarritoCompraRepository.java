@@ -27,4 +27,9 @@ public interface CarritoCompraRepository extends JpaRepository<CarritoCompra, Lo
 	@Query("delete from CarritoCompra cc where cc.clienteId = ?1 and cc.productoId = ?2")
 	void deleteByClienteIdAndProductoId(Long clienteId, Long productoId);
 
+	@Modifying
+	@Transactional
+	@Query("delete from CarritoCompra cc where cc.clienteId = ?1")
+	void deleteByClienteId(Long clienteId);
+	
 }

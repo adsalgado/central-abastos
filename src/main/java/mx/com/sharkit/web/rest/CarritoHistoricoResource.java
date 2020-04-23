@@ -1,23 +1,38 @@
 package mx.com.sharkit.web.rest;
 
-import mx.com.sharkit.service.CarritoHistoricoService;
-import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
-import mx.com.sharkit.service.dto.CarritoHistoricoDTO;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import mx.com.sharkit.domain.User;
+import mx.com.sharkit.service.CarritoCompraService;
+import mx.com.sharkit.service.CarritoHistoricoDetalleService;
+import mx.com.sharkit.service.CarritoHistoricoService;
+import mx.com.sharkit.service.UserService;
+import mx.com.sharkit.service.dto.CarritoCompraDTO;
+import mx.com.sharkit.service.dto.CarritoHistoricoDTO;
+import mx.com.sharkit.service.dto.CarritoHistoricoDetalleDTO;
+import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 
 /**
  * REST controller for managing {@link mx.com.sharkit.domain.CarritoHistorico}.
@@ -34,9 +49,18 @@ public class CarritoHistoricoResource {
     private String applicationName;
 
     private final CarritoHistoricoService carritoHistoricoService;
+    
+	private final CarritoHistoricoDetalleService carritoHistoricoDetalleService;
+    
+    private final CarritoCompraService carritoCompraService;
 
-    public CarritoHistoricoResource(CarritoHistoricoService carritoHistoricoService) {
+	private final UserService userService;
+
+    public CarritoHistoricoResource(CarritoHistoricoService carritoHistoricoService, CarritoCompraService carritoCompraService, CarritoHistoricoDetalleService carritoHistoricoDetalleService, UserService userService) {
         this.carritoHistoricoService = carritoHistoricoService;
+        this.carritoCompraService = carritoCompraService;
+        this.carritoHistoricoDetalleService = carritoHistoricoDetalleService;
+        this.userService = userService;
     }
 
     /**
@@ -52,7 +76,35 @@ public class CarritoHistoricoResource {
         if (carritoHistoricoDTO.getId() != null) {
             throw new BadRequestAlertException("A new carritoHistorico cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        
+        Optional<User> user = userService.getUserWithAuthorities();
+        Long clienteId =  user.isPresent() ? user.get().getId() : 0L;
+        if (clienteId == 0) {
+            throw new BadRequestAlertException("El cliente es requerido.", ENTITY_NAME, "idexists");
+        }
+        
+        List<CarritoCompraDTO> lstCarrito = carritoCompraService.findAllByClienteId(clienteId);
+        if (lstCarrito.isEmpty()) {
+            throw new BadRequestAlertException("No existen productos en el carrito.", ENTITY_NAME, "idexists");
+        }
+
+        carritoHistoricoDTO.setFechaAlta(LocalDateTime.now());
+        carritoHistoricoDTO.setClienteId(clienteId);
         CarritoHistoricoDTO result = carritoHistoricoService.save(carritoHistoricoDTO);
+        
+        List<CarritoHistoricoDetalleDTO> lstHist = lstCarrito.stream().map(ch -> {
+        	CarritoHistoricoDetalleDTO dto = new CarritoHistoricoDetalleDTO();
+        	dto.setCantidad(ch.getCantidad());
+        	dto.setPrecio(ch.getPrecio());
+        	dto.setCarritoHistoricoId(result.getId());
+        		return dto;
+        }).collect(Collectors.toList());
+        
+        carritoHistoricoDetalleService.saveAll(lstHist);
+        
+        // Borrar el carrito
+//        carritoCompraService.deleteByClienteId(clienteId);
+        
         return ResponseEntity.created(new URI("/api/carrito-historicos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);

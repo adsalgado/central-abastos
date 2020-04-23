@@ -25,7 +25,6 @@ public interface CarritoCompraService {
      */
     List<CarritoCompraDTO> findAll();
 
-
     /**
      * Get the "id" carritoCompra.
      *
@@ -54,4 +53,11 @@ public interface CarritoCompraService {
      * @param id the id of the entity.
      */
     void deleteByClienteIdAnProductoId(Long clienteId, Long productoId);
+    
+    /**
+     * Delete the carritoCompra by clienteId.
+     *
+     * @param id the id of the entity.
+     */
+    void deleteByClienteId(Long clienteId);
 }

@@ -1,12 +1,22 @@
 package mx.com.sharkit.web.rest;
 
-import mx.com.sharkit.AbastosApp;
-import mx.com.sharkit.domain.CarritoHistorico;
-import mx.com.sharkit.repository.CarritoHistoricoRepository;
-import mx.com.sharkit.service.CarritoHistoricoService;
-import mx.com.sharkit.service.dto.CarritoHistoricoDTO;
-import mx.com.sharkit.service.mapper.CarritoHistoricoMapper;
-import mx.com.sharkit.web.rest.errors.ExceptionTranslator;
+import static mx.com.sharkit.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,16 +31,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
-import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.List;
-
-import static mx.com.sharkit.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import mx.com.sharkit.AbastosApp;
+import mx.com.sharkit.domain.CarritoHistorico;
+import mx.com.sharkit.repository.CarritoHistoricoRepository;
+import mx.com.sharkit.service.CarritoCompraService;
+import mx.com.sharkit.service.CarritoHistoricoDetalleService;
+import mx.com.sharkit.service.CarritoHistoricoService;
+import mx.com.sharkit.service.UserService;
+import mx.com.sharkit.service.dto.CarritoHistoricoDTO;
+import mx.com.sharkit.service.mapper.CarritoHistoricoMapper;
+import mx.com.sharkit.web.rest.errors.ExceptionTranslator;
 
 /**
  * Integration tests for the {@link CarritoHistoricoResource} REST controller.
@@ -53,6 +63,15 @@ public class CarritoHistoricoResourceIT {
 
     @Autowired
     private CarritoHistoricoService carritoHistoricoService;
+    
+    @Autowired
+	private CarritoHistoricoDetalleService carritoHistoricoDetalleService;
+    
+    @Autowired
+    private CarritoCompraService carritoCompraService;
+
+    @Autowired
+	private UserService userService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -76,7 +95,7 @@ public class CarritoHistoricoResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final CarritoHistoricoResource carritoHistoricoResource = new CarritoHistoricoResource(carritoHistoricoService);
+        final CarritoHistoricoResource carritoHistoricoResource = new CarritoHistoricoResource(carritoHistoricoService, carritoCompraService, carritoHistoricoDetalleService, userService);
         this.restCarritoHistoricoMockMvc = MockMvcBuilders.standaloneSetup(carritoHistoricoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -94,7 +113,7 @@ public class CarritoHistoricoResourceIT {
     public static CarritoHistorico createEntity(EntityManager em) {
         CarritoHistorico carritoHistorico = new CarritoHistorico()
             .nombre(DEFAULT_NOMBRE)
-            .fechaAlta(DEFAULT_FECHA_ALTA);
+            .fechaAlta(LocalDateTime.now());
         return carritoHistorico;
     }
     /**
@@ -106,7 +125,7 @@ public class CarritoHistoricoResourceIT {
     public static CarritoHistorico createUpdatedEntity(EntityManager em) {
         CarritoHistorico carritoHistorico = new CarritoHistorico()
             .nombre(UPDATED_NOMBRE)
-            .fechaAlta(UPDATED_FECHA_ALTA);
+            .fechaAlta(LocalDateTime.now());
         return carritoHistorico;
     }
 
@@ -246,7 +265,7 @@ public class CarritoHistoricoResourceIT {
         em.detach(updatedCarritoHistorico);
         updatedCarritoHistorico
             .nombre(UPDATED_NOMBRE)
-            .fechaAlta(UPDATED_FECHA_ALTA);
+            .fechaAlta(LocalDateTime.now());
         CarritoHistoricoDTO carritoHistoricoDTO = carritoHistoricoMapper.toDto(updatedCarritoHistorico);
 
         restCarritoHistoricoMockMvc.perform(put("/api/carrito-historicos")

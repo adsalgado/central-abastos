@@ -1,13 +1,23 @@
 package mx.com.sharkit.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A CarritoHistorico.
@@ -27,16 +37,20 @@ public class CarritoHistorico implements Serializable {
     @Column(name = "nombre", length = 128, nullable = false)
     private String nombre;
 
-    @NotNull
     @Column(name = "fecha_alta", nullable = false)
-    private LocalDate fechaAlta;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+    private LocalDateTime fechaAlta;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", insertable = false, updatable = false)
+    @JsonIgnoreProperties("carritoHistoricos")
+    private Cliente cliente;
+    
+    @Column(name = "cliente_id")
+    private Long clienteId;
 
     @OneToMany(mappedBy = "carritoHistorico")
     private Set<CarritoHistoricoDetalle> carritoHistoricoDetalles = new HashSet<>();
-
-    @ManyToOne
-    @JsonIgnoreProperties("carritoHistoricos")
-    private Cliente cliente;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -60,16 +74,16 @@ public class CarritoHistorico implements Serializable {
         this.nombre = nombre;
     }
 
-    public LocalDate getFechaAlta() {
+    public LocalDateTime getFechaAlta() {
         return fechaAlta;
     }
 
-    public CarritoHistorico fechaAlta(LocalDate fechaAlta) {
+    public CarritoHistorico fechaAlta(LocalDateTime fechaAlta) {
         this.fechaAlta = fechaAlta;
         return this;
     }
 
-    public void setFechaAlta(LocalDate fechaAlta) {
+    public void setFechaAlta(LocalDateTime fechaAlta) {
         this.fechaAlta = fechaAlta;
     }
 
@@ -110,9 +124,17 @@ public class CarritoHistorico implements Serializable {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    
+    public Long getClienteId() {
+ 		return clienteId;
+ 	}
 
-    @Override
+ 	public void setClienteId(Long clienteId) {
+ 		this.clienteId = clienteId;
+ 	}
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
