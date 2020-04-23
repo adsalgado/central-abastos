@@ -1,9 +1,12 @@
 package mx.com.sharkit.service.dto;
-import java.time.Instant;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.Producto} entity.
@@ -67,6 +70,8 @@ public class ProductoDTO implements Serializable {
     private UnidadMedidaDTO unidadMedida;
 
     private EmpresaDTO empresa;
+    
+    private List<AdjuntoDTO> imagenes;
 
     public Long getId() {
         return id;
@@ -266,6 +271,14 @@ public class ProductoDTO implements Serializable {
 
 	public void setEmpresa(EmpresaDTO empresa) {
 		this.empresa = empresa;
+	}
+
+	public List<AdjuntoDTO> getImagenes() {
+		return imagenes;
+	}
+
+	public void setImagenes(List<AdjuntoDTO> imagenes) {
+		this.imagenes = imagenes;
 	}
 
 	@Override

@@ -21,9 +21,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.sharkit.domain.Producto;
+import mx.com.sharkit.domain.ProductoImagen;
+import mx.com.sharkit.repository.ProductoImagenRepository;
 import mx.com.sharkit.repository.ProductoRepository;
 import mx.com.sharkit.service.ProductoService;
+import mx.com.sharkit.service.dto.AdjuntoDTO;
 import mx.com.sharkit.service.dto.ProductoDTO;
+import mx.com.sharkit.service.dto.ProductoImagenDTO;
+import mx.com.sharkit.service.mapper.ProductoImagenMapper;
 import mx.com.sharkit.service.mapper.ProductoMapper;
 
 /**
@@ -39,9 +44,16 @@ public class ProductoServiceImpl implements ProductoService {
 
 	private final ProductoMapper productoMapper;
 
-	public ProductoServiceImpl(ProductoRepository productoRepository, ProductoMapper productoMapper) {
+	private final ProductoImagenMapper productoImagenMapper;
+
+	private final ProductoImagenRepository productoImagenRepository;
+
+	public ProductoServiceImpl(ProductoRepository productoRepository, ProductoMapper productoMapper,
+			ProductoImagenRepository productoImagenRepository, ProductoImagenMapper productoImagenMapper) {
 		this.productoRepository = productoRepository;
 		this.productoMapper = productoMapper;
+		this.productoImagenRepository = productoImagenRepository;
+		this.productoImagenMapper = productoImagenMapper;
 	}
 
 	/**
@@ -81,7 +93,20 @@ public class ProductoServiceImpl implements ProductoService {
 	@Transactional(readOnly = true)
 	public Optional<ProductoDTO> findOne(Long id) {
 		log.debug("Request to get Producto : {}", id);
-		return productoRepository.findById(id).map(productoMapper::toDto);
+		Optional<ProductoDTO> optDTO = productoRepository.findById(id).map(productoMapper::toDto);
+		ProductoDTO productoDTO = optDTO.isPresent() ? optDTO.get() : null;
+		if (productoDTO != null) {
+			List<AdjuntoDTO> adjuntos = 
+					productoImagenRepository.findByProductoIdOrderByIdAsc(productoDTO.getId())
+						.stream()
+						.map(productoImagenMapper::toDto)
+						.peek(pi -> log.info("pi {}", pi))
+						.map(ProductoImagenDTO::getAdjunto)
+						.peek(pi -> log.info("ad {}", pi))
+						.collect(Collectors.toCollection(LinkedList::new));
+			productoDTO.setImagenes(adjuntos);
+		}
+		return  optDTO;
 	}
 
 	/**
@@ -97,7 +122,7 @@ public class ProductoServiceImpl implements ProductoService {
 
 	@Override
 	public List<ProductoDTO> searchProductos(Map<String, Object> params, Pageable pageable) {
-		
+
 		productoRepository.findAll();
 		Page<Producto> pageProductos = productoRepository.findAll(new Specification<Producto>() {
 
@@ -120,8 +145,8 @@ public class ProductoServiceImpl implements ProductoService {
 								criteriaBuilder.and(criteriaBuilder.equal(root.get("seccionId"), params.get(key))));
 						break;
 					case "tipoArticuloId":
-						predicates.add(
-								criteriaBuilder.and(criteriaBuilder.equal(root.get("tipoArticuloId"), params.get(key))));
+						predicates.add(criteriaBuilder
+								.and(criteriaBuilder.equal(root.get("tipoArticuloId"), params.get(key))));
 						break;
 					case "nombre":
 						predicates.add(criteriaBuilder
@@ -140,5 +165,11 @@ public class ProductoServiceImpl implements ProductoService {
 
 		List<Producto> lstProductos = pageProductos.getContent();
 		return lstProductos.stream().map(productoMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public List<ProductoDTO> getImagenesProducto(Long productoId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

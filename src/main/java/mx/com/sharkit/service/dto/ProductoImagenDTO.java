@@ -18,6 +18,8 @@ public class ProductoImagenDTO implements Serializable {
     private Long productoId;
 
     private Long adjuntoId;
+    
+    private AdjuntoDTO adjunto;
 
     public Long getId() {
         return id;
@@ -59,7 +61,15 @@ public class ProductoImagenDTO implements Serializable {
         this.adjuntoId = adjuntoId;
     }
 
-    @Override
+    public AdjuntoDTO getAdjunto() {
+		return adjunto;
+	}
+
+	public void setAdjunto(AdjuntoDTO adjunto) {
+		this.adjunto = adjunto;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -88,6 +98,7 @@ public class ProductoImagenDTO implements Serializable {
             ", usuarioAlta=" + getUsuarioAltaId() +
             ", producto=" + getProductoId() +
             ", adjunto=" + getAdjuntoId() +
+            ", adjunto=" + getAdjunto() +
             "}";
     }
 }

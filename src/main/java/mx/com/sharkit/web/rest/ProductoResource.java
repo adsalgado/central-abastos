@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import mx.com.sharkit.service.ProductoService;
 import mx.com.sharkit.service.dto.ProductoDTO;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
+import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 
 /**
  * REST controller for managing {@link mx.com.sharkit.domain.Producto}.
@@ -44,6 +46,12 @@ public class ProductoResource {
 	private final Logger log = LoggerFactory.getLogger(ProductoResource.class);
 
 	private static final String ENTITY_NAME = "producto";
+
+	private static final Integer REGISTROS_POR_PAGINA = 15;
+
+	private static final String ORDENAMIENTO_DEFAULT = "nombre";
+
+	private static final String TIPO_ORDENAMIENTO_DEFAULT = "asc";
 
 	@Value("${jhipster.clientApp.name}")
 	private String applicationName;
@@ -124,16 +132,39 @@ public class ProductoResource {
 	@GetMapping("/productos/search")
 	public List<ProductoDTO> getSearchProductos(HttpServletRequest request) {
 		log.debug("REST request to get all Productos");
-		List<NameValuePair> params = URLEncodedUtils.parse(request.getQueryString(), Charset.forName("UTF-8"));
+
 		Map<String, Object> paramsMap = new HashMap<>();
-		for (NameValuePair param : params) {
-			paramsMap.put(param.getName(), param.getValue());
+		if (!StringUtils.isAllEmpty(request.getQueryString())) {
+			List<NameValuePair> params = URLEncodedUtils.parse(request.getQueryString(), Charset.forName("UTF-8"));
+			for (NameValuePair param : params) {
+				paramsMap.put(param.getName(), param.getValue());
+			}
 		}
+		int iPagina = 0;
+		int iLimite = REGISTROS_POR_PAGINA;
+
+		String pagina = request.getParameter("page");
+		if (!StringUtils.isAllBlank(pagina)) {
+			iPagina = Integer.valueOf(pagina);
+		}
+		String limite = request.getParameter("limit");
+		if (!StringUtils.isAllBlank(limite)) {
+			iLimite = Integer.valueOf(limite);
+		}
+		String sort = !StringUtils.isAllBlank(request.getParameter("sort")) ? request.getParameter("sort")
+				: ORDENAMIENTO_DEFAULT;
+		String sortType = !StringUtils.isAllBlank(request.getParameter("sortType")) ? request.getParameter("sortType")
+				: TIPO_ORDENAMIENTO_DEFAULT;
 		
-		Pageable firstPageWith = PageRequest.of(0, 2);
-		
-		return productoService.searchProductos(paramsMap,firstPageWith);
-		
+		Sort sortOrder = StringUtils.equals("desc", sortType) ? 
+				Sort.by(sort).descending() : Sort.by(sort).ascending();
+
+		log.info("sort {}", sort);
+		log.info("sortType {}", sortType);
+		Pageable pageable = PageRequest.of(iPagina, iLimite, sortOrder);
+
+		return productoService.searchProductos(paramsMap, pageable);
+
 	}
 
 	/**

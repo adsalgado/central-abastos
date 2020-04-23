@@ -14,6 +14,7 @@ public interface ProductoImagenMapper extends EntityMapper<ProductoImagenDTO, Pr
     @Mapping(source = "usuarioAlta.id", target = "usuarioAltaId")
     @Mapping(source = "producto.id", target = "productoId")
     @Mapping(source = "adjunto.id", target = "adjuntoId")
+    @Mapping(source = "adjunto", target = "adjunto")
     ProductoImagenDTO toDto(ProductoImagen productoImagen);
 
     @Mapping(source = "usuarioAltaId", target = "usuarioAlta")

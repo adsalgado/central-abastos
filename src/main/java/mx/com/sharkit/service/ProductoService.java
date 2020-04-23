@@ -13,41 +13,49 @@ import mx.com.sharkit.service.dto.ProductoDTO;
  */
 public interface ProductoService {
 
-    /**
-     * Save a producto.
-     *
-     * @param productoDTO the entity to save.
-     * @return the persisted entity.
-     */
-    ProductoDTO save(ProductoDTO productoDTO);
+	/**
+	 * Save a producto.
+	 *
+	 * @param productoDTO the entity to save.
+	 * @return the persisted entity.
+	 */
+	ProductoDTO save(ProductoDTO productoDTO);
 
-    /**
-     * Get all the productos.
-     *
-     * @return the list of entities.
-     */
-    List<ProductoDTO> findAll();
+	/**
+	 * Get all the productos.
+	 *
+	 * @return the list of entities.
+	 */
+	List<ProductoDTO> findAll();
 
+	/**
+	 * Get the "id" producto.
+	 *
+	 * @param id the id of the entity.
+	 * @return the entity.
+	 */
+	Optional<ProductoDTO> findOne(Long id);
 
-    /**
-     * Get the "id" producto.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
-    Optional<ProductoDTO> findOne(Long id);
+	/**
+	 * Delete the "id" producto.
+	 *
+	 * @param id the id of the entity.
+	 */
+	void delete(Long id);
 
-    /**
-     * Delete the "id" producto.
-     *
-     * @param id the id of the entity.
-     */
-    void delete(Long id);
-    
-    /**
-     * Get all the productos.
-     *
-     * @return the list of entities.
-     */
-    List<ProductoDTO> searchProductos(Map<String, Object> params, Pageable pageable);
+	/**
+	 * Get all the productos.
+	 *
+	 * @return the list of entities.
+	 */
+	List<ProductoDTO> searchProductos(Map<String, Object> params, Pageable pageable);
+
+	/**
+	 * Recupera las imágenes del producto
+	 * 
+	 * @param productoId Id del producto
+	 * @return Lista de imágenes
+	 */
+	List<ProductoDTO> getImagenesProducto(Long productoId);
+
 }
