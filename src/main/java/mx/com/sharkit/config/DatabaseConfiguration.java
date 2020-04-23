@@ -1,19 +1,17 @@
 package mx.com.sharkit.config;
 
-import io.github.jhipster.config.JHipsterConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import mx.com.sharkit.customdao.BaseRepositorio;
+
 
 @Configuration
-@EnableJpaRepositories("mx.com.sharkit.repository")
+@EnableJpaRepositories(basePackages = "mx.com.sharkit.repository", repositoryBaseClass = BaseRepositorio.class)
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
 public class DatabaseConfiguration {

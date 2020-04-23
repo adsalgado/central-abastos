@@ -4,9 +4,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -15,6 +17,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,8 +34,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import mx.com.sharkit.domain.Producto;
 import mx.com.sharkit.service.ProductoService;
+import mx.com.sharkit.service.UtilService;
 import mx.com.sharkit.service.dto.ProductoDTO;
+import mx.com.sharkit.service.mapper.ProductoMapper;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 
@@ -58,8 +64,14 @@ public class ProductoResource {
 
 	private final ProductoService productoService;
 
-	public ProductoResource(ProductoService productoService) {
+	private final UtilService utilService;
+	
+	@Autowired
+	private ProductoMapper productoMapper;
+
+	public ProductoResource(ProductoService productoService, UtilService utilService) {
 		this.productoService = productoService;
+		this.utilService = utilService;
 	}
 
 	/**
@@ -119,6 +131,25 @@ public class ProductoResource {
 	@GetMapping("/productos")
 	public List<ProductoDTO> getAllProductos() {
 		log.debug("REST request to get all Productos");
+		
+		String queryNative = "select * from producto where id = 1";
+		List<Producto> lstProd = utilService.findAllByQueryNativeToEntity(Producto.class, queryNative, new Object[] {});
+		log.info("*********");
+		log.info("lstProd: {}", lstProd);
+		log.info("*********");
+		
+		List<ProductoDTO> lstProdDto = lstProd.stream().map(productoMapper::toDto)
+		.collect(Collectors.toCollection(LinkedList::new));
+		
+		log.info("*********");
+		log.info("lstProdDTO: {}", lstProdDto);
+		log.info("*********");
+		
+		List<Map<String, Object>> lstMapProd = utilService.findAllByQueryNativeToMap(queryNative, new Object[] {});
+		log.info("*********");
+		log.info("lstMapProd: {}", lstMapProd);
+		log.info("*********");
+		
 		return productoService.findAll();
 	}
 

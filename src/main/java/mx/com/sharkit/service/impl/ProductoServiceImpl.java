@@ -100,9 +100,7 @@ public class ProductoServiceImpl implements ProductoService {
 					productoImagenRepository.findByProductoIdOrderByIdAsc(productoDTO.getId())
 						.stream()
 						.map(productoImagenMapper::toDto)
-						.peek(pi -> log.info("pi {}", pi))
 						.map(ProductoImagenDTO::getAdjunto)
-						.peek(pi -> log.info("ad {}", pi))
 						.collect(Collectors.toCollection(LinkedList::new));
 			productoDTO.setImagenes(adjuntos);
 		}

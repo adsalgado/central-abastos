@@ -1,8 +1,10 @@
 package mx.com.sharkit.service.dto;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.CarritoCompra} entity.
@@ -11,15 +13,20 @@ public class CarritoCompraDTO implements Serializable {
 
     private Long id;
 
-    @NotNull
     private BigDecimal cantidad;
 
     private BigDecimal precio;
 
+    private LocalDateTime fechaAlta;
 
     private Long clienteId;
 
     private Long productoId;
+    
+    @JsonIgnore
+    private transient UserDTO cliente;
+    
+    private ProductoDTO producto;
 
     public Long getId() {
         return id;
@@ -61,7 +68,31 @@ public class CarritoCompraDTO implements Serializable {
         this.productoId = productoId;
     }
 
-    @Override
+    public LocalDateTime getFechaAlta() {
+		return fechaAlta;
+	}
+
+	public void setFechaAlta(LocalDateTime fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
+
+	public UserDTO getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(UserDTO cliente) {
+		this.cliente = cliente;
+	}
+
+	public ProductoDTO getProducto() {
+		return producto;
+	}
+
+	public void setProducto(ProductoDTO producto) {
+		this.producto = producto;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -90,6 +121,7 @@ public class CarritoCompraDTO implements Serializable {
             ", precio=" + getPrecio() +
             ", cliente=" + getClienteId() +
             ", producto=" + getProductoId() +
+            ", fechaAlta=" + getFechaAlta() +
             "}";
     }
 }

@@ -1,12 +1,20 @@
 package mx.com.sharkit.web.rest;
 
-import mx.com.sharkit.AbastosApp;
-import mx.com.sharkit.domain.CarritoCompra;
-import mx.com.sharkit.repository.CarritoCompraRepository;
-import mx.com.sharkit.service.CarritoCompraService;
-import mx.com.sharkit.service.dto.CarritoCompraDTO;
-import mx.com.sharkit.service.mapper.CarritoCompraMapper;
-import mx.com.sharkit.web.rest.errors.ExceptionTranslator;
+import static mx.com.sharkit.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,15 +29,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
-import javax.persistence.EntityManager;
-import java.math.BigDecimal;
-import java.util.List;
-
-import static mx.com.sharkit.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import mx.com.sharkit.AbastosApp;
+import mx.com.sharkit.domain.CarritoCompra;
+import mx.com.sharkit.repository.CarritoCompraRepository;
+import mx.com.sharkit.service.CarritoCompraService;
+import mx.com.sharkit.service.UserService;
+import mx.com.sharkit.service.dto.CarritoCompraDTO;
+import mx.com.sharkit.service.mapper.CarritoCompraMapper;
+import mx.com.sharkit.web.rest.errors.ExceptionTranslator;
 
 /**
  * Integration tests for the {@link CarritoCompraResource} REST controller.
@@ -55,6 +62,9 @@ public class CarritoCompraResourceIT {
     private CarritoCompraService carritoCompraService;
 
     @Autowired
+    private UserService userService;
+    
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -76,7 +86,7 @@ public class CarritoCompraResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final CarritoCompraResource carritoCompraResource = new CarritoCompraResource(carritoCompraService);
+        final CarritoCompraResource carritoCompraResource = new CarritoCompraResource(carritoCompraService, userService);
         this.restCarritoCompraMockMvc = MockMvcBuilders.standaloneSetup(carritoCompraResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

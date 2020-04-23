@@ -4,6 +4,7 @@ import mx.com.sharkit.AbastosApp;
 import mx.com.sharkit.domain.Producto;
 import mx.com.sharkit.repository.ProductoRepository;
 import mx.com.sharkit.service.ProductoService;
+import mx.com.sharkit.service.UtilService;
 import mx.com.sharkit.service.dto.ProductoDTO;
 import mx.com.sharkit.service.mapper.ProductoMapper;
 import mx.com.sharkit.web.rest.errors.ExceptionTranslator;
@@ -74,6 +75,9 @@ public class ProductoResourceIT {
     private ProductoService productoService;
 
     @Autowired
+    private UtilService utilService;
+    
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -95,7 +99,7 @@ public class ProductoResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProductoResource productoResource = new ProductoResource(productoService);
+        final ProductoResource productoResource = new ProductoResource(productoService, utilService);
         this.restProductoMockMvc = MockMvcBuilders.standaloneSetup(productoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

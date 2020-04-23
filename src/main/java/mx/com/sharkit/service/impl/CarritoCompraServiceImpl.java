@@ -87,4 +87,24 @@ public class CarritoCompraServiceImpl implements CarritoCompraService {
         log.debug("Request to delete CarritoCompra : {}", id);
         carritoCompraRepository.deleteById(id);
     }
+
+    /**
+     * Get all the carritoCompras of clienteId.
+     *
+     * @return the list of entities.
+     */
+    @Override
+	public List<CarritoCompraDTO> findAllByClienteId(Long clienteId) {
+		log.debug("Request to get all CarritoCompras");
+        return carritoCompraRepository.findByClienteIdOrderByNombre(clienteId).stream()
+            .map(carritoCompraMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public void deleteByClienteIdAnProductoId(Long clienteId, Long productoId) {
+		log.debug("Request to delete CarritoCompra : {}, {}", clienteId, productoId);
+        carritoCompraRepository.deleteByClienteIdAndProductoId(clienteId, productoId);
+	}
+	
 }

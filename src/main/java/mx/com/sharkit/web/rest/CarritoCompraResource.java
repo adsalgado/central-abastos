@@ -1,23 +1,34 @@
 package mx.com.sharkit.web.rest;
 
-import mx.com.sharkit.service.CarritoCompraService;
-import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
-import mx.com.sharkit.service.dto.CarritoCompraDTO;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import mx.com.sharkit.domain.User;
+import mx.com.sharkit.service.CarritoCompraService;
+import mx.com.sharkit.service.UserService;
+import mx.com.sharkit.service.dto.CarritoCompraDTO;
+import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 
 /**
  * REST controller for managing {@link mx.com.sharkit.domain.CarritoCompra}.
@@ -34,9 +45,12 @@ public class CarritoCompraResource {
     private String applicationName;
 
     private final CarritoCompraService carritoCompraService;
+    
+    private final UserService userService;
 
-    public CarritoCompraResource(CarritoCompraService carritoCompraService) {
+    public CarritoCompraResource(CarritoCompraService carritoCompraService, UserService userService) {
         this.carritoCompraService = carritoCompraService;
+        this.userService = userService;
     }
 
     /**
@@ -52,6 +66,16 @@ public class CarritoCompraResource {
         if (carritoCompraDTO.getId() != null) {
             throw new BadRequestAlertException("A new carritoCompra cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        Optional<User> user = userService.getUserWithAuthorities();
+        Long clienteId =  user.isPresent() ? user.get().getId() : 0L;
+        if (clienteId == 0) {
+            throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idexists");
+        }
+
+        carritoCompraDTO.setClienteId(clienteId);
+        carritoCompraDTO.setFechaAlta(LocalDateTime.now());
+        carritoCompraDTO.setCantidad(BigDecimal.ONE);
+        
         CarritoCompraDTO result = carritoCompraService.save(carritoCompraDTO);
         return ResponseEntity.created(new URI("/api/carrito-compras/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -80,17 +104,18 @@ public class CarritoCompraResource {
     }
 
     /**
-     * {@code GET  /carrito-compras} : get all the carritoCompras.
+     * {@code GET  /carrito-compras} : get all the carritoCompras by clienteId.
      *
 
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of carritoCompras in body.
      */
     @GetMapping("/carrito-compras")
-    public List<CarritoCompraDTO> getAllCarritoCompras() {
+    public List<CarritoCompraDTO> getAllCarritoComprasByClienteId() {
         log.debug("REST request to get all CarritoCompras");
-        return carritoCompraService.findAll();
+        Optional<User> user = userService.getUserWithAuthorities();
+        Long clienteId =  user.isPresent() ? user.get().getId() : 0L;
+        return carritoCompraService.findAllByClienteId(clienteId);
     }
-
     /**
      * {@code GET  /carrito-compras/:id} : get the "id" carritoCompra.
      *
@@ -110,10 +135,13 @@ public class CarritoCompraResource {
      * @param id the id of the carritoCompraDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/carrito-compras/{id}")
-    public ResponseEntity<Void> deleteCarritoCompra(@PathVariable Long id) {
-        log.debug("REST request to delete CarritoCompra : {}", id);
-        carritoCompraService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    @DeleteMapping("/carrito-compras/{productoId}")
+    public ResponseEntity<Void> deleteCarritoCompra(@PathVariable Long productoId) {
+        log.debug("REST request to delete CarritoCompra : {}", productoId);
+        Optional<User> user = userService.getUserWithAuthorities();
+        Long clienteId =  user.isPresent() ? user.get().getId() : 0L;
+        carritoCompraService.deleteByClienteIdAnProductoId(clienteId, productoId);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, productoId.toString())).build();
     }
+
 }

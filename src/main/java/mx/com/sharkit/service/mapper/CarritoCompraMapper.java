@@ -13,6 +13,8 @@ public interface CarritoCompraMapper extends EntityMapper<CarritoCompraDTO, Carr
 
     @Mapping(source = "cliente.id", target = "clienteId")
     @Mapping(source = "producto.id", target = "productoId")
+//    @Mapping(source = "cliente", target = "cliente")
+    @Mapping(source = "producto", target = "producto")
     CarritoCompraDTO toDto(CarritoCompra carritoCompra);
 
     @Mapping(source = "clienteId", target = "cliente")
