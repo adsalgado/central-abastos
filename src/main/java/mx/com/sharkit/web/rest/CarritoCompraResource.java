@@ -94,12 +94,28 @@ public class CarritoCompraResource {
     @PutMapping("/carrito-compras")
     public ResponseEntity<CarritoCompraDTO> updateCarritoCompra(@Valid @RequestBody CarritoCompraDTO carritoCompraDTO) throws URISyntaxException {
         log.debug("REST request to update CarritoCompra : {}", carritoCompraDTO);
-        if (carritoCompraDTO.getId() == null) {
+        
+        Optional<User> user = userService.getUserWithAuthorities();
+        Long clienteId =  user.isPresent() ? user.get().getId() : 0L;
+        if (clienteId == 0) {
+            throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idexists");
+        }
+        CarritoCompraDTO result = carritoCompraDTO;
+        
+        Optional <CarritoCompraDTO> optCarritoDto = carritoCompraService.findOneClienteIdAndProductoId(clienteId, carritoCompraDTO.getProductoId());
+        if (optCarritoDto.isPresent()) {
+        	CarritoCompraDTO dto = optCarritoDto.get();
+        	dto.setCantidad(carritoCompraDTO.getCantidad());
+        	result = carritoCompraService.save(dto);
+        }
+        
+    	if (result.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        CarritoCompraDTO result = carritoCompraService.save(carritoCompraDTO);
+
+         
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, carritoCompraDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 

@@ -1,6 +1,7 @@
 package mx.com.sharkit.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -32,4 +33,6 @@ public interface CarritoCompraRepository extends JpaRepository<CarritoCompra, Lo
 	@Query("delete from CarritoCompra cc where cc.clienteId = ?1")
 	void deleteByClienteId(Long clienteId);
 	
+	Optional<CarritoCompra> findOneByClienteIdAndProductoId(Long clienteId, Long productoId);
+
 }

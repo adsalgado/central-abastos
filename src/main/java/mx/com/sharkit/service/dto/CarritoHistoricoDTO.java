@@ -2,6 +2,7 @@ package mx.com.sharkit.service.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
@@ -21,6 +22,8 @@ public class CarritoHistoricoDTO implements Serializable {
     private LocalDateTime fechaAlta;
 
     private Long clienteId;
+    
+    private List<CarritoHistoricoDetalleDTO> carritoHistoricoDetalles;
 
     public Long getId() {
         return id;
@@ -54,7 +57,15 @@ public class CarritoHistoricoDTO implements Serializable {
         this.clienteId = clienteId;
     }
 
-    @Override
+    public List<CarritoHistoricoDetalleDTO> getCarritoHistoricoDetalles() {
+		return carritoHistoricoDetalles;
+	}
+
+	public void setCarritoHistoricoDetalles(List<CarritoHistoricoDetalleDTO> carritoHistoricoDetalles) {
+		this.carritoHistoricoDetalles = carritoHistoricoDetalles;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

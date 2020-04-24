@@ -3,6 +3,7 @@ package mx.com.sharkit.web.rest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -140,7 +141,19 @@ public class CarritoHistoricoResource {
     @GetMapping("/carrito-historicos")
     public List<CarritoHistoricoDTO> getAllCarritoHistoricos() {
         log.debug("REST request to get all CarritoHistoricos");
-        return carritoHistoricoService.findAll();
+        
+        Optional<User> user = userService.getUserWithAuthorities();
+        Long clienteId =  user.isPresent() ? user.get().getId() : 0L;
+        if (clienteId == 0) {
+            throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idexists");
+        }
+        
+        List<CarritoHistoricoDTO> carritosHistorico = new ArrayList<>();
+        carritoHistoricoService.findByClienteId(clienteId).forEach(ch -> {
+        	ch.setCarritoHistoricoDetalles(carritoHistoricoDetalleService.findByCarritoHistoricoId(ch.getId()));
+        	carritosHistorico.add(ch);
+        });
+        return carritosHistorico;
     }
 
     /**

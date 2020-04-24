@@ -87,4 +87,18 @@ public class CarritoHistoricoServiceImpl implements CarritoHistoricoService {
         log.debug("Request to delete CarritoHistorico : {}", id);
         carritoHistoricoRepository.deleteById(id);
     }
+
+    /**
+     * Get all the carritoHistoricos by clienteId.
+     *
+     * @param clienteId
+     * @return the list of entities
+     */
+	@Override
+	public List<CarritoHistoricoDTO> findByClienteId(Long clienteId) {
+		log.debug("Request to get all CarritoHistoricos by clienteId : {}", clienteId);
+        return carritoHistoricoRepository.findByClienteId(clienteId).stream()
+            .map(carritoHistoricoMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+	}
 }

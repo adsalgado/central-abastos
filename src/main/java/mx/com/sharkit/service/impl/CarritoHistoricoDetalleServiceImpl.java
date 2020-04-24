@@ -100,5 +100,13 @@ public class CarritoHistoricoDetalleServiceImpl implements CarritoHistoricoDetal
 	            .collect(Collectors.toCollection(LinkedList::new));
 		
 	}
+
+	@Override
+	public List<CarritoHistoricoDetalleDTO> findByCarritoHistoricoId(Long carritoHistoricoId) {
+		log.debug("Request to get all CarritoHistoricoDetalles by carritoHistoricoId");
+        return carritoHistoricoDetalleRepository.findByCarritoHistoricoId(carritoHistoricoId).stream()
+            .map(carritoHistoricoDetalleMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+	}
 	
 }

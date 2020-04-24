@@ -112,5 +112,12 @@ public class CarritoCompraServiceImpl implements CarritoCompraService {
 		log.debug("Request to delete CarritoCompra : {}, {}", clienteId);
         carritoCompraRepository.deleteByClienteId(clienteId);
 	}
+
+	@Override
+	public Optional<CarritoCompraDTO> findOneClienteIdAndProductoId(Long clienteId, Long productoId) {
+		log.debug("Request to get CarritoCompra : cte {}, prod {}", clienteId, productoId);
+        return carritoCompraRepository.findOneByClienteIdAndProductoId(clienteId, productoId)
+            .map(carritoCompraMapper::toDto);
+	}
 	
 }

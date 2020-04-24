@@ -18,6 +18,8 @@ public class CarritoHistoricoDetalleDTO implements Serializable {
 
 
     private Long productoId;
+    
+    private ProductoDTO producto;
 
     private Long carritoHistoricoId;
 
@@ -53,7 +55,15 @@ public class CarritoHistoricoDetalleDTO implements Serializable {
         this.productoId = productoId;
     }
 
-    public Long getCarritoHistoricoId() {
+    public ProductoDTO getProducto() {
+		return producto;
+	}
+
+	public void setProducto(ProductoDTO producto) {
+		this.producto = producto;
+	}
+
+	public Long getCarritoHistoricoId() {
         return carritoHistoricoId;
     }
 

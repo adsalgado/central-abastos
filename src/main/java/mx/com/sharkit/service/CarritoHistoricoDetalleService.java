@@ -1,9 +1,9 @@
 package mx.com.sharkit.service;
 
-import mx.com.sharkit.service.dto.CarritoHistoricoDetalleDTO;
-
 import java.util.List;
 import java.util.Optional;
+
+import mx.com.sharkit.service.dto.CarritoHistoricoDetalleDTO;
 
 /**
  * Service Interface for managing {@link mx.com.sharkit.domain.CarritoHistoricoDetalle}.
@@ -48,4 +48,12 @@ public interface CarritoHistoricoDetalleService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    /**
+     * Get all the carritoHistoricoDetalles.
+     *
+     * @return the list of entities.
+     */
+	List<CarritoHistoricoDetalleDTO> findByCarritoHistoricoId(Long carritoHistoricoId);
+
 }
