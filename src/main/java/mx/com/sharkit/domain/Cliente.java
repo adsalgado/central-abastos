@@ -1,13 +1,23 @@
 package mx.com.sharkit.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A Cliente.
@@ -58,9 +68,6 @@ public class Cliente implements Serializable {
 
     @OneToMany(mappedBy = "cliente")
     private Set<Tarjeta> tarjetas = new HashSet<>();
-
-    @OneToMany(mappedBy = "cliente")
-    private Set<Direccion> direccions = new HashSet<>();
 
     @OneToMany(mappedBy = "cliente")
     private Set<CarritoCompra> carritoCompras = new HashSet<>();
@@ -215,31 +222,6 @@ public class Cliente implements Serializable {
 
     public void setTarjetas(Set<Tarjeta> tarjetas) {
         this.tarjetas = tarjetas;
-    }
-
-    public Set<Direccion> getDireccions() {
-        return direccions;
-    }
-
-    public Cliente direccions(Set<Direccion> direccions) {
-        this.direccions = direccions;
-        return this;
-    }
-
-    public Cliente addDireccion(Direccion direccion) {
-        this.direccions.add(direccion);
-        direccion.setCliente(this);
-        return this;
-    }
-
-    public Cliente removeDireccion(Direccion direccion) {
-        this.direccions.remove(direccion);
-        direccion.setCliente(null);
-        return this;
-    }
-
-    public void setDireccions(Set<Direccion> direccions) {
-        this.direccions = direccions;
     }
 
     public Set<CarritoCompra> getCarritoCompras() {

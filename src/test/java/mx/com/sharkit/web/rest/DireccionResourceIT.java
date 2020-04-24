@@ -1,12 +1,19 @@
 package mx.com.sharkit.web.rest;
 
-import mx.com.sharkit.AbastosApp;
-import mx.com.sharkit.domain.Direccion;
-import mx.com.sharkit.repository.DireccionRepository;
-import mx.com.sharkit.service.DireccionService;
-import mx.com.sharkit.service.dto.DireccionDTO;
-import mx.com.sharkit.service.mapper.DireccionMapper;
-import mx.com.sharkit.web.rest.errors.ExceptionTranslator;
+import static mx.com.sharkit.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,14 +28,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static mx.com.sharkit.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import mx.com.sharkit.AbastosApp;
+import mx.com.sharkit.domain.Direccion;
+import mx.com.sharkit.repository.DireccionRepository;
+import mx.com.sharkit.service.DireccionService;
+import mx.com.sharkit.service.dto.DireccionDTO;
+import mx.com.sharkit.service.mapper.DireccionMapper;
+import mx.com.sharkit.web.rest.errors.ExceptionTranslator;
 
 /**
  * Integration tests for the {@link DireccionResource} REST controller.
@@ -98,8 +104,7 @@ public class DireccionResourceIT {
         Direccion direccion = new Direccion()
             .direccion(DEFAULT_DIRECCION)
             .colonia(DEFAULT_COLONIA)
-            .codigoPostal(DEFAULT_CODIGO_POSTAL)
-            .geolocalizacion(DEFAULT_GEOLOCALIZACION);
+            .codigoPostal(DEFAULT_CODIGO_POSTAL);
         return direccion;
     }
     /**
@@ -112,8 +117,7 @@ public class DireccionResourceIT {
         Direccion direccion = new Direccion()
             .direccion(UPDATED_DIRECCION)
             .colonia(UPDATED_COLONIA)
-            .codigoPostal(UPDATED_CODIGO_POSTAL)
-            .geolocalizacion(UPDATED_GEOLOCALIZACION);
+            .codigoPostal(UPDATED_CODIGO_POSTAL);
         return direccion;
     }
 
@@ -141,7 +145,6 @@ public class DireccionResourceIT {
         assertThat(testDireccion.getDireccion()).isEqualTo(DEFAULT_DIRECCION);
         assertThat(testDireccion.getColonia()).isEqualTo(DEFAULT_COLONIA);
         assertThat(testDireccion.getCodigoPostal()).isEqualTo(DEFAULT_CODIGO_POSTAL);
-        assertThat(testDireccion.getGeolocalizacion()).isEqualTo(DEFAULT_GEOLOCALIZACION);
     }
 
     @Test
@@ -241,8 +244,7 @@ public class DireccionResourceIT {
         updatedDireccion
             .direccion(UPDATED_DIRECCION)
             .colonia(UPDATED_COLONIA)
-            .codigoPostal(UPDATED_CODIGO_POSTAL)
-            .geolocalizacion(UPDATED_GEOLOCALIZACION);
+            .codigoPostal(UPDATED_CODIGO_POSTAL);
         DireccionDTO direccionDTO = direccionMapper.toDto(updatedDireccion);
 
         restDireccionMockMvc.perform(put("/api/direccions")
@@ -257,7 +259,6 @@ public class DireccionResourceIT {
         assertThat(testDireccion.getDireccion()).isEqualTo(UPDATED_DIRECCION);
         assertThat(testDireccion.getColonia()).isEqualTo(UPDATED_COLONIA);
         assertThat(testDireccion.getCodigoPostal()).isEqualTo(UPDATED_CODIGO_POSTAL);
-        assertThat(testDireccion.getGeolocalizacion()).isEqualTo(UPDATED_GEOLOCALIZACION);
     }
 
     @Test

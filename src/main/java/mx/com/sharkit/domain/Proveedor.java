@@ -33,14 +33,27 @@ public class Proveedor implements Serializable {
     @Column(name = "fecha_modificacion")
     private Instant fechaModificacion;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
+    @JoinColumn(name = "direccion_id", insertable = false, updatable = false)
+    private Direccion direccion;
+
+    @Column(name = "direccion_id")
+    private Long direccionId;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_alta_id", insertable = false, updatable = false)
     private User usuarioAlta;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @Column(name = "usuario_alta_id")
+    private Long usuarioAltaId;
+    
+    @ManyToOne
+    @JoinColumn(name = "usuario_modificacion_id", insertable = false, updatable = false)
     private User usuarioModificacion;
 
+    @Column(name = "usuario_modificacion_id")
+    private Long usuarioModificacionId;
+    
     @OneToMany(mappedBy = "proveedor")
     private Set<Producto> productos = new HashSet<>();
 
@@ -128,7 +141,39 @@ public class Proveedor implements Serializable {
         this.usuarioModificacion = user;
     }
 
-    public Set<Producto> getProductos() {
+    public Direccion getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(Direccion direccion) {
+		this.direccion = direccion;
+	}
+
+	public Long getDireccionId() {
+		return direccionId;
+	}
+
+	public void setDireccionId(Long direccionId) {
+		this.direccionId = direccionId;
+	}
+
+	public Long getUsuarioAltaId() {
+		return usuarioAltaId;
+	}
+
+	public void setUsuarioAltaId(Long usuarioAltaId) {
+		this.usuarioAltaId = usuarioAltaId;
+	}
+
+	public Long getUsuarioModificacionId() {
+		return usuarioModificacionId;
+	}
+
+	public void setUsuarioModificacionId(Long usuarioModificacionId) {
+		this.usuarioModificacionId = usuarioModificacionId;
+	}
+
+	public Set<Producto> getProductos() {
         return productos;
     }
 

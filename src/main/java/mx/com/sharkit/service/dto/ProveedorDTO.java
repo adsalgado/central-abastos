@@ -1,6 +1,11 @@
 package mx.com.sharkit.service.dto;
 import java.time.Instant;
+
+import javax.persistence.Column;
 import javax.validation.constraints.*;
+
+import mx.com.sharkit.domain.Direccion;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -19,12 +24,17 @@ public class ProveedorDTO implements Serializable {
 
     private Instant fechaModificacion;
 
+    private EmpresaDTO empresa;
+
+    private Long empresaId;
+
+    private DireccionDTO direccion;
+
+    private Long direccionId;
 
     private Long usuarioAltaId;
 
     private Long usuarioModificacionId;
-
-    private Long empresaId;
 
     public Long getId() {
         return id;
@@ -82,7 +92,31 @@ public class ProveedorDTO implements Serializable {
         this.empresaId = empresaId;
     }
 
-    @Override
+    public EmpresaDTO getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(EmpresaDTO empresa) {
+		this.empresa = empresa;
+	}
+
+	public DireccionDTO getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(DireccionDTO direccion) {
+		this.direccion = direccion;
+	}
+
+	public Long getDireccionId() {
+		return direccionId;
+	}
+
+	public void setDireccionId(Long direccionId) {
+		this.direccionId = direccionId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

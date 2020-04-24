@@ -1,9 +1,10 @@
 package mx.com.sharkit.service.mapper;
 
-import mx.com.sharkit.domain.*;
-import mx.com.sharkit.service.dto.ClienteDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import org.mapstruct.*;
+import mx.com.sharkit.domain.Cliente;
+import mx.com.sharkit.service.dto.ClienteDTO;
 
 /**
  * Mapper for the entity {@link Cliente} and its DTO {@link ClienteDTO}.
@@ -21,8 +22,6 @@ public interface ClienteMapper extends EntityMapper<ClienteDTO, Cliente> {
     @Mapping(source = "usuarioModificacionId", target = "usuarioModificacion")
     @Mapping(target = "tarjetas", ignore = true)
     @Mapping(target = "removeTarjeta", ignore = true)
-    @Mapping(target = "direccions", ignore = true)
-    @Mapping(target = "removeDireccion", ignore = true)
     @Mapping(target = "carritoCompras", ignore = true)
     @Mapping(target = "removeCarritoCompra", ignore = true)
     @Mapping(target = "carritoHistoricos", ignore = true)

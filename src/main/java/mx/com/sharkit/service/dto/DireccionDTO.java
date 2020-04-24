@@ -1,7 +1,13 @@
 package mx.com.sharkit.service.dto;
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.Direccion} entity.
@@ -20,11 +26,17 @@ public class DireccionDTO implements Serializable {
     @Size(max = 5)
     private String codigoPostal;
 
-    @Size(max = 128)
-    private String geolocalizacion;
+    @Size(max = 45)
+    private String latidud;
 
+    @Size(max = 45)
+    private String longitud;
 
-    private Long clienteId;
+    @Column(name = "fecha_alta")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+    private LocalDateTime fechaAlta;
+    
+    private Long usuarioAltaId;
 
     public Long getId() {
         return id;
@@ -58,23 +70,39 @@ public class DireccionDTO implements Serializable {
         this.codigoPostal = codigoPostal;
     }
 
-    public String getGeolocalizacion() {
-        return geolocalizacion;
-    }
+    public String getLatidud() {
+		return latidud;
+	}
 
-    public void setGeolocalizacion(String geolocalizacion) {
-        this.geolocalizacion = geolocalizacion;
-    }
+	public void setLatidud(String latidud) {
+		this.latidud = latidud;
+	}
 
-    public Long getClienteId() {
-        return clienteId;
-    }
+	public String getLongitud() {
+		return longitud;
+	}
 
-    public void setClienteId(Long clienteId) {
-        this.clienteId = clienteId;
-    }
+	public void setLongitud(String longitud) {
+		this.longitud = longitud;
+	}
 
-    @Override
+	public LocalDateTime getFechaAlta() {
+		return fechaAlta;
+	}
+
+	public void setFechaAlta(LocalDateTime fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
+
+	public Long getUsuarioAltaId() {
+		return usuarioAltaId;
+	}
+
+	public void setUsuarioAltaId(Long usuarioAltaId) {
+		this.usuarioAltaId = usuarioAltaId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -102,8 +130,10 @@ public class DireccionDTO implements Serializable {
             ", direccion='" + getDireccion() + "'" +
             ", colonia='" + getColonia() + "'" +
             ", codigoPostal='" + getCodigoPostal() + "'" +
-            ", geolocalizacion='" + getGeolocalizacion() + "'" +
-            ", cliente=" + getClienteId() +
+            ", latitud='" + getLatidud() + "'" +
+            ", longitud='" + getLongitud() + "'" +
+            ", fechaAlta='" + getFechaAlta() + "'" +
+            ", usuarioAlta=" + getUsuarioAltaId() +
             "}";
     }
 }
