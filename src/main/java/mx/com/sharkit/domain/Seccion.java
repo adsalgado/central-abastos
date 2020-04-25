@@ -1,12 +1,23 @@
 package mx.com.sharkit.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A Seccion.
@@ -26,12 +37,37 @@ public class Seccion implements Serializable {
     @Column(name = "nombre", length = 128, nullable = false)
     private String nombre;
 
-    @OneToMany(mappedBy = "seccion")
-    private Set<Producto> productos = new HashSet<>();
+    @Size(max = 256)
+    @Column(name = "descripcion", length = 256)
+    private String descripcion;
 
+    @Size(max = 45)
+    @Column(name = "icono", length = 45)
+    private String icono;
+
+    @Column(name = "fecha_alta")
+    private LocalDateTime fechaAlta;
+
+    @Column(name = "fecha_modificacion")
+    private LocalDateTime fechaModificacion;
+    
     @ManyToOne
+    @JoinColumn(name = "empresa_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("seccions")
     private Empresa empresa;
+
+    @Column(name = "empresa_id")
+    private Long empresaId;
+
+    @Column(name = "usuario_alta_id")
+    private Long usuarioAltaId;
+
+    @Column(name = "usuario_modificacion_id")
+    private Long usuarioModificacionId;
+
+    
+    @OneToMany(mappedBy = "seccion")
+    private Set<Producto> productos = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -92,9 +128,67 @@ public class Seccion implements Serializable {
     public void setEmpresa(Empresa empresa) {
         this.empresa = empresa;
     }
+    
+    
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
-    @Override
+    public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public String getIcono() {
+		return icono;
+	}
+
+	public void setIcono(String icono) {
+		this.icono = icono;
+	}
+
+	public LocalDateTime getFechaAlta() {
+		return fechaAlta;
+	}
+
+	public void setFechaAlta(LocalDateTime fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
+
+	public LocalDateTime getFechaModificacion() {
+		return fechaModificacion;
+	}
+
+	public void setFechaModificacion(LocalDateTime fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+	}
+
+	public Long getEmpresaId() {
+		return empresaId;
+	}
+
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
+	}
+
+	public Long getUsuarioAltaId() {
+		return usuarioAltaId;
+	}
+
+	public void setUsuarioAltaId(Long usuarioAltaId) {
+		this.usuarioAltaId = usuarioAltaId;
+	}
+
+	public Long getUsuarioModificacionId() {
+		return usuarioModificacionId;
+	}
+
+	public void setUsuarioModificacionId(Long usuarioModificacionId) {
+		this.usuarioModificacionId = usuarioModificacionId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

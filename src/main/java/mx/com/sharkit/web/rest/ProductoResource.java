@@ -35,9 +35,13 @@ import org.springframework.web.bind.annotation.RestController;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import mx.com.sharkit.domain.Producto;
+import mx.com.sharkit.service.CategoriaService;
 import mx.com.sharkit.service.ProductoService;
 import mx.com.sharkit.service.UtilService;
+import mx.com.sharkit.service.dto.CategoriaDTO;
+import mx.com.sharkit.service.dto.ProductoCategoriaDTO;
 import mx.com.sharkit.service.dto.ProductoDTO;
+import mx.com.sharkit.service.dto.ProductosHomeDTO;
 import mx.com.sharkit.service.mapper.ProductoMapper;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
@@ -66,12 +70,15 @@ public class ProductoResource {
 
 	private final UtilService utilService;
 	
+	private final CategoriaService categoriaService;
+	
 	@Autowired
 	private ProductoMapper productoMapper;
 
-	public ProductoResource(ProductoService productoService, UtilService utilService) {
+	public ProductoResource(ProductoService productoService, UtilService utilService, CategoriaService categoriaService) {
 		this.productoService = productoService;
 		this.utilService = utilService;
+		this.categoriaService = categoriaService;
 	}
 
 	/**
@@ -226,4 +233,64 @@ public class ProductoResource {
 				.headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
 				.build();
 	}
+	
+	
+	/**
+	 * {@code GET  /productos} : get all the productos.
+	 *
+	 * 
+	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+	 *         of productos in body.
+	 */
+	@GetMapping("/productos/home")
+	public ProductosHomeDTO getSearchProductosHome(HttpServletRequest request) {
+		log.debug("REST request to get all Productos");
+
+		Map<String, Object> paramsMap = new HashMap<>();
+		if (!StringUtils.isAllEmpty(request.getQueryString())) {
+			List<NameValuePair> params = URLEncodedUtils.parse(request.getQueryString(), Charset.forName("UTF-8"));
+			for (NameValuePair param : params) {
+				paramsMap.put(param.getName(), param.getValue());
+			}
+		}
+		int iPagina = 0;
+		int iLimite = REGISTROS_POR_PAGINA;
+
+		String pagina = request.getParameter("page");
+		if (!StringUtils.isAllBlank(pagina)) {
+			iPagina = Integer.valueOf(pagina);
+		}
+		String limite = request.getParameter("limit");
+		if (!StringUtils.isAllBlank(limite)) {
+			iLimite = Integer.valueOf(limite);
+		}
+		String sort = !StringUtils.isAllBlank(request.getParameter("sort")) ? request.getParameter("sort")
+				: ORDENAMIENTO_DEFAULT;
+		String sortType = !StringUtils.isAllBlank(request.getParameter("sortType")) ? request.getParameter("sortType")
+				: TIPO_ORDENAMIENTO_DEFAULT;
+		
+		Sort sortOrder = StringUtils.equals("desc", sortType) ? 
+				Sort.by(sort).descending() : Sort.by(sort).ascending();
+
+		log.info("sort {}", sort);
+		log.info("sortType {}", sortType);
+		Pageable pageable = PageRequest.of(iPagina, iLimite, sortOrder);
+		
+		ProductosHomeDTO productosHomeDTO = new ProductosHomeDTO();
+		List<CategoriaDTO> categorias = categoriaService.findBySeccionId(1L);
+		List<ProductoCategoriaDTO> productos = categorias.stream().map(cat -> {
+//			String queryString = String.format("?categoriaId=%s&limit=10", cat.getId());
+			ProductoCategoriaDTO pcDTO = new ProductoCategoriaDTO();
+			paramsMap.put("categoriaId", cat.getId());
+			paramsMap.put("limit", 10);
+			pcDTO.setCategoria(cat);
+			pcDTO.setProductos(productoService.searchProductos(paramsMap, pageable));
+			return pcDTO;
+		}).collect(Collectors.toCollection(LinkedList::new));
+		productosHomeDTO.setProductosCategoria(productos);
+
+		return productosHomeDTO;
+
+	}
+
 }

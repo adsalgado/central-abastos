@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 
 import mx.com.sharkit.service.dto.ProductoDTO;
+import mx.com.sharkit.service.dto.ProductosHomeDTO;
 
 /**
  * Service Interface for managing {@link mx.com.sharkit.domain.Producto}.
@@ -57,5 +58,14 @@ public interface ProductoService {
 	 * @return Lista de imágenes
 	 */
 	List<ProductoDTO> getImagenesProducto(Long productoId);
+
+	/**
+	 * Recupera los productos por categoria
+	 * 
+	 * @param seccionId id de la seccion
+	 * @param queryString parametros de búsqueda
+	 * @return Lista de productos
+	 */
+	ProductosHomeDTO getProductosCategoria(Long seccionId, String queryString);
 
 }

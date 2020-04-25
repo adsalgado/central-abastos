@@ -1,13 +1,22 @@
 package mx.com.sharkit.web.rest;
 
-import mx.com.sharkit.AbastosApp;
-import mx.com.sharkit.domain.Producto;
-import mx.com.sharkit.repository.ProductoRepository;
-import mx.com.sharkit.service.ProductoService;
-import mx.com.sharkit.service.UtilService;
-import mx.com.sharkit.service.dto.ProductoDTO;
-import mx.com.sharkit.service.mapper.ProductoMapper;
-import mx.com.sharkit.web.rest.errors.ExceptionTranslator;
+import static mx.com.sharkit.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,17 +31,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
-import javax.persistence.EntityManager;
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static mx.com.sharkit.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import mx.com.sharkit.AbastosApp;
+import mx.com.sharkit.domain.Producto;
+import mx.com.sharkit.repository.ProductoRepository;
+import mx.com.sharkit.service.CategoriaService;
+import mx.com.sharkit.service.ProductoService;
+import mx.com.sharkit.service.UtilService;
+import mx.com.sharkit.service.dto.ProductoDTO;
+import mx.com.sharkit.service.mapper.ProductoMapper;
+import mx.com.sharkit.web.rest.errors.ExceptionTranslator;
 
 /**
  * Integration tests for the {@link ProductoResource} REST controller.
@@ -78,6 +85,9 @@ public class ProductoResourceIT {
     private UtilService utilService;
     
     @Autowired
+    private CategoriaService categoriaService;
+    
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -99,7 +109,7 @@ public class ProductoResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProductoResource productoResource = new ProductoResource(productoService, utilService);
+        final ProductoResource productoResource = new ProductoResource(productoService, utilService, categoriaService);
         this.restProductoMockMvc = MockMvcBuilders.standaloneSetup(productoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

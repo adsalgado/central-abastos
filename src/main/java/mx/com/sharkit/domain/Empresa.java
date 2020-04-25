@@ -1,11 +1,18 @@
 package mx.com.sharkit.domain;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * A Empresa.
@@ -39,9 +46,6 @@ public class Empresa implements Serializable {
 
     @OneToMany(mappedBy = "empresa")
     private Set<Producto> productos = new HashSet<>();
-
-    @OneToMany(mappedBy = "empresa")
-    private Set<Categoria> categorias = new HashSet<>();
 
     @OneToMany(mappedBy = "empresa")
     private Set<Seccion> seccions = new HashSet<>();
@@ -191,31 +195,6 @@ public class Empresa implements Serializable {
 
     public void setProductos(Set<Producto> productos) {
         this.productos = productos;
-    }
-
-    public Set<Categoria> getCategorias() {
-        return categorias;
-    }
-
-    public Empresa categorias(Set<Categoria> categorias) {
-        this.categorias = categorias;
-        return this;
-    }
-
-    public Empresa addCategoria(Categoria categoria) {
-        this.categorias.add(categoria);
-        categoria.setEmpresa(this);
-        return this;
-    }
-
-    public Empresa removeCategoria(Categoria categoria) {
-        this.categorias.remove(categoria);
-        categoria.setEmpresa(null);
-        return this;
-    }
-
-    public void setCategorias(Set<Categoria> categorias) {
-        this.categorias = categorias;
     }
 
     public Set<Seccion> getSeccions() {

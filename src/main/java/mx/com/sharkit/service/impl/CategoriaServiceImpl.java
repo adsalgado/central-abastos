@@ -87,4 +87,12 @@ public class CategoriaServiceImpl implements CategoriaService {
         log.debug("Request to delete Categoria : {}", id);
         categoriaRepository.deleteById(id);
     }
+
+	@Override
+	public List<CategoriaDTO> findBySeccionId(Long seccionId) {
+		log.debug("Request to get all Categorias by seccionId {}", seccionId);
+        return categoriaRepository.findBySeccionId(seccionId).stream()
+            .map(categoriaMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+	}
 }

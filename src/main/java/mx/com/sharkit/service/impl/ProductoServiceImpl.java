@@ -21,13 +21,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.sharkit.domain.Producto;
-import mx.com.sharkit.domain.ProductoImagen;
 import mx.com.sharkit.repository.ProductoImagenRepository;
 import mx.com.sharkit.repository.ProductoRepository;
+import mx.com.sharkit.service.CategoriaService;
 import mx.com.sharkit.service.ProductoService;
 import mx.com.sharkit.service.dto.AdjuntoDTO;
 import mx.com.sharkit.service.dto.ProductoDTO;
 import mx.com.sharkit.service.dto.ProductoImagenDTO;
+import mx.com.sharkit.service.dto.ProductosHomeDTO;
 import mx.com.sharkit.service.mapper.ProductoImagenMapper;
 import mx.com.sharkit.service.mapper.ProductoMapper;
 
@@ -96,15 +97,12 @@ public class ProductoServiceImpl implements ProductoService {
 		Optional<ProductoDTO> optDTO = productoRepository.findById(id).map(productoMapper::toDto);
 		ProductoDTO productoDTO = optDTO.isPresent() ? optDTO.get() : null;
 		if (productoDTO != null) {
-			List<AdjuntoDTO> adjuntos = 
-					productoImagenRepository.findByProductoIdOrderByIdAsc(productoDTO.getId())
-						.stream()
-						.map(productoImagenMapper::toDto)
-						.map(ProductoImagenDTO::getAdjunto)
-						.collect(Collectors.toCollection(LinkedList::new));
+			List<AdjuntoDTO> adjuntos = productoImagenRepository.findByProductoIdOrderByIdAsc(productoDTO.getId())
+					.stream().map(productoImagenMapper::toDto).map(ProductoImagenDTO::getAdjunto)
+					.collect(Collectors.toCollection(LinkedList::new));
 			productoDTO.setImagenes(adjuntos);
 		}
-		return  optDTO;
+		return optDTO;
 	}
 
 	/**
@@ -168,6 +166,11 @@ public class ProductoServiceImpl implements ProductoService {
 	@Override
 	public List<ProductoDTO> getImagenesProducto(Long productoId) {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ProductosHomeDTO getProductosCategoria(Long seccionId, String queryString) {
 		return null;
 	}
 }

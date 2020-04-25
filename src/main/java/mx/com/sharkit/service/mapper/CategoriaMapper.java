@@ -1,22 +1,21 @@
 package mx.com.sharkit.service.mapper;
 
-import mx.com.sharkit.domain.*;
-import mx.com.sharkit.service.dto.CategoriaDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import org.mapstruct.*;
+import mx.com.sharkit.domain.Categoria;
+import mx.com.sharkit.service.dto.CategoriaDTO;
 
 /**
  * Mapper for the entity {@link Categoria} and its DTO {@link CategoriaDTO}.
  */
-@Mapper(componentModel = "spring", uses = {EmpresaMapper.class})
+@Mapper(componentModel = "spring", uses = {SeccionMapper.class})
 public interface CategoriaMapper extends EntityMapper<CategoriaDTO, Categoria> {
 
-    @Mapping(source = "empresa.id", target = "empresaId")
+    @Mapping(source = "seccion.id", target = "seccionId")
     CategoriaDTO toDto(Categoria categoria);
 
-    @Mapping(target = "productos", ignore = true)
-    @Mapping(target = "removeProducto", ignore = true)
-    @Mapping(source = "empresaId", target = "empresa")
+    @Mapping(source = "seccionId", target = "seccion")
     Categoria toEntity(CategoriaDTO categoriaDTO);
 
     default Categoria fromId(Long id) {
