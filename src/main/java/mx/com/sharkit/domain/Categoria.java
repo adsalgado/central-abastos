@@ -64,6 +64,9 @@ public class Categoria implements Serializable {
     @Column(name = "seccion_id")
     private Long seccionId;
 
+    @Column(name = "adjunto_id")
+    private Long adjuntoId;
+
     @OneToMany(mappedBy = "categoria")
     private Set<Producto> productos = new HashSet<>();
 
@@ -174,6 +177,14 @@ public class Categoria implements Serializable {
 
 	public Long getSeccionId() {
 		return seccionId;
+	}
+
+    public Long getAdjuntoId() {
+		return adjuntoId;
+	}
+
+	public void setAdjuntoId(Long adjuntoId) {
+		this.adjuntoId = adjuntoId;
 	}
 
 	public void setSeccionId(Long seccionId) {

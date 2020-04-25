@@ -39,6 +39,8 @@ public class CategoriaDTO implements Serializable {
     
     private Long seccionId;
 
+    private Long adjuntoId;
+
     public Long getId() {
         return id;
     }
@@ -117,6 +119,14 @@ public class CategoriaDTO implements Serializable {
 
 	public void setSeccionId(Long seccionId) {
 		this.seccionId = seccionId;
+	}
+
+    public Long getAdjuntoId() {
+		return adjuntoId;
+	}
+
+	public void setAdjuntoId(Long adjuntoId) {
+		this.adjuntoId = adjuntoId;
 	}
 
 	@Override
