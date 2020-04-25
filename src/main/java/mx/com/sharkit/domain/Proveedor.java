@@ -1,13 +1,22 @@
 package mx.com.sharkit.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A Proveedor.
@@ -54,9 +63,6 @@ public class Proveedor implements Serializable {
     @Column(name = "usuario_modificacion_id")
     private Long usuarioModificacionId;
     
-    @OneToMany(mappedBy = "proveedor")
-    private Set<Producto> productos = new HashSet<>();
-
     @OneToMany(mappedBy = "proveedor")
     private Set<OfertaProveedor> ofertaProveedors = new HashSet<>();
 
@@ -172,31 +178,6 @@ public class Proveedor implements Serializable {
 	public void setUsuarioModificacionId(Long usuarioModificacionId) {
 		this.usuarioModificacionId = usuarioModificacionId;
 	}
-
-	public Set<Producto> getProductos() {
-        return productos;
-    }
-
-    public Proveedor productos(Set<Producto> productos) {
-        this.productos = productos;
-        return this;
-    }
-
-    public Proveedor addProducto(Producto producto) {
-        this.productos.add(producto);
-        producto.setProveedor(this);
-        return this;
-    }
-
-    public Proveedor removeProducto(Producto producto) {
-        this.productos.remove(producto);
-        producto.setProveedor(null);
-        return this;
-    }
-
-    public void setProductos(Set<Producto> productos) {
-        this.productos = productos;
-    }
 
     public Set<OfertaProveedor> getOfertaProveedors() {
         return ofertaProveedors;

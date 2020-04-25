@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -38,6 +39,9 @@ public class CategoriaDTO implements Serializable {
     private SeccionDTO seccion;
     
     private Long seccionId;
+    
+    private Long adjuntoId;
+
 
     public Long getId() {
         return id;
@@ -117,6 +121,14 @@ public class CategoriaDTO implements Serializable {
 
 	public void setSeccionId(Long seccionId) {
 		this.seccionId = seccionId;
+	}
+
+	public Long getAdjuntoId() {
+		return adjuntoId;
+	}
+
+	public void setAdjuntoId(Long adjuntoId) {
+		this.adjuntoId = adjuntoId;
 	}
 
 	@Override

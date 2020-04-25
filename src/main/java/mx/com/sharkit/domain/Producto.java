@@ -74,14 +74,6 @@ public class Producto implements Serializable {
     private Long usuarioModificacionId;
 
     @ManyToOne
-    @JoinColumn(name = "proveedor_id", insertable = false, updatable = false)
-    @JsonIgnoreProperties("productos")
-    private Proveedor proveedor;
-
-    @Column(name = "proveedor_id")
-    private Long proveedorId;
-
-    @ManyToOne
     @JoinColumn(name = "tipo_articulo_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("productos")
     private TipoArticulo tipoArticulo;
@@ -178,14 +170,6 @@ public class Producto implements Serializable {
 
 	public void setUsuarioModificacionId(Long usuarioModificacionId) {
 		this.usuarioModificacionId = usuarioModificacionId;
-	}
-
-	public Long getProveedorId() {
-		return proveedorId;
-	}
-
-	public void setProveedorId(Long proveedorId) {
-		this.proveedorId = proveedorId;
 	}
 
 	public Long getTipoArticuloId() {
@@ -514,19 +498,6 @@ public class Producto implements Serializable {
 
     public void setProductoImagens(Set<ProductoImagen> productoImagens) {
         this.productoImagens = productoImagens;
-    }
-
-    public Proveedor getProveedor() {
-        return proveedor;
-    }
-
-    public Producto proveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
-        return this;
-    }
-
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
     }
 
     public TipoArticulo getTipoArticulo() {

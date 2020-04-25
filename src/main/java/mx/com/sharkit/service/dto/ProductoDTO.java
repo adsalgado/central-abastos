@@ -43,8 +43,6 @@ public class ProductoDTO implements Serializable {
 
     private Long usuarioModificacionId;
 
-    private Long proveedorId;
-
     private Long tipoArticuloId;
 
     private Long categoriaId;
@@ -56,8 +54,6 @@ public class ProductoDTO implements Serializable {
     private Long unidadMedidaId;
 
     private Long empresaId;
-
-    private ProveedorDTO proveedor;
 
     private TipoArticuloDTO tipoArticulo;
 
@@ -161,14 +157,6 @@ public class ProductoDTO implements Serializable {
         this.usuarioModificacionId = userId;
     }
 
-    public Long getProveedorId() {
-        return proveedorId;
-    }
-
-    public void setProveedorId(Long proveedorId) {
-        this.proveedorId = proveedorId;
-    }
-
     public Long getTipoArticuloId() {
         return tipoArticuloId;
     }
@@ -216,14 +204,6 @@ public class ProductoDTO implements Serializable {
     public void setEmpresaId(Long empresaId) {
         this.empresaId = empresaId;
     }
-
-    public ProveedorDTO getProveedor() {
-		return proveedor;
-	}
-
-	public void setProveedor(ProveedorDTO proveedor) {
-		this.proveedor = proveedor;
-	}
 
 	public TipoArticuloDTO getTipoArticulo() {
 		return tipoArticulo;
@@ -316,7 +296,6 @@ public class ProductoDTO implements Serializable {
             ", adjunto=" + getAdjuntoId() +
             ", usuarioAlta=" + getUsuarioAltaId() +
             ", usuarioModificacion=" + getUsuarioModificacionId() +
-            ", proveedor=" + getProveedorId() +
             ", tipoArticulo=" + getTipoArticuloId() +
             ", categoria=" + getCategoriaId() +
             ", seccion=" + getSeccionId() +

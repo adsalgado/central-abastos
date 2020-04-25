@@ -8,14 +8,12 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Producto} and its DTO {@link ProductoDTO}.
  */
-@Mapper(componentModel = "spring", uses = {AdjuntoMapper.class, UserMapper.class, ProveedorMapper.class, TipoArticuloMapper.class, CategoriaMapper.class, SeccionMapper.class, EstatusMapper.class, UnidadMedidaMapper.class, EmpresaMapper.class})
+@Mapper(componentModel = "spring", uses = {AdjuntoMapper.class, UserMapper.class, TipoArticuloMapper.class, CategoriaMapper.class, SeccionMapper.class, EstatusMapper.class, UnidadMedidaMapper.class, EmpresaMapper.class})
 public interface ProductoMapper extends EntityMapper<ProductoDTO, Producto> {
 
     @Mapping(source = "adjunto.id", target = "adjuntoId")
     @Mapping(source = "usuarioAlta.id", target = "usuarioAltaId")
     @Mapping(source = "usuarioModificacion.id", target = "usuarioModificacionId")
-    @Mapping(source = "proveedor.id", target = "proveedorId")
-    @Mapping(source = "proveedor", target = "proveedor")
     @Mapping(source = "tipoArticulo.id", target = "tipoArticuloId")
     @Mapping(source = "tipoArticulo", target = "tipoArticulo")
     @Mapping(source = "categoria.id", target = "categoriaId")
@@ -45,7 +43,6 @@ public interface ProductoMapper extends EntityMapper<ProductoDTO, Producto> {
     @Mapping(target = "removeInventario", ignore = true)
     @Mapping(target = "productoImagens", ignore = true)
     @Mapping(target = "removeProductoImagen", ignore = true)
-    @Mapping(source = "proveedorId", target = "proveedor")
     @Mapping(source = "tipoArticuloId", target = "tipoArticulo")
     @Mapping(source = "categoriaId", target = "categoria")
     @Mapping(source = "seccionId", target = "seccion")
