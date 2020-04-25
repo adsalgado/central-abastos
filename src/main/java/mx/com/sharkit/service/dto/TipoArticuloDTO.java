@@ -1,7 +1,12 @@
 package mx.com.sharkit.service.dto;
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.TipoArticulo} entity.
@@ -13,6 +18,25 @@ public class TipoArticuloDTO implements Serializable {
     @NotNull
     @Size(max = 128)
     private String nombre;
+
+    @Size(max = 256)
+    private String descripcion;
+
+    private Long usuarioAltaId;
+
+    private Long usuarioModificacionId;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+    private LocalDateTime fechaAlta;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+    private LocalDateTime fechaModificacion;
+
+    private CategoriaDTO categoria;
+    
+    private Long categoriaId;
+    
+    private Long adjuntoId;
 
 
     public Long getId() {
@@ -31,7 +55,71 @@ public class TipoArticuloDTO implements Serializable {
         this.nombre = nombre;
     }
 
-    @Override
+    public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public Long getUsuarioAltaId() {
+		return usuarioAltaId;
+	}
+
+	public void setUsuarioAltaId(Long usuarioAltaId) {
+		this.usuarioAltaId = usuarioAltaId;
+	}
+
+	public Long getUsuarioModificacionId() {
+		return usuarioModificacionId;
+	}
+
+	public void setUsuarioModificacionId(Long usuarioModificacionId) {
+		this.usuarioModificacionId = usuarioModificacionId;
+	}
+
+	public LocalDateTime getFechaAlta() {
+		return fechaAlta;
+	}
+
+	public void setFechaAlta(LocalDateTime fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
+
+	public LocalDateTime getFechaModificacion() {
+		return fechaModificacion;
+	}
+
+	public void setFechaModificacion(LocalDateTime fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+	}
+
+	public CategoriaDTO getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(CategoriaDTO categoria) {
+		this.categoria = categoria;
+	}
+
+	public Long getCategoriaId() {
+		return categoriaId;
+	}
+
+	public void setCategoriaId(Long categoriaId) {
+		this.categoriaId = categoriaId;
+	}
+
+	public Long getAdjuntoId() {
+		return adjuntoId;
+	}
+
+	public void setAdjuntoId(Long adjuntoId) {
+		this.adjuntoId = adjuntoId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -52,11 +140,12 @@ public class TipoArticuloDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "TipoArticuloDTO{" +
-            "id=" + getId() +
-            ", nombre='" + getNombre() + "'" +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "TipoArticuloDTO [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", usuarioAltaId="
+				+ usuarioAltaId + ", usuarioModificacionId=" + usuarioModificacionId + ", fechaAlta=" + fechaAlta
+				+ ", fechaModificacion=" + fechaModificacion + ", categoriaId=" + categoriaId + ", adjuntoId="
+				+ adjuntoId + "]";
+	}
+
 }

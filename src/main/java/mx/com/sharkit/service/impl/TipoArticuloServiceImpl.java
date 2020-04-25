@@ -23,68 +23,74 @@ import java.util.stream.Collectors;
 @Transactional
 public class TipoArticuloServiceImpl implements TipoArticuloService {
 
-    private final Logger log = LoggerFactory.getLogger(TipoArticuloServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(TipoArticuloServiceImpl.class);
 
-    private final TipoArticuloRepository tipoArticuloRepository;
+	private final TipoArticuloRepository tipoArticuloRepository;
 
-    private final TipoArticuloMapper tipoArticuloMapper;
+	private final TipoArticuloMapper tipoArticuloMapper;
 
-    public TipoArticuloServiceImpl(TipoArticuloRepository tipoArticuloRepository, TipoArticuloMapper tipoArticuloMapper) {
-        this.tipoArticuloRepository = tipoArticuloRepository;
-        this.tipoArticuloMapper = tipoArticuloMapper;
-    }
+	public TipoArticuloServiceImpl(TipoArticuloRepository tipoArticuloRepository,
+			TipoArticuloMapper tipoArticuloMapper) {
+		this.tipoArticuloRepository = tipoArticuloRepository;
+		this.tipoArticuloMapper = tipoArticuloMapper;
+	}
 
-    /**
-     * Save a tipoArticulo.
-     *
-     * @param tipoArticuloDTO the entity to save.
-     * @return the persisted entity.
-     */
-    @Override
-    public TipoArticuloDTO save(TipoArticuloDTO tipoArticuloDTO) {
-        log.debug("Request to save TipoArticulo : {}", tipoArticuloDTO);
-        TipoArticulo tipoArticulo = tipoArticuloMapper.toEntity(tipoArticuloDTO);
-        tipoArticulo = tipoArticuloRepository.save(tipoArticulo);
-        return tipoArticuloMapper.toDto(tipoArticulo);
-    }
+	/**
+	 * Save a tipoArticulo.
+	 *
+	 * @param tipoArticuloDTO the entity to save.
+	 * @return the persisted entity.
+	 */
+	@Override
+	public TipoArticuloDTO save(TipoArticuloDTO tipoArticuloDTO) {
+		log.debug("Request to save TipoArticulo : {}", tipoArticuloDTO);
+		TipoArticulo tipoArticulo = tipoArticuloMapper.toEntity(tipoArticuloDTO);
+		tipoArticulo = tipoArticuloRepository.save(tipoArticulo);
+		return tipoArticuloMapper.toDto(tipoArticulo);
+	}
 
-    /**
-     * Get all the tipoArticulos.
-     *
-     * @return the list of entities.
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<TipoArticuloDTO> findAll() {
-        log.debug("Request to get all TipoArticulos");
-        return tipoArticuloRepository.findAll().stream()
-            .map(tipoArticuloMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
-    }
+	/**
+	 * Get all the tipoArticulos.
+	 *
+	 * @return the list of entities.
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public List<TipoArticuloDTO> findAll() {
+		log.debug("Request to get all TipoArticulos");
+		return tipoArticuloRepository.findAll().stream().map(tipoArticuloMapper::toDto)
+				.collect(Collectors.toCollection(LinkedList::new));
+	}
 
+	/**
+	 * Get one tipoArticulo by id.
+	 *
+	 * @param id the id of the entity.
+	 * @return the entity.
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<TipoArticuloDTO> findOne(Long id) {
+		log.debug("Request to get TipoArticulo : {}", id);
+		return tipoArticuloRepository.findById(id).map(tipoArticuloMapper::toDto);
+	}
 
-    /**
-     * Get one tipoArticulo by id.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<TipoArticuloDTO> findOne(Long id) {
-        log.debug("Request to get TipoArticulo : {}", id);
-        return tipoArticuloRepository.findById(id)
-            .map(tipoArticuloMapper::toDto);
-    }
+	/**
+	 * Delete the tipoArticulo by id.
+	 *
+	 * @param id the id of the entity.
+	 */
+	@Override
+	public void delete(Long id) {
+		log.debug("Request to delete TipoArticulo : {}", id);
+		tipoArticuloRepository.deleteById(id);
+	}
 
-    /**
-     * Delete the tipoArticulo by id.
-     *
-     * @param id the id of the entity.
-     */
-    @Override
-    public void delete(Long id) {
-        log.debug("Request to delete TipoArticulo : {}", id);
-        tipoArticuloRepository.deleteById(id);
-    }
+	@Override
+	public List<TipoArticuloDTO> findByCategoriaId(Long categoriaId) {
+		log.debug("Request to get all TipoArticulos by categoriaId {}", categoriaId);
+		return tipoArticuloRepository.findByCategoriaId(categoriaId).stream().map(tipoArticuloMapper::toDto)
+				.collect(Collectors.toCollection(LinkedList::new));
+	}
+
 }

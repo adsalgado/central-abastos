@@ -40,4 +40,13 @@ public interface TipoArticuloService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    /**
+     * Get all the tipoArticulos by categoria.
+     *
+     * @param categoriaId
+     * @return the list of entities.
+     */
+    List<TipoArticuloDTO> findByCategoriaId(Long categoriaId);
+
 }

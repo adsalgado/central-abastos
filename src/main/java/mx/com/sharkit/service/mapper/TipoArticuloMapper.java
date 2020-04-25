@@ -1,19 +1,24 @@
 package mx.com.sharkit.service.mapper;
 
-import mx.com.sharkit.domain.*;
-import mx.com.sharkit.service.dto.TipoArticuloDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import org.mapstruct.*;
+import mx.com.sharkit.domain.TipoArticulo;
+import mx.com.sharkit.service.dto.TipoArticuloDTO;
 
 /**
  * Mapper for the entity {@link TipoArticulo} and its DTO {@link TipoArticuloDTO}.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {CategoriaMapper.class})
 public interface TipoArticuloMapper extends EntityMapper<TipoArticuloDTO, TipoArticulo> {
+
+    @Mapping(source = "categoria.id", target = "categoriaId")
+    TipoArticuloDTO toDto(TipoArticulo tipoArticulo);
 
 
     @Mapping(target = "productos", ignore = true)
     @Mapping(target = "removeProducto", ignore = true)
+    @Mapping(source = "categoriaId", target = "categoria")
     TipoArticulo toEntity(TipoArticuloDTO tipoArticuloDTO);
 
     default TipoArticulo fromId(Long id) {
