@@ -36,6 +36,7 @@ import mx.com.sharkit.domain.Producto;
 import mx.com.sharkit.repository.ProductoRepository;
 import mx.com.sharkit.service.CategoriaService;
 import mx.com.sharkit.service.ProductoService;
+import mx.com.sharkit.service.TipoArticuloService;
 import mx.com.sharkit.service.UtilService;
 import mx.com.sharkit.service.dto.ProductoDTO;
 import mx.com.sharkit.service.mapper.ProductoMapper;
@@ -88,6 +89,9 @@ public class ProductoResourceIT {
     private CategoriaService categoriaService;
     
     @Autowired
+    private TipoArticuloService tipoArticuloService;
+    
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -109,7 +113,7 @@ public class ProductoResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProductoResource productoResource = new ProductoResource(productoService, utilService, categoriaService);
+        final ProductoResource productoResource = new ProductoResource(productoService, utilService, categoriaService, tipoArticuloService);
         this.restProductoMockMvc = MockMvcBuilders.standaloneSetup(productoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
