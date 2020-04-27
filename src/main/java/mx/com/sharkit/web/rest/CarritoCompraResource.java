@@ -1,6 +1,5 @@
 package mx.com.sharkit.web.rest;
 
-import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
@@ -74,7 +73,6 @@ public class CarritoCompraResource {
 
         carritoCompraDTO.setClienteId(clienteId);
         carritoCompraDTO.setFechaAlta(LocalDateTime.now());
-        carritoCompraDTO.setCantidad(BigDecimal.ONE);
         
         CarritoCompraDTO result = carritoCompraService.save(carritoCompraDTO);
         return ResponseEntity.created(new URI("/api/carrito-compras/" + result.getId()))

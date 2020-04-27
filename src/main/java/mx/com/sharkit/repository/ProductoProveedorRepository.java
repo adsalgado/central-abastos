@@ -12,7 +12,7 @@ import mx.com.sharkit.domain.ProductoProveedor;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ProductoProveedorRepository  extends IBaseRepositorio<ProductoProveedor, Long>, JpaSpecificationExecutor<Producto> {
+public interface ProductoProveedorRepository  extends IBaseRepositorio<ProductoProveedor, Long>, JpaSpecificationExecutor<ProductoProveedor> {
 
 }
 
