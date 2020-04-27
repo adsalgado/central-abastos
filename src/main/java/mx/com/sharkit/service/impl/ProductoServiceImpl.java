@@ -119,7 +119,6 @@ public class ProductoServiceImpl implements ProductoService {
 	@Override
 	public List<ProductoDTO> searchProductos(Map<String, Object> params, Pageable pageable) {
 
-		productoRepository.findAll();
 		Page<Producto> pageProductos = productoRepository.findAll(new Specification<Producto>() {
 
 			@Override

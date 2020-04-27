@@ -1,7 +1,10 @@
 package mx.com.sharkit.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import org.hibernate.criterion.Order;
 
 import mx.com.sharkit.domain.ProductoProveedor;
 import mx.com.sharkit.service.dto.ProductoProveedorDTO;
@@ -41,4 +44,6 @@ public interface ProductoProveedorService extends BaseService<ProductoProveedor,
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    List<ProductoProveedorDTO> searchProductos(Map<String, Object> params, Integer page, Integer pagesize, Order order);
 }
