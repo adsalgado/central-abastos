@@ -87,4 +87,13 @@ public class UsuarioDireccionServiceImpl implements UsuarioDireccionService {
         log.debug("Request to delete UsuarioDireccion : {}", id);
         usuarioDireccionRepository.deleteById(id);
     }
+
+	@Override
+	public List<UsuarioDireccionDTO> findByUsuarioId(Long usuarioId) {
+        log.debug("Request to get all UsuarioDireccions by usuarioId: {}", usuarioId);
+        return usuarioDireccionRepository.findByUsuarioId(usuarioId).stream()
+            .map(usuarioDireccionMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+ 
+	}
 }

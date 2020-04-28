@@ -1,8 +1,12 @@
 package mx.com.sharkit.service.dto;
-import java.time.LocalDate;
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.Tarjeta} entity.
@@ -22,62 +26,62 @@ public class TarjetaDTO implements Serializable {
     @NotNull
     @Size(max = 3)
     private String numeroSeguridad;
+    
+    private Long usuarioId;
 
-    @NotNull
-    private LocalDate fechaAlta;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+    private LocalDateTime fechaAlta;
 
-
-    private Long clienteId;
 
     public Long getId() {
-        return id;
-    }
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getNumeroTarjeta() {
-        return numeroTarjeta;
-    }
+	public String getNumeroTarjeta() {
+		return numeroTarjeta;
+	}
 
-    public void setNumeroTarjeta(String numeroTarjeta) {
-        this.numeroTarjeta = numeroTarjeta;
-    }
+	public void setNumeroTarjeta(String numeroTarjeta) {
+		this.numeroTarjeta = numeroTarjeta;
+	}
 
-    public String getFechaCaducidad() {
-        return fechaCaducidad;
-    }
+	public String getFechaCaducidad() {
+		return fechaCaducidad;
+	}
 
-    public void setFechaCaducidad(String fechaCaducidad) {
-        this.fechaCaducidad = fechaCaducidad;
-    }
+	public void setFechaCaducidad(String fechaCaducidad) {
+		this.fechaCaducidad = fechaCaducidad;
+	}
 
-    public String getNumeroSeguridad() {
-        return numeroSeguridad;
-    }
+	public String getNumeroSeguridad() {
+		return numeroSeguridad;
+	}
 
-    public void setNumeroSeguridad(String numeroSeguridad) {
-        this.numeroSeguridad = numeroSeguridad;
-    }
+	public void setNumeroSeguridad(String numeroSeguridad) {
+		this.numeroSeguridad = numeroSeguridad;
+	}
 
-    public LocalDate getFechaAlta() {
-        return fechaAlta;
-    }
+	public Long getUsuarioId() {
+		return usuarioId;
+	}
 
-    public void setFechaAlta(LocalDate fechaAlta) {
-        this.fechaAlta = fechaAlta;
-    }
+	public void setUsuarioId(Long usuarioId) {
+		this.usuarioId = usuarioId;
+	}
 
-    public Long getClienteId() {
-        return clienteId;
-    }
+	public LocalDateTime getFechaAlta() {
+		return fechaAlta;
+	}
 
-    public void setClienteId(Long clienteId) {
-        this.clienteId = clienteId;
-    }
+	public void setFechaAlta(LocalDateTime fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
 
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -98,15 +102,11 @@ public class TarjetaDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "TarjetaDTO{" +
-            "id=" + getId() +
-            ", numeroTarjeta='" + getNumeroTarjeta() + "'" +
-            ", fechaCaducidad='" + getFechaCaducidad() + "'" +
-            ", numeroSeguridad='" + getNumeroSeguridad() + "'" +
-            ", fechaAlta='" + getFechaAlta() + "'" +
-            ", cliente=" + getClienteId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "TarjetaDTO [id=" + id + ", numeroTarjeta=" + numeroTarjeta + ", fechaCaducidad=" + fechaCaducidad
+				+ ", numeroSeguridad=" + numeroSeguridad + ", usuarioId=" + usuarioId + ", fechaAlta=" + fechaAlta
+				+ "]";
+	}
+
 }

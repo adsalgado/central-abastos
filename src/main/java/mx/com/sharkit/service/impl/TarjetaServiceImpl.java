@@ -1,20 +1,20 @@
 package mx.com.sharkit.service.impl;
 
-import mx.com.sharkit.service.TarjetaService;
-import mx.com.sharkit.domain.Tarjeta;
-import mx.com.sharkit.repository.TarjetaRepository;
-import mx.com.sharkit.service.dto.TarjetaDTO;
-import mx.com.sharkit.service.mapper.TarjetaMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import mx.com.sharkit.domain.Tarjeta;
+import mx.com.sharkit.repository.TarjetaRepository;
+import mx.com.sharkit.service.TarjetaService;
+import mx.com.sharkit.service.dto.TarjetaDTO;
+import mx.com.sharkit.service.mapper.TarjetaMapper;
 
 /**
  * Service Implementation for managing {@link Tarjeta}.
@@ -87,4 +87,12 @@ public class TarjetaServiceImpl implements TarjetaService {
         log.debug("Request to delete Tarjeta : {}", id);
         tarjetaRepository.deleteById(id);
     }
+
+	@Override
+	public List<TarjetaDTO> findByUsuarioId(Long usuarioId) {
+		log.debug("Request to get all Tarjetas by usuarioId: {}", usuarioId);
+        return tarjetaRepository.findByUsuarioId(usuarioId).stream()
+            .map(tarjetaMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+	}
 }

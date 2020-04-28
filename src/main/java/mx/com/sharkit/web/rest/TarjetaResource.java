@@ -1,23 +1,33 @@
 package mx.com.sharkit.web.rest;
 
-import mx.com.sharkit.service.TarjetaService;
-import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
-import mx.com.sharkit.service.dto.TarjetaDTO;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import mx.com.sharkit.domain.User;
+import mx.com.sharkit.service.TarjetaService;
+import mx.com.sharkit.service.UserService;
+import mx.com.sharkit.service.dto.TarjetaDTO;
+import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 
 /**
  * REST controller for managing {@link mx.com.sharkit.domain.Tarjeta}.
@@ -34,9 +44,12 @@ public class TarjetaResource {
     private String applicationName;
 
     private final TarjetaService tarjetaService;
+    
+    private final UserService userService;
 
-    public TarjetaResource(TarjetaService tarjetaService) {
+    public TarjetaResource(TarjetaService tarjetaService, UserService userService) {
         this.tarjetaService = tarjetaService;
+        this.userService = userService;
     }
 
     /**
@@ -52,6 +65,17 @@ public class TarjetaResource {
         if (tarjetaDTO.getId() != null) {
             throw new BadRequestAlertException("A new tarjeta cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        
+        Optional<User> user = userService.getUserWithAuthorities();
+        Long usuarioId =  user.isPresent() ? user.get().getId() : 0L;
+        if (usuarioId == 0) {
+            throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+        }
+        
+        LocalDateTime now = LocalDateTime.now();
+        tarjetaDTO.setUsuarioId(usuarioId);
+        tarjetaDTO.setFechaAlta(now);
+
         TarjetaDTO result = tarjetaService.save(tarjetaDTO);
         return ResponseEntity.created(new URI("/api/tarjetas/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -73,6 +97,17 @@ public class TarjetaResource {
         if (tarjetaDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        
+        Optional<User> user = userService.getUserWithAuthorities();
+        Long usuarioId =  user.isPresent() ? user.get().getId() : 0L;
+        if (usuarioId == 0) {
+            throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+        }
+        
+        LocalDateTime now = LocalDateTime.now();
+        tarjetaDTO.setUsuarioId(usuarioId);
+        tarjetaDTO.setFechaAlta(now);
+        
         TarjetaDTO result = tarjetaService.save(tarjetaDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, tarjetaDTO.getId().toString()))
@@ -88,7 +123,13 @@ public class TarjetaResource {
     @GetMapping("/tarjetas")
     public List<TarjetaDTO> getAllTarjetas() {
         log.debug("REST request to get all Tarjetas");
-        return tarjetaService.findAll();
+        Optional<User> user = userService.getUserWithAuthorities();
+        Long usuarioId =  user.isPresent() ? user.get().getId() : 0L;
+        if (usuarioId == 0) {
+            throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+        }
+        
+        return tarjetaService.findByUsuarioId(usuarioId);
     }
 
     /**

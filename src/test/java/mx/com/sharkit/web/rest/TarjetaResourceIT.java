@@ -1,12 +1,21 @@
 package mx.com.sharkit.web.rest;
 
-import mx.com.sharkit.AbastosApp;
-import mx.com.sharkit.domain.Tarjeta;
-import mx.com.sharkit.repository.TarjetaRepository;
-import mx.com.sharkit.service.TarjetaService;
-import mx.com.sharkit.service.dto.TarjetaDTO;
-import mx.com.sharkit.service.mapper.TarjetaMapper;
-import mx.com.sharkit.web.rest.errors.ExceptionTranslator;
+import static mx.com.sharkit.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,16 +30,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
-import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.List;
-
-import static mx.com.sharkit.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import mx.com.sharkit.AbastosApp;
+import mx.com.sharkit.domain.Tarjeta;
+import mx.com.sharkit.repository.TarjetaRepository;
+import mx.com.sharkit.service.TarjetaService;
+import mx.com.sharkit.service.UserService;
+import mx.com.sharkit.service.dto.TarjetaDTO;
+import mx.com.sharkit.service.mapper.TarjetaMapper;
+import mx.com.sharkit.web.rest.errors.ExceptionTranslator;
 
 /**
  * Integration tests for the {@link TarjetaResource} REST controller.
@@ -59,6 +66,9 @@ public class TarjetaResourceIT {
 
     @Autowired
     private TarjetaService tarjetaService;
+    
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -82,7 +92,7 @@ public class TarjetaResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final TarjetaResource tarjetaResource = new TarjetaResource(tarjetaService);
+        final TarjetaResource tarjetaResource = new TarjetaResource(tarjetaService, userService);
         this.restTarjetaMockMvc = MockMvcBuilders.standaloneSetup(tarjetaResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -98,11 +108,7 @@ public class TarjetaResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Tarjeta createEntity(EntityManager em) {
-        Tarjeta tarjeta = new Tarjeta()
-            .numeroTarjeta(DEFAULT_NUMERO_TARJETA)
-            .fechaCaducidad(DEFAULT_FECHA_CADUCIDAD)
-            .numeroSeguridad(DEFAULT_NUMERO_SEGURIDAD)
-            .fechaAlta(DEFAULT_FECHA_ALTA);
+        Tarjeta tarjeta = new Tarjeta();
         return tarjeta;
     }
     /**
@@ -112,11 +118,7 @@ public class TarjetaResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Tarjeta createUpdatedEntity(EntityManager em) {
-        Tarjeta tarjeta = new Tarjeta()
-            .numeroTarjeta(UPDATED_NUMERO_TARJETA)
-            .fechaCaducidad(UPDATED_FECHA_CADUCIDAD)
-            .numeroSeguridad(UPDATED_NUMERO_SEGURIDAD)
-            .fechaAlta(UPDATED_FECHA_ALTA);
+        Tarjeta tarjeta = new Tarjeta();
         return tarjeta;
     }
 
@@ -298,11 +300,6 @@ public class TarjetaResourceIT {
         Tarjeta updatedTarjeta = tarjetaRepository.findById(tarjeta.getId()).get();
         // Disconnect from session so that the updates on updatedTarjeta are not directly saved in db
         em.detach(updatedTarjeta);
-        updatedTarjeta
-            .numeroTarjeta(UPDATED_NUMERO_TARJETA)
-            .fechaCaducidad(UPDATED_FECHA_CADUCIDAD)
-            .numeroSeguridad(UPDATED_NUMERO_SEGURIDAD)
-            .fechaAlta(UPDATED_FECHA_ALTA);
         TarjetaDTO tarjetaDTO = tarjetaMapper.toDto(updatedTarjeta);
 
         restTarjetaMockMvc.perform(put("/api/tarjetas")
