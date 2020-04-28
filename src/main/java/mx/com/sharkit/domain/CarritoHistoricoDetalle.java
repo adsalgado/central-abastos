@@ -28,12 +28,12 @@ public class CarritoHistoricoDetalle implements Serializable {
     private BigDecimal precio;
 
     @ManyToOne
-    @JoinColumn(name = "producto_id", insertable = false, updatable = false)
+    @JoinColumn(name = "producto_proveedor_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("carritoCompraDetalles")
-    private Producto producto;
+    private ProductoProveedor productoProveedor;
     
-    @Column(name = "producto_id")
-    private Long productoId;
+    @Column(name = "producto_proveedor_id")
+    private Long productoProveedorId;
 
     @ManyToOne
     @JoinColumn(name = "carrito_historico_id", insertable = false, updatable = false)
@@ -78,19 +78,6 @@ public class CarritoHistoricoDetalle implements Serializable {
         this.precio = precio;
     }
 
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public CarritoHistoricoDetalle producto(Producto producto) {
-        this.producto = producto;
-        return this;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
     public CarritoHistorico getCarritoHistorico() {
         return carritoHistorico;
     }
@@ -104,23 +91,29 @@ public class CarritoHistoricoDetalle implements Serializable {
         this.carritoHistorico = carritoHistorico;
     }
     
-    
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
-
-    public Long getProductoId() {
-		return productoId;
-	}
-
-	public void setProductoId(Long productoId) {
-		this.productoId = productoId;
-	}
-
 	public Long getCarritoHistoricoId() {
 		return carritoHistoricoId;
 	}
 
 	public void setCarritoHistoricoId(Long carritoHistoricoId) {
 		this.carritoHistoricoId = carritoHistoricoId;
+	}
+	
+
+	public ProductoProveedor getProductoProveedor() {
+		return productoProveedor;
+	}
+
+	public void setProductoProveedor(ProductoProveedor productoProveedor) {
+		this.productoProveedor = productoProveedor;
+	}
+
+	public Long getProductoProveedorId() {
+		return productoProveedorId;
+	}
+
+	public void setProductoProveedorId(Long productoProveedorId) {
+		this.productoProveedorId = productoProveedorId;
 	}
 
 	@Override
@@ -139,12 +132,11 @@ public class CarritoHistoricoDetalle implements Serializable {
         return 31;
     }
 
-    @Override
-    public String toString() {
-        return "CarritoHistoricoDetalle{" +
-            "id=" + getId() +
-            ", cantidad=" + getCantidad() +
-            ", precio=" + getPrecio() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "CarritoHistoricoDetalle [id=" + id + ", cantidad=" + cantidad + ", precio=" + precio
+				+ ", productoProveedorId=" + productoProveedorId + ", carritoHistoricoId=" + carritoHistoricoId + "]";
+	}
+
+
 }

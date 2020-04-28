@@ -1,10 +1,18 @@
 package mx.com.sharkit.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-
 import java.io.Serializable;
 import java.time.Instant;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A ProductoImagen.
@@ -27,12 +35,12 @@ public class ProductoImagen implements Serializable {
     private User usuarioAlta;
 
     @ManyToOne
-    @JoinColumn(name = "producto_id", insertable = false, updatable = false)
+    @JoinColumn(name = "producto_proveedor_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("productoImagens")
-    private Producto producto;
+    private ProductoProveedor productoProveedor;
 
-    @Column(name = "producto_id")
-    private Long productoId;
+    @Column(name = "producto_proveedor_id")
+    private Long productoProveedorId;
 
     @ManyToOne
     @JoinColumn(name = "adjunto_id", insertable = false, updatable = false)
@@ -77,19 +85,6 @@ public class ProductoImagen implements Serializable {
         this.usuarioAlta = user;
     }
 
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public ProductoImagen producto(Producto producto) {
-        this.producto = producto;
-        return this;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
     public Adjunto getAdjunto() {
         return adjunto;
     }
@@ -103,15 +98,20 @@ public class ProductoImagen implements Serializable {
         this.adjunto = adjunto;
     }
     
-    
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
-
-    public Long getProductoId() {
-		return productoId;
+	public ProductoProveedor getProductoProveedor() {
+		return productoProveedor;
 	}
 
-	public void setProductoId(Long productoId) {
-		this.productoId = productoId;
+	public void setProductoProveedor(ProductoProveedor productoProveedor) {
+		this.productoProveedor = productoProveedor;
+	}
+
+	public Long getProductoProveedorId() {
+		return productoProveedorId;
+	}
+
+	public void setProductoProveedorId(Long productoProveedorId) {
+		this.productoProveedorId = productoProveedorId;
 	}
 
 	public Long getAdjuntoId() {
@@ -138,11 +138,10 @@ public class ProductoImagen implements Serializable {
         return 31;
     }
 
-    @Override
-    public String toString() {
-        return "ProductoImagen{" +
-            "id=" + getId() +
-            ", fechaAlta='" + getFechaAlta() + "'" +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "ProductoImagen [id=" + id + ", fechaAlta=" + fechaAlta + ", usuarioAlta=" + usuarioAlta
+				+ ", productoProveedorId=" + productoProveedorId + ", adjuntoId=" + adjuntoId + "]";
+	}
+
 }

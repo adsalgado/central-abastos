@@ -19,20 +19,20 @@ import mx.com.sharkit.domain.CarritoCompra;
 @Repository
 public interface CarritoCompraRepository extends JpaRepository<CarritoCompra, Long> {
 
-	@Query(value = "SELECT cc.* \n" + "FROM carrito_compra cc\n" + "INNER JOIN producto pr\n"
-			+ "	ON (cc.producto_id = pr.id)\n" + "WHERE cliente_id = ?1\n" + "ORDER BY nombre ASC", nativeQuery = true)
+	@Query(value = "SELECT cc.* \n" + "FROM carrito_compra cc\n" + "INNER JOIN producto_proveedor pr\n"
+			+ "	ON (cc.producto_proveedor_id = pr.id)\n" + "WHERE cliente_id = ?1\n" + "ORDER BY pr.proveedor_id ASC, cc.id", nativeQuery = true)
 	List<CarritoCompra> findByClienteIdOrderByNombre(Long clienteId);
 
 	@Modifying
 	@Transactional
-	@Query("delete from CarritoCompra cc where cc.clienteId = ?1 and cc.productoId = ?2")
-	void deleteByClienteIdAndProductoId(Long clienteId, Long productoId);
+	@Query("delete from CarritoCompra cc where cc.clienteId = ?1 and cc.productoProveedorId = ?2")
+	void deleteByClienteIdAndProductoProveedorId(Long clienteId, Long productoProveedorId);
 
 	@Modifying
 	@Transactional
 	@Query("delete from CarritoCompra cc where cc.clienteId = ?1")
 	void deleteByClienteId(Long clienteId);
 	
-	Optional<CarritoCompra> findOneByClienteIdAndProductoId(Long clienteId, Long productoId);
+	Optional<CarritoCompra> findOneByClienteIdAndProductoProveedorId(Long clienteId, Long productoId);
 
 }

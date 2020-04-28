@@ -97,6 +97,7 @@ public class CarritoHistoricoResource {
         	CarritoHistoricoDetalleDTO dto = new CarritoHistoricoDetalleDTO();
         	dto.setCantidad(ch.getCantidad());
         	dto.setPrecio(ch.getPrecio());
+        	dto.setProductoProveedorId(ch.getProductoProveedorId());
         	dto.setCarritoHistoricoId(result.getId());
         		return dto;
         }).collect(Collectors.toList());

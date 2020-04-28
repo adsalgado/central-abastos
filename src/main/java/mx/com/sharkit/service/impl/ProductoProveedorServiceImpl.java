@@ -16,9 +16,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.sharkit.domain.ProductoProveedor;
+import mx.com.sharkit.repository.ProductoImagenRepository;
 import mx.com.sharkit.repository.ProductoProveedorRepository;
 import mx.com.sharkit.service.ProductoProveedorService;
+import mx.com.sharkit.service.dto.AdjuntoDTO;
+import mx.com.sharkit.service.dto.ProductoImagenDTO;
 import mx.com.sharkit.service.dto.ProductoProveedorDTO;
+import mx.com.sharkit.service.mapper.ProductoImagenMapper;
 import mx.com.sharkit.service.mapper.ProductoProveedorMapper;
 
 /**
@@ -34,11 +38,19 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 	private final ProductoProveedorRepository productoProveedorRepository;
 
 	private final ProductoProveedorMapper productoProveedorMapper;
+	
+	private final ProductoImagenMapper productoImagenMapper;
+
+	private final ProductoImagenRepository productoImagenRepository;
+
 
 	public ProductoProveedorServiceImpl(ProductoProveedorRepository productoProveedorRepository,
-			ProductoProveedorMapper productoProveedorMapper) {
+			ProductoProveedorMapper productoProveedorMapper,
+			ProductoImagenRepository productoImagenRepository, ProductoImagenMapper productoImagenMapper) {
 		this.productoProveedorRepository = productoProveedorRepository;
 		this.productoProveedorMapper = productoProveedorMapper;
+		this.productoImagenRepository = productoImagenRepository;
+		this.productoImagenMapper = productoImagenMapper;
 	}
 
 	/**
@@ -78,7 +90,15 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 	@Transactional(readOnly = true)
 	public Optional<ProductoProveedorDTO> findOne(Long id) {
 		log.debug("Request to get ProductoProveedor : {}", id);
-		return productoProveedorRepository.findById(id).map(productoProveedorMapper::toDto);
+		Optional<ProductoProveedorDTO> optDTO = productoProveedorRepository.findById(id).map(productoProveedorMapper::toDto);
+		ProductoProveedorDTO productoDTO = optDTO.isPresent() ? optDTO.get() : null;
+		if (productoDTO != null) {
+			List<AdjuntoDTO> adjuntos = productoImagenRepository.findByProductoProveedorIdOrderByIdAsc(productoDTO.getId())
+					.stream().map(productoImagenMapper::toDto).map(ProductoImagenDTO::getAdjunto)
+					.collect(Collectors.toCollection(LinkedList::new));
+			productoDTO.setImagenes(adjuntos);
+		}
+		return optDTO;
 	}
 
 	/**

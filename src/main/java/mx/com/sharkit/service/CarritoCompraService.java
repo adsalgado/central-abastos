@@ -53,7 +53,7 @@ public interface CarritoCompraService {
 	 *
 	 * @param id the id of the entity.
 	 */
-	void deleteByClienteIdAnProductoId(Long clienteId, Long productoId);
+	void deleteByClienteIdAnProductoProveedorId(Long clienteId, Long productoId);
 
 	/**
 	 * Delete the carritoCompra by clienteId.
@@ -69,6 +69,6 @@ public interface CarritoCompraService {
 	 * @param productoId
 	 * @return the entity 
 	 */
-	Optional<CarritoCompraDTO> findOneClienteIdAndProductoId(Long clienteId, Long productoId);
+	Optional<CarritoCompraDTO> findOneClienteIdAndProductoProveedorId(Long clienteId, Long productoId);
 
 }

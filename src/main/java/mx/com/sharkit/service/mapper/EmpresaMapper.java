@@ -21,8 +21,6 @@ public interface EmpresaMapper extends EntityMapper<EmpresaDTO, Empresa> {
     @Mapping(target = "removeRecolector", ignore = true)
     @Mapping(target = "transportistas", ignore = true)
     @Mapping(target = "removeTransportista", ignore = true)
-    @Mapping(target = "productos", ignore = true)
-    @Mapping(target = "removeProducto", ignore = true)
     @Mapping(target = "seccions", ignore = true)
     @Mapping(target = "removeSeccion", ignore = true)
     Empresa toEntity(EmpresaDTO empresaDTO);

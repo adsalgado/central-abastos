@@ -15,6 +15,6 @@ import mx.com.sharkit.domain.ProductoImagen;
 @Repository
 public interface ProductoImagenRepository extends JpaRepository<ProductoImagen, Long> {
 
-	List<ProductoImagen> findByProductoIdOrderByIdAsc(Long productoId);
+	List<ProductoImagen> findByProductoProveedorIdOrderByIdAsc(Long productoId);
 	
 }

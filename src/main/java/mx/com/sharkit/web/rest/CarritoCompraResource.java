@@ -100,7 +100,7 @@ public class CarritoCompraResource {
         }
         CarritoCompraDTO result = carritoCompraDTO;
         
-        Optional <CarritoCompraDTO> optCarritoDto = carritoCompraService.findOneClienteIdAndProductoId(clienteId, carritoCompraDTO.getProductoId());
+        Optional <CarritoCompraDTO> optCarritoDto = carritoCompraService.findOneClienteIdAndProductoProveedorId(clienteId, carritoCompraDTO.getProductoProveedorId());
         if (optCarritoDto.isPresent()) {
         	CarritoCompraDTO dto = optCarritoDto.get();
         	dto.setCantidad(carritoCompraDTO.getCantidad());
@@ -149,13 +149,16 @@ public class CarritoCompraResource {
      * @param id the id of the carritoCompraDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/carrito-compras/{productoId}")
-    public ResponseEntity<Void> deleteCarritoCompra(@PathVariable Long productoId) {
-        log.debug("REST request to delete CarritoCompra : {}", productoId);
+    @DeleteMapping("/carrito-compras/{id}")
+    public ResponseEntity<Void> deleteCarritoCompra(@PathVariable Long id) {
+        log.debug("REST request to delete CarritoCompra : {}", id);
         Optional<User> user = userService.getUserWithAuthorities();
         Long clienteId =  user.isPresent() ? user.get().getId() : 0L;
-        carritoCompraService.deleteByClienteIdAnProductoId(clienteId, productoId);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, productoId.toString())).build();
+        if (clienteId == 0) {
+            throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+        }
+        carritoCompraService.delete(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 
 }

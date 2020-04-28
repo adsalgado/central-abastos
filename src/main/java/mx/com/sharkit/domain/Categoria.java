@@ -1,8 +1,6 @@
 package mx.com.sharkit.domain;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -67,9 +64,6 @@ public class Categoria implements Serializable {
     @Column(name = "adjunto_id")
     private Long adjuntoId;
 
-    @OneToMany(mappedBy = "categoria")
-    private Set<Producto> productos = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -90,31 +84,6 @@ public class Categoria implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public Set<Producto> getProductos() {
-        return productos;
-    }
-
-    public Categoria productos(Set<Producto> productos) {
-        this.productos = productos;
-        return this;
-    }
-
-    public Categoria addProducto(Producto producto) {
-        this.productos.add(producto);
-        producto.setCategoria(this);
-        return this;
-    }
-
-    public Categoria removeProducto(Producto producto) {
-        this.productos.remove(producto);
-        producto.setCategoria(null);
-        return this;
-    }
-
-    public void setProductos(Set<Producto> productos) {
-        this.productos = productos;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove

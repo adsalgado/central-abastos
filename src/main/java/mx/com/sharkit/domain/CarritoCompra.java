@@ -47,12 +47,12 @@ public class CarritoCompra implements Serializable {
     private Long clienteId;
 
     @ManyToOne
-    @JoinColumn(name = "producto_id", insertable = false, updatable = false)
+    @JoinColumn(name = "producto_proveedor_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("carritoCompras")
-    private Producto producto;
+    private ProductoProveedor productoProveedor;
 
-    @Column(name = "producto_id")
-    private Long productoId;
+    @Column(name = "producto_proveedor_id")
+    private Long productoProveedorId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -101,19 +101,6 @@ public class CarritoCompra implements Serializable {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public CarritoCompra producto(Producto producto) {
-        this.producto = producto;
-        return this;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
     
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -133,12 +120,20 @@ public class CarritoCompra implements Serializable {
 		this.clienteId = clienteId;
 	}
 
-	public Long getProductoId() {
-		return productoId;
+	public ProductoProveedor getProductoProveedor() {
+		return productoProveedor;
 	}
 
-	public void setProductoId(Long productoId) {
-		this.productoId = productoId;
+	public void setProductoProveedor(ProductoProveedor productoProveedor) {
+		this.productoProveedor = productoProveedor;
+	}
+
+	public Long getProductoProveedorId() {
+		return productoProveedorId;
+	}
+
+	public void setProductoProveedorId(Long productoProveedorId) {
+		this.productoProveedorId = productoProveedorId;
 	}
 
 	@Override

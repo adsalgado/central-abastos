@@ -1,6 +1,6 @@
 package mx.com.sharkit.service.dto;
-import java.time.Instant;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -15,7 +15,9 @@ public class ProductoImagenDTO implements Serializable {
 
     private Long usuarioAltaId;
 
-    private Long productoId;
+    private ProductoProveedorDTO productoProveedor;
+
+    private Long productoProveedorId;
 
     private Long adjuntoId;
     
@@ -45,14 +47,6 @@ public class ProductoImagenDTO implements Serializable {
         this.usuarioAltaId = userId;
     }
 
-    public Long getProductoId() {
-        return productoId;
-    }
-
-    public void setProductoId(Long productoId) {
-        this.productoId = productoId;
-    }
-
     public Long getAdjuntoId() {
         return adjuntoId;
     }
@@ -67,6 +61,22 @@ public class ProductoImagenDTO implements Serializable {
 
 	public void setAdjunto(AdjuntoDTO adjunto) {
 		this.adjunto = adjunto;
+	}
+
+	public ProductoProveedorDTO getProductoProveedor() {
+		return productoProveedor;
+	}
+
+	public void setProductoProveedor(ProductoProveedorDTO productoProveedor) {
+		this.productoProveedor = productoProveedor;
+	}
+
+	public Long getProductoProveedorId() {
+		return productoProveedorId;
+	}
+
+	public void setProductoProveedorId(Long productoProveedorId) {
+		this.productoProveedorId = productoProveedorId;
 	}
 
 	@Override
@@ -90,15 +100,11 @@ public class ProductoImagenDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "ProductoImagenDTO{" +
-            "id=" + getId() +
-            ", fechaAlta='" + getFechaAlta() + "'" +
-            ", usuarioAlta=" + getUsuarioAltaId() +
-            ", producto=" + getProductoId() +
-            ", adjunto=" + getAdjuntoId() +
-            ", adjunto=" + getAdjunto() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "ProductoImagenDTO [id=" + id + ", fechaAlta=" + fechaAlta + ", usuarioAltaId=" + usuarioAltaId
+				+ ", productoProveedorId=" + productoProveedorId + ", adjuntoId=" + adjuntoId + ", adjunto=" + adjunto
+				+ "]";
+	}
+
 }

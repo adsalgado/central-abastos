@@ -97,7 +97,7 @@ public class ProductoServiceImpl implements ProductoService {
 		Optional<ProductoDTO> optDTO = productoRepository.findById(id).map(productoMapper::toDto);
 		ProductoDTO productoDTO = optDTO.isPresent() ? optDTO.get() : null;
 		if (productoDTO != null) {
-			List<AdjuntoDTO> adjuntos = productoImagenRepository.findByProductoIdOrderByIdAsc(productoDTO.getId())
+			List<AdjuntoDTO> adjuntos = productoImagenRepository.findByProductoProveedorIdOrderByIdAsc(productoDTO.getId())
 					.stream().map(productoImagenMapper::toDto).map(ProductoImagenDTO::getAdjunto)
 					.collect(Collectors.toCollection(LinkedList::new));
 			productoDTO.setImagenes(adjuntos);
