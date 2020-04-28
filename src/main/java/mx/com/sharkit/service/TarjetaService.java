@@ -40,4 +40,13 @@ public interface TarjetaService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    /**
+     * Get all the tarjetas by usuarioId.
+     *
+     * @param usuarioId
+     * @return the list of entities.
+     */
+    List<TarjetaDTO> findByUsuarioId(Long usuarioId);
+
 }

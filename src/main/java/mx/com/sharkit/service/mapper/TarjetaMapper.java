@@ -1,20 +1,18 @@
 package mx.com.sharkit.service.mapper;
 
-import mx.com.sharkit.domain.*;
-import mx.com.sharkit.service.dto.TarjetaDTO;
+import org.mapstruct.Mapper;
 
-import org.mapstruct.*;
+import mx.com.sharkit.domain.Tarjeta;
+import mx.com.sharkit.service.dto.TarjetaDTO;
 
 /**
  * Mapper for the entity {@link Tarjeta} and its DTO {@link TarjetaDTO}.
  */
-@Mapper(componentModel = "spring", uses = {ClienteMapper.class})
+@Mapper(componentModel = "spring", uses = {})
 public interface TarjetaMapper extends EntityMapper<TarjetaDTO, Tarjeta> {
 
-    @Mapping(source = "cliente.id", target = "clienteId")
     TarjetaDTO toDto(Tarjeta tarjeta);
 
-    @Mapping(source = "clienteId", target = "cliente")
     Tarjeta toEntity(TarjetaDTO tarjetaDTO);
 
     default Tarjeta fromId(Long id) {

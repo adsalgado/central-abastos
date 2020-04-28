@@ -67,9 +67,6 @@ public class Cliente implements Serializable {
     private User usuarioModificacion;
 
     @OneToMany(mappedBy = "cliente")
-    private Set<Tarjeta> tarjetas = new HashSet<>();
-
-    @OneToMany(mappedBy = "cliente")
     private Set<CarritoCompra> carritoCompras = new HashSet<>();
 
     @OneToMany(mappedBy = "cliente")
@@ -197,31 +194,6 @@ public class Cliente implements Serializable {
 
     public void setUsuarioModificacion(User user) {
         this.usuarioModificacion = user;
-    }
-
-    public Set<Tarjeta> getTarjetas() {
-        return tarjetas;
-    }
-
-    public Cliente tarjetas(Set<Tarjeta> tarjetas) {
-        this.tarjetas = tarjetas;
-        return this;
-    }
-
-    public Cliente addTarjeta(Tarjeta tarjeta) {
-        this.tarjetas.add(tarjeta);
-        tarjeta.setCliente(this);
-        return this;
-    }
-
-    public Cliente removeTarjeta(Tarjeta tarjeta) {
-        this.tarjetas.remove(tarjeta);
-        tarjeta.setCliente(null);
-        return this;
-    }
-
-    public void setTarjetas(Set<Tarjeta> tarjetas) {
-        this.tarjetas = tarjetas;
     }
 
     public Set<CarritoCompra> getCarritoCompras() {
