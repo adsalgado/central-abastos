@@ -45,9 +45,6 @@ public class Empresa implements Serializable {
     private Set<Transportista> transportistas = new HashSet<>();
 
     @OneToMany(mappedBy = "empresa")
-    private Set<Producto> productos = new HashSet<>();
-
-    @OneToMany(mappedBy = "empresa")
     private Set<Seccion> seccions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -170,31 +167,6 @@ public class Empresa implements Serializable {
 
     public void setTransportistas(Set<Transportista> transportistas) {
         this.transportistas = transportistas;
-    }
-
-    public Set<Producto> getProductos() {
-        return productos;
-    }
-
-    public Empresa productos(Set<Producto> productos) {
-        this.productos = productos;
-        return this;
-    }
-
-    public Empresa addProducto(Producto producto) {
-        this.productos.add(producto);
-        producto.setEmpresa(this);
-        return this;
-    }
-
-    public Empresa removeProducto(Producto producto) {
-        this.productos.remove(producto);
-        producto.setEmpresa(null);
-        return this;
-    }
-
-    public void setProductos(Set<Producto> productos) {
-        this.productos = productos;
     }
 
     public Set<Seccion> getSeccions() {

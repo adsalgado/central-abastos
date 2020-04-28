@@ -1,14 +1,20 @@
 package mx.com.sharkit.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A Producto.
@@ -82,22 +88,6 @@ public class Producto implements Serializable {
     private Long tipoArticuloId;
 
     @ManyToOne
-    @JoinColumn(name = "categoria_id", insertable = false, updatable = false)
-    @JsonIgnoreProperties("productos")
-    private Categoria categoria;
-
-    @Column(name = "categoria_id")
-    private Long categoriaId;
-
-    @ManyToOne
-    @JoinColumn(name = "seccion_id", insertable = false, updatable = false)
-    @JsonIgnoreProperties("productos")
-    private Seccion seccion;
-
-    @Column(name = "seccion_id")
-    private Long seccionId;
-
-    @ManyToOne
     @JoinColumn(name = "estatus_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("productos")
     private Estatus estatus;
@@ -113,31 +103,6 @@ public class Producto implements Serializable {
     @Column(name = "unidad_medida_id")
     private Long unidadMedidaId;
 
-    @ManyToOne
-    @JoinColumn(name = "empresa_id", insertable = false, updatable = false)
-    @JsonIgnoreProperties("productos")
-    private Empresa empresa;
-    
-    @Column(name = "empresa_id")
-    private Long empresaId;
-
-    @OneToMany(mappedBy = "producto")
-    private Set<OfertaProveedor> ofertaProveedors = new HashSet<>();
-
-    @OneToMany(mappedBy = "producto")
-    private Set<CarritoCompra> carritoCompras = new HashSet<>();
-
-    @OneToMany(mappedBy = "producto")
-    private Set<CarritoHistoricoDetalle> carritoCompraDetalles = new HashSet<>();
-
-    @OneToMany(mappedBy = "producto")
-    private Set<PedidoDetalle> pedidoDetalles = new HashSet<>();
-
-    @OneToMany(mappedBy = "producto")
-    private Set<Inventario> inventarios = new HashSet<>();
-
-    @OneToMany(mappedBy = "producto")
-    private Set<ProductoImagen> productoImagens = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -180,22 +145,6 @@ public class Producto implements Serializable {
 		this.tipoArticuloId = tipoArticuloId;
 	}
 
-	public Long getCategoriaId() {
-		return categoriaId;
-	}
-
-	public void setCategoriaId(Long categoriaId) {
-		this.categoriaId = categoriaId;
-	}
-
-	public Long getSeccionId() {
-		return seccionId;
-	}
-
-	public void setSeccionId(Long seccionId) {
-		this.seccionId = seccionId;
-	}
-
 	public Long getEstatusId() {
 		return estatusId;
 	}
@@ -210,14 +159,6 @@ public class Producto implements Serializable {
 
 	public void setUnidadMedidaId(Long unidadMedidaId) {
 		this.unidadMedidaId = unidadMedidaId;
-	}
-
-	public Long getEmpresaId() {
-		return empresaId;
-	}
-
-	public void setEmpresaId(Long empresaId) {
-		this.empresaId = empresaId;
 	}
 
 	public String getNombre() {
@@ -350,156 +291,6 @@ public class Producto implements Serializable {
         this.usuarioModificacion = user;
     }
 
-    public Set<OfertaProveedor> getOfertaProveedors() {
-        return ofertaProveedors;
-    }
-
-    public Producto ofertaProveedors(Set<OfertaProveedor> ofertaProveedors) {
-        this.ofertaProveedors = ofertaProveedors;
-        return this;
-    }
-
-    public Producto addOfertaProveedor(OfertaProveedor ofertaProveedor) {
-        this.ofertaProveedors.add(ofertaProveedor);
-        ofertaProveedor.setProducto(this);
-        return this;
-    }
-
-    public Producto removeOfertaProveedor(OfertaProveedor ofertaProveedor) {
-        this.ofertaProveedors.remove(ofertaProveedor);
-        ofertaProveedor.setProducto(null);
-        return this;
-    }
-
-    public void setOfertaProveedors(Set<OfertaProveedor> ofertaProveedors) {
-        this.ofertaProveedors = ofertaProveedors;
-    }
-
-    public Set<CarritoCompra> getCarritoCompras() {
-        return carritoCompras;
-    }
-
-    public Producto carritoCompras(Set<CarritoCompra> carritoCompras) {
-        this.carritoCompras = carritoCompras;
-        return this;
-    }
-
-    public Producto addCarritoCompra(CarritoCompra carritoCompra) {
-        this.carritoCompras.add(carritoCompra);
-        carritoCompra.setProducto(this);
-        return this;
-    }
-
-    public Producto removeCarritoCompra(CarritoCompra carritoCompra) {
-        this.carritoCompras.remove(carritoCompra);
-        carritoCompra.setProducto(null);
-        return this;
-    }
-
-    public void setCarritoCompras(Set<CarritoCompra> carritoCompras) {
-        this.carritoCompras = carritoCompras;
-    }
-
-    public Set<CarritoHistoricoDetalle> getCarritoCompraDetalles() {
-        return carritoCompraDetalles;
-    }
-
-    public Producto carritoCompraDetalles(Set<CarritoHistoricoDetalle> carritoHistoricoDetalles) {
-        this.carritoCompraDetalles = carritoHistoricoDetalles;
-        return this;
-    }
-
-    public Producto addCarritoCompraDetalle(CarritoHistoricoDetalle carritoHistoricoDetalle) {
-        this.carritoCompraDetalles.add(carritoHistoricoDetalle);
-        carritoHistoricoDetalle.setProducto(this);
-        return this;
-    }
-
-    public Producto removeCarritoCompraDetalle(CarritoHistoricoDetalle carritoHistoricoDetalle) {
-        this.carritoCompraDetalles.remove(carritoHistoricoDetalle);
-        carritoHistoricoDetalle.setProducto(null);
-        return this;
-    }
-
-    public void setCarritoCompraDetalles(Set<CarritoHistoricoDetalle> carritoHistoricoDetalles) {
-        this.carritoCompraDetalles = carritoHistoricoDetalles;
-    }
-
-    public Set<PedidoDetalle> getPedidoDetalles() {
-        return pedidoDetalles;
-    }
-
-    public Producto pedidoDetalles(Set<PedidoDetalle> pedidoDetalles) {
-        this.pedidoDetalles = pedidoDetalles;
-        return this;
-    }
-
-    public Producto addPedidoDetalle(PedidoDetalle pedidoDetalle) {
-        this.pedidoDetalles.add(pedidoDetalle);
-        pedidoDetalle.setProducto(this);
-        return this;
-    }
-
-    public Producto removePedidoDetalle(PedidoDetalle pedidoDetalle) {
-        this.pedidoDetalles.remove(pedidoDetalle);
-        pedidoDetalle.setProducto(null);
-        return this;
-    }
-
-    public void setPedidoDetalles(Set<PedidoDetalle> pedidoDetalles) {
-        this.pedidoDetalles = pedidoDetalles;
-    }
-
-    public Set<Inventario> getInventarios() {
-        return inventarios;
-    }
-
-    public Producto inventarios(Set<Inventario> inventarios) {
-        this.inventarios = inventarios;
-        return this;
-    }
-
-    public Producto addInventario(Inventario inventario) {
-        this.inventarios.add(inventario);
-        inventario.setProducto(this);
-        return this;
-    }
-
-    public Producto removeInventario(Inventario inventario) {
-        this.inventarios.remove(inventario);
-        inventario.setProducto(null);
-        return this;
-    }
-
-    public void setInventarios(Set<Inventario> inventarios) {
-        this.inventarios = inventarios;
-    }
-
-    public Set<ProductoImagen> getProductoImagens() {
-        return productoImagens;
-    }
-
-    public Producto productoImagens(Set<ProductoImagen> productoImagens) {
-        this.productoImagens = productoImagens;
-        return this;
-    }
-
-    public Producto addProductoImagen(ProductoImagen productoImagen) {
-        this.productoImagens.add(productoImagen);
-        productoImagen.setProducto(this);
-        return this;
-    }
-
-    public Producto removeProductoImagen(ProductoImagen productoImagen) {
-        this.productoImagens.remove(productoImagen);
-        productoImagen.setProducto(null);
-        return this;
-    }
-
-    public void setProductoImagens(Set<ProductoImagen> productoImagens) {
-        this.productoImagens = productoImagens;
-    }
-
     public TipoArticulo getTipoArticulo() {
         return tipoArticulo;
     }
@@ -511,32 +302,6 @@ public class Producto implements Serializable {
 
     public void setTipoArticulo(TipoArticulo tipoArticulo) {
         this.tipoArticulo = tipoArticulo;
-    }
-
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    public Producto categoria(Categoria categoria) {
-        this.categoria = categoria;
-        return this;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
-
-    public Seccion getSeccion() {
-        return seccion;
-    }
-
-    public Producto seccion(Seccion seccion) {
-        this.seccion = seccion;
-        return this;
-    }
-
-    public void setSeccion(Seccion seccion) {
-        this.seccion = seccion;
     }
 
     public Estatus getEstatus() {
@@ -565,18 +330,6 @@ public class Producto implements Serializable {
         this.unidadMedida = unidadMedida;
     }
 
-    public Empresa getEmpresa() {
-        return empresa;
-    }
-
-    public Producto empresa(Empresa empresa) {
-        this.empresa = empresa;
-        return this;
-    }
-
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

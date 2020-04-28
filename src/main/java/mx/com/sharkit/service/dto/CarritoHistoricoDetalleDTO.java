@@ -1,8 +1,9 @@
 package mx.com.sharkit.service.dto;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.CarritoHistoricoDetalle} entity.
@@ -16,10 +17,9 @@ public class CarritoHistoricoDetalleDTO implements Serializable {
 
     private BigDecimal precio;
 
-
-    private Long productoId;
+    private ProductoProveedorDTO productoProveedor;
     
-    private ProductoDTO producto;
+    private Long productoProveedorId;
 
     private Long carritoHistoricoId;
 
@@ -47,20 +47,20 @@ public class CarritoHistoricoDetalleDTO implements Serializable {
         this.precio = precio;
     }
 
-    public Long getProductoId() {
-        return productoId;
-    }
-
-    public void setProductoId(Long productoId) {
-        this.productoId = productoId;
-    }
-
-    public ProductoDTO getProducto() {
-		return producto;
+	public ProductoProveedorDTO getProductoProveedor() {
+		return productoProveedor;
 	}
 
-	public void setProducto(ProductoDTO producto) {
-		this.producto = producto;
+	public void setProductoProveedor(ProductoProveedorDTO productoProveedor) {
+		this.productoProveedor = productoProveedor;
+	}
+
+	public Long getProductoProveedorId() {
+		return productoProveedorId;
+	}
+
+	public void setProductoProveedorId(Long productoProveedorId) {
+		this.productoProveedorId = productoProveedorId;
 	}
 
 	public Long getCarritoHistoricoId() {
@@ -92,14 +92,10 @@ public class CarritoHistoricoDetalleDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "CarritoHistoricoDetalleDTO{" +
-            "id=" + getId() +
-            ", cantidad=" + getCantidad() +
-            ", precio=" + getPrecio() +
-            ", producto=" + getProductoId() +
-            ", carritoHistorico=" + getCarritoHistoricoId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "CarritoHistoricoDetalleDTO [id=" + id + ", cantidad=" + cantidad + ", precio=" + precio
+				+ ", productoProveedorId=" + productoProveedorId + ", carritoHistoricoId=" + carritoHistoricoId + "]";
+	}
+
 }

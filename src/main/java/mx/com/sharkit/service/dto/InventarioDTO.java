@@ -1,8 +1,9 @@
 package mx.com.sharkit.service.dto;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.Inventario} entity.
@@ -14,10 +15,9 @@ public class InventarioDTO implements Serializable {
     @NotNull
     private BigDecimal total;
 
+    private ProductoProveedorDTO productoProveedor;
 
-    private Long proveedorId;
-
-    private Long productoId;
+    private Long productoProveedorId;
 
     public Long getId() {
         return id;
@@ -35,23 +35,23 @@ public class InventarioDTO implements Serializable {
         this.total = total;
     }
 
-    public Long getProveedorId() {
-        return proveedorId;
-    }
+    public ProductoProveedorDTO getProductoProveedor() {
+		return productoProveedor;
+	}
 
-    public void setProveedorId(Long proveedorId) {
-        this.proveedorId = proveedorId;
-    }
+	public void setProductoProveedor(ProductoProveedorDTO productoProveedor) {
+		this.productoProveedor = productoProveedor;
+	}
 
-    public Long getProductoId() {
-        return productoId;
-    }
+	public Long getProductoProveedorId() {
+		return productoProveedorId;
+	}
 
-    public void setProductoId(Long productoId) {
-        this.productoId = productoId;
-    }
+	public void setProductoProveedorId(Long productoProveedorId) {
+		this.productoProveedorId = productoProveedorId;
+	}
 
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -72,13 +72,10 @@ public class InventarioDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "InventarioDTO{" +
-            "id=" + getId() +
-            ", total=" + getTotal() +
-            ", proveedor=" + getProveedorId() +
-            ", producto=" + getProductoId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "InventarioDTO [id=" + id + ", total=" + total + ", productoProveedorId=" + productoProveedorId + "]";
+	}
+
+
 }

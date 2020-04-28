@@ -1,9 +1,10 @@
 package mx.com.sharkit.service.mapper;
 
-import mx.com.sharkit.domain.*;
-import mx.com.sharkit.service.dto.SeccionDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import org.mapstruct.*;
+import mx.com.sharkit.domain.Seccion;
+import mx.com.sharkit.service.dto.SeccionDTO;
 
 /**
  * Mapper for the entity {@link Seccion} and its DTO {@link SeccionDTO}.
@@ -14,8 +15,6 @@ public interface SeccionMapper extends EntityMapper<SeccionDTO, Seccion> {
     @Mapping(source = "empresa.id", target = "empresaId")
     SeccionDTO toDto(Seccion seccion);
 
-    @Mapping(target = "productos", ignore = true)
-    @Mapping(target = "removeProducto", ignore = true)
     @Mapping(source = "empresaId", target = "empresa")
     Seccion toEntity(SeccionDTO seccionDTO);
 

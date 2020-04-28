@@ -21,12 +21,12 @@ public class CarritoCompraDTO implements Serializable {
 
     private Long clienteId;
 
-    private Long productoId;
+    private Long productoProveedorId;
     
     @JsonIgnore
     private transient UserDTO cliente;
     
-    private ProductoDTO producto;
+    private ProductoProveedorDTO productoProveedor;
 
     public Long getId() {
         return id;
@@ -60,14 +60,6 @@ public class CarritoCompraDTO implements Serializable {
         this.clienteId = clienteId;
     }
 
-    public Long getProductoId() {
-        return productoId;
-    }
-
-    public void setProductoId(Long productoId) {
-        this.productoId = productoId;
-    }
-
     public LocalDateTime getFechaAlta() {
 		return fechaAlta;
 	}
@@ -84,12 +76,20 @@ public class CarritoCompraDTO implements Serializable {
 		this.cliente = cliente;
 	}
 
-	public ProductoDTO getProducto() {
-		return producto;
+	public Long getProductoProveedorId() {
+		return productoProveedorId;
 	}
 
-	public void setProducto(ProductoDTO producto) {
-		this.producto = producto;
+	public void setProductoProveedorId(Long productoProveedorId) {
+		this.productoProveedorId = productoProveedorId;
+	}
+
+	public ProductoProveedorDTO getProductoProveedor() {
+		return productoProveedor;
+	}
+
+	public void setProductoProveedor(ProductoProveedorDTO productoProveedor) {
+		this.productoProveedor = productoProveedor;
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class CarritoCompraDTO implements Serializable {
             ", cantidad=" + getCantidad() +
             ", precio=" + getPrecio() +
             ", cliente=" + getClienteId() +
-            ", producto=" + getProductoId() +
+            ", productoProveedor=" + getProductoProveedorId() +
             ", fechaAlta=" + getFechaAlta() +
             "}";
     }

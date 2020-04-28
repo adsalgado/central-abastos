@@ -8,17 +8,13 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link OfertaProveedor} and its DTO {@link OfertaProveedorDTO}.
  */
-@Mapper(componentModel = "spring", uses = {ProveedorMapper.class, ProductoMapper.class, EstatusMapper.class, TipoOfertaMapper.class})
+@Mapper(componentModel = "spring", uses = {ProveedorMapper.class, ProductoProveedorMapper.class, EstatusMapper.class, TipoOfertaMapper.class})
 public interface OfertaProveedorMapper extends EntityMapper<OfertaProveedorDTO, OfertaProveedor> {
 
-    @Mapping(source = "proveedor.id", target = "proveedorId")
-    @Mapping(source = "producto.id", target = "productoId")
     @Mapping(source = "estatus.id", target = "estatusId")
     @Mapping(source = "tipoOferta.id", target = "tipoOfertaId")
     OfertaProveedorDTO toDto(OfertaProveedor ofertaProveedor);
 
-    @Mapping(source = "proveedorId", target = "proveedor")
-    @Mapping(source = "productoId", target = "producto")
     @Mapping(source = "estatusId", target = "estatus")
     @Mapping(source = "tipoOfertaId", target = "tipoOferta")
     OfertaProveedor toEntity(OfertaProveedorDTO ofertaProveedorDTO);

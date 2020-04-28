@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,7 +66,7 @@ public class ProductoProveedorResource {
 	}
 
 	/**
-	 * {@code POST  /productoProveedors} : Create a new productoProveedor.
+	 * {@code POST  /proveedor-productos} : Create a new productoProveedor.
 	 *
 	 * @param productoProveedorDTO the productoProveedorDTO to create.
 	 * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
@@ -75,7 +74,7 @@ public class ProductoProveedorResource {
 	 *         {@code 400 (Bad Request)} if the productoProveedor has already an ID.
 	 * @throws URISyntaxException if the Location URI syntax is incorrect.
 	 */
-	@PostMapping("/productoProveedors")
+	@PostMapping("/proveedor-productos")
 	public ResponseEntity<ProductoProveedorDTO> createProductoProveedor(
 			@Valid @RequestBody ProductoProveedorDTO productoProveedorDTO) throws URISyntaxException {
 		log.debug("REST request to save ProductoProveedor : {}", productoProveedorDTO);
@@ -85,13 +84,13 @@ public class ProductoProveedorResource {
 		}
 		ProductoProveedorDTO result = productoProveedorService.save(productoProveedorDTO);
 		return ResponseEntity
-				.created(new URI("/api/productoProveedors/" + result.getId())).headers(HeaderUtil
+				.created(new URI("/api/proveedor-productos/" + result.getId())).headers(HeaderUtil
 						.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
 				.body(result);
 	}
 
 	/**
-	 * {@code PUT  /productoProveedors} : Updates an existing productoProveedor.
+	 * {@code PUT  /proveedor-productos} : Updates an existing productoProveedor.
 	 *
 	 * @param productoProveedorDTO the productoProveedorDTO to update.
 	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
@@ -101,7 +100,7 @@ public class ProductoProveedorResource {
 	 *         productoProveedorDTO couldn't be updated.
 	 * @throws URISyntaxException if the Location URI syntax is incorrect.
 	 */
-	@PutMapping("/productoProveedors")
+	@PutMapping("/proveedor-productos")
 	public ResponseEntity<ProductoProveedorDTO> updateProductoProveedor(
 			@Valid @RequestBody ProductoProveedorDTO productoProveedorDTO) throws URISyntaxException {
 		log.debug("REST request to update ProductoProveedor : {}", productoProveedorDTO);
@@ -114,26 +113,26 @@ public class ProductoProveedorResource {
 	}
 
 	/**
-	 * {@code GET  /productoProveedors} : get all the productoProveedors.
+	 * {@code GET  /proveedor-productos} : get all the productoProveedors.
 	 *
 	 * 
 	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
 	 *         of productoProveedors in body.
 	 */
-	@GetMapping("/productoProveedors")
+	@GetMapping("/proveedor-productos")
 	public List<ProductoProveedorDTO> getAllProductoProveedors() {
 		log.debug("REST request to get all ProductoProveedors");
 		return productoProveedorService.findAllDTO();
 	}
 
 	/**
-	 * {@code GET  /productoProveedors/:id} : get the "id" productoProveedor.
+	 * {@code GET  /proveedor-productos/:id} : get the "id" productoProveedor.
 	 *
 	 * @param id the id of the productoProveedorDTO to retrieve.
 	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
 	 *         the productoProveedorDTO, or with status {@code 404 (Not Found)}.
 	 */
-	@GetMapping("/productoProveedors/{id}")
+	@GetMapping("/proveedor-productos/{id}")
 	public ResponseEntity<ProductoProveedorDTO> getProductoProveedor(@PathVariable Long id) {
 		log.debug("REST request to get ProductoProveedor : {}", id);
 		Optional<ProductoProveedorDTO> productoProveedorDTO = productoProveedorService.findOne(id);
@@ -141,12 +140,12 @@ public class ProductoProveedorResource {
 	}
 
 	/**
-	 * {@code DELETE  /productoProveedors/:id} : delete the "id" productoProveedor.
+	 * {@code DELETE  /proveedor-productos/:id} : delete the "id" productoProveedor.
 	 *
 	 * @param id the id of the productoProveedorDTO to delete.
 	 * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
 	 */
-	@DeleteMapping("/productoProveedors/{id}")
+	@DeleteMapping("/proveedor-productos/{id}")
 	public ResponseEntity<Void> deleteProductoProveedor(@PathVariable Long id) {
 		log.debug("REST request to delete ProductoProveedor : {}", id);
 		productoProveedorService.delete(id);
@@ -156,13 +155,13 @@ public class ProductoProveedorResource {
 	}
 
 	/**
-	 * {@code GET  /productoProveedors} : get all the productoProveedors.
+	 * {@code GET  /proveedor-productos} : get all the productoProveedors.
 	 *
 	 * 
 	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
 	 *         of productoProveedors in body.
 	 */
-	@GetMapping("/productoProveedors/search")
+	@GetMapping("/proveedor-productos/search")
 	public List<ProductoProveedorDTO> searcProductoProveedors(HttpServletRequest request) {
 		log.debug("REST request to get all ProductoProveedors");
 
@@ -173,24 +172,26 @@ public class ProductoProveedorResource {
 				paramsMap.put(param.getName(), param.getValue());
 			}
 		}
-		int iPagina = 0;
-		int iLimite = REGISTROS_POR_PAGINA;
+		Integer iPagina = 0;
+		Integer iLimite = REGISTROS_POR_PAGINA;
 
 		String pagina = request.getParameter("page");
-		if (!StringUtils.isAllBlank(pagina)) {
-			iPagina = Integer.valueOf(pagina);
+		if (pagina != null && StringUtils.isNumeric(pagina)) {
+			iPagina = Integer.valueOf(pagina);			
 		}
+		
 		String limite = request.getParameter("limit");
-		if (!StringUtils.isAllBlank(limite)) {
+		if (limite != null && StringUtils.isNumeric(limite)) {
 			iLimite = Integer.valueOf(limite);
 		}
-		String sort = !StringUtils.isAllBlank(request.getParameter("sort")) ? request.getParameter("sort")
-				: ORDENAMIENTO_DEFAULT;
-		String sortType = !StringUtils.isAllBlank(request.getParameter("sortType")) ? request.getParameter("sortType")
-				: TIPO_ORDENAMIENTO_DEFAULT;
+		
+//		String sort = !StringUtils.isAllBlank(request.getParameter("sort")) ? request.getParameter("sort")
+//				: ORDENAMIENTO_DEFAULT;
+//		String sortType = !StringUtils.isAllBlank(request.getParameter("sortType")) ? request.getParameter("sortType")
+//				: TIPO_ORDENAMIENTO_DEFAULT;
+//
+//		Sort sortOrder = StringUtils.equals("desc", sortType) ? Sort.by(sort).descending() : Sort.by(sort).ascending();
 
-		Sort sortOrder = StringUtils.equals("desc", sortType) ? Sort.by(sort).descending() : Sort.by(sort).ascending();
-
-		return productoProveedorService.searchProductos(paramsMap, 1, 10, Order.asc("producto.nombre"));
+		return productoProveedorService.searchProductos(paramsMap, iPagina, iLimite, Order.asc("producto.nombre"));
 	}
 }

@@ -1,24 +1,23 @@
 package mx.com.sharkit.service.mapper;
 
-import mx.com.sharkit.domain.*;
-import mx.com.sharkit.service.dto.ProductoImagenDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import org.mapstruct.*;
+import mx.com.sharkit.domain.ProductoImagen;
+import mx.com.sharkit.service.dto.ProductoImagenDTO;
 
 /**
  * Mapper for the entity {@link ProductoImagen} and its DTO {@link ProductoImagenDTO}.
  */
-@Mapper(componentModel = "spring", uses = {UserMapper.class, ProductoMapper.class, AdjuntoMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, ProductoProveedorMapper.class, AdjuntoMapper.class})
 public interface ProductoImagenMapper extends EntityMapper<ProductoImagenDTO, ProductoImagen> {
 
     @Mapping(source = "usuarioAlta.id", target = "usuarioAltaId")
-    @Mapping(source = "producto.id", target = "productoId")
     @Mapping(source = "adjunto.id", target = "adjuntoId")
     @Mapping(source = "adjunto", target = "adjunto")
     ProductoImagenDTO toDto(ProductoImagen productoImagen);
 
     @Mapping(source = "usuarioAltaId", target = "usuarioAlta")
-    @Mapping(source = "productoId", target = "producto")
     @Mapping(source = "adjuntoId", target = "adjunto")
     ProductoImagen toEntity(ProductoImagenDTO productoImagenDTO);
 

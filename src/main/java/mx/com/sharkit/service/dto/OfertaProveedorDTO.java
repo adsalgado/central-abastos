@@ -1,7 +1,9 @@
 package mx.com.sharkit.service.dto;
-import java.time.LocalDate;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.OfertaProveedor} entity.
@@ -10,16 +12,21 @@ public class OfertaProveedorDTO implements Serializable {
 
     private Long id;
 
+    @JsonFormat(pattern = "dd/MM/yyyy", locale = "es_MX")
     private LocalDate fechaInicio;
 
+    @JsonFormat(pattern = "dd/MM/yyyy", locale = "es_MX")
     private LocalDate fechaFin;
 
+    private ProductoProveedorDTO productoProveedor;
 
-    private Long proveedorId;
+    private Long productoProveedorId;
 
-    private Long productoId;
+    private EstatusDTO estatus;
 
     private Long estatusId;
+
+    private TipoOfertaDTO tipoOferta;
 
     private Long tipoOfertaId;
 
@@ -47,22 +54,6 @@ public class OfertaProveedorDTO implements Serializable {
         this.fechaFin = fechaFin;
     }
 
-    public Long getProveedorId() {
-        return proveedorId;
-    }
-
-    public void setProveedorId(Long proveedorId) {
-        this.proveedorId = proveedorId;
-    }
-
-    public Long getProductoId() {
-        return productoId;
-    }
-
-    public void setProductoId(Long productoId) {
-        this.productoId = productoId;
-    }
-
     public Long getEstatusId() {
         return estatusId;
     }
@@ -79,7 +70,39 @@ public class OfertaProveedorDTO implements Serializable {
         this.tipoOfertaId = tipoOfertaId;
     }
 
-    @Override
+    public ProductoProveedorDTO getProductoProveedor() {
+		return productoProveedor;
+	}
+
+	public void setProductoProveedor(ProductoProveedorDTO productoProveedor) {
+		this.productoProveedor = productoProveedor;
+	}
+
+	public Long getProductoProveedorId() {
+		return productoProveedorId;
+	}
+
+	public void setProductoProveedorId(Long productoProveedorId) {
+		this.productoProveedorId = productoProveedorId;
+	}
+
+	public EstatusDTO getEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(EstatusDTO estatus) {
+		this.estatus = estatus;
+	}
+
+	public TipoOfertaDTO getTipoOferta() {
+		return tipoOferta;
+	}
+
+	public void setTipoOferta(TipoOfertaDTO tipoOferta) {
+		this.tipoOferta = tipoOferta;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -100,16 +123,11 @@ public class OfertaProveedorDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "OfertaProveedorDTO{" +
-            "id=" + getId() +
-            ", fechaInicio='" + getFechaInicio() + "'" +
-            ", fechaFin='" + getFechaFin() + "'" +
-            ", proveedor=" + getProveedorId() +
-            ", producto=" + getProductoId() +
-            ", estatus=" + getEstatusId() +
-            ", tipoOferta=" + getTipoOfertaId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "OfertaProveedorDTO [id=" + id + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin
+				+ ", productoProveedorId=" + productoProveedorId + ", estatusId=" + estatusId + ", tipoOfertaId="
+				+ tipoOfertaId + "]";
+	}
+
 }

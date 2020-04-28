@@ -3,6 +3,7 @@ package mx.com.sharkit.service.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -43,6 +44,8 @@ public class ProductoProveedorDTO implements Serializable {
 	private Estatus estatus;
 
 	private Long estatusId;
+	
+	private List<AdjuntoDTO> imagenes;
 
 	public Long getId() {
 		return id;
@@ -146,6 +149,14 @@ public class ProductoProveedorDTO implements Serializable {
 
 	public void setEstatusId(Long estatusId) {
 		this.estatusId = estatusId;
+	}
+
+	public List<AdjuntoDTO> getImagenes() {
+		return imagenes;
+	}
+
+	public void setImagenes(List<AdjuntoDTO> imagenes) {
+		this.imagenes = imagenes;
 	}
 
 	@Override

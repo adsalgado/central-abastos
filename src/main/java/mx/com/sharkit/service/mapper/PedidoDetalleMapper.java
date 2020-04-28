@@ -1,23 +1,22 @@
 package mx.com.sharkit.service.mapper;
 
-import mx.com.sharkit.domain.*;
-import mx.com.sharkit.service.dto.PedidoDetalleDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import org.mapstruct.*;
+import mx.com.sharkit.domain.PedidoDetalle;
+import mx.com.sharkit.service.dto.PedidoDetalleDTO;
 
 /**
  * Mapper for the entity {@link PedidoDetalle} and its DTO {@link PedidoDetalleDTO}.
  */
-@Mapper(componentModel = "spring", uses = {PedidoMapper.class, ProductoMapper.class, EstatusMapper.class})
+@Mapper(componentModel = "spring", uses = {PedidoMapper.class, ProductoProveedorMapper.class, EstatusMapper.class})
 public interface PedidoDetalleMapper extends EntityMapper<PedidoDetalleDTO, PedidoDetalle> {
 
     @Mapping(source = "pedido.id", target = "pedidoId")
-    @Mapping(source = "producto.id", target = "productoId")
     @Mapping(source = "estatus.id", target = "estatusId")
     PedidoDetalleDTO toDto(PedidoDetalle pedidoDetalle);
 
     @Mapping(source = "pedidoId", target = "pedido")
-    @Mapping(source = "productoId", target = "producto")
     @Mapping(source = "estatusId", target = "estatus")
     PedidoDetalle toEntity(PedidoDetalleDTO pedidoDetalleDTO);
 
