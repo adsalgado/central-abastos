@@ -1,13 +1,19 @@
 package mx.com.sharkit.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * A Inventario.
@@ -26,16 +32,15 @@ public class Inventario implements Serializable {
     @Column(name = "total", precision = 21, scale = 2, nullable = false)
     private BigDecimal total;
 
+    @ManyToOne
+    @JoinColumn(name = "producto_proveedor_id", insertable = false, updatable = false)
+    private ProductoProveedor productoProveedor;
+
+    @Column(name = "producto_proveedor_id")
+    private Long productoProveedorId;
+
     @OneToMany(mappedBy = "inventario")
     private Set<InventarioHistorico> inventarioHistoricos = new HashSet<>();
-
-    @ManyToOne
-    @JsonIgnoreProperties("inventarios")
-    private Proveedor proveedor;
-
-    @ManyToOne
-    @JsonIgnoreProperties("inventarios")
-    private Producto producto;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -84,34 +89,25 @@ public class Inventario implements Serializable {
         this.inventarioHistoricos = inventarioHistoricos;
     }
 
-    public Proveedor getProveedor() {
-        return proveedor;
-    }
-
-    public Inventario proveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
-        return this;
-    }
-
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public Inventario producto(Producto producto) {
-        this.producto = producto;
-        return this;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
-    @Override
+    public ProductoProveedor getProductoProveedor() {
+		return productoProveedor;
+	}
+
+	public void setProductoProveedor(ProductoProveedor productoProveedor) {
+		this.productoProveedor = productoProveedor;
+	}
+
+	public Long getProductoProveedorId() {
+		return productoProveedorId;
+	}
+
+	public void setProductoProveedorId(Long productoProveedorId) {
+		this.productoProveedorId = productoProveedorId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -127,11 +123,9 @@ public class Inventario implements Serializable {
         return 31;
     }
 
-    @Override
-    public String toString() {
-        return "Inventario{" +
-            "id=" + getId() +
-            ", total=" + getTotal() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "Inventario [id=" + id + ", total=" + total + ", productoProveedorId=" + productoProveedorId + "]";
+	}
+
 }

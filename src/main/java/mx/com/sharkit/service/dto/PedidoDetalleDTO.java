@@ -16,10 +16,13 @@ public class PedidoDetalleDTO implements Serializable {
 
     private BigDecimal total;
 
-
     private Long pedidoId;
 
-    private Long productoId;
+    private ProductoProveedorDTO productoProveedor;
+
+    private Long productoProveedorId;
+    
+    private EstatusDTO estatus;
 
     private Long estatusId;
 
@@ -63,14 +66,6 @@ public class PedidoDetalleDTO implements Serializable {
         this.pedidoId = pedidoId;
     }
 
-    public Long getProductoId() {
-        return productoId;
-    }
-
-    public void setProductoId(Long productoId) {
-        this.productoId = productoId;
-    }
-
     public Long getEstatusId() {
         return estatusId;
     }
@@ -79,7 +74,32 @@ public class PedidoDetalleDTO implements Serializable {
         this.estatusId = estatusId;
     }
 
-    @Override
+
+	public ProductoProveedorDTO getProductoProveedor() {
+		return productoProveedor;
+	}
+
+	public void setProductoProveedor(ProductoProveedorDTO productoProveedor) {
+		this.productoProveedor = productoProveedor;
+	}
+
+	public Long getProductoProveedorId() {
+		return productoProveedorId;
+	}
+
+	public void setProductoProveedorId(Long productoProveedorId) {
+		this.productoProveedorId = productoProveedorId;
+	}
+
+	public EstatusDTO getEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(EstatusDTO estatus) {
+		this.estatus = estatus;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -100,16 +120,11 @@ public class PedidoDetalleDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "PedidoDetalleDTO{" +
-            "id=" + getId() +
-            ", cantidad=" + getCantidad() +
-            ", totalSinIva=" + getTotalSinIva() +
-            ", total=" + getTotal() +
-            ", pedido=" + getPedidoId() +
-            ", producto=" + getProductoId() +
-            ", estatus=" + getEstatusId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "PedidoDetalleDTO [id=" + id + ", cantidad=" + cantidad + ", totalSinIva=" + totalSinIva + ", total="
+				+ total + ", pedidoId=" + pedidoId + ", productoProveedorId=" + productoProveedorId + ", estatusId="
+				+ estatusId + "]";
+	}
+
 }

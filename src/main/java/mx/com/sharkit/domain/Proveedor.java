@@ -1,8 +1,6 @@
 package mx.com.sharkit.domain;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -63,12 +60,6 @@ public class Proveedor implements Serializable {
     @Column(name = "usuario_modificacion_id")
     private Long usuarioModificacionId;
     
-    @OneToMany(mappedBy = "proveedor")
-    private Set<OfertaProveedor> ofertaProveedors = new HashSet<>();
-
-    @OneToMany(mappedBy = "proveedor")
-    private Set<Inventario> inventarios = new HashSet<>();
-
     @ManyToOne
     @JsonIgnoreProperties("proveedors")
     private Empresa empresa;
@@ -178,56 +169,6 @@ public class Proveedor implements Serializable {
 	public void setUsuarioModificacionId(Long usuarioModificacionId) {
 		this.usuarioModificacionId = usuarioModificacionId;
 	}
-
-    public Set<OfertaProveedor> getOfertaProveedors() {
-        return ofertaProveedors;
-    }
-
-    public Proveedor ofertaProveedors(Set<OfertaProveedor> ofertaProveedors) {
-        this.ofertaProveedors = ofertaProveedors;
-        return this;
-    }
-
-    public Proveedor addOfertaProveedor(OfertaProveedor ofertaProveedor) {
-        this.ofertaProveedors.add(ofertaProveedor);
-        ofertaProveedor.setProveedor(this);
-        return this;
-    }
-
-    public Proveedor removeOfertaProveedor(OfertaProveedor ofertaProveedor) {
-        this.ofertaProveedors.remove(ofertaProveedor);
-        ofertaProveedor.setProveedor(null);
-        return this;
-    }
-
-    public void setOfertaProveedors(Set<OfertaProveedor> ofertaProveedors) {
-        this.ofertaProveedors = ofertaProveedors;
-    }
-
-    public Set<Inventario> getInventarios() {
-        return inventarios;
-    }
-
-    public Proveedor inventarios(Set<Inventario> inventarios) {
-        this.inventarios = inventarios;
-        return this;
-    }
-
-    public Proveedor addInventario(Inventario inventario) {
-        this.inventarios.add(inventario);
-        inventario.setProveedor(this);
-        return this;
-    }
-
-    public Proveedor removeInventario(Inventario inventario) {
-        this.inventarios.remove(inventario);
-        inventario.setProveedor(null);
-        return this;
-    }
-
-    public void setInventarios(Set<Inventario> inventarios) {
-        this.inventarios = inventarios;
-    }
 
     public Empresa getEmpresa() {
         return empresa;

@@ -19,10 +19,6 @@ public interface ProveedorMapper extends EntityMapper<ProveedorDTO, Proveedor> {
 
     @Mapping(source = "usuarioAltaId", target = "usuarioAlta")
     @Mapping(source = "usuarioModificacionId", target = "usuarioModificacion")
-    @Mapping(target = "ofertaProveedors", ignore = true)
-    @Mapping(target = "removeOfertaProveedor", ignore = true)
-    @Mapping(target = "inventarios", ignore = true)
-    @Mapping(target = "removeInventario", ignore = true)
     @Mapping(source = "empresaId", target = "empresa")
     Proveedor toEntity(ProveedorDTO proveedorDTO);
 

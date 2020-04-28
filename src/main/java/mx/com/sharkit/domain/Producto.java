@@ -2,8 +2,6 @@ package mx.com.sharkit.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -106,14 +103,6 @@ public class Producto implements Serializable {
     @Column(name = "unidad_medida_id")
     private Long unidadMedidaId;
 
-    @OneToMany(mappedBy = "producto")
-    private Set<OfertaProveedor> ofertaProveedors = new HashSet<>();
-
-    @OneToMany(mappedBy = "producto")
-    private Set<PedidoDetalle> pedidoDetalles = new HashSet<>();
-
-    @OneToMany(mappedBy = "producto")
-    private Set<Inventario> inventarios = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -300,81 +289,6 @@ public class Producto implements Serializable {
 
     public void setUsuarioModificacion(User user) {
         this.usuarioModificacion = user;
-    }
-
-    public Set<OfertaProveedor> getOfertaProveedors() {
-        return ofertaProveedors;
-    }
-
-    public Producto ofertaProveedors(Set<OfertaProveedor> ofertaProveedors) {
-        this.ofertaProveedors = ofertaProveedors;
-        return this;
-    }
-
-    public Producto addOfertaProveedor(OfertaProveedor ofertaProveedor) {
-        this.ofertaProveedors.add(ofertaProveedor);
-        ofertaProveedor.setProducto(this);
-        return this;
-    }
-
-    public Producto removeOfertaProveedor(OfertaProveedor ofertaProveedor) {
-        this.ofertaProveedors.remove(ofertaProveedor);
-        ofertaProveedor.setProducto(null);
-        return this;
-    }
-
-    public void setOfertaProveedors(Set<OfertaProveedor> ofertaProveedors) {
-        this.ofertaProveedors = ofertaProveedors;
-    }
-
-    public Set<PedidoDetalle> getPedidoDetalles() {
-        return pedidoDetalles;
-    }
-
-    public Producto pedidoDetalles(Set<PedidoDetalle> pedidoDetalles) {
-        this.pedidoDetalles = pedidoDetalles;
-        return this;
-    }
-
-    public Producto addPedidoDetalle(PedidoDetalle pedidoDetalle) {
-        this.pedidoDetalles.add(pedidoDetalle);
-        pedidoDetalle.setProducto(this);
-        return this;
-    }
-
-    public Producto removePedidoDetalle(PedidoDetalle pedidoDetalle) {
-        this.pedidoDetalles.remove(pedidoDetalle);
-        pedidoDetalle.setProducto(null);
-        return this;
-    }
-
-    public void setPedidoDetalles(Set<PedidoDetalle> pedidoDetalles) {
-        this.pedidoDetalles = pedidoDetalles;
-    }
-
-    public Set<Inventario> getInventarios() {
-        return inventarios;
-    }
-
-    public Producto inventarios(Set<Inventario> inventarios) {
-        this.inventarios = inventarios;
-        return this;
-    }
-
-    public Producto addInventario(Inventario inventario) {
-        this.inventarios.add(inventario);
-        inventario.setProducto(this);
-        return this;
-    }
-
-    public Producto removeInventario(Inventario inventario) {
-        this.inventarios.remove(inventario);
-        inventario.setProducto(null);
-        return this;
-    }
-
-    public void setInventarios(Set<Inventario> inventarios) {
-        this.inventarios = inventarios;
     }
 
     public TipoArticulo getTipoArticulo() {

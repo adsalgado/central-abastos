@@ -33,12 +33,19 @@ public class PedidoDetalle implements Serializable {
     private Pedido pedido;
 
     @ManyToOne
-    @JsonIgnoreProperties("pedidoDetalles")
-    private Producto producto;
+    @JoinColumn(name = "producto_proveedor_id", insertable = false, updatable = false)
+    private ProductoProveedor productoProveedor;
+
+    @Column(name = "producto_proveedor_id")
+    private Long productoProveedorId;
 
     @ManyToOne
+    @JoinColumn(name = "estatus_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("pedidoDetalles")
     private Estatus estatus;
+
+    @Column(name = "estatus_id")
+    private Long estatusId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -101,19 +108,6 @@ public class PedidoDetalle implements Serializable {
         this.pedido = pedido;
     }
 
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public PedidoDetalle producto(Producto producto) {
-        this.producto = producto;
-        return this;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
     public Estatus getEstatus() {
         return estatus;
     }
@@ -126,9 +120,34 @@ public class PedidoDetalle implements Serializable {
     public void setEstatus(Estatus estatus) {
         this.estatus = estatus;
     }
+    
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
-    @Override
+    public ProductoProveedor getProductoProveedor() {
+		return productoProveedor;
+	}
+
+	public void setProductoProveedor(ProductoProveedor productoProveedor) {
+		this.productoProveedor = productoProveedor;
+	}
+
+	public Long getProductoProveedorId() {
+		return productoProveedorId;
+	}
+
+	public void setProductoProveedorId(Long productoProveedorId) {
+		this.productoProveedorId = productoProveedorId;
+	}
+
+	public Long getEstatusId() {
+		return estatusId;
+	}
+
+	public void setEstatusId(Long estatusId) {
+		this.estatusId = estatusId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -144,13 +163,12 @@ public class PedidoDetalle implements Serializable {
         return 31;
     }
 
-    @Override
-    public String toString() {
-        return "PedidoDetalle{" +
-            "id=" + getId() +
-            ", cantidad=" + getCantidad() +
-            ", totalSinIva=" + getTotalSinIva() +
-            ", total=" + getTotal() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "PedidoDetalle [id=" + id + ", cantidad=" + cantidad + ", totalSinIva=" + totalSinIva + ", total="
+				+ total + ", pedido=" + pedido + ", productoProveedorId=" + productoProveedorId + ", estatusId="
+				+ estatusId + "]";
+	}
+
+
 }
