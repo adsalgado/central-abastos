@@ -178,6 +178,11 @@ public class CarritoHistoricoResource {
     @DeleteMapping("/carrito-historicos/{id}")
     public ResponseEntity<Void> deleteCarritoHistorico(@PathVariable Long id) {
         log.debug("REST request to delete CarritoHistorico : {}", id);
+        
+        carritoHistoricoDetalleService.findByCarritoHistoricoId(id).forEach(chd -> 
+        	carritoHistoricoDetalleService.delete(chd.getId())
+        );
+        
         carritoHistoricoService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }

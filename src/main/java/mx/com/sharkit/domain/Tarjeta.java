@@ -22,6 +22,10 @@ public class Tarjeta implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(max = 45)
+    @Column(name = "alias", length = 45, nullable = false)
+    private String alias;
+
     @NotNull
     @Size(max = 20)
     @Column(name = "numero_tarjeta", length = 20, nullable = false)
@@ -105,6 +109,14 @@ public class Tarjeta implements Serializable {
 		this.fechaAlta = fechaAlta;
 	}
 
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -123,9 +135,9 @@ public class Tarjeta implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Tarjeta [id=" + id + ", numeroTarjeta=" + numeroTarjeta + ", fechaCaducidad=" + fechaCaducidad
-				+ ", numeroSeguridad=" + numeroSeguridad + ", usuarioId=" + usuarioId + ", fechaAlta=" + fechaAlta
-				+ "]";
+		return "Tarjeta [id=" + id + ", alias=" + alias + ", numeroTarjeta=" + numeroTarjeta + ", fechaCaducidad="
+				+ fechaCaducidad + ", numeroSeguridad=" + numeroSeguridad + ", usuarioId=" + usuarioId + ", fechaAlta="
+				+ fechaAlta + "]";
 	}
 
 }
