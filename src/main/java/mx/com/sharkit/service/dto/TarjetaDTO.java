@@ -14,6 +14,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class TarjetaDTO implements Serializable {
 
     private Long id;
+    
+    @Size(max = 45)
+    private String alias;
 
     @NotNull
     @Size(max = 20)
@@ -81,6 +84,14 @@ public class TarjetaDTO implements Serializable {
 		this.fechaAlta = fechaAlta;
 	}
 
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -104,9 +115,9 @@ public class TarjetaDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "TarjetaDTO [id=" + id + ", numeroTarjeta=" + numeroTarjeta + ", fechaCaducidad=" + fechaCaducidad
-				+ ", numeroSeguridad=" + numeroSeguridad + ", usuarioId=" + usuarioId + ", fechaAlta=" + fechaAlta
-				+ "]";
+		return "TarjetaDTO [id=" + id + ", alias=" + alias + ", numeroTarjeta=" + numeroTarjeta + ", fechaCaducidad="
+				+ fechaCaducidad + ", numeroSeguridad=" + numeroSeguridad + ", usuarioId=" + usuarioId + ", fechaAlta="
+				+ fechaAlta + "]";
 	}
 
 }
