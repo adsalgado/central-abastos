@@ -43,8 +43,8 @@ public class Direccion implements Serializable {
     private String codigoPostal;
 
     @Size(max = 45)
-    @Column(name = "latidud", length = 128)
-    private String latidud;
+    @Column(name = "latitud", length = 128)
+    private String latitud;
 
     @Size(max = 45)
     @Column(name = "longitud", length = 128)
@@ -112,12 +112,12 @@ public class Direccion implements Serializable {
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
-    public String getLatidud() {
-		return latidud;
+    public String getLatitud() {
+		return latitud;
 	}
 
-	public void setLatidud(String latidud) {
-		this.latidud = latidud;
+	public void setLatitud(String latitud) {
+		this.latitud = latitud;
 	}
 
 	public String getLongitud() {
@@ -175,7 +175,7 @@ public class Direccion implements Serializable {
             ", direccion='" + getDireccion() + "'" +
             ", colonia='" + getColonia() + "'" +
             ", codigoPostal='" + getCodigoPostal() + "'" +
-            ", latitud='" + getLatidud() + "'" +
+            ", latitud='" + getLatitud() + "'" +
             ", longitud='" + getLongitud() + "'" +
             ", fechaAlta='" + getFechaAlta() + "'" +
             ", usuarioAlta='" + getUsuarioAltaId() + "'" +

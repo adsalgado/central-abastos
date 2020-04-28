@@ -1,7 +1,11 @@
 package mx.com.sharkit.service.dto;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.UsuarioImagen} entity.
@@ -10,13 +14,20 @@ public class UsuarioDireccionDTO implements Serializable {
 
     private Long id;
 
-    private Instant fechaAlta;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+    private LocalDateTime fechaAlta;
     
     private Long usuarioId;
 
     private DireccionDTO direccion;
     
     private Long direccionId;
+
+    private Long usuarioAltaId;
+
+    @Size(max = 1)
+    private String favorita;
+
 
     public Long getId() {
         return id;
@@ -26,11 +37,11 @@ public class UsuarioDireccionDTO implements Serializable {
         this.id = id;
     }
 
-    public Instant getFechaAlta() {
+    public LocalDateTime getFechaAlta() {
         return fechaAlta;
     }
 
-    public void setFechaAlta(Instant fechaAlta) {
+    public void setFechaAlta(LocalDateTime fechaAlta) {
         this.fechaAlta = fechaAlta;
     }
 
@@ -59,6 +70,22 @@ public class UsuarioDireccionDTO implements Serializable {
 		this.direccionId = direccionId;
 	}
 
+	public Long getUsuarioAltaId() {
+		return usuarioAltaId;
+	}
+
+	public void setUsuarioAltaId(Long usuarioAltaId) {
+		this.usuarioAltaId = usuarioAltaId;
+	}
+
+	public String getFavorita() {
+		return favorita;
+	}
+
+	public void setFavorita(String favorita) {
+		this.favorita = favorita;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,13 +107,10 @@ public class UsuarioDireccionDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "UsuarioImagenDTO{" +
-            "id=" + getId() +
-            ", fechaAlta='" + getFechaAlta() + "'" +
-            ", usuario=" + getUsuarioId() +
-            ", direccion=" + getDireccionId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "UsuarioDireccionDTO [id=" + id + ", fechaAlta=" + fechaAlta + ", usuarioId=" + usuarioId
+				+ ", direccionId=" + direccionId + ", usuarioAltaId=" + usuarioAltaId + ", favorita=" + favorita + "]";
+	}
+
 }

@@ -1,10 +1,19 @@
 package mx.com.sharkit.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A UsuarioDireccion.
@@ -20,7 +29,7 @@ public class UsuarioDireccion implements Serializable {
     private Long id;
 
     @Column(name = "fecha_alta")
-    private Instant fechaAlta;
+    private LocalDateTime fechaAlta;
 
     @OneToOne
     @JoinColumn(name = "usuario_id", unique = true, insertable = false, updatable = false)
@@ -28,6 +37,10 @@ public class UsuarioDireccion implements Serializable {
     
     @Column(name = "usuario_id")
     private Long usuarioId;
+    
+    @Size(max = 1)
+    @Column(name = "favorita", length = 1)
+    private String favorita;
 
     @ManyToOne
     @JoinColumn(name = "direccion_id", insertable = false, updatable = false)
@@ -36,6 +49,9 @@ public class UsuarioDireccion implements Serializable {
     
     @Column(name = "direccion_id")
     private Long direccionId;
+
+    @Column(name = "usuario_alta_id")
+    private Long usuarioAltaId;
 
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -47,16 +63,16 @@ public class UsuarioDireccion implements Serializable {
         this.id = id;
     }
 
-    public Instant getFechaAlta() {
+    public LocalDateTime getFechaAlta() {
         return fechaAlta;
     }
 
-    public UsuarioDireccion fechaAlta(Instant fechaAlta) {
+    public UsuarioDireccion fechaAlta(LocalDateTime fechaAlta) {
         this.fechaAlta = fechaAlta;
         return this;
     }
 
-    public void setFechaAlta(Instant fechaAlta) {
+    public void setFechaAlta(LocalDateTime fechaAlta) {
         this.fechaAlta = fechaAlta;
     }
 
@@ -98,6 +114,22 @@ public class UsuarioDireccion implements Serializable {
 		this.direccionId = direccionId;
 	}
 
+	public String getFavorita() {
+		return favorita;
+	}
+
+	public void setFavorita(String favorita) {
+		this.favorita = favorita;
+	}
+
+	public Long getUsuarioAltaId() {
+		return usuarioAltaId;
+	}
+
+	public void setUsuarioAltaId(Long usuarioAltaId) {
+		this.usuarioAltaId = usuarioAltaId;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -114,11 +146,10 @@ public class UsuarioDireccion implements Serializable {
         return 31;
     }
 
-    @Override
-    public String toString() {
-        return "UsuarioImagen{" +
-            "id=" + getId() +
-            ", fechaAlta='" + getFechaAlta() + "'" +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "UsuarioDireccion [id=" + id + ", fechaAlta=" + fechaAlta + ", usuarioId=" + usuarioId + ", favorita="
+				+ favorita + ", direccionId=" + direccionId + ", usuarioAltaId=" + usuarioAltaId + "]";
+	}
+
 }

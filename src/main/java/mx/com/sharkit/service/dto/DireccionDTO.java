@@ -27,7 +27,7 @@ public class DireccionDTO implements Serializable {
     private String codigoPostal;
 
     @Size(max = 45)
-    private String latidud;
+    private String latitud;
 
     @Size(max = 45)
     private String longitud;
@@ -70,12 +70,12 @@ public class DireccionDTO implements Serializable {
         this.codigoPostal = codigoPostal;
     }
 
-    public String getLatidud() {
-		return latidud;
+    public String getLatitud() {
+		return latitud;
 	}
 
-	public void setLatidud(String latidud) {
-		this.latidud = latidud;
+	public void setLatitud(String latitud) {
+		this.latitud = latitud;
 	}
 
 	public String getLongitud() {
@@ -130,7 +130,7 @@ public class DireccionDTO implements Serializable {
             ", direccion='" + getDireccion() + "'" +
             ", colonia='" + getColonia() + "'" +
             ", codigoPostal='" + getCodigoPostal() + "'" +
-            ", latitud='" + getLatidud() + "'" +
+            ", latitud='" + getLatitud() + "'" +
             ", longitud='" + getLongitud() + "'" +
             ", fechaAlta='" + getFechaAlta() + "'" +
             ", usuarioAlta=" + getUsuarioAltaId() +
