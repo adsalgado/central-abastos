@@ -126,7 +126,20 @@ public class CarritoHistoricoResource {
         if (carritoHistoricoDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        CarritoHistoricoDTO result = carritoHistoricoService.save(carritoHistoricoDTO);
+        Optional<User> user = userService.getUserWithAuthorities();
+        Long clienteId =  user.isPresent() ? user.get().getId() : 0L;
+        if (clienteId == 0) {
+            throw new BadRequestAlertException("El cliente es requerido.", ENTITY_NAME, "idexists");
+        }
+        Optional<CarritoHistoricoDTO> carritoOpt = carritoHistoricoService.findOne(carritoHistoricoDTO.getId());
+        CarritoHistoricoDTO carrito = null;
+        CarritoHistoricoDTO result = null;
+        if (carritoOpt.isPresent()) {
+        	carrito = carritoOpt.get();
+        	carrito.setNombre(carritoHistoricoDTO.getNombre());
+            result = carritoHistoricoService.save(carritoHistoricoDTO);
+        }
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, carritoHistoricoDTO.getId().toString()))
             .body(result);
