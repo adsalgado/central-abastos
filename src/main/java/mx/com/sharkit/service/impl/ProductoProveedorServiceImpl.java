@@ -118,6 +118,9 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(ProductoProveedor.class);
 		criteria.createAlias("producto", "producto");
+		criteria.createAlias("producto.tipoArticulo", "tipoArticulo");
+		criteria.createAlias("tipoArticulo.categoria", "categoria");
+		criteria.createAlias("categoria.seccion", "seccion");
 
 		params.keySet().forEach(key -> {
 			switch (key) {
@@ -125,10 +128,10 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 				criteria.add(Restrictions.eq("proveedorId", Long.parseLong((String)params.get(key))));
 				break;
 			case "categoriaId":
-				criteria.add(Restrictions.eq("producto.categoriaId", Long.parseLong((String)params.get(key))));
+				criteria.add(Restrictions.eq("categoria.id", Long.parseLong((String)params.get(key))));
 				break;
 			case "seccionId":
-				criteria.add(Restrictions.eq("producto.seccionId", Long.parseLong((String)params.get(key))));
+				criteria.add(Restrictions.eq("seccion.id", Long.parseLong((String)params.get(key))));
 				break;
 			case "tipoArticuloId":
 				criteria.add(Restrictions.eq("producto.tipoArticuloId", Long.parseLong((String)params.get(key))));
