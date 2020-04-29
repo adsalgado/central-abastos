@@ -4,6 +4,7 @@ import mx.com.sharkit.AbastosApp;
 import mx.com.sharkit.domain.User;
 import mx.com.sharkit.repository.UserRepository;
 import mx.com.sharkit.security.jwt.TokenProvider;
+import mx.com.sharkit.service.UserService;
 import mx.com.sharkit.web.rest.errors.ExceptionTranslator;
 import mx.com.sharkit.web.rest.vm.LoginVM;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +39,9 @@ public class UserJWTControllerIT {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -49,7 +53,7 @@ public class UserJWTControllerIT {
 
     @BeforeEach
     public void setup() {
-        UserJWTController userJWTController = new UserJWTController(tokenProvider, authenticationManager);
+        UserJWTController userJWTController = new UserJWTController(tokenProvider, authenticationManager, userService);
         this.mockMvc = MockMvcBuilders.standaloneSetup(userJWTController)
             .setControllerAdvice(exceptionTranslator)
             .build();
