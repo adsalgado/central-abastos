@@ -68,7 +68,11 @@ public class CarritoCompraResource {
         Optional<User> user = userService.getUserWithAuthorities();
         Long clienteId =  user.isPresent() ? user.get().getId() : 0L;
         if (clienteId == 0) {
-            throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+        }
+        Optional <CarritoCompraDTO> optCarritoDto = carritoCompraService.findOneClienteIdAndProductoProveedorId(clienteId, carritoCompraDTO.getProductoProveedorId());
+        if (optCarritoDto.isPresent()) {
+            throw new BadRequestAlertException("Ya existe este producto en el carrito.", ENTITY_NAME, "idexists");        	
         }
 
         carritoCompraDTO.setClienteId(clienteId);
