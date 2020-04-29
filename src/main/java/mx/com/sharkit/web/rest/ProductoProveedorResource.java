@@ -42,7 +42,10 @@ import mx.com.sharkit.service.UtilService;
 import mx.com.sharkit.service.dto.CategoriaDTO;
 import mx.com.sharkit.service.dto.ProductoProveedorCategoriaDTO;
 import mx.com.sharkit.service.dto.ProductoProveedorDTO;
+import mx.com.sharkit.service.dto.ProductoProveedorTipoArticuloDTO;
 import mx.com.sharkit.service.dto.ProductosProveedorHomeDTO;
+import mx.com.sharkit.service.dto.ProductosProveedorHomeTipoDTO;
+import mx.com.sharkit.service.dto.TipoArticuloDTO;
 import mx.com.sharkit.service.mapper.ProductoProveedorMapper;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
@@ -268,6 +271,63 @@ public class ProductoProveedorResource {
 			return pcDTO;
 		}).collect(Collectors.toCollection(LinkedList::new));
 		productosHomeDTO.setProductosCategoria(productos);
+
+		return productosHomeDTO;
+
+	}
+	
+	/**
+	 * {@code GET  /productos} : get all the productos.
+	 *
+	 * 
+	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+	 *         of productos in body.
+	 */
+	@GetMapping("/proveedor-productos/categoria/{categoriaId}")
+	public ProductosProveedorHomeTipoDTO getProductosCategoria(@PathVariable Long categoriaId, HttpServletRequest request) {
+		log.debug("REST request to get all Productos");
+
+		Map<String, Object> paramsMap = new HashMap<>();
+		if (!StringUtils.isAllEmpty(request.getQueryString())) {
+			List<NameValuePair> params = URLEncodedUtils.parse(request.getQueryString(), Charset.forName("UTF-8"));
+			for (NameValuePair param : params) {
+				paramsMap.put(param.getName(), param.getValue());
+			}
+		}
+		int iPagina = 0;
+		int iLimite = REGISTROS_POR_PAGINA;
+
+		String pagina = request.getParameter("page");
+		if (!StringUtils.isAllBlank(pagina)) {
+			iPagina = Integer.valueOf(pagina);
+		}
+		String limite = request.getParameter("limit");
+		if (!StringUtils.isAllBlank(limite)) {
+			iLimite = Integer.valueOf(limite);
+		}
+		String sort = !StringUtils.isAllBlank(request.getParameter("sort")) ? request.getParameter("sort")
+				: ORDENAMIENTO_DEFAULT;
+		String sortType = !StringUtils.isAllBlank(request.getParameter("sortType")) ? request.getParameter("sortType")
+				: TIPO_ORDENAMIENTO_DEFAULT;
+
+		Sort sortOrder = StringUtils.equals("desc", sortType) ? Sort.by(sort).descending() : Sort.by(sort).ascending();
+
+		log.info("sort {}", sort);
+		log.info("sortType {}", sortType);
+		Pageable pageable = PageRequest.of(iPagina, iLimite, sortOrder);
+
+		ProductosProveedorHomeTipoDTO productosHomeDTO = new ProductosProveedorHomeTipoDTO();
+		List<TipoArticuloDTO> tipos = tipoArticuloService.findByCategoriaId(categoriaId);
+		List<ProductoProveedorTipoArticuloDTO> productos = tipos.stream().map(tip -> {
+//			String queryString = String.format("?categoriaId=%s&limit=10", cat.getId());
+			ProductoProveedorTipoArticuloDTO pcDTO = new ProductoProveedorTipoArticuloDTO();
+			paramsMap.put("tipoArticuloId", tip.getId().toString());
+			paramsMap.put("limit", 10);
+			pcDTO.setTipoArticulo(tip);
+			pcDTO.setProductos(productoProveedorService.searchProductos(paramsMap, 0, 10, Order.asc("producto.nombre")));
+			return pcDTO;
+		}).collect(Collectors.toCollection(LinkedList::new));
+		productosHomeDTO.setProductosTipoArticulo(productos);
 
 		return productosHomeDTO;
 
