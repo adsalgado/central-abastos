@@ -61,8 +61,20 @@ public class Proveedor implements Serializable {
     private Long usuarioModificacionId;
     
     @ManyToOne
+    @JoinColumn(name = "empresa_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("proveedors")
     private Empresa empresa;
+
+    @Column(name = "empresa_id")
+    private Long empresaId;
+
+    @ManyToOne
+    @JoinColumn(name = "transportista_id", insertable = false, updatable = false)
+    @JsonIgnoreProperties("proveedors")
+    private Transportista transportista;
+
+    @Column(name = "transportista_id")
+    private Long transportistaId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -182,9 +194,35 @@ public class Proveedor implements Serializable {
     public void setEmpresa(Empresa empresa) {
         this.empresa = empresa;
     }
+    
+    
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
-    @Override
+    public Long getEmpresaId() {
+		return empresaId;
+	}
+
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
+	}
+
+	public Transportista getTransportista() {
+		return transportista;
+	}
+
+	public void setTransportista(Transportista transportista) {
+		this.transportista = transportista;
+	}
+
+	public Long getTransportistaId() {
+		return transportistaId;
+	}
+
+	public void setTransportistaId(Long transportistaId) {
+		this.transportistaId = transportistaId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -200,13 +238,12 @@ public class Proveedor implements Serializable {
         return 31;
     }
 
-    @Override
-    public String toString() {
-        return "Proveedor{" +
-            "id=" + getId() +
-            ", nombre='" + getNombre() + "'" +
-            ", fechaAlta='" + getFechaAlta() + "'" +
-            ", fechaModificacion='" + getFechaModificacion() + "'" +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "Proveedor [id=" + id + ", nombre=" + nombre + ", fechaAlta=" + fechaAlta + ", fechaModificacion="
+				+ fechaModificacion + ", direccionId=" + direccionId + ", usuarioAltaId=" + usuarioAltaId
+				+ ", usuarioModificacionId=" + usuarioModificacionId + ", empresaId=" + empresaId + ", transportistaId="
+				+ transportistaId + "]";
+	}
+
 }

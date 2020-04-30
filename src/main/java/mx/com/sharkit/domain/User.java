@@ -97,6 +97,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Column(name = "reset_date")
     private Instant resetDate = null;
+    
+    @Column(name = "tipo_usuario_id")
+    private Long tipoUsuarioId;
+    
+    @Column(name = "token")
+    private String token;
 
     @JsonIgnore
     @ManyToMany
@@ -244,8 +250,25 @@ public class User extends AbstractAuditingEntity implements Serializable {
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
+    
+   
+    public Long getTipoUsuarioId() {
+		return tipoUsuarioId;
+	}
 
-    @Override
+	public void setTipoUsuarioId(Long tipoUsuarioId) {
+		this.tipoUsuarioId = tipoUsuarioId;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -276,6 +299,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
+            ", tipoUsuarioId='" + tipoUsuarioId + '\'' +
             "}";
     }
 }

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -67,6 +68,11 @@ public class UserDTO {
     private Instant lastModifiedDate;
 
     private Set<String> authorities;
+    
+    private Long tipoUsuarioId;
+    
+    private String token;
+
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -89,6 +95,8 @@ public class UserDTO {
         this.createdDate = user.getCreatedDate();
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
+        this.token = user.getToken();
+        this.tipoUsuarioId = user.getTipoUsuarioId();
         this.authorities = user.getAuthorities().stream()
             .map(Authority::getName)
             .collect(Collectors.toSet());
@@ -230,7 +238,23 @@ public class UserDTO {
         this.authorities = authorities;
     }
 
-    @Override
+    public Long getTipoUsuarioId() {
+		return tipoUsuarioId;
+	}
+
+	public void setTipoUsuarioId(Long tipoUsuarioId) {
+		this.tipoUsuarioId = tipoUsuarioId;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	@Override
     public String toString() {
         return "UserDTO{" +
             "login='" + login + '\'' +
@@ -248,6 +272,7 @@ public class UserDTO {
             ", createdDate=" + createdDate +
             ", lastModifiedBy='" + lastModifiedBy + '\'' +
             ", lastModifiedDate=" + lastModifiedDate +
+            ", tipoUsuarioId='" + tipoUsuarioId + '\'' +
             ", authorities=" + authorities +
             "}";
     }

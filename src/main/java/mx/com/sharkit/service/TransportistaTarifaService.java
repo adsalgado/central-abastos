@@ -1,9 +1,10 @@
 package mx.com.sharkit.service;
 
-import mx.com.sharkit.service.dto.TransportistaTarifaDTO;
-
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
+import mx.com.sharkit.service.dto.TransportistaTarifaDTO;
 
 /**
  * Service Interface for managing {@link mx.com.sharkit.domain.TransportistaTarifa}.
@@ -40,4 +41,6 @@ public interface TransportistaTarifaService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    BigDecimal calculaTarifaTransportista(Long transportistaId, BigDecimal valor);
 }

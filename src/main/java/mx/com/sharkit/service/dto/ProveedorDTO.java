@@ -1,13 +1,10 @@
 package mx.com.sharkit.service.dto;
-import java.time.Instant;
-
-import javax.persistence.Column;
-import javax.validation.constraints.*;
-
-import mx.com.sharkit.domain.Direccion;
-
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.Proveedor} entity.
@@ -35,6 +32,11 @@ public class ProveedorDTO implements Serializable {
     private Long usuarioAltaId;
 
     private Long usuarioModificacionId;
+    
+    private TransportistaDTO transportista;
+
+    private Long transportistaId;
+
 
     public Long getId() {
         return id;
@@ -114,6 +116,22 @@ public class ProveedorDTO implements Serializable {
 
 	public void setDireccionId(Long direccionId) {
 		this.direccionId = direccionId;
+	}
+
+	public TransportistaDTO getTransportista() {
+		return transportista;
+	}
+
+	public void setTransportista(TransportistaDTO transportista) {
+		this.transportista = transportista;
+	}
+
+	public Long getTransportistaId() {
+		return transportistaId;
+	}
+
+	public void setTransportistaId(Long transportistaId) {
+		this.transportistaId = transportistaId;
 	}
 
 	@Override
