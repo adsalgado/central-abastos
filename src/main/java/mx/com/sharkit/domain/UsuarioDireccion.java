@@ -15,8 +15,6 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.Data;
-
 /**
  * A UsuarioDireccion.
  */
@@ -61,7 +59,7 @@ public class UsuarioDireccion implements Serializable {
     private TipoDireccion tipoDireccion;
     
     @Column(name = "tipo_direccion_id")
-    private Long tipodireccionId;
+    private Long tipoDireccionId;
 
     @Column(name = "usuario_alta_id")
     private Long usuarioAltaId;
@@ -139,12 +137,12 @@ public class UsuarioDireccion implements Serializable {
 		this.tipoDireccion = tipoDireccion;
 	}
 
-	public Long getTipodireccionId() {
-		return tipodireccionId;
+	public Long getTipoDireccionId() {
+		return tipoDireccionId;
 	}
 
-	public void setTipodireccionId(Long tipodireccionId) {
-		this.tipodireccionId = tipodireccionId;
+	public void setTipoDireccionId(Long tipoDireccionId) {
+		this.tipoDireccionId = tipoDireccionId;
 	}
 
 	public Long getUsuarioAltaId() {
@@ -174,7 +172,7 @@ public class UsuarioDireccion implements Serializable {
 	@Override
 	public String toString() {
 		return "UsuarioDireccion [id=" + id + ", fechaAlta=" + fechaAlta + ", usuarioId=" + usuarioId + ", favorita="
-				+ favorita + ", direccionId=" + direccionId + ", tipodireccionId=" + tipodireccionId
+				+ favorita + ", direccionId=" + direccionId + ", tipoDireccionId=" + tipoDireccionId
 				+ ", usuarioAltaId=" + usuarioAltaId + "]";
 	}
 

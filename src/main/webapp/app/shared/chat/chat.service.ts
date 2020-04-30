@@ -35,9 +35,11 @@ export class ChatService {
       this.connection = this.createConnection();
     }
     // building absolute path so that websocket doesn't fail when deploying with a context path
-    let url = '/websocket/tracker';
+    let url = '/websocket/chat';
     url = this.location.prepareExternalUrl(url);
     const authToken = this.authServerProvider.getToken();
+    console.log('authToken' + authToken);
+
     if (authToken) {
       url += '?access_token=' + authToken;
     }

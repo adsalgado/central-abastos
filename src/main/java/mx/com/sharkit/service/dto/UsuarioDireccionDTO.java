@@ -7,8 +7,6 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.Data;
-
 /**
  * A DTO for the {@link mx.com.sharkit.domain.UsuarioImagen} entity.
  */
@@ -31,7 +29,7 @@ public class UsuarioDireccionDTO implements Serializable {
     
     private TipoDireccionDTO tipoDireccion;
     
-    private Long tipodireccionId;
+    private Long tipoDireccionId;
 
     public Long getId() {
 		return id;
@@ -97,12 +95,12 @@ public class UsuarioDireccionDTO implements Serializable {
 		this.tipoDireccion = tipoDireccion;
 	}
 
-	public Long getTipodireccionId() {
-		return tipodireccionId;
+	public Long getTipoDireccionId() {
+		return tipoDireccionId;
 	}
 
-	public void setTipodireccionId(Long tipodireccionId) {
-		this.tipodireccionId = tipodireccionId;
+	public void setTipoDireccionId(Long tipoDireccionId) {
+		this.tipoDireccionId = tipoDireccionId;
 	}
 
 	public String getFavorita() {
@@ -140,8 +138,8 @@ public class UsuarioDireccionDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "UsuarioDireccionDTO [id=" + id + ", fechaAlta=" + fechaAlta + ", usuarioId=" + usuarioId
-				+ ", direccionId=" + direccionId + ", usuarioAltaId=" + usuarioAltaId + ", tipodireccionId="
-				+ tipodireccionId + ", favorita=" + favorita + "]";
+				+ ", direccionId=" + direccionId + ", usuarioAltaId=" + usuarioAltaId + ", tipoDireccionId="
+				+ tipoDireccionId + ", favorita=" + favorita + "]";
 	}
 
 }
