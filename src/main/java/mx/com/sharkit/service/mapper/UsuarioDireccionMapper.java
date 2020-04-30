@@ -4,7 +4,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import mx.com.sharkit.domain.UsuarioDireccion;
+import mx.com.sharkit.domain.UsuarioImagen;
 import mx.com.sharkit.service.dto.UsuarioDireccionDTO;
+import mx.com.sharkit.service.dto.UsuarioImagenDTO;
 
 /**
  * Mapper for the entity {@link UsuarioImagen} and its DTO {@link UsuarioImagenDTO}.

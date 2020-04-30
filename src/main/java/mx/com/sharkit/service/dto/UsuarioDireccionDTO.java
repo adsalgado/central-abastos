@@ -3,14 +3,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import mx.com.sharkit.domain.TipoDireccion;
+import lombok.Data;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.UsuarioImagen} entity.
@@ -18,6 +15,8 @@ import mx.com.sharkit.domain.TipoDireccion;
 public class UsuarioDireccionDTO implements Serializable {
 
     private Long id;
+
+    private String alias;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
     private LocalDateTime fechaAlta;
@@ -34,37 +33,39 @@ public class UsuarioDireccionDTO implements Serializable {
     
     private Long tipodireccionId;
 
-
-    @Size(max = 1)
-    private String favorita;
-
-
     public Long getId() {
-        return id;
-    }
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public LocalDateTime getFechaAlta() {
-        return fechaAlta;
-    }
+	public String getAlias() {
+		return alias;
+	}
 
-    public void setFechaAlta(LocalDateTime fechaAlta) {
-        this.fechaAlta = fechaAlta;
-    }
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
 
-    public Long getUsuarioId() {
-        return usuarioId;
-    }
+	public LocalDateTime getFechaAlta() {
+		return fechaAlta;
+	}
 
-    public void setUsuarioId(Long userId) {
-        this.usuarioId = userId;
-    }
+	public void setFechaAlta(LocalDateTime fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
 
+	public Long getUsuarioId() {
+		return usuarioId;
+	}
 
-    public DireccionDTO getDireccion() {
+	public void setUsuarioId(Long usuarioId) {
+		this.usuarioId = usuarioId;
+	}
+
+	public DireccionDTO getDireccion() {
 		return direccion;
 	}
 
@@ -88,14 +89,6 @@ public class UsuarioDireccionDTO implements Serializable {
 		this.usuarioAltaId = usuarioAltaId;
 	}
 
-	public String getFavorita() {
-		return favorita;
-	}
-
-	public void setFavorita(String favorita) {
-		this.favorita = favorita;
-	}
-
 	public TipoDireccionDTO getTipoDireccion() {
 		return tipoDireccion;
 	}
@@ -111,6 +104,17 @@ public class UsuarioDireccionDTO implements Serializable {
 	public void setTipodireccionId(Long tipodireccionId) {
 		this.tipodireccionId = tipodireccionId;
 	}
+
+	public String getFavorita() {
+		return favorita;
+	}
+
+	public void setFavorita(String favorita) {
+		this.favorita = favorita;
+	}
+
+	@Size(max = 1)
+    private String favorita;
 
 	@Override
     public boolean equals(Object o) {

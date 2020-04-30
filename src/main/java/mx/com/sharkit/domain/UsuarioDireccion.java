@@ -15,6 +15,8 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.Data;
+
 /**
  * A UsuarioDireccion.
  */
@@ -42,6 +44,10 @@ public class UsuarioDireccion implements Serializable {
     @Column(name = "favorita", length = 1)
     private String favorita;
 
+    @Size(max = 45)
+    @Column(name = "alias", length = 45)
+    private String alias;
+
     @ManyToOne
     @JoinColumn(name = "direccion_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("usuarioDireccions")
@@ -61,48 +67,52 @@ public class UsuarioDireccion implements Serializable {
     private Long usuarioAltaId;
 
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public LocalDateTime getFechaAlta() {
-        return fechaAlta;
-    }
+	public LocalDateTime getFechaAlta() {
+		return fechaAlta;
+	}
 
-    public UsuarioDireccion fechaAlta(LocalDateTime fechaAlta) {
-        this.fechaAlta = fechaAlta;
-        return this;
-    }
+	public void setFechaAlta(LocalDateTime fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
 
-    public void setFechaAlta(LocalDateTime fechaAlta) {
-        this.fechaAlta = fechaAlta;
-    }
+	public User getUsuario() {
+		return usuario;
+	}
 
-    public User getUsuario() {
-        return usuario;
-    }
+	public void setUsuario(User usuario) {
+		this.usuario = usuario;
+	}
 
-    public UsuarioDireccion usuario(User user) {
-        this.usuario = user;
-        return this;
-    }
-
-    public void setUsuario(User user) {
-        this.usuario = user;
-    }
-
-   
-    public Long getUsuarioId() {
+	public Long getUsuarioId() {
 		return usuarioId;
 	}
 
 	public void setUsuarioId(Long usuarioId) {
 		this.usuarioId = usuarioId;
+	}
+
+	public String getFavorita() {
+		return favorita;
+	}
+
+	public void setFavorita(String favorita) {
+		this.favorita = favorita;
+	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 	public Direccion getDireccion() {
@@ -121,22 +131,6 @@ public class UsuarioDireccion implements Serializable {
 		this.direccionId = direccionId;
 	}
 
-	public String getFavorita() {
-		return favorita;
-	}
-
-	public void setFavorita(String favorita) {
-		this.favorita = favorita;
-	}
-
-	public Long getUsuarioAltaId() {
-		return usuarioAltaId;
-	}
-
-	public void setUsuarioAltaId(Long usuarioAltaId) {
-		this.usuarioAltaId = usuarioAltaId;
-	}
-
 	public TipoDireccion getTipoDireccion() {
 		return tipoDireccion;
 	}
@@ -151,6 +145,14 @@ public class UsuarioDireccion implements Serializable {
 
 	public void setTipodireccionId(Long tipodireccionId) {
 		this.tipodireccionId = tipodireccionId;
+	}
+
+	public Long getUsuarioAltaId() {
+		return usuarioAltaId;
+	}
+
+	public void setUsuarioAltaId(Long usuarioAltaId) {
+		this.usuarioAltaId = usuarioAltaId;
 	}
 
 	@Override
