@@ -3,12 +3,15 @@ package mx.com.sharkit.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 
 import mx.com.sharkit.service.StripeService;
 import mx.com.sharkit.service.dto.ChargeRequestDTO;
 
+@Service
 public class StripeServiceImpl implements StripeService {
 
 	@Override
