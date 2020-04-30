@@ -3,9 +3,14 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import mx.com.sharkit.domain.TipoDireccion;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.UsuarioImagen} entity.
@@ -24,6 +29,11 @@ public class UsuarioDireccionDTO implements Serializable {
     private Long direccionId;
 
     private Long usuarioAltaId;
+    
+    private TipoDireccionDTO tipoDireccion;
+    
+    private Long tipodireccionId;
+
 
     @Size(max = 1)
     private String favorita;
@@ -86,6 +96,22 @@ public class UsuarioDireccionDTO implements Serializable {
 		this.favorita = favorita;
 	}
 
+	public TipoDireccionDTO getTipoDireccion() {
+		return tipoDireccion;
+	}
+
+	public void setTipoDireccion(TipoDireccionDTO tipoDireccion) {
+		this.tipoDireccion = tipoDireccion;
+	}
+
+	public Long getTipodireccionId() {
+		return tipodireccionId;
+	}
+
+	public void setTipodireccionId(Long tipodireccionId) {
+		this.tipodireccionId = tipodireccionId;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -110,7 +136,8 @@ public class UsuarioDireccionDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "UsuarioDireccionDTO [id=" + id + ", fechaAlta=" + fechaAlta + ", usuarioId=" + usuarioId
-				+ ", direccionId=" + direccionId + ", usuarioAltaId=" + usuarioAltaId + ", favorita=" + favorita + "]";
+				+ ", direccionId=" + direccionId + ", usuarioAltaId=" + usuarioAltaId + ", tipodireccionId="
+				+ tipodireccionId + ", favorita=" + favorita + "]";
 	}
 
 }

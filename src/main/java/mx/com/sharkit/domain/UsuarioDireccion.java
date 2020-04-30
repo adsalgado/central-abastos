@@ -50,6 +50,13 @@ public class UsuarioDireccion implements Serializable {
     @Column(name = "direccion_id")
     private Long direccionId;
 
+    @ManyToOne
+    @JoinColumn(name = "tipo_direccion_id", insertable = false, updatable = false)
+    private TipoDireccion tipoDireccion;
+    
+    @Column(name = "tipo_direccion_id")
+    private Long tipodireccionId;
+
     @Column(name = "usuario_alta_id")
     private Long usuarioAltaId;
 
@@ -130,6 +137,22 @@ public class UsuarioDireccion implements Serializable {
 		this.usuarioAltaId = usuarioAltaId;
 	}
 
+	public TipoDireccion getTipoDireccion() {
+		return tipoDireccion;
+	}
+
+	public void setTipoDireccion(TipoDireccion tipoDireccion) {
+		this.tipoDireccion = tipoDireccion;
+	}
+
+	public Long getTipodireccionId() {
+		return tipodireccionId;
+	}
+
+	public void setTipodireccionId(Long tipodireccionId) {
+		this.tipodireccionId = tipodireccionId;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -149,7 +172,8 @@ public class UsuarioDireccion implements Serializable {
 	@Override
 	public String toString() {
 		return "UsuarioDireccion [id=" + id + ", fechaAlta=" + fechaAlta + ", usuarioId=" + usuarioId + ", favorita="
-				+ favorita + ", direccionId=" + direccionId + ", usuarioAltaId=" + usuarioAltaId + "]";
+				+ favorita + ", direccionId=" + direccionId + ", tipodireccionId=" + tipodireccionId
+				+ ", usuarioAltaId=" + usuarioAltaId + "]";
 	}
 
 }
