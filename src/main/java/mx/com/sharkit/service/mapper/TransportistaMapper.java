@@ -18,8 +18,6 @@ public interface TransportistaMapper extends EntityMapper<TransportistaDTO, Tran
 
     @Mapping(source = "usuarioAltaId", target = "usuarioAlta")
     @Mapping(source = "usuarioModificacionId", target = "usuarioModificacion")
-    @Mapping(target = "pedidos", ignore = true)
-    @Mapping(target = "removePedido", ignore = true)
     @Mapping(target = "transportistaTarifas", ignore = true)
     @Mapping(target = "removeTransportistaTarifa", ignore = true)
     @Mapping(source = "empresaId", target = "empresa")

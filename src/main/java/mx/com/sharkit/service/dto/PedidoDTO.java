@@ -1,8 +1,16 @@
 package mx.com.sharkit.service.dto;
-import java.time.LocalDate;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.Pedido} entity.
@@ -11,136 +19,176 @@ public class PedidoDTO implements Serializable {
 
     private Long id;
 
+    private EstatusDTO estatus;
+    
+    private Long estatusId;
+    
+    private UserDTO cliente;
+    
+    private Long clienteId;
+
+    private BigDecimal total;
+
     private BigDecimal totalSinIva;
 
     private BigDecimal comisionTransportista;
 
     private BigDecimal comisionPreparador;
 
-    private BigDecimal total;
-
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
     private LocalDate fechaPedido;
 
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
     private LocalDate fechaPreparacion;
 
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
     private LocalDate fechaCobro;
 
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
     private LocalDate fechaEntrega;
 
+//    @OneToMany(mappedBy = "pedido")
+//    private Set<PedidoDetalle> pedidoDetalles = new HashSet<>();
 
-    private Long clienteId;
+    @Column(name = "usuario_alta_id")
+    private Long usuarioAltaId;
 
-    private Long estatusId;
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
+    private LocalDateTime fechaAlta;
 
-    private Long transportistaId;
+    @OneToMany(mappedBy = "pedido")
+    private Set<HistoricoPedidoDTO> historicoPedidos = new HashSet<>();
 
-    private Long recolectorId;
-
+    
     public Long getId() {
-        return id;
-    }
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public BigDecimal getTotalSinIva() {
-        return totalSinIva;
-    }
+	public EstatusDTO getEstatus() {
+		return estatus;
+	}
 
-    public void setTotalSinIva(BigDecimal totalSinIva) {
-        this.totalSinIva = totalSinIva;
-    }
+	public void setEstatus(EstatusDTO estatus) {
+		this.estatus = estatus;
+	}
 
-    public BigDecimal getComisionTransportista() {
-        return comisionTransportista;
-    }
+	public Long getEstatusId() {
+		return estatusId;
+	}
 
-    public void setComisionTransportista(BigDecimal comisionTransportista) {
-        this.comisionTransportista = comisionTransportista;
-    }
+	public void setEstatusId(Long estatusId) {
+		this.estatusId = estatusId;
+	}
 
-    public BigDecimal getComisionPreparador() {
-        return comisionPreparador;
-    }
+	public UserDTO getCliente() {
+		return cliente;
+	}
 
-    public void setComisionPreparador(BigDecimal comisionPreparador) {
-        this.comisionPreparador = comisionPreparador;
-    }
+	public void setCliente(UserDTO cliente) {
+		this.cliente = cliente;
+	}
 
-    public BigDecimal getTotal() {
-        return total;
-    }
+	public Long getClienteId() {
+		return clienteId;
+	}
 
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
+	public void setClienteId(Long clienteId) {
+		this.clienteId = clienteId;
+	}
 
-    public LocalDate getFechaPedido() {
-        return fechaPedido;
-    }
+	public BigDecimal getTotal() {
+		return total;
+	}
 
-    public void setFechaPedido(LocalDate fechaPedido) {
-        this.fechaPedido = fechaPedido;
-    }
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
 
-    public LocalDate getFechaPreparacion() {
-        return fechaPreparacion;
-    }
+	public BigDecimal getTotalSinIva() {
+		return totalSinIva;
+	}
 
-    public void setFechaPreparacion(LocalDate fechaPreparacion) {
-        this.fechaPreparacion = fechaPreparacion;
-    }
+	public void setTotalSinIva(BigDecimal totalSinIva) {
+		this.totalSinIva = totalSinIva;
+	}
 
-    public LocalDate getFechaCobro() {
-        return fechaCobro;
-    }
+	public BigDecimal getComisionTransportista() {
+		return comisionTransportista;
+	}
 
-    public void setFechaCobro(LocalDate fechaCobro) {
-        this.fechaCobro = fechaCobro;
-    }
+	public void setComisionTransportista(BigDecimal comisionTransportista) {
+		this.comisionTransportista = comisionTransportista;
+	}
 
-    public LocalDate getFechaEntrega() {
-        return fechaEntrega;
-    }
+	public BigDecimal getComisionPreparador() {
+		return comisionPreparador;
+	}
 
-    public void setFechaEntrega(LocalDate fechaEntrega) {
-        this.fechaEntrega = fechaEntrega;
-    }
+	public void setComisionPreparador(BigDecimal comisionPreparador) {
+		this.comisionPreparador = comisionPreparador;
+	}
 
-    public Long getClienteId() {
-        return clienteId;
-    }
+	public LocalDate getFechaPedido() {
+		return fechaPedido;
+	}
 
-    public void setClienteId(Long clienteId) {
-        this.clienteId = clienteId;
-    }
+	public void setFechaPedido(LocalDate fechaPedido) {
+		this.fechaPedido = fechaPedido;
+	}
 
-    public Long getEstatusId() {
-        return estatusId;
-    }
+	public LocalDate getFechaPreparacion() {
+		return fechaPreparacion;
+	}
 
-    public void setEstatusId(Long estatusId) {
-        this.estatusId = estatusId;
-    }
+	public void setFechaPreparacion(LocalDate fechaPreparacion) {
+		this.fechaPreparacion = fechaPreparacion;
+	}
 
-    public Long getTransportistaId() {
-        return transportistaId;
-    }
+	public LocalDate getFechaCobro() {
+		return fechaCobro;
+	}
 
-    public void setTransportistaId(Long transportistaId) {
-        this.transportistaId = transportistaId;
-    }
+	public void setFechaCobro(LocalDate fechaCobro) {
+		this.fechaCobro = fechaCobro;
+	}
 
-    public Long getRecolectorId() {
-        return recolectorId;
-    }
+	public LocalDate getFechaEntrega() {
+		return fechaEntrega;
+	}
 
-    public void setRecolectorId(Long recolectorId) {
-        this.recolectorId = recolectorId;
-    }
+	public void setFechaEntrega(LocalDate fechaEntrega) {
+		this.fechaEntrega = fechaEntrega;
+	}
 
-    @Override
+	public Long getUsuarioAltaId() {
+		return usuarioAltaId;
+	}
+
+	public void setUsuarioAltaId(Long usuarioAltaId) {
+		this.usuarioAltaId = usuarioAltaId;
+	}
+
+	public LocalDateTime getFechaAlta() {
+		return fechaAlta;
+	}
+
+	public void setFechaAlta(LocalDateTime fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
+
+	public Set<HistoricoPedidoDTO> getHistoricoPedidos() {
+		return historicoPedidos;
+	}
+
+	public void setHistoricoPedidos(Set<HistoricoPedidoDTO> historicoPedidos) {
+		this.historicoPedidos = historicoPedidos;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -161,22 +209,14 @@ public class PedidoDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "PedidoDTO{" +
-            "id=" + getId() +
-            ", totalSinIva=" + getTotalSinIva() +
-            ", comisionTransportista=" + getComisionTransportista() +
-            ", comisionPreparador=" + getComisionPreparador() +
-            ", total=" + getTotal() +
-            ", fechaPedido='" + getFechaPedido() + "'" +
-            ", fechaPreparacion='" + getFechaPreparacion() + "'" +
-            ", fechaCobro='" + getFechaCobro() + "'" +
-            ", fechaEntrega='" + getFechaEntrega() + "'" +
-            ", cliente=" + getClienteId() +
-            ", estatus=" + getEstatusId() +
-            ", transportista=" + getTransportistaId() +
-            ", recolector=" + getRecolectorId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "PedidoDTO [id=" + id + ", estatusId=" + estatusId + ", clienteId=" + clienteId + ", total=" + total
+				+ ", totalSinIva=" + totalSinIva + ", comisionTransportista=" + comisionTransportista
+				+ ", comisionPreparador=" + comisionPreparador + ", fechaPedido=" + fechaPedido + ", fechaPreparacion="
+				+ fechaPreparacion + ", fechaCobro=" + fechaCobro + ", fechaEntrega=" + fechaEntrega
+				+ ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta=" + fechaAlta + ", historicoPedidos="
+				+ historicoPedidos + "]";
+	}
+
 }

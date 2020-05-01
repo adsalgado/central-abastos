@@ -1,10 +1,7 @@
 package mx.com.sharkit.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,17 +10,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A Pedido.
  */
 @Entity
-@Table(name = "pedido")
-public class Pedido implements Serializable {
+@Table(name = "pedido_proveedor")
+public class PedidoProveedor implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,20 +26,32 @@ public class Pedido implements Serializable {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "pedido_id", insertable = false, updatable = false)
+    private Pedido pedido;
+    
+    @Column(name = "pedido_id")
+    private Long pedidoId;
+
+    @ManyToOne
+    @JoinColumn(name = "proveedor_id", insertable = false, updatable = false)
+    private Proveedor proveedor;
+    
+    @Column(name = "proveedor_id")
+    private Long proveedorId;
+    
+    @ManyToOne
     @JoinColumn(name = "estatus_id", insertable = false, updatable = false)
     private Estatus estatus;
     
     @Column(name = "estatus_id")
     private Long estatusId;
-    
-    @ManyToOne
-    @JoinColumn(name = "cliente_id", insertable = false, updatable = false)
-    @JsonIgnoreProperties("pedidos")
-    private User cliente;
-    
-    @Column(name = "cliente_id")
-    private Long clienteId;
 
+    @Column(name = "transportista_id")
+    private Long transportistaId;
+
+    @Column(name = "recolector_id")
+    private Long recolectorId;
+    
     @Column(name = "total", precision = 21, scale = 2)
     private BigDecimal total;
 
@@ -57,37 +63,58 @@ public class Pedido implements Serializable {
 
     @Column(name = "comision_preparador", precision = 21, scale = 2)
     private BigDecimal comisionPreparador;
-
-    @Column(name = "fecha_pedido")
-    private LocalDate fechaPedido;
-
-    @Column(name = "fecha_preparacion")
-    private LocalDate fechaPreparacion;
-
-    @Column(name = "fecha_cobro")
-    private LocalDate fechaCobro;
-
-    @Column(name = "fecha_entrega")
-    private LocalDate fechaEntrega;
-
-//    @OneToMany(mappedBy = "pedido")
-//    private Set<PedidoDetalle> pedidoDetalles = new HashSet<>();
-
-    @OneToMany(mappedBy = "pedido")
-    private Set<HistoricoPedido> historicoPedidos = new HashSet<>();
-
+    
     @Column(name = "usuario_alta_id")
     private Long usuarioAltaId;
 
     @Column(name = "fecha_alta")
     private LocalDateTime fechaAlta;
 
-    public Long getId() {
+    @Column(name = "usuario_modificacion_id")
+    private Long usuarioModificacionId;
+
+    @Column(name = "fecha_modificacion")
+    private LocalDateTime fechaModificacion;
+    
+
+	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
+	public Long getPedidoId() {
+		return pedidoId;
+	}
+
+	public void setPedidoId(Long pedidoId) {
+		this.pedidoId = pedidoId;
+	}
+
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+
+	public Long getProveedorId() {
+		return proveedorId;
+	}
+
+	public void setProveedorId(Long proveedorId) {
+		this.proveedorId = proveedorId;
 	}
 
 	public Estatus getEstatus() {
@@ -106,20 +133,20 @@ public class Pedido implements Serializable {
 		this.estatusId = estatusId;
 	}
 
-	public User getCliente() {
-		return cliente;
+	public Long getTransportistaId() {
+		return transportistaId;
 	}
 
-	public void setCliente(User cliente) {
-		this.cliente = cliente;
+	public void setTransportistaId(Long transportistaId) {
+		this.transportistaId = transportistaId;
 	}
 
-	public Long getClienteId() {
-		return clienteId;
+	public Long getRecolectorId() {
+		return recolectorId;
 	}
 
-	public void setClienteId(Long clienteId) {
-		this.clienteId = clienteId;
+	public void setRecolectorId(Long recolectorId) {
+		this.recolectorId = recolectorId;
 	}
 
 	public BigDecimal getTotal() {
@@ -154,46 +181,6 @@ public class Pedido implements Serializable {
 		this.comisionPreparador = comisionPreparador;
 	}
 
-	public LocalDate getFechaPedido() {
-		return fechaPedido;
-	}
-
-	public void setFechaPedido(LocalDate fechaPedido) {
-		this.fechaPedido = fechaPedido;
-	}
-
-	public LocalDate getFechaPreparacion() {
-		return fechaPreparacion;
-	}
-
-	public void setFechaPreparacion(LocalDate fechaPreparacion) {
-		this.fechaPreparacion = fechaPreparacion;
-	}
-
-	public LocalDate getFechaCobro() {
-		return fechaCobro;
-	}
-
-	public void setFechaCobro(LocalDate fechaCobro) {
-		this.fechaCobro = fechaCobro;
-	}
-
-	public LocalDate getFechaEntrega() {
-		return fechaEntrega;
-	}
-
-	public void setFechaEntrega(LocalDate fechaEntrega) {
-		this.fechaEntrega = fechaEntrega;
-	}
-
-	public Set<HistoricoPedido> getHistoricoPedidos() {
-		return historicoPedidos;
-	}
-
-	public void setHistoricoPedidos(Set<HistoricoPedido> historicoPedidos) {
-		this.historicoPedidos = historicoPedidos;
-	}
-
 	public Long getUsuarioAltaId() {
 		return usuarioAltaId;
 	}
@@ -210,15 +197,31 @@ public class Pedido implements Serializable {
 		this.fechaAlta = fechaAlta;
 	}
 
+	public Long getUsuarioModificacionId() {
+		return usuarioModificacionId;
+	}
+
+	public void setUsuarioModificacionId(Long usuarioModificacionId) {
+		this.usuarioModificacionId = usuarioModificacionId;
+	}
+
+	public LocalDateTime getFechaModificacion() {
+		return fechaModificacion;
+	}
+
+	public void setFechaModificacion(LocalDateTime fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Pedido)) {
+        if (!(o instanceof PedidoProveedor)) {
             return false;
         }
-        return id != null && id.equals(((Pedido) o).id);
+        return id != null && id.equals(((PedidoProveedor) o).id);
     }
 
     @Override
@@ -228,12 +231,12 @@ public class Pedido implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Pedido [id=" + id + ", estatusId=" + estatusId + ", clienteId=" + clienteId + ", total=" + total
-				+ ", totalSinIva=" + totalSinIva + ", comisionTransportista=" + comisionTransportista
-				+ ", comisionPreparador=" + comisionPreparador + ", fechaPedido=" + fechaPedido + ", fechaPreparacion="
-				+ fechaPreparacion + ", fechaCobro=" + fechaCobro + ", fechaEntrega=" + fechaEntrega
-				+ ", historicoPedidos=" + historicoPedidos + ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta="
-				+ fechaAlta + "]";
+		return "PedidoProveedor [id=" + id + ", pedidoId=" + pedidoId + ", proveedorId=" + proveedorId + ", estatusId="
+				+ estatusId + ", transportistaId=" + transportistaId + ", recolectorId=" + recolectorId + ", total="
+				+ total + ", totalSinIva=" + totalSinIva + ", comisionTransportista=" + comisionTransportista
+				+ ", comisionPreparador=" + comisionPreparador + ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta="
+				+ fechaAlta + ", usuarioModificacionId=" + usuarioModificacionId + ", fechaModificacion="
+				+ fechaModificacion + "]";
 	}
 
 }
