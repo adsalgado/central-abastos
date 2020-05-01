@@ -1,7 +1,10 @@
 package mx.com.sharkit.web.rest;
 
+import mx.com.sharkit.domain.User;
 import mx.com.sharkit.service.PedidoService;
+import mx.com.sharkit.service.UserService;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
+import mx.com.sharkit.service.dto.PedidoAltaDTO;
 import mx.com.sharkit.service.dto.PedidoDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -33,9 +36,12 @@ public class PedidoResource {
     private String applicationName;
 
     private final PedidoService pedidoService;
+    
+    private final UserService userService;
 
-    public PedidoResource(PedidoService pedidoService) {
+    public PedidoResource(PedidoService pedidoService, UserService userService) {
         this.pedidoService = pedidoService;
+        this.userService = userService;
     }
 
     /**
@@ -45,13 +51,40 @@ public class PedidoResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new pedidoDTO, or with status {@code 400 (Bad Request)} if the pedido has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+//    @PostMapping("/pedidos")
+//    public ResponseEntity<PedidoDTO> createPedido(@RequestBody PedidoDTO pedidoDTO) throws URISyntaxException {
+//        log.debug("REST request to save Pedido : {}", pedidoDTO);
+//        if (pedidoDTO.getId() != null) {
+//            throw new BadRequestAlertException("A new pedido cannot already have an ID", ENTITY_NAME, "idexists");
+//        }
+//        PedidoDTO result = pedidoService.save(pedidoDTO);
+//        return ResponseEntity.created(new URI("/api/pedidos/" + result.getId()))
+//            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+//            .body(result);
+//    }
+
+    /**
+     * {@code POST  /pedidos} : Create a new pedido.
+     *
+     * @param pedidoDTO the pedidoDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new pedidoDTO, or with status {@code 400 (Bad Request)} if the pedido has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
     @PostMapping("/pedidos")
-    public ResponseEntity<PedidoDTO> createPedido(@RequestBody PedidoDTO pedidoDTO) throws URISyntaxException {
-        log.debug("REST request to save Pedido : {}", pedidoDTO);
-        if (pedidoDTO.getId() != null) {
-            throw new BadRequestAlertException("A new pedido cannot already have an ID", ENTITY_NAME, "idexists");
+    public ResponseEntity<PedidoDTO> createPedidoNuevo(@RequestBody PedidoAltaDTO pedidoAltaDTO) throws URISyntaxException, Exception {
+        log.debug("REST request to save pedidoAltaDTO : {}", pedidoAltaDTO);
+        if (pedidoAltaDTO.getProductos() == null || pedidoAltaDTO.getProductos().isEmpty()) {
+            throw new BadRequestAlertException("Lista de productos vacía", ENTITY_NAME, "arraynull");
         }
-        PedidoDTO result = pedidoService.save(pedidoDTO);
+        
+        Optional<User> user = userService.getUserWithAuthorities();
+        Long clienteId =  user.isPresent() ? user.get().getId() : 0L;
+        if (clienteId == 0) {
+            throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+        }
+        pedidoAltaDTO.setUsuarioId(clienteId);
+        PedidoDTO result = pedidoService.generaNuevoPedido(pedidoAltaDTO);
+        
         return ResponseEntity.created(new URI("/api/pedidos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);

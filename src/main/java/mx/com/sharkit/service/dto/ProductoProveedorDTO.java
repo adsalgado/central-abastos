@@ -37,11 +37,11 @@ public class ProductoProveedorDTO implements Serializable {
 
 	private Long productoId;
 
-	private Proveedor proveedor;
+	private ProveedorDTO proveedor;
 
 	private Long proveedorId;
 
-	private Estatus estatus;
+	private EstatusDTO estatus;
 
 	private Long estatusId;
 	
@@ -119,11 +119,11 @@ public class ProductoProveedorDTO implements Serializable {
 		this.productoId = productoId;
 	}
 
-	public Proveedor getProveedor() {
+	public ProveedorDTO getProveedor() {
 		return proveedor;
 	}
 
-	public void setProveedor(Proveedor proveedor) {
+	public void setProveedor(ProveedorDTO proveedor) {
 		this.proveedor = proveedor;
 	}
 
@@ -135,11 +135,11 @@ public class ProductoProveedorDTO implements Serializable {
 		this.proveedorId = proveedorId;
 	}
 
-	public Estatus getEstatus() {
+	public EstatusDTO getEstatus() {
 		return estatus;
 	}
 
-	public void setEstatus(Estatus estatus) {
+	public void setEstatus(EstatusDTO estatus) {
 		this.estatus = estatus;
 	}
 
