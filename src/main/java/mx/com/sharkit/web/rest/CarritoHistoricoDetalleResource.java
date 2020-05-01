@@ -1,23 +1,30 @@
 package mx.com.sharkit.web.rest;
 
-import mx.com.sharkit.service.CarritoHistoricoDetalleService;
-import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
-import mx.com.sharkit.service.dto.CarritoHistoricoDetalleDTO;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import mx.com.sharkit.service.CarritoHistoricoDetalleService;
+import mx.com.sharkit.service.dto.CarritoHistoricoDetalleDTO;
+import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 
 /**
  * REST controller for managing {@link mx.com.sharkit.domain.CarritoHistoricoDetalle}.
@@ -73,7 +80,19 @@ public class CarritoHistoricoDetalleResource {
         if (carritoHistoricoDetalleDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        CarritoHistoricoDetalleDTO result = carritoHistoricoDetalleService.save(carritoHistoricoDetalleDTO);
+        Optional<CarritoHistoricoDetalleDTO> optHistoricoDetalle = 
+        		carritoHistoricoDetalleService.findOne(carritoHistoricoDetalleDTO.getId());
+        CarritoHistoricoDetalleDTO result = null;
+        if (optHistoricoDetalle.isPresent()) {
+        	CarritoHistoricoDetalleDTO historicoDetalle = optHistoricoDetalle.get();
+        	log.debug("historicoDetalle: {}", historicoDetalle);
+        	historicoDetalle.setCantidad(carritoHistoricoDetalleDTO.getCantidad());
+        	result = carritoHistoricoDetalleService.save(historicoDetalle);
+        } else {
+        	throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        result = result != null ? result : carritoHistoricoDetalleDTO;
+        
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, carritoHistoricoDetalleDTO.getId().toString()))
             .body(result);
