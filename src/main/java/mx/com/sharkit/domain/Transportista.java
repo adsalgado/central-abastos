@@ -1,13 +1,23 @@
 package mx.com.sharkit.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A Transportista.
@@ -40,9 +50,6 @@ public class Transportista implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private User usuarioModificacion;
-
-    @OneToMany(mappedBy = "transportista")
-    private Set<Pedido> pedidos = new HashSet<>();
 
     @OneToMany(mappedBy = "transportista")
     private Set<TransportistaTarifa> transportistaTarifas = new HashSet<>();
@@ -123,31 +130,6 @@ public class Transportista implements Serializable {
 
     public void setUsuarioModificacion(User user) {
         this.usuarioModificacion = user;
-    }
-
-    public Set<Pedido> getPedidos() {
-        return pedidos;
-    }
-
-    public Transportista pedidos(Set<Pedido> pedidos) {
-        this.pedidos = pedidos;
-        return this;
-    }
-
-    public Transportista addPedido(Pedido pedido) {
-        this.pedidos.add(pedido);
-        pedido.setTransportista(this);
-        return this;
-    }
-
-    public Transportista removePedido(Pedido pedido) {
-        this.pedidos.remove(pedido);
-        pedido.setTransportista(null);
-        return this;
-    }
-
-    public void setPedidos(Set<Pedido> pedidos) {
-        this.pedidos = pedidos;
     }
 
     public Set<TransportistaTarifa> getTransportistaTarifas() {

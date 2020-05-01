@@ -72,9 +72,6 @@ public class Cliente implements Serializable {
     @OneToMany(mappedBy = "cliente")
     private Set<CarritoHistorico> carritoHistoricos = new HashSet<>();
 
-    @OneToMany(mappedBy = "cliente")
-    private Set<Pedido> pedidos = new HashSet<>();
-
     @ManyToOne
     @JsonIgnoreProperties("clientes")
     private Estatus estatus;
@@ -244,31 +241,6 @@ public class Cliente implements Serializable {
 
     public void setCarritoHistoricos(Set<CarritoHistorico> carritoHistoricos) {
         this.carritoHistoricos = carritoHistoricos;
-    }
-
-    public Set<Pedido> getPedidos() {
-        return pedidos;
-    }
-
-    public Cliente pedidos(Set<Pedido> pedidos) {
-        this.pedidos = pedidos;
-        return this;
-    }
-
-    public Cliente addPedido(Pedido pedido) {
-        this.pedidos.add(pedido);
-        pedido.setCliente(this);
-        return this;
-    }
-
-    public Cliente removePedido(Pedido pedido) {
-        this.pedidos.remove(pedido);
-        pedido.setCliente(null);
-        return this;
-    }
-
-    public void setPedidos(Set<Pedido> pedidos) {
-        this.pedidos = pedidos;
     }
 
     public Estatus getEstatus() {

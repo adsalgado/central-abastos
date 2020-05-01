@@ -1,10 +1,17 @@
 package mx.com.sharkit.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A PedidoDetalle.
@@ -19,18 +26,12 @@ public class PedidoDetalle implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "cantidad", precision = 21, scale = 2)
-    private BigDecimal cantidad;
-
-    @Column(name = "total_sin_iva", precision = 21, scale = 2)
-    private BigDecimal totalSinIva;
-
-    @Column(name = "total", precision = 21, scale = 2)
-    private BigDecimal total;
-
     @ManyToOne
-    @JsonIgnoreProperties("pedidoDetalles")
-    private Pedido pedido;
+    @JoinColumn(name = "pedido_proveedor_id", insertable = false, updatable = false)
+    private PedidoProveedor pedidoProveedor;
+
+    @Column(name = "pedido_proveedor_id")
+    private Long pedidoProveedorId;
 
     @ManyToOne
     @JoinColumn(name = "producto_proveedor_id", insertable = false, updatable = false)
@@ -46,84 +47,42 @@ public class PedidoDetalle implements Serializable {
 
     @Column(name = "estatus_id")
     private Long estatusId;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public BigDecimal getCantidad() {
-        return cantidad;
-    }
-
-    public PedidoDetalle cantidad(BigDecimal cantidad) {
-        this.cantidad = cantidad;
-        return this;
-    }
-
-    public void setCantidad(BigDecimal cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public BigDecimal getTotalSinIva() {
-        return totalSinIva;
-    }
-
-    public PedidoDetalle totalSinIva(BigDecimal totalSinIva) {
-        this.totalSinIva = totalSinIva;
-        return this;
-    }
-
-    public void setTotalSinIva(BigDecimal totalSinIva) {
-        this.totalSinIva = totalSinIva;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public PedidoDetalle total(BigDecimal total) {
-        this.total = total;
-        return this;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public PedidoDetalle pedido(Pedido pedido) {
-        this.pedido = pedido;
-        return this;
-    }
-
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
-    }
-
-    public Estatus getEstatus() {
-        return estatus;
-    }
-
-    public PedidoDetalle estatus(Estatus estatus) {
-        this.estatus = estatus;
-        return this;
-    }
-
-    public void setEstatus(Estatus estatus) {
-        this.estatus = estatus;
-    }
     
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    @Column(name = "cantidad", precision = 21, scale = 2)
+    private BigDecimal cantidad;
 
-    public ProductoProveedor getProductoProveedor() {
+    @Column(name = "total", precision = 21, scale = 2)
+    private BigDecimal total;
+
+    @Column(name = "total_sin_iva", precision = 21, scale = 2)
+    private BigDecimal totalSinIva;
+
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public PedidoProveedor getPedidoProveedor() {
+		return pedidoProveedor;
+	}
+
+	public void setPedidoProveedor(PedidoProveedor pedidoProveedor) {
+		this.pedidoProveedor = pedidoProveedor;
+	}
+
+	public Long getPedidoProveedorId() {
+		return pedidoProveedorId;
+	}
+
+	public void setPedidoProveedorId(Long pedidoProveedorId) {
+		this.pedidoProveedorId = pedidoProveedorId;
+	}
+
+	public ProductoProveedor getProductoProveedor() {
 		return productoProveedor;
 	}
 
@@ -139,12 +98,44 @@ public class PedidoDetalle implements Serializable {
 		this.productoProveedorId = productoProveedorId;
 	}
 
+	public Estatus getEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(Estatus estatus) {
+		this.estatus = estatus;
+	}
+
 	public Long getEstatusId() {
 		return estatusId;
 	}
 
 	public void setEstatusId(Long estatusId) {
 		this.estatusId = estatusId;
+	}
+
+	public BigDecimal getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(BigDecimal cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	public BigDecimal getTotal() {
+		return total;
+	}
+
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+
+	public BigDecimal getTotalSinIva() {
+		return totalSinIva;
+	}
+
+	public void setTotalSinIva(BigDecimal totalSinIva) {
+		this.totalSinIva = totalSinIva;
 	}
 
 	@Override
@@ -165,10 +156,9 @@ public class PedidoDetalle implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PedidoDetalle [id=" + id + ", cantidad=" + cantidad + ", totalSinIva=" + totalSinIva + ", total="
-				+ total + ", pedido=" + pedido + ", productoProveedorId=" + productoProveedorId + ", estatusId="
-				+ estatusId + "]";
+		return "PedidoDetalle [id=" + id + ", pedidoProveedorId=" + pedidoProveedorId + ", productoProveedorId="
+				+ productoProveedorId + ", estatusId=" + estatusId + ", cantidad=" + cantidad + ", total=" + total
+				+ ", totalSinIva=" + totalSinIva + "]";
 	}
-
 
 }

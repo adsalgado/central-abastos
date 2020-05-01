@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import mx.com.sharkit.domain.Producto;
 import mx.com.sharkit.repository.ProductoImagenRepository;
 import mx.com.sharkit.repository.ProductoRepository;
-import mx.com.sharkit.service.CategoriaService;
 import mx.com.sharkit.service.ProductoService;
 import mx.com.sharkit.service.dto.AdjuntoDTO;
 import mx.com.sharkit.service.dto.ProductoDTO;

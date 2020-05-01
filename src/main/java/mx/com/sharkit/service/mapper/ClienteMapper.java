@@ -24,8 +24,6 @@ public interface ClienteMapper extends EntityMapper<ClienteDTO, Cliente> {
     @Mapping(target = "removeCarritoCompra", ignore = true)
     @Mapping(target = "carritoHistoricos", ignore = true)
     @Mapping(target = "removeCarritoHistorico", ignore = true)
-    @Mapping(target = "pedidos", ignore = true)
-    @Mapping(target = "removePedido", ignore = true)
     @Mapping(source = "estatusId", target = "estatus")
     @Mapping(source = "empresaId", target = "empresa")
     Cliente toEntity(ClienteDTO clienteDTO);

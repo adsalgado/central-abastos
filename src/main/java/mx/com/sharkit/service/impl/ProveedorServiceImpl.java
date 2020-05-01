@@ -21,70 +21,74 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-public class ProveedorServiceImpl implements ProveedorService {
+public class ProveedorServiceImpl extends BaseServiceImpl<Proveedor, Long> implements ProveedorService {
 
-    private final Logger log = LoggerFactory.getLogger(ProveedorServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(ProveedorServiceImpl.class);
 
-    private final ProveedorRepository proveedorRepository;
+	private final ProveedorRepository proveedorRepository;
 
-    private final ProveedorMapper proveedorMapper;
+	private final ProveedorMapper proveedorMapper;
 
-    public ProveedorServiceImpl(ProveedorRepository proveedorRepository, ProveedorMapper proveedorMapper) {
-        this.proveedorRepository = proveedorRepository;
-        this.proveedorMapper = proveedorMapper;
-    }
+	public ProveedorServiceImpl(ProveedorRepository proveedorRepository, ProveedorMapper proveedorMapper) {
+		this.proveedorRepository = proveedorRepository;
+		this.proveedorMapper = proveedorMapper;
+	}
 
-    /**
-     * Save a proveedor.
-     *
-     * @param proveedorDTO the entity to save.
-     * @return the persisted entity.
-     */
-    @Override
-    public ProveedorDTO save(ProveedorDTO proveedorDTO) {
-        log.debug("Request to save Proveedor : {}", proveedorDTO);
-        Proveedor proveedor = proveedorMapper.toEntity(proveedorDTO);
-        proveedor = proveedorRepository.save(proveedor);
-        return proveedorMapper.toDto(proveedor);
-    }
+	/**
+	 * Save a proveedor.
+	 *
+	 * @param proveedorDTO the entity to save.
+	 * @return the persisted entity.
+	 */
+	@Override
+	public ProveedorDTO save(ProveedorDTO proveedorDTO) {
+		log.debug("Request to save Proveedor : {}", proveedorDTO);
+		Proveedor proveedor = proveedorMapper.toEntity(proveedorDTO);
+		proveedor = proveedorRepository.save(proveedor);
+		return proveedorMapper.toDto(proveedor);
+	}
 
-    /**
-     * Get all the proveedors.
-     *
-     * @return the list of entities.
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<ProveedorDTO> findAll() {
-        log.debug("Request to get all Proveedors");
-        return proveedorRepository.findAll().stream()
-            .map(proveedorMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
-    }
+	/**
+	 * Get all the proveedors.
+	 *
+	 * @return the list of entities.
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public List<ProveedorDTO> findAllDTO() {
+		log.debug("Request to get all Proveedors");
+		return proveedorRepository.findAll().stream().map(proveedorMapper::toDto)
+				.collect(Collectors.toCollection(LinkedList::new));
+	}
 
+	/**
+	 * Get one proveedor by id.
+	 *
+	 * @param id the id of the entity.
+	 * @return the entity.
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<ProveedorDTO> findOne(Long id) {
+		log.debug("Request to get Proveedor : {}", id);
+		return proveedorRepository.findById(id).map(proveedorMapper::toDto);
+	}
 
-    /**
-     * Get one proveedor by id.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<ProveedorDTO> findOne(Long id) {
-        log.debug("Request to get Proveedor : {}", id);
-        return proveedorRepository.findById(id)
-            .map(proveedorMapper::toDto);
-    }
+	/**
+	 * Delete the proveedor by id.
+	 *
+	 * @param id the id of the entity.
+	 */
+	@Override
+	public void delete(Long id) {
+		log.debug("Request to delete Proveedor : {}", id);
+		proveedorRepository.deleteById(id);
+	}
 
-    /**
-     * Delete the proveedor by id.
-     *
-     * @param id the id of the entity.
-     */
-    @Override
-    public void delete(Long id) {
-        log.debug("Request to delete Proveedor : {}", id);
-        proveedorRepository.deleteById(id);
-    }
+	@Override
+	public List<ProveedorDTO> findAllByProductoId(Long productoId) {
+		log.debug("Request to get all Proveedors by productoId: {}", productoId);
+		return proveedorRepository.findByProductoId(productoId).stream().map(proveedorMapper::toDto)
+				.collect(Collectors.toCollection(LinkedList::new));
+	}
 }

@@ -10,77 +10,40 @@ public class PedidoDetalleDTO implements Serializable {
 
     private Long id;
 
+    private Long pedidoProveedorId;
+
+    private PedidoProveedorDTO pedidoProveedor;
+
+    private Long productoProveedorId;
+
+    private ProductoProveedorDTO productoProveedor;
+    
+    private EstatusDTO estatus;
+
+    private Long estatusId;
+
     private BigDecimal cantidad;
 
     private BigDecimal totalSinIva;
 
     private BigDecimal total;
 
-    private Long pedidoId;
-
-    private ProductoProveedorDTO productoProveedor;
-
-    private Long productoProveedorId;
-    
-    private EstatusDTO estatus;
-
-    private Long estatusId;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public BigDecimal getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(BigDecimal cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public BigDecimal getTotalSinIva() {
-        return totalSinIva;
-    }
-
-    public void setTotalSinIva(BigDecimal totalSinIva) {
-        this.totalSinIva = totalSinIva;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-    public Long getPedidoId() {
-        return pedidoId;
-    }
-
-    public void setPedidoId(Long pedidoId) {
-        this.pedidoId = pedidoId;
-    }
-
-    public Long getEstatusId() {
-        return estatusId;
-    }
-
-    public void setEstatusId(Long estatusId) {
-        this.estatusId = estatusId;
-    }
 
 
-	public ProductoProveedorDTO getProductoProveedor() {
-		return productoProveedor;
+	public Long getId() {
+		return id;
 	}
 
-	public void setProductoProveedor(ProductoProveedorDTO productoProveedor) {
-		this.productoProveedor = productoProveedor;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getPedidoProveedorId() {
+		return pedidoProveedorId;
+	}
+
+	public void setPedidoProveedorId(Long pedidoProveedorId) {
+		this.pedidoProveedorId = pedidoProveedorId;
 	}
 
 	public Long getProductoProveedorId() {
@@ -91,12 +54,36 @@ public class PedidoDetalleDTO implements Serializable {
 		this.productoProveedorId = productoProveedorId;
 	}
 
-	public EstatusDTO getEstatus() {
-		return estatus;
+	public Long getEstatusId() {
+		return estatusId;
 	}
 
-	public void setEstatus(EstatusDTO estatus) {
-		this.estatus = estatus;
+	public void setEstatusId(Long estatusId) {
+		this.estatusId = estatusId;
+	}
+
+	public BigDecimal getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(BigDecimal cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	public BigDecimal getTotalSinIva() {
+		return totalSinIva;
+	}
+
+	public void setTotalSinIva(BigDecimal totalSinIva) {
+		this.totalSinIva = totalSinIva;
+	}
+
+	public BigDecimal getTotal() {
+		return total;
+	}
+
+	public void setTotal(BigDecimal total) {
+		this.total = total;
 	}
 
 	@Override
@@ -122,9 +109,9 @@ public class PedidoDetalleDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PedidoDetalleDTO [id=" + id + ", cantidad=" + cantidad + ", totalSinIva=" + totalSinIva + ", total="
-				+ total + ", pedidoId=" + pedidoId + ", productoProveedorId=" + productoProveedorId + ", estatusId="
-				+ estatusId + "]";
+		return "PedidoDetalleDTO [id=" + id + ", pedidoProveedorId=" + pedidoProveedorId + ", productoProveedorId="
+				+ productoProveedorId + ", estatusId=" + estatusId + ", cantidad=" + cantidad + ", totalSinIva="
+				+ totalSinIva + ", total=" + total + "]";
 	}
 
 }

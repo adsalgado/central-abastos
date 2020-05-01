@@ -1,14 +1,15 @@
 package mx.com.sharkit.service;
 
-import mx.com.sharkit.service.dto.ProveedorDTO;
-
 import java.util.List;
 import java.util.Optional;
+
+import mx.com.sharkit.domain.Proveedor;
+import mx.com.sharkit.service.dto.ProveedorDTO;
 
 /**
  * Service Interface for managing {@link mx.com.sharkit.domain.Proveedor}.
  */
-public interface ProveedorService {
+public interface ProveedorService extends BaseService<Proveedor, Long> {
 
     /**
      * Save a proveedor.
@@ -23,7 +24,7 @@ public interface ProveedorService {
      *
      * @return the list of entities.
      */
-    List<ProveedorDTO> findAll();
+    List<ProveedorDTO> findAllDTO();
 
 
     /**
@@ -40,4 +41,12 @@ public interface ProveedorService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    /**
+     * Get all the proveedors by productoId.
+     *
+     * @return the list of entities.
+     */
+    List<ProveedorDTO> findAllByProductoId(Long productoId);
+    
 }
