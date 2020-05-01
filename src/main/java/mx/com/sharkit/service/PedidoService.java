@@ -1,9 +1,10 @@
 package mx.com.sharkit.service;
 
-import mx.com.sharkit.service.dto.PedidoDTO;
-
 import java.util.List;
 import java.util.Optional;
+
+import mx.com.sharkit.service.dto.PedidoAltaDTO;
+import mx.com.sharkit.service.dto.PedidoDTO;
 
 /**
  * Service Interface for managing {@link mx.com.sharkit.domain.Pedido}.
@@ -40,4 +41,13 @@ public interface PedidoService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Save a pedido from list.
+     *
+	 * @param pedidoAltaDTO lista de productos
+	 * @return the persisted entity
+	 */
+	PedidoDTO generaNuevoPedido(PedidoAltaDTO pedidoAltaDTO) throws Exception;
+
 }

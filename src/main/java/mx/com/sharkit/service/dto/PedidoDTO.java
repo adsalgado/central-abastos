@@ -3,12 +3,15 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -58,6 +61,9 @@ public class PedidoDTO implements Serializable {
 
     @OneToMany(mappedBy = "pedido")
     private Set<HistoricoPedidoDTO> historicoPedidos = new HashSet<>();
+    
+    @Transient
+    private List<PedidoProveedorDTO> pedidoProveedores = new ArrayList<>();
 
     
     public Long getId() {
@@ -186,6 +192,14 @@ public class PedidoDTO implements Serializable {
 
 	public void setHistoricoPedidos(Set<HistoricoPedidoDTO> historicoPedidos) {
 		this.historicoPedidos = historicoPedidos;
+	}
+
+	public List<PedidoProveedorDTO> getPedidoProveedores() {
+		return pedidoProveedores;
+	}
+
+	public void setPedidoProveedores(List<PedidoProveedorDTO> pedidoProveedores) {
+		this.pedidoProveedores = pedidoProveedores;
 	}
 
 	@Override

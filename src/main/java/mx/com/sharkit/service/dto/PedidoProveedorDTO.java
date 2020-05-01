@@ -3,7 +3,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -62,6 +65,8 @@ public class PedidoProveedorDTO implements Serializable {
     @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
     private LocalDateTime fechaModificacion;
 
+    @Transient
+    private List<PedidoDetalleDTO> pedidoDetalles = new ArrayList<>();
     
 	public Long getId() {
 		return id;
@@ -197,6 +202,14 @@ public class PedidoProveedorDTO implements Serializable {
 
 	public void setFechaModificacion(LocalDateTime fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
+	}
+
+	public List<PedidoDetalleDTO> getPedidoDetalles() {
+		return pedidoDetalles;
+	}
+
+	public void setPedidoDetalles(List<PedidoDetalleDTO> pedidoDetalles) {
+		this.pedidoDetalles = pedidoDetalles;
 	}
 
 	@Override

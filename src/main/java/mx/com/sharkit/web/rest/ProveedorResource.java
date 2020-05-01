@@ -95,7 +95,7 @@ public class ProveedorResource {
     @GetMapping("/proveedores")
     public List<ProveedorDTO> getAllProveedors() {
         log.debug("REST request to get all Proveedors");
-        return proveedorService.findAll();
+        return proveedorService.findAllDTO();
     }
 
     /**
