@@ -1,0 +1,24 @@
+{
+  "abastosApp": {
+    "chatPrivate": {
+      "home": {
+        "title": "Chat Privates",
+        "createLabel": "Crear nuevo Chat Private",
+        "createOrEditLabel": "Crear o editar Chat Private",
+        "notFound": "No Chat Privates found"
+      },
+      "created": "Un nuevo Chat Private ha sido creado con el identificador {{ param }}",
+      "updated": "Un Chat Private ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Chat Private ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Chat Private {{ id }}?"
+      },
+      "detail": {
+        "title": "Chat Private"
+      },
+      "message": "Message",
+      "user": "User",
+      "fecha": "Fecha"
+    }
+  }
+}

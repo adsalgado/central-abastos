@@ -136,6 +136,10 @@ import { RouterModule } from '@angular/router';
       {
         path: 'usuario-imagen',
         loadChildren: () => import('./usuario-imagen/usuario-imagen.module').then(m => m.AbastosUsuarioImagenModule)
+      },
+      {
+        path: 'chat-private',
+        loadChildren: () => import('./chat-private/chat-private.module').then(m => m.AbastosChatPrivateModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

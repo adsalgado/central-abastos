@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "message",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "user",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength"
+            ],
+            "fieldValidateRulesMinlength": "5"
+        },
+        {
+            "fieldName": "fecha",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20200501031820",
+    "dto": "no",
+    "searchEngine": false,
+    "service": "no",
+    "entityTableName": "chat_private",
+    "databaseType": "sql",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

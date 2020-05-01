@@ -1,0 +1,24 @@
+{
+  "abastosApp": {
+    "chatPrivate": {
+      "home": {
+        "title": "Chat Privates",
+        "createLabel": "Create a new Chat Private",
+        "createOrEditLabel": "Create or edit a Chat Private",
+        "notFound": "No Chat Privates found"
+      },
+      "created": "A new Chat Private is created with identifier {{ param }}",
+      "updated": "A Chat Private is updated with identifier {{ param }}",
+      "deleted": "A Chat Private is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Chat Private {{ id }}?"
+      },
+      "detail": {
+        "title": "Chat Private"
+      },
+      "message": "Message",
+      "user": "User",
+      "fecha": "Fecha"
+    }
+  }
+}

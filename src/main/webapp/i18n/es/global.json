@@ -40,6 +40,7 @@
         "parametrosAplicacion": "Parametros Aplicacion",
         "empresa": "Empresa",
         "usuarioImagen": "Usuario Imagen",
+        "chatPrivate": "Chat Private",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
