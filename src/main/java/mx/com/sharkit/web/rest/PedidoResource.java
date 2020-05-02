@@ -1,26 +1,39 @@
 package mx.com.sharkit.web.rest;
 
-import mx.com.sharkit.domain.User;
-import mx.com.sharkit.service.PedidoProveedorService;
-import mx.com.sharkit.service.PedidoService;
-import mx.com.sharkit.service.UserService;
-import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
-import mx.com.sharkit.service.dto.PedidoAltaDTO;
-import mx.com.sharkit.service.dto.PedidoDTO;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
 
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import mx.com.sharkit.domain.User;
+import mx.com.sharkit.service.PedidoProveedorService;
+import mx.com.sharkit.service.PedidoService;
+import mx.com.sharkit.service.StripeService;
+import mx.com.sharkit.service.UserService;
+import mx.com.sharkit.service.dto.ChargeRequestDTO;
+import mx.com.sharkit.service.dto.ChargeRequestDTO.Currency;
+import mx.com.sharkit.service.dto.PedidoAltaDTO;
+import mx.com.sharkit.service.dto.PedidoDTO;
+import mx.com.sharkit.service.dto.PedidoPagoDTO;
+import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 
 /**
  * REST controller for managing {@link mx.com.sharkit.domain.Pedido}.
@@ -41,11 +54,14 @@ public class PedidoResource {
     private final PedidoProveedorService pedidoProveedorService;
     
     private final UserService userService;
+    
+    private final StripeService stripeService;
 
-    public PedidoResource(PedidoService pedidoService, UserService userService, PedidoProveedorService pedidoProveedorService) {
+    public PedidoResource(PedidoService pedidoService, UserService userService, PedidoProveedorService pedidoProveedorService, StripeService stripeService) {
         this.pedidoService = pedidoService;
         this.userService = userService;
         this.pedidoProveedorService = pedidoProveedorService;
+        this.stripeService = stripeService;
     }
 
     /**
@@ -115,6 +131,51 @@ public class PedidoResource {
             .body(result);
     }
 
+    /**
+     * {@code PUT  /pedidos} : Updates an existing pedido.
+     *
+     * @param pedidoDTO the pedidoDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated pedidoDTO,
+     * or with status {@code 400 (Bad Request)} if the pedidoDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the pedidoDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PutMapping("/pedidos/pago")
+    public ResponseEntity<PedidoPagoDTO> updatePedido(@RequestBody PedidoPagoDTO pedidopagoDTO) throws URISyntaxException {
+        log.debug("REST request to update Pedido : {}", pedidopagoDTO);
+        if (pedidopagoDTO.getPedidoId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        
+        Optional<PedidoDTO> optPedido = pedidoService.findOne(pedidopagoDTO.getPedidoId());
+        if (!optPedido.isPresent()) {
+        	throw new BadRequestAlertException("No se encontró el pedido en la base.", ENTITY_NAME, "idnull");
+        }
+        
+        PedidoDTO pedido = optPedido.get();
+        // Checar el moto
+        Integer amount = pedido.getTotal().intValue();
+        ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
+        chargeRequest.setAmount(amount);
+        chargeRequest.setCurrency(Currency.MXN);
+        chargeRequest.setDescription("Pago de pedido: " + pedido.getId());
+        chargeRequest.setStripeToken(pedidopagoDTO.getToken());
+        
+        Charge charge = null;
+        try {
+			charge = stripeService.charge(chargeRequest);
+		} catch (StripeException e) {
+			log.error("Error Stripe: {}", e);
+		}
+        
+        PedidoPagoDTO result = pedidopagoDTO;
+        
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, pedidopagoDTO.getPedidoId().toString()))
+            .body(result);
+    }
+
+    
     /**
      * {@code GET  /pedidos} : get all the pedidos.
      *
