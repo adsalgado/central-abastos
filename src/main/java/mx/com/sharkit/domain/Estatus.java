@@ -17,7 +17,19 @@ import mx.com.sharkit.domain.enumeration.TipoEstatus;
 public class Estatus implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
+    public static final Long ESTATUS_PEDIDO_SOLICITADO = 7L;
+    public static final Long ESTATUS_PEDIDO_EN_CONFIRMACION = 8L;
+    public static final Long ESTATUS_PEDIDO_CONFIRMADO = 9L;
+    public static final Long ESTATUS_PEDIDO_CANCELADO = 10L;
+    public static final Long ESTATUS_PEDIDO_PAGADO = 11L;
+    public static final Long ESTATUS_PEDIDO_EN_PREPARACION = 12L;
+    public static final Long ESTATUS_PEDIDO_PREPARADO = 13L;
+    public static final Long ESTATUS_PEDIDO_ENVIADO = 14L;
+    public static final Long ESTATUS_PEDIDO_ENTREGADO = 15L;
+    public static final Long ESTATUS_PEDIDO_RECHAZADO = 16L;
+    public static final Long ESTATUS_PEDIDO_ERROR_PAGO = 17L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -30,6 +31,10 @@ public class Pedido implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Size(max = 10)
+    @Column(name = "folio", length = 10)
+    private String folio;
 
     @ManyToOne
     @JoinColumn(name = "estatus_id", insertable = false, updatable = false)
@@ -88,6 +93,14 @@ public class Pedido implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getFolio() {
+		return folio;
+	}
+
+	public void setFolio(String folio) {
+		this.folio = folio;
 	}
 
 	public Estatus getEstatus() {
@@ -228,7 +241,7 @@ public class Pedido implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Pedido [id=" + id + ", estatusId=" + estatusId + ", clienteId=" + clienteId + ", total=" + total
+		return "Pedido [id=" + id + ", folio=" + folio + ", estatusId=" + estatusId + ", clienteId=" + clienteId + ", total=" + total
 				+ ", totalSinIva=" + totalSinIva + ", comisionTransportista=" + comisionTransportista
 				+ ", comisionPreparador=" + comisionPreparador + ", fechaPedido=" + fechaPedido + ", fechaPreparacion="
 				+ fechaPreparacion + ", fechaCobro=" + fechaCobro + ", fechaEntrega=" + fechaEntrega

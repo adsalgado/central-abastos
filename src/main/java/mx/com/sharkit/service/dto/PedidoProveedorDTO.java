@@ -65,7 +65,6 @@ public class PedidoProveedorDTO implements Serializable {
     @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
     private LocalDateTime fechaModificacion;
 
-    @Transient
     private List<PedidoDetalleDTO> pedidoDetalles = new ArrayList<>();
     
 	public Long getId() {

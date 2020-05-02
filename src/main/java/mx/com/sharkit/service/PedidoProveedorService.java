@@ -41,5 +41,13 @@ public interface PedidoProveedorService extends BaseService<PedidoProveedor, Lon
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    /**
+     * Get all the pedidoProveedors by pedidoId.
+     *
+     * @param pedidoId
+     * @return the list of entities.
+     */
+    List<PedidoProveedorDTO> findByPedidoId(Long pedidoId);
 
 }

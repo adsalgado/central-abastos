@@ -40,4 +40,13 @@ public interface PedidoDetalleService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    /**
+     * Get all the pedidoDetalles by pedidoProveedorId.
+     *
+     * @param pedidoProveedorId
+     * @return the list of entities.
+     */
+    List<PedidoDetalleDTO> findByPedidoProveedorId(Long pedidoProveedorId);
+    
 }

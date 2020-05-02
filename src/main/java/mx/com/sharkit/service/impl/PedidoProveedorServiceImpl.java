@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.sharkit.domain.PedidoProveedor;
 import mx.com.sharkit.repository.PedidoProveedorRepository;
+import mx.com.sharkit.service.PedidoDetalleService;
 import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.dto.PedidoProveedorDTO;
 import mx.com.sharkit.service.mapper.PedidoProveedorMapper;
@@ -29,11 +30,14 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 	private final PedidoProveedorRepository pedidoProveedorRepository;
 
 	private final PedidoProveedorMapper pedidoProveedorMapper;
+	
+	private final PedidoDetalleService pedidoDetalleService;
 
 	public PedidoProveedorServiceImpl(PedidoProveedorRepository pedidoProveedorRepository,
-			PedidoProveedorMapper pedidoProveedorMapper) {
+			PedidoProveedorMapper pedidoProveedorMapper, PedidoDetalleService pedidoDetalleService) {
 		this.pedidoProveedorRepository = pedidoProveedorRepository;
 		this.pedidoProveedorMapper = pedidoProveedorMapper;
+		this.pedidoDetalleService = pedidoDetalleService;
 	}
 
 	/**
@@ -87,5 +91,21 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 		pedidoProveedorRepository.deleteById(id);
 	}
 
+	/**
+	 * Get all the pedidoProveedors by pedidoId.
+	 *
+	 * @param pedidoId
+	 * @return the list of entities.
+	 */
+	@Override
+	public List<PedidoProveedorDTO> findByPedidoId(Long pedidoId) {
+		log.debug("Request to get all PedidoProveedors by pedidoId: {}", pedidoId);
+		List<PedidoProveedorDTO> lstPedidoProveedor = pedidoProveedorRepository.findByPedidoId(pedidoId).stream()
+				.map(pedidoProveedorMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+		lstPedidoProveedor.forEach(pp -> {
+			pp.setPedidoDetalles(pedidoDetalleService.findByPedidoProveedorId(pp.getId()));
+		});
+		return lstPedidoProveedor;
+	}
 
 }

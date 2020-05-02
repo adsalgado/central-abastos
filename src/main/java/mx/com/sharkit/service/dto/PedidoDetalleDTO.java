@@ -3,6 +3,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
+
 /**
  * A DTO for the {@link mx.com.sharkit.domain.PedidoDetalle} entity.
  */
@@ -28,6 +31,9 @@ public class PedidoDetalleDTO implements Serializable {
 
     private BigDecimal total;
 
+    private BigDecimal precioSinIva;
+
+    private BigDecimal precio;
 
 
 	public Long getId() {
@@ -86,6 +92,46 @@ public class PedidoDetalleDTO implements Serializable {
 		this.total = total;
 	}
 
+	public PedidoProveedorDTO getPedidoProveedor() {
+		return pedidoProveedor;
+	}
+
+	public void setPedidoProveedor(PedidoProveedorDTO pedidoProveedor) {
+		this.pedidoProveedor = pedidoProveedor;
+	}
+
+	public ProductoProveedorDTO getProductoProveedor() {
+		return productoProveedor;
+	}
+
+	public void setProductoProveedor(ProductoProveedorDTO productoProveedor) {
+		this.productoProveedor = productoProveedor;
+	}
+
+	public EstatusDTO getEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(EstatusDTO estatus) {
+		this.estatus = estatus;
+	}
+
+	public BigDecimal getPrecioSinIva() {
+		return precioSinIva;
+	}
+
+	public void setPrecioSinIva(BigDecimal precioSinIva) {
+		this.precioSinIva = precioSinIva;
+	}
+
+	public BigDecimal getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(BigDecimal precio) {
+		this.precio = precio;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -111,7 +157,8 @@ public class PedidoDetalleDTO implements Serializable {
 	public String toString() {
 		return "PedidoDetalleDTO [id=" + id + ", pedidoProveedorId=" + pedidoProveedorId + ", productoProveedorId="
 				+ productoProveedorId + ", estatusId=" + estatusId + ", cantidad=" + cantidad + ", totalSinIva="
-				+ totalSinIva + ", total=" + total + "]";
+				+ totalSinIva + ", total=" + total + ", precioSinIva=" + precioSinIva + ", precio=" + precio + "]";
 	}
+
 
 }

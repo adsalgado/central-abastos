@@ -49,5 +49,13 @@ public interface PedidoService {
 	 * @return the persisted entity
 	 */
 	PedidoDTO generaNuevoPedido(PedidoAltaDTO pedidoAltaDTO) throws Exception;
+	
+	/**
+     * Get all the pedidos by clienteId.
+     *
+     * @param clienteId
+     * @return the list of entities.
+     */
+    List<PedidoDTO> findByClienteId(Long clienteId);
 
 }
