@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -56,6 +57,13 @@ public class PedidoDetalle implements Serializable {
 
     @Column(name = "total_sin_iva", precision = 21, scale = 2)
     private BigDecimal totalSinIva;
+    
+    @Column(name = "precio_sin_iva", precision = 21, scale = 2, nullable = false)
+    private BigDecimal precioSinIva;
+
+    @Column(name = "precio", precision = 21, scale = 2, nullable = false)
+    private BigDecimal precio;
+
 
 
 	public Long getId() {
@@ -138,6 +146,22 @@ public class PedidoDetalle implements Serializable {
 		this.totalSinIva = totalSinIva;
 	}
 
+	public BigDecimal getPrecioSinIva() {
+		return precioSinIva;
+	}
+
+	public void setPrecioSinIva(BigDecimal precioSinIva) {
+		this.precioSinIva = precioSinIva;
+	}
+
+	public BigDecimal getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(BigDecimal precio) {
+		this.precio = precio;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -158,7 +182,8 @@ public class PedidoDetalle implements Serializable {
 	public String toString() {
 		return "PedidoDetalle [id=" + id + ", pedidoProveedorId=" + pedidoProveedorId + ", productoProveedorId="
 				+ productoProveedorId + ", estatusId=" + estatusId + ", cantidad=" + cantidad + ", total=" + total
-				+ ", totalSinIva=" + totalSinIva + "]";
+				+ ", totalSinIva=" + totalSinIva + ", precioSinIva=" + precioSinIva + ", precio=" + precio + "]";
 	}
+
 
 }

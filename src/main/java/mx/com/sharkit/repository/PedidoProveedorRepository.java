@@ -1,5 +1,7 @@
 package mx.com.sharkit.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +15,7 @@ import mx.com.sharkit.domain.PedidoProveedor;
 @Repository
 public interface PedidoProveedorRepository  extends IBaseRepositorio<PedidoProveedor, Long>, JpaSpecificationExecutor<PedidoProveedor> {
 
+	List<PedidoProveedor> findByPedidoId(Long pedidoId);
+	
 }
 

@@ -1,6 +1,7 @@
 package mx.com.sharkit.web.rest;
 
 import mx.com.sharkit.domain.User;
+import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.UserService;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
@@ -37,11 +38,14 @@ public class PedidoResource {
 
     private final PedidoService pedidoService;
     
+    private final PedidoProveedorService pedidoProveedorService;
+    
     private final UserService userService;
 
-    public PedidoResource(PedidoService pedidoService, UserService userService) {
+    public PedidoResource(PedidoService pedidoService, UserService userService, PedidoProveedorService pedidoProveedorService) {
         this.pedidoService = pedidoService;
         this.userService = userService;
+        this.pedidoProveedorService = pedidoProveedorService;
     }
 
     /**
@@ -120,7 +124,18 @@ public class PedidoResource {
     @GetMapping("/pedidos")
     public List<PedidoDTO> getAllPedidos() {
         log.debug("REST request to get all Pedidos");
-        return pedidoService.findAll();
+        Optional<User> user = userService.getUserWithAuthorities();
+        Long clienteId =  user.isPresent() ? user.get().getId() : 0L;
+        if (clienteId == 0) {
+            throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+        }
+        
+        List<PedidoDTO> lstPedidos = pedidoService.findByClienteId(clienteId);
+        for (PedidoDTO pedidoDTO : lstPedidos) {
+			pedidoDTO.setPedidoProveedores(pedidoProveedorService.findByPedidoId(pedidoDTO.getId()));
+		}
+
+        return lstPedidos;
     }
 
     /**
@@ -133,6 +148,9 @@ public class PedidoResource {
     public ResponseEntity<PedidoDTO> getPedido(@PathVariable Long id) {
         log.debug("REST request to get Pedido : {}", id);
         Optional<PedidoDTO> pedidoDTO = pedidoService.findOne(id);
+        if (pedidoDTO.isPresent()) {
+        	pedidoDTO.get().setPedidoProveedores(pedidoProveedorService.findByPedidoId(id));
+        }
         return ResponseUtil.wrapOrNotFound(pedidoDTO);
     }
 

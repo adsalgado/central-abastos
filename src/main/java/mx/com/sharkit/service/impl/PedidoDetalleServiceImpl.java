@@ -87,4 +87,19 @@ public class PedidoDetalleServiceImpl implements PedidoDetalleService {
         log.debug("Request to delete PedidoDetalle : {}", id);
         pedidoDetalleRepository.deleteById(id);
     }
+    
+    /**
+     * Get all the pedidoDetalles by pedidoProveedorId.
+     *
+     * @param pedidoProveedorId
+     * @return the list of entities.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<PedidoDetalleDTO> findByPedidoProveedorId(Long pedidoProveedorId) {
+        log.debug("Request to get all PedidoDetalles");
+        return pedidoDetalleRepository.findByPedidoProveedorId(pedidoProveedorId).stream()
+            .map(pedidoDetalleMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
 }

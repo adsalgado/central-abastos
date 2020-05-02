@@ -1,4 +1,5 @@
 package mx.com.sharkit.service.dto;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,58 +21,66 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 public class PedidoDTO implements Serializable {
 
-    private Long id;
+	private Long id;
 
-    private EstatusDTO estatus;
-    
-    private Long estatusId;
-    
-    private UserDTO cliente;
-    
-    private Long clienteId;
+	private String folio;
 
-    private BigDecimal total;
+	private EstatusDTO estatus;
 
-    private BigDecimal totalSinIva;
+	private Long estatusId;
 
-    private BigDecimal comisionTransportista;
+	private UserDTO cliente;
 
-    private BigDecimal comisionPreparador;
+	private Long clienteId;
 
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
-    private LocalDate fechaPedido;
+	private BigDecimal total;
 
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
-    private LocalDate fechaPreparacion;
+	private BigDecimal totalSinIva;
 
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
-    private LocalDate fechaCobro;
+	private BigDecimal comisionTransportista;
 
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
-    private LocalDate fechaEntrega;
+	private BigDecimal comisionPreparador;
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+	private LocalDate fechaPedido;
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+	private LocalDate fechaPreparacion;
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+	private LocalDate fechaCobro;
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+	private LocalDate fechaEntrega;
 
 //    @OneToMany(mappedBy = "pedido")
 //    private Set<PedidoDetalle> pedidoDetalles = new HashSet<>();
 
-    @Column(name = "usuario_alta_id")
-    private Long usuarioAltaId;
+	@Column(name = "usuario_alta_id")
+	private Long usuarioAltaId;
 
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
-    private LocalDateTime fechaAlta;
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+	private LocalDateTime fechaAlta;
 
-    @OneToMany(mappedBy = "pedido")
-    private Set<HistoricoPedidoDTO> historicoPedidos = new HashSet<>();
-    
-    @Transient
-    private List<PedidoProveedorDTO> pedidoProveedores = new ArrayList<>();
+	@OneToMany(mappedBy = "pedido")
+	private Set<HistoricoPedidoDTO> historicoPedidos = new HashSet<>();
 
-    
-    public Long getId() {
+	private List<PedidoProveedorDTO> pedidoProveedores = new ArrayList<>();
+
+	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getFolio() {
+		return folio;
+	}
+
+	public void setFolio(String folio) {
+		this.folio = folio;
 	}
 
 	public EstatusDTO getEstatus() {
@@ -203,33 +212,33 @@ public class PedidoDTO implements Serializable {
 	}
 
 	@Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
-        PedidoDTO pedidoDTO = (PedidoDTO) o;
-        if (pedidoDTO.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), pedidoDTO.getId());
-    }
+		PedidoDTO pedidoDTO = (PedidoDTO) o;
+		if (pedidoDTO.getId() == null || getId() == null) {
+			return false;
+		}
+		return Objects.equals(getId(), pedidoDTO.getId());
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(getId());
+	}
 
 	@Override
 	public String toString() {
-		return "PedidoDTO [id=" + id + ", estatusId=" + estatusId + ", clienteId=" + clienteId + ", total=" + total
-				+ ", totalSinIva=" + totalSinIva + ", comisionTransportista=" + comisionTransportista
-				+ ", comisionPreparador=" + comisionPreparador + ", fechaPedido=" + fechaPedido + ", fechaPreparacion="
-				+ fechaPreparacion + ", fechaCobro=" + fechaCobro + ", fechaEntrega=" + fechaEntrega
-				+ ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta=" + fechaAlta + ", historicoPedidos="
+		return "PedidoDTO [id=" + id + ", folio=" + folio + ", estatusId=" + estatusId + ", clienteId=" + clienteId
+				+ ", total=" + total + ", totalSinIva=" + totalSinIva + ", comisionTransportista="
+				+ comisionTransportista + ", comisionPreparador=" + comisionPreparador + ", fechaPedido=" + fechaPedido
+				+ ", fechaPreparacion=" + fechaPreparacion + ", fechaCobro=" + fechaCobro + ", fechaEntrega="
+				+ fechaEntrega + ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta=" + fechaAlta + ", historicoPedidos="
 				+ historicoPedidos + "]";
 	}
 
