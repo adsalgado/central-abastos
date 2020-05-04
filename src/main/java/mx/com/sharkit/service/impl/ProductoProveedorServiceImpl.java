@@ -139,6 +139,9 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 			case "nombre":
 				criteria.add(Restrictions.ilike("producto.nombre", (String)params.get(key), MatchMode.ANYWHERE));
 				break;
+			case "productoId":
+				criteria.add(Restrictions.eq("productoId", Long.parseLong((String)params.get(key))));
+				break;
 			default:
 				break;
 			}
