@@ -17,10 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import mx.com.sharkit.domain.Estatus;
 import mx.com.sharkit.domain.Pedido;
 import mx.com.sharkit.repository.PedidoRepository;
+import mx.com.sharkit.service.DireccionService;
 import mx.com.sharkit.service.PedidoDetalleService;
 import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.ProductoProveedorService;
+import mx.com.sharkit.service.dto.DireccionDTO;
 import mx.com.sharkit.service.dto.PedidoAltaDTO;
 import mx.com.sharkit.service.dto.PedidoDTO;
 import mx.com.sharkit.service.dto.PedidoDetalleAltaDTO;
@@ -49,15 +51,18 @@ public class PedidoServiceImpl implements PedidoService {
 	private final PedidoProveedorService pedidoProveedorService;
 
 	private final PedidoDetalleService pedidoDetalleService;
+	
+	private final DireccionService direccionService;
 
 	public PedidoServiceImpl(PedidoRepository pedidoRepository, PedidoMapper pedidoMapper,
 			ProductoProveedorService productoProveedorService, PedidoProveedorService pedidoProveedorService,
-			PedidoDetalleService pedidoDetalleService) {
+			PedidoDetalleService pedidoDetalleService, DireccionService direccionService) {
 		this.pedidoRepository = pedidoRepository;
 		this.pedidoMapper = pedidoMapper;
 		this.productoProveedorService = productoProveedorService;
 		this.pedidoProveedorService = pedidoProveedorService;
 		this.pedidoDetalleService = pedidoDetalleService;
+		this.direccionService = direccionService;
 	}
 
 	/**
@@ -132,6 +137,9 @@ public class PedidoServiceImpl implements PedidoService {
 		pedidoDTO.setTotalSinIva(BigDecimal.ZERO);
 		pedidoDTO.setComisionTransportista(BigDecimal.ZERO);
 		pedidoDTO.setComisionPreparador(BigDecimal.ZERO);
+		pedidoDTO.setNombreContacto(pedidoAltaDTO.getNombreContacto());
+		pedidoDTO.setTelefonoContacto(pedidoAltaDTO.getTelefonoContacto());
+		pedidoDTO.setCorreoContacto(pedidoAltaDTO.getCorreoContacto());
 
 
 		for (PedidoDetalleAltaDTO prod : pedidoAltaDTO.getProductos()) {
@@ -187,6 +195,18 @@ public class PedidoServiceImpl implements PedidoService {
 				throw new Exception("No se encontró el producto en la base.");
 			}
 
+		}
+		
+		// Guardar dirección de contacto
+		if (pedidoAltaDTO.getDireccionContacto() != null) {
+			DireccionDTO direccion = pedidoAltaDTO.getDireccionContacto();
+			if (direccion.getId() != null && direccion.getId() > 0L) {
+				pedidoDTO.setDireccionContactoId(direccion.getId());
+			} else {
+				direccion.setId(null);
+				DireccionDTO direccionNew = direccionService.save(direccion);
+				pedidoDTO.setDireccionContactoId(direccionNew.getId());
+			}
 		}
 		
 		UserDTO user = new UserDTO();
