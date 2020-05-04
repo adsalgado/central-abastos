@@ -12,7 +12,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -53,14 +52,21 @@ public class PedidoDTO implements Serializable {
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
 	private LocalDate fechaEntrega;
 
-//    @OneToMany(mappedBy = "pedido")
-//    private Set<PedidoDetalle> pedidoDetalles = new HashSet<>();
-
-	@Column(name = "usuario_alta_id")
 	private Long usuarioAltaId;
 
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
 	private LocalDateTime fechaAlta;
+	
+    private String nombreContacto;
+
+    private String telefonoContacto;
+
+    private String correoContacto;
+    
+    private DireccionDTO direccionContacto;
+    
+    private Long direccionContactoId;
+
 
 	@OneToMany(mappedBy = "pedido")
 	private Set<HistoricoPedidoDTO> historicoPedidos = new HashSet<>();
@@ -211,6 +217,46 @@ public class PedidoDTO implements Serializable {
 		this.pedidoProveedores = pedidoProveedores;
 	}
 
+	public String getNombreContacto() {
+		return nombreContacto;
+	}
+
+	public void setNombreContacto(String nombreContacto) {
+		this.nombreContacto = nombreContacto;
+	}
+
+	public String getTelefonoContacto() {
+		return telefonoContacto;
+	}
+
+	public void setTelefonoContacto(String telefonoContacto) {
+		this.telefonoContacto = telefonoContacto;
+	}
+
+	public String getCorreoContacto() {
+		return correoContacto;
+	}
+
+	public void setCorreoContacto(String correoContacto) {
+		this.correoContacto = correoContacto;
+	}
+
+	public DireccionDTO getDireccionContacto() {
+		return direccionContacto;
+	}
+
+	public void setDireccionContacto(DireccionDTO direccionContacto) {
+		this.direccionContacto = direccionContacto;
+	}
+
+	public Long getDireccionContactoId() {
+		return direccionContactoId;
+	}
+
+	public void setDireccionContactoId(Long direccionContactoId) {
+		this.direccionContactoId = direccionContactoId;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -238,8 +284,10 @@ public class PedidoDTO implements Serializable {
 				+ ", total=" + total + ", totalSinIva=" + totalSinIva + ", comisionTransportista="
 				+ comisionTransportista + ", comisionPreparador=" + comisionPreparador + ", fechaPedido=" + fechaPedido
 				+ ", fechaPreparacion=" + fechaPreparacion + ", fechaCobro=" + fechaCobro + ", fechaEntrega="
-				+ fechaEntrega + ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta=" + fechaAlta + ", historicoPedidos="
-				+ historicoPedidos + "]";
+				+ fechaEntrega + ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta=" + fechaAlta + ", nombreContacto="
+				+ nombreContacto + ", telefonoContacto=" + telefonoContacto + ", correoContacto=" + correoContacto
+				+ ", direccionContactoId=" + direccionContactoId + ", historicoPedidos=" + historicoPedidos
+				+ ", pedidoProveedores=" + pedidoProveedores + "]";
 	}
 
 }

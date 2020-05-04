@@ -74,6 +74,23 @@ public class Pedido implements Serializable {
 
     @Column(name = "fecha_entrega")
     private LocalDate fechaEntrega;
+    
+    @Column(name = "nombre_contacto")
+    private String nombreContacto;
+
+    @Column(name = "telefono_contacto")
+    private String telefonoContacto;
+
+    @Column(name = "correo_contacto")
+    private String correoContacto;
+    
+    @ManyToOne
+    @JoinColumn(name = "direccion_contacto_id", insertable = false, updatable = false)
+    private Direccion direccionContacto;
+    
+    @Column(name = "direccion_contacto_id")
+    private Long direccionContactoId;
+
 
 //    @OneToMany(mappedBy = "pedido")
 //    private Set<PedidoDetalle> pedidoDetalles = new HashSet<>();
@@ -223,6 +240,47 @@ public class Pedido implements Serializable {
 		this.fechaAlta = fechaAlta;
 	}
 
+	
+	public String getNombreContacto() {
+		return nombreContacto;
+	}
+
+	public void setNombreContacto(String nombreContacto) {
+		this.nombreContacto = nombreContacto;
+	}
+
+	public String getTelefonoContacto() {
+		return telefonoContacto;
+	}
+
+	public void setTelefonoContacto(String telefonoContacto) {
+		this.telefonoContacto = telefonoContacto;
+	}
+
+	public String getCorreoContacto() {
+		return correoContacto;
+	}
+
+	public void setCorreoContacto(String correoContacto) {
+		this.correoContacto = correoContacto;
+	}
+
+	public Direccion getDireccionContacto() {
+		return direccionContacto;
+	}
+
+	public void setDireccionContacto(Direccion direccionContacto) {
+		this.direccionContacto = direccionContacto;
+	}
+
+	public Long getDireccionContactoId() {
+		return direccionContactoId;
+	}
+
+	public void setDireccionContactoId(Long direccionContactoId) {
+		this.direccionContactoId = direccionContactoId;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -241,12 +299,15 @@ public class Pedido implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Pedido [id=" + id + ", folio=" + folio + ", estatusId=" + estatusId + ", clienteId=" + clienteId + ", total=" + total
-				+ ", totalSinIva=" + totalSinIva + ", comisionTransportista=" + comisionTransportista
-				+ ", comisionPreparador=" + comisionPreparador + ", fechaPedido=" + fechaPedido + ", fechaPreparacion="
-				+ fechaPreparacion + ", fechaCobro=" + fechaCobro + ", fechaEntrega=" + fechaEntrega
+		return "Pedido [id=" + id + ", folio=" + folio + ", estatusId=" + estatusId + ", clienteId=" + clienteId
+				+ ", total=" + total + ", totalSinIva=" + totalSinIva + ", comisionTransportista="
+				+ comisionTransportista + ", comisionPreparador=" + comisionPreparador + ", fechaPedido=" + fechaPedido
+				+ ", fechaPreparacion=" + fechaPreparacion + ", fechaCobro=" + fechaCobro + ", fechaEntrega="
+				+ fechaEntrega + ", nombreContacto=" + nombreContacto + ", telefonoContacto=" + telefonoContacto
+				+ ", correoContacto=" + correoContacto + ", direccionContactoId=" + direccionContactoId
 				+ ", historicoPedidos=" + historicoPedidos + ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta="
 				+ fechaAlta + "]";
 	}
+
 
 }
