@@ -1,11 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, Observer, Subscription } from 'rxjs';
 import { Location } from '@angular/common';
-
-import { CSRFService } from 'app/core/auth/csrf.service';
+import { Injectable } from '@angular/core';
 import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
-
+import { Observable, Observer, Subscription } from 'rxjs';
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'webstomp-client';
 
@@ -20,12 +16,7 @@ export class ChatService {
   alreadyConnectedOnce = false;
   private subscription: Subscription;
 
-  constructor(
-    private router: Router,
-    private authServerProvider: AuthServerProvider,
-    private location: Location,
-    private csrfService: CSRFService
-  ) {
+  constructor(private authServerProvider: AuthServerProvider, private location: Location) {
     this.connection = this.createConnection();
     this.listener = this.createListener();
   }
@@ -43,6 +34,9 @@ export class ChatService {
     if (authToken) {
       url += '?access_token=' + authToken;
     }
+    console.log('---------------------------------------------');
+    console.log(url);
+
     const socket = new SockJS(url);
     this.stompClient = Stomp.over(socket);
     const headers = {};

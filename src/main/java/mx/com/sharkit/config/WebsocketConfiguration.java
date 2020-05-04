@@ -44,6 +44,7 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer 
             .setAllowedOrigins(allowedOrigins)
             .withSockJS()
             .setInterceptors(httpSessionHandshakeInterceptor());
+           // registry.addEndpoint("/websocket/tracker", "/websocket/chat", "/ws").setAllowedOrigins("*").withSockJS();
 //        registry.addEndpoint("/ws").setAllowedOrigins("http://localhost:4200").withSockJS();
     }
 

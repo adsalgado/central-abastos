@@ -3,7 +3,7 @@ import './vendor.ts';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerConfig, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { NgJhipsterModule } from 'ng-jhipster';
 
@@ -20,11 +20,12 @@ import { AbastosEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
-
+import { ComponentsModule } from './components.module';
+import { ProvidersModule } from './providers.module';
 @NgModule({
   imports: [
     BrowserModule,
-    NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-' }),
+    //NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-' }),
     NgJhipsterModule.forRoot({
       // set below to true to make alerts look like toast
       alertAsToast: false,
@@ -38,7 +39,11 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
     AbastosAccountModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     AbastosEntityModule,
-    AbastosAppRoutingModule
+    AbastosAppRoutingModule,
+    NgbModule,
+    ProvidersModule,
+    //HttpClientModule,
+    ComponentsModule
   ],
   declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
   providers: [

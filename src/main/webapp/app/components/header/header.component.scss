@@ -1,0 +1,45 @@
+.header-ft {
+  position: relative;
+  padding: 10px;
+  .header-sc {
+    font-family: Muli, Arial, Helvetica, sans-serif !important;
+    background-color: #fff;
+    .header-ht {
+      height: 101px;
+      .header-nav {
+        transform: translateY(0px);
+        .container-header {
+          height: 54px;
+          .row {
+            .header-left {
+              text-align: left;
+              .first-cate-ctn {
+                display: table;
+                width: 55%;
+                overflow: hidden;
+                text-align: center;
+                a {
+                  display: table-cell;
+                  /* height: 70px; */
+                  max-width: 200px;
+                  padding: 0 6px;
+                  vertical-align: middle;
+                  font-size: 13px;
+                  color: rgba(0, 0, 0, 0.6);
+                  font-weight: 600;
+                  text-decoration: none;
+                  white-space: nowrap;
+                }
+              }
+            }
+          }
+        }
+        .container-header::before {
+          content: ' ';
+          display: table;
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+.header-sin {
+  width: 100%;
+  padding: 15px;
+  background-color: #fff;
+  text-align: end;
+  position: fixed;
+  top: 0px;
+  z-index: 1;
+  .propiedades {
+    text-align: -webkit-right;
+    /* justify-content: end; */
+    width: 100%;
+    .seccion-logo {
+      display: inline-block;
+      width: 59%;
+      vertical-align: top;
+      text-align: left;
+      img {
+        width: 65px;
+      }
+    }
+    .seccion-registro {
+      width: 41%;
+      text-align: right;
+      display: inline-block;
+      .login-button {
+        padding: 11px;
+        width: 100px;
+        background-color: #008aff;
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 18px;
+      }
+      a {
+        color: #008aff;
+      }
+    }
+  }
+}
+
+.slick-list {
+  height: 350px;
+}

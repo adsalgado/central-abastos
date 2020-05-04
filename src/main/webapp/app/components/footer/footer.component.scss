@@ -1,0 +1,15 @@
+.footer-home {
+  padding: 1px;
+  position: fixed;
+  margin: auto;
+  width: 100%;
+  text-align: center;
+  bottom: 0px;
+}
+
+@media all and (min-width: 991px) {
+  .footer-home {
+    width: 74%;
+    right: 0px;
+  }
+}

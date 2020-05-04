@@ -1,0 +1,98 @@
+@import '../../animations';
+
+body.swal2-height-auto {
+  height: 100% !important;
+}
+.contenedor-login {
+  //background-image: url(../../../../../.../../../assets/imgs/login/santanderBanco.jpg);
+  background-position: right 0px center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  .panel {
+    display: flex;
+    //align-items: center;
+    justify-content: center;
+    height: 390px;
+    width: 300px;
+    box-shadow: 1px 1px 4px 1px #dcdcdc;
+    border-radius: 6px;
+    .login {
+      padding: 20px;
+      width: 100%;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.56);
+      img {
+        width: 80px;
+        margin-top: 15px;
+      }
+
+      .validators {
+        padding-left: 11px !important;
+        padding-right: 16px;
+        margin-top: 8px;
+        color: rgba(255, 0, 0, 0.7);
+        font-size: 1.1em;
+      }
+
+      .input-container {
+        input {
+          outline: 0;
+          background: #f2f2f2;
+          width: 85%;
+          border: 0;
+          margin: 15px 0 0px;
+          padding: 15px;
+          border-top-left-radius: 3px;
+          border-top-right-radius: 3px;
+          border-bottom-left-radius: 3px;
+          border-bottom-right-radius: 3px;
+          box-sizing: border-box;
+          font-size: 14px;
+          border: 1px solid #c5c5c5;
+        }
+
+        input:focus {
+          border-bottom: 1px solid#028eec;
+          box-shadow: 3px 3px 22px -5px rgba(184, 184, 184, 0.57);
+        }
+      }
+
+      .button-container {
+        button {
+          width: 100%;
+          margin: 15px 0 0px;
+          padding: 15px;
+          width: 85%;
+          font-size: 16px;
+          border: none;
+          background-color: #7db9f3;
+          color: #fff;
+          text-shadow: 1px 1px 1px #123;
+          border-radius: 5px;
+          box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        button:hover {
+          background-color: #c91a17;
+        }
+
+        button:active {
+          box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.75);
+          margin: 17px 0 0px;
+        }
+      }
+
+      .option-register {
+        .text-register {
+          margin-top: 15px;
+          strong {
+            color: #f80502;
+          }
+        }
+      }
+    }
+  }
+}

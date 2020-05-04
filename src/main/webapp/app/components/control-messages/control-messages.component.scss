@@ -1,0 +1,30 @@
+@import '../../animations';
+.validators {
+  padding-left: 20px;
+  padding-right: 16px;
+  margin-top: 8px;
+  color: rgba(255, 0, 0, 0.7);
+  font-size: 0.8em;
+  text-align: initial;
+}
+
+.validators2 {
+  padding-left: 0px;
+  padding-right: 16px;
+  margin-top: -14px;
+  color: rgba(255, 0, 0, 0.7);
+  font-size: 0.8em;
+  text-align: initial;
+}
+
+input[type='file' i] {
+  -webkit-appearance: initial;
+  background-color: initial;
+  cursor: default;
+  align-items: baseline;
+  color: inherit;
+  text-align: start !important;
+  padding: initial;
+  border: initial;
+  width: 20px;
+}
