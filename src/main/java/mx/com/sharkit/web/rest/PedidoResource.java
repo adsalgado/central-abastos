@@ -103,7 +103,9 @@ public class PedidoResource {
             throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
         }
         pedidoAltaDTO.setUsuarioId(clienteId);
-        PedidoDTO result = pedidoService.generaNuevoPedido(pedidoAltaDTO);
+        PedidoDTO resultSave = pedidoService.generaNuevoPedido(pedidoAltaDTO);
+        
+        PedidoDTO result = getPedidoCompleto(resultSave.getId()).orElse(new PedidoDTO());
         
         return ResponseEntity.created(new URI("/api/pedidos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -208,11 +210,15 @@ public class PedidoResource {
     @GetMapping("/pedidos/{id}")
     public ResponseEntity<PedidoDTO> getPedido(@PathVariable Long id) {
         log.debug("REST request to get Pedido : {}", id);
-        Optional<PedidoDTO> pedidoDTO = pedidoService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(getPedidoCompleto(id));
+    }
+    
+    private Optional<PedidoDTO> getPedidoCompleto(Long pedidoId) {
+    	Optional<PedidoDTO> pedidoDTO = pedidoService.findOne(pedidoId);
         if (pedidoDTO.isPresent()) {
-        	pedidoDTO.get().setPedidoProveedores(pedidoProveedorService.findByPedidoId(id));
+        	pedidoDTO.get().setPedidoProveedores(pedidoProveedorService.findByPedidoId(pedidoId));
         }
-        return ResponseUtil.wrapOrNotFound(pedidoDTO);
+        return pedidoDTO;
     }
 
     /**
