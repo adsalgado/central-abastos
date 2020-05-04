@@ -32,16 +32,17 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic", "/chat");
+        config.enableSimpleBroker("/topic", "/chat", "/secured/user/queue/specific-user");
+        config.setUserDestinationPrefix("/secured/user");
 //        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         String[] allowedOrigins = Optional.ofNullable(jHipsterProperties.getCors().getAllowedOrigins()).map(origins -> origins.toArray(new String[0])).orElse(new String[0]);
-        registry.addEndpoint("/websocket/tracker", "/websocket/chat", "/ws")
+        registry.addEndpoint("/websocket/tracker", "/websocket/chat", "/secured/room")
             .setHandshakeHandler(defaultHandshakeHandler())
-            .setAllowedOrigins(allowedOrigins)
+            .setAllowedOrigins("*", "http://localhost:9000")
             .withSockJS()
             .setInterceptors(httpSessionHandshakeInterceptor());
            // registry.addEndpoint("/websocket/tracker", "/websocket/chat", "/ws").setAllowedOrigins("*").withSockJS();

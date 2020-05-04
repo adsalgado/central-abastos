@@ -1,10 +1,5 @@
 package mx.com.sharkit.config;
 
-import mx.com.sharkit.security.*;
-import mx.com.sharkit.security.jwt.*;
-
-import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -20,6 +15,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
+
+import mx.com.sharkit.security.AuthoritiesConstants;
+import mx.com.sharkit.security.jwt.JWTConfigurer;
+import mx.com.sharkit.security.jwt.TokenProvider;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -45,13 +44,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) {
-		web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**").antMatchers("/app/**/*.{js,html}").antMatchers("/i18n/**")
-				.antMatchers("/content/**").antMatchers("/swagger-ui/index.html").antMatchers("/test/**");
+		web.ignoring()
+			.antMatchers(HttpMethod.OPTIONS, "/**")
+			.antMatchers("/app/**/*.{js,html}")
+			.antMatchers("/i18n/**")
+			.antMatchers("/content/**")
+			.antMatchers("/swagger-ui/index.html")
+			.antMatchers("/test/**");
 	}
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		// @formatter:off
+		
 		http.csrf().disable().addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
 				.exceptionHandling().authenticationEntryPoint(problemSupport).accessDeniedHandler(problemSupport).and()
 				.headers()
@@ -62,18 +66,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 						"geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'")
 				.and().frameOptions().deny().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/api/adjuntos/**").permitAll().antMatchers("/api/productos/**").permitAll()
-				.antMatchers("/api/tipo-articulos/**").permitAll().antMatchers("/api/promociones/**").permitAll()
-				.antMatchers("/api/proveedor-productos/**").permitAll().antMatchers("/api/tipo-direcciones/**")
-				.permitAll().antMatchers("/api/proveedores/**").permitAll().antMatchers("/api/authenticate").permitAll()
-				.antMatchers("/api/register").permitAll().antMatchers("/api/activate").permitAll()
+				.antMatchers("/api/adjuntos/**").permitAll()
+				.antMatchers("/api/productos/**").permitAll()
+				.antMatchers("/api/tipo-articulos/**").permitAll()
+				.antMatchers("/api/promociones/**").permitAll()
+				.antMatchers("/api/proveedor-productos/**").permitAll()
+				.antMatchers("/api/tipo-direcciones/**").permitAll()
+				.antMatchers("/api/proveedores/**").permitAll()
+				.antMatchers("/api/authenticate").permitAll()
+				.antMatchers("/api/register").permitAll()
+				.antMatchers("/api/activate").permitAll()
 				.antMatchers("/api/account/reset-password/init").permitAll()
-				.antMatchers("/api/account/reset-password/finish").permitAll().antMatchers("/api/**").authenticated()
-				.antMatchers("/websocket/tracker").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/websocket/**")
-				.permitAll().antMatchers("/management/health").permitAll().antMatchers("/management/info").permitAll()
-				.antMatchers("/management/prometheus").permitAll().antMatchers("/management/**")
-				.hasAuthority(AuthoritiesConstants.ADMIN).and().httpBasic().and().apply(securityConfigurerAdapter());
-		// @formatter:on
+				.antMatchers("/api/account/reset-password/finish").permitAll()
+				.antMatchers("/api/**").authenticated()
+				.antMatchers("/secured/**/**", "/secured/**/**/**", "/secured/socket", "/secured/success").authenticated()
+				.antMatchers("/websocket/tracker").hasAuthority(AuthoritiesConstants.ADMIN)
+				.antMatchers("/websocket/**")
+				.permitAll().antMatchers("/management/health").permitAll()
+				.antMatchers("/management/info").permitAll()
+				.antMatchers("/management/prometheus").permitAll()
+				.antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
+				.and().httpBasic()
+				.and().apply(securityConfigurerAdapter());
+		
 	}
 
 	private JWTConfigurer securityConfigurerAdapter() {

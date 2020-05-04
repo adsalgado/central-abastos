@@ -332,5 +332,38 @@ public class ProductoProveedorResource {
 		return productosHomeDTO;
 
 	}
+	
+	
+	/**
+	 * {@code GET  /proveedor-productos/producto/{productoId}} : get all the productoProveedors by productoId.
+	 *
+	 * 
+	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+	 *         of productoProveedors in body.
+	 */
+	@GetMapping("/proveedor-productos/producto/{productoId}")
+	public List<ProductoProveedorDTO> getAllProductoProveedorsByProductoId(@PathVariable Long productoId) {
+		log.debug("REST request to get all ProductoProveedors by productoId: {}", productoId);
+		Map<String, Object> paramsMap = new HashMap<>();
+		paramsMap.put("productoId", productoId.toString());
+		paramsMap.put("limit", 100);
+		return productoProveedorService.searchProductos(paramsMap, 0, 100, Order.asc("producto.nombre"));
+	}
+
+	/**
+	 * {@code GET  /proveedor-productos/producto/{productoId}} : get all the productoProveedors by productoId.
+	 *
+	 * 
+	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+	 *         of productoProveedors in body.
+	 */
+	@GetMapping("/proveedor-productos/proveedor/{proveedorId}")
+	public List<ProductoProveedorDTO> getAllProductoProveedorsByProveedorId(@PathVariable Long proveedorId) {
+		log.debug("REST request to get all ProductoProveedors by proveedorId: {}", proveedorId);
+		Map<String, Object> paramsMap = new HashMap<>();
+		paramsMap.put("proveedorId", proveedorId.toString());
+		paramsMap.put("limit", 100);
+		return productoProveedorService.searchProductos(paramsMap, 0, 100, Order.asc("producto.nombre"));
+	}
 
 }
