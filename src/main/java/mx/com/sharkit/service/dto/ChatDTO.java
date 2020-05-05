@@ -1,8 +1,9 @@
 package mx.com.sharkit.service.dto;
-import java.time.Instant;
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.Chat} entity.
@@ -10,70 +11,78 @@ import java.util.Objects;
 public class ChatDTO implements Serializable {
 
     private Long id;
+        
+    private Long pedidoProveedorId;
 
-    @NotNull
-    @Size(max = 512)
-    private String mensaje;
+    private TipoChatDTO tipoChat;
+    
+    private Long tipoChatId;
+    
+    private String usuarioEmisorLogin;
 
-    @NotNull
-    private Instant fecha;
+    private String usuarioReceptorLogin;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime fecha;
 
-    private Long usuarioFuenteId;
+ 
+	public Long getId() {
+		return id;
+	}
 
-    private Long usuarioDestinoId;
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    private Long adjuntoId;
+	public String getUsuarioEmisorLogin() {
+		return usuarioEmisorLogin;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public void setUsuarioEmisorLogin(String usuarioEmisorLogin) {
+		this.usuarioEmisorLogin = usuarioEmisorLogin;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public String getUsuarioReceptorLogin() {
+		return usuarioReceptorLogin;
+	}
 
-    public String getMensaje() {
-        return mensaje;
-    }
+	public void setUsuarioReceptorLogin(String usuarioReceptorLogin) {
+		this.usuarioReceptorLogin = usuarioReceptorLogin;
+	}
 
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
-    }
+	public LocalDateTime getFecha() {
+		return fecha;
+	}
 
-    public Instant getFecha() {
-        return fecha;
-    }
+	public void setFecha(LocalDateTime fecha) {
+		this.fecha = fecha;
+	}
 
-    public void setFecha(Instant fecha) {
-        this.fecha = fecha;
-    }
+	public Long getPedidoProveedorId() {
+		return pedidoProveedorId;
+	}
 
-    public Long getUsuarioFuenteId() {
-        return usuarioFuenteId;
-    }
+	public void setPedidoProveedorId(Long pedidoProveedorId) {
+		this.pedidoProveedorId = pedidoProveedorId;
+	}
 
-    public void setUsuarioFuenteId(Long userId) {
-        this.usuarioFuenteId = userId;
-    }
+	public TipoChatDTO getTipoChat() {
+		return tipoChat;
+	}
 
-    public Long getUsuarioDestinoId() {
-        return usuarioDestinoId;
-    }
+	public void setTipoChat(TipoChatDTO tipoChat) {
+		this.tipoChat = tipoChat;
+	}
 
-    public void setUsuarioDestinoId(Long userId) {
-        this.usuarioDestinoId = userId;
-    }
+	public Long getTipoChatId() {
+		return tipoChatId;
+	}
 
-    public Long getAdjuntoId() {
-        return adjuntoId;
-    }
+	public void setTipoChatId(Long tipoChatId) {
+		this.tipoChatId = tipoChatId;
+	}
 
-    public void setAdjuntoId(Long adjuntoId) {
-        this.adjuntoId = adjuntoId;
-    }
-
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -94,15 +103,11 @@ public class ChatDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "ChatDTO{" +
-            "id=" + getId() +
-            ", mensaje='" + getMensaje() + "'" +
-            ", fecha='" + getFecha() + "'" +
-            ", usuarioFuente=" + getUsuarioFuenteId() +
-            ", usuarioDestino=" + getUsuarioDestinoId() +
-            ", adjunto=" + getAdjuntoId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "ChatDTO [id=" + id + ", pedidoProveedorId=" + pedidoProveedorId + ", tipoChatId=" + tipoChatId
+				+ ", usuarioEmisorLogin=" + usuarioEmisorLogin + ", usuarioReceptorLogin=" + usuarioReceptorLogin
+				+ ", fecha=" + fecha + "]";
+	}
+
 }

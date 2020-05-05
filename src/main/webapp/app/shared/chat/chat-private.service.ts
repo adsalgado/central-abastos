@@ -19,7 +19,6 @@ export class ChatPrivateService {
   listenerObserver: Observer<any>;
   alreadyConnectedOnce = false;
   private subscription: Subscription;
-  sessionId: '';
 
   constructor(
     private router: Router,
@@ -36,7 +35,7 @@ export class ChatPrivateService {
       this.connection = this.createConnection();
     }
     // building absolute path so that websocket doesn't fail when deploying with a context path
-    let url = '/secured/room';
+    let url = '/websocket/chat';
     url = this.location.prepareExternalUrl(url);
     const authToken = this.authServerProvider.getToken();
     console.log('authToken' + authToken);
@@ -47,14 +46,7 @@ export class ChatPrivateService {
     const socket = new SockJS(url);
     this.stompClient = Stomp.over(socket);
     const headers = {};
-
     this.stompClient.connect(headers, () => {
-      let url = this.stompClient.ws._transport.url;
-      url = url.substring(url.indexOf('/secured/room/'), url.length);
-      url = url.replace('/secured/room/', '');
-      url = url.substring(0, url.indexOf('/websocket'));
-      url = url.replace(/^[0-9]+\//, '');
-      this.sessionId = url;
       this.connectedPromise('success');
       this.connectedPromise = null;
       this.subscribe();
@@ -80,11 +72,11 @@ export class ChatPrivateService {
     return this.listener;
   }
 
-  sendMessage(fromUser, toUser, message) {
+  sendMessage(message) {
     if (this.stompClient !== null && this.stompClient.connected) {
       this.stompClient.send(
-        '/secured/room', // destination
-        JSON.stringify({ from: fromUser, to: toUser, text: message, pedidoProveedorId: 28, tipoChatId: 1, tipoUsuarioId: 2 }), // body
+        '/chat', // destination
+        JSON.stringify({ message }), // body
         {} // header
       );
     }
@@ -92,7 +84,7 @@ export class ChatPrivateService {
 
   subscribe() {
     this.connection.then(() => {
-      this.subscriber = this.stompClient.subscribe('/secured/user/queue/specific-user' + '-user' + this.sessionId, data => {
+      this.subscriber = this.stompClient.subscribe('/chat/public', data => {
         this.listenerObserver.next(JSON.parse(data.body));
       });
     });

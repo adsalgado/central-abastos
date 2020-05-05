@@ -14,6 +14,12 @@ public class MessageChatDTO implements Serializable {
 	private String to;
 	
 	private String text;
+	
+	private Long pedidoProveedorId;
+	
+	private Long tipoChatId;
+	
+	private Long tipoUsuarioId;
 
 	public String getFrom() {
 		return from;
@@ -37,6 +43,36 @@ public class MessageChatDTO implements Serializable {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public Long getPedidoProveedorId() {
+		return pedidoProveedorId;
+	}
+
+	public void setPedidoProveedorId(Long pedidoProveedorId) {
+		this.pedidoProveedorId = pedidoProveedorId;
+	}
+
+	public Long getTipoChatId() {
+		return tipoChatId;
+	}
+
+	public void setTipoChatId(Long tipoChatId) {
+		this.tipoChatId = tipoChatId;
+	}
+
+	public Long getTipoUsuarioId() {
+		return tipoUsuarioId;
+	}
+
+	public void setTipoUsuarioId(Long tipoUsuarioId) {
+		this.tipoUsuarioId = tipoUsuarioId;
+	}
+
+	@Override
+	public String toString() {
+		return "MessageChatDTO [from=" + from + ", to=" + to + ", text=" + text + ", pedidoProveedorId="
+				+ pedidoProveedorId + ", tipoChatId=" + tipoChatId + ", tipoUsuarioId=" + tipoUsuarioId + "]";
 	}
 
 }

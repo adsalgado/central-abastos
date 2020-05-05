@@ -22,15 +22,15 @@ import mx.com.sharkit.security.SecurityUtils;
 import mx.com.sharkit.web.websocket.dto.MessageDTO;
 
 @Controller
-public class ChatService implements ApplicationListener<SessionDisconnectEvent> {
+public class ChatWSService implements ApplicationListener<SessionDisconnectEvent> {
 
-    private static final Logger log = LoggerFactory.getLogger(ChatService.class);
+    private static final Logger log = LoggerFactory.getLogger(ChatWSService.class);
 
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private final SimpMessageSendingOperations messagingTemplate;
 
-    public ChatService(SimpMessageSendingOperations messagingTemplate) {
+    public ChatWSService(SimpMessageSendingOperations messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
 
