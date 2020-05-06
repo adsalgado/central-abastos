@@ -1,5 +1,5 @@
 <nav class="navbar navbar-dark navbar-expand-md bg-dark">
-    <a class="navbar-brand logo" routerLink="entities//" (click)="collapseNavbar()">
+    <a class="navbar-brand logo" routerLink="public-home" (click)="collapseNavbar()">
         <span class="logo-img"></span>
         <span jhiTranslate="global.title" class="navbar-title">Abastos</span> <span class="navbar-version">1.0.0</span>
     </a>
@@ -9,7 +9,7 @@
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="isAuthenticated()">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                <a class="nav-link" routerLink="entities//" (click)="collapseNavbar()">
+                <a class="nav-link" routerLink="public-home" (click)="collapseNavbar()">
                     <span>
                         <fa-icon icon="home"></fa-icon>
                         <span jhiTranslate="global.menu.home">Home</span>

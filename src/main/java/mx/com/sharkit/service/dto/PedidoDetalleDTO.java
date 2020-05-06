@@ -15,8 +15,6 @@ public class PedidoDetalleDTO implements Serializable {
 
     private Long pedidoProveedorId;
 
-    private PedidoProveedorDTO pedidoProveedor;
-
     private Long productoProveedorId;
 
     private ProductoProveedorDTO productoProveedor;
@@ -90,14 +88,6 @@ public class PedidoDetalleDTO implements Serializable {
 
 	public void setTotal(BigDecimal total) {
 		this.total = total;
-	}
-
-	public PedidoProveedorDTO getPedidoProveedor() {
-		return pedidoProveedor;
-	}
-
-	public void setPedidoProveedor(PedidoProveedorDTO pedidoProveedor) {
-		this.pedidoProveedor = pedidoProveedor;
 	}
 
 	public ProductoProveedorDTO getProductoProveedor() {

@@ -4,28 +4,14 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { JhiLanguageHelper } from 'app/core';
 
 import { AbastosSharedModule } from 'app/shared';
-import {
-  ChatPrivateComponent,
-  ChatPrivateDetailComponent,
-  ChatPrivateUpdateComponent,
-  ChatPrivateDeletePopupComponent,
-  ChatPrivateDeleteDialogComponent,
-  chatPrivateRoute,
-  chatPrivatePopupRoute
-} from './';
+import { ChatPrivateComponent, chatPrivateRoute } from './';
 
-const ENTITY_STATES = [...chatPrivateRoute, ...chatPrivatePopupRoute];
+const ENTITY_STATES = [...chatPrivateRoute];
 
 @NgModule({
   imports: [AbastosSharedModule, RouterModule.forChild(ENTITY_STATES)],
-  declarations: [
-    ChatPrivateComponent,
-    ChatPrivateDetailComponent,
-    ChatPrivateUpdateComponent,
-    ChatPrivateDeleteDialogComponent,
-    ChatPrivateDeletePopupComponent
-  ],
-  entryComponents: [ChatPrivateComponent, ChatPrivateUpdateComponent, ChatPrivateDeleteDialogComponent, ChatPrivateDeletePopupComponent],
+  declarations: [ChatPrivateComponent],
+  entryComponents: [ChatPrivateComponent],
   providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

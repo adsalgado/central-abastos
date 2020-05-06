@@ -14,6 +14,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import mx.com.sharkit.service.ChatService;
 import mx.com.sharkit.web.websocket.dto.MessageChatDTO;
 import mx.com.sharkit.web.websocket.dto.OutputChatMessageDTO;
 
@@ -27,6 +28,9 @@ public class SecuredChatService {
     
 	@Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
+	
+	@Autowired
+    private ChatService chatService;
 	
     private static final Logger log = LoggerFactory.getLogger(SecuredChatService.class);
 
@@ -42,6 +46,9 @@ public class SecuredChatService {
      */
     @MessageMapping(SECURED_CHAT_ROOM)
     public void sendSpecific(@Payload MessageChatDTO msg, Principal user, @Header("simpSessionId") String sessionId) throws Exception {
+    	log.info("Mensaje recibido: {}", msg);
+    	log.info("Principal: {}", user);
+    	chatService.saveMensajeChat(msg);
         OutputChatMessageDTO out = new OutputChatMessageDTO(msg.getFrom(), msg.getText(), new SimpleDateFormat("HH:mm").format(new Date()));
         simpMessagingTemplate.convertAndSendToUser(msg.getTo(), SECURED_CHAT_SPECIFIC_USER, out);
     }

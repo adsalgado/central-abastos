@@ -3,7 +3,7 @@ package mx.com.sharkit.web.rest;
 import mx.com.sharkit.service.ChatService;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 import mx.com.sharkit.service.dto.ChatDTO;
-
+import mx.com.sharkit.service.dto.ChatDetalleDTO;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;

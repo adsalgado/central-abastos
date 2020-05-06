@@ -1,11 +1,18 @@
 package mx.com.sharkit.domain;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 /**
  * A Adjunto.
@@ -37,9 +44,6 @@ public class Adjunto implements Serializable {
 
     @Column(name = "file_content_type")
     private String fileContentType;
-
-    @OneToMany(mappedBy = "adjunto")
-    private Set<Chat> chats = new HashSet<>();
 
     @OneToMany(mappedBy = "adjunto")
     private Set<ProductoImagen> productoImagens = new HashSet<>();
@@ -122,31 +126,6 @@ public class Adjunto implements Serializable {
 
     public void setFileContentType(String fileContentType) {
         this.fileContentType = fileContentType;
-    }
-
-    public Set<Chat> getChats() {
-        return chats;
-    }
-
-    public Adjunto chats(Set<Chat> chats) {
-        this.chats = chats;
-        return this;
-    }
-
-    public Adjunto addChat(Chat chat) {
-        this.chats.add(chat);
-        chat.setAdjunto(this);
-        return this;
-    }
-
-    public Adjunto removeChat(Chat chat) {
-        this.chats.remove(chat);
-        chat.setAdjunto(null);
-        return this;
-    }
-
-    public void setChats(Set<Chat> chats) {
-        this.chats = chats;
     }
 
     public Set<ProductoImagen> getProductoImagens() {

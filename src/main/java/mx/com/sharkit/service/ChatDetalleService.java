@@ -3,29 +3,27 @@ package mx.com.sharkit.service;
 import java.util.List;
 import java.util.Optional;
 
-import mx.com.sharkit.service.dto.ChatDTO;
 import mx.com.sharkit.service.dto.ChatDetalleDTO;
-import mx.com.sharkit.web.websocket.dto.MessageChatDTO;
 
 /**
- * Service Interface for managing {@link mx.com.sharkit.domain.Chat}.
+ * Service Interface for managing {@link mx.com.sharkit.domain.ChatDetalle}.
  */
-public interface ChatService {
+public interface ChatDetalleService {
 
     /**
      * Save a chat.
      *
-     * @param chatDTO the entity to save.
+     * @param chatDetalleDTO the entity to save.
      * @return the persisted entity.
      */
-    ChatDTO save(ChatDTO chatDTO);
+    ChatDetalleDTO save(ChatDetalleDTO chatDetalleDTO);
 
     /**
      * Get all the chats.
      *
      * @return the list of entities.
      */
-    List<ChatDTO> findAll();
+    List<ChatDetalleDTO> findAll();
 
 
     /**
@@ -34,7 +32,7 @@ public interface ChatService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<ChatDTO> findOne(Long id);
+    Optional<ChatDetalleDTO> findOne(Long id);
 
     /**
      * Delete the "id" chat.
@@ -42,14 +40,5 @@ public interface ChatService {
      * @param id the id of the entity.
      */
     void delete(Long id);
-    
-    /**
-     * Save a chat.
-     *
-     * @param chatDTO the entity to save.
-     * @return the persisted entity.
-     */
-    ChatDetalleDTO saveMensajeChat(MessageChatDTO chatDTO);
-    
     
 }

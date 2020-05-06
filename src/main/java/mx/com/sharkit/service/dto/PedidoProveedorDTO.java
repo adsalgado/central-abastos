@@ -1,28 +1,12 @@
 package mx.com.sharkit.service.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-import mx.com.sharkit.domain.Estatus;
-import mx.com.sharkit.domain.Pedido;
-import mx.com.sharkit.domain.Proveedor;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.Pedido} entity.
@@ -30,8 +14,6 @@ import mx.com.sharkit.domain.Proveedor;
 public class PedidoProveedorDTO implements Serializable {
 
     private Long id;
-
-    private PedidoDTO pedido;
     
     private Long pedidoId;
 
@@ -73,14 +55,6 @@ public class PedidoProveedorDTO implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public PedidoDTO getPedido() {
-		return pedido;
-	}
-
-	public void setPedido(PedidoDTO pedido) {
-		this.pedido = pedido;
 	}
 
 	public Long getPedidoId() {

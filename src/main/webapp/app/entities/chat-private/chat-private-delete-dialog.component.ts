@@ -25,13 +25,13 @@ export class ChatPrivateDeleteDialogComponent {
   }
 
   confirmDelete(id: number) {
-    this.chatPrivateService.delete(id).subscribe(response => {
+    /* this.chatPrivateService.delete(id).subscribe(response => {
       this.eventManager.broadcast({
         name: 'chatPrivateListModification',
         content: 'Deleted an chatPrivate'
       });
       this.activeModal.dismiss(true);
-    });
+    }); */
   }
 }
 

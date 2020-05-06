@@ -1,11 +1,16 @@
 package mx.com.sharkit.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * A Chat.
@@ -20,103 +25,104 @@ public class Chat implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Size(max = 512)
-    @Column(name = "mensaje", length = 512, nullable = false)
-    private String mensaje;
+    @ManyToOne
+    @JoinColumn(name = "pedido_proveedor_id", insertable = false, updatable = false)
+    private PedidoProveedor pedidoProveedor;
+    
+    @Column(name = "pedido_proveedor_id")
+    private Long pedidoProveedorId;
+
+    @ManyToOne
+    @JoinColumn(name = "tipo_chat_id", insertable = false, updatable = false)
+    private TipoChat tipoChat;
+    
+    @Column(name = "tipo_chat_id")
+    private Long tipoChatId;
+
+//    @ManyToOne
+//    @JoinColumn(name = "usuario_emisor", referencedColumnName="login", insertable = false, updatable = false)
+//    private User usuarioEmisor;
+//    
+    @Column(name = "usuario_emisor")
+    private String usuarioEmisorLogin;
+
+//    @ManyToOne
+//    @JoinColumn(name = "usuario_receptor", referencedColumnName="login", insertable = false, updatable = false)
+//    private User usuarioReceptor;
+
+    @Column(name = "usuario_receptor")
+    private String usuarioReceptorLogin;
 
     @NotNull
     @Column(name = "fecha", nullable = false)
-    private Instant fecha;
+    private LocalDateTime fecha;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private User usuarioFuente;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private User usuarioDestino;
-
-    @ManyToOne
-    @JsonIgnoreProperties("chats")
-    private Adjunto adjunto;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
-        return id;
-    }
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getMensaje() {
-        return mensaje;
-    }
+	public String getUsuarioEmisorLogin() {
+		return usuarioEmisorLogin;
+	}
 
-    public Chat mensaje(String mensaje) {
-        this.mensaje = mensaje;
-        return this;
-    }
+	public void setUsuarioEmisorLogin(String usuarioEmisorLogin) {
+		this.usuarioEmisorLogin = usuarioEmisorLogin;
+	}
 
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
-    }
+	public String getUsuarioReceptorLogin() {
+		return usuarioReceptorLogin;
+	}
 
-    public Instant getFecha() {
-        return fecha;
-    }
+	public void setUsuarioReceptorLogin(String usuarioReceptorLogin) {
+		this.usuarioReceptorLogin = usuarioReceptorLogin;
+	}
 
-    public Chat fecha(Instant fecha) {
-        this.fecha = fecha;
-        return this;
-    }
+	public LocalDateTime getFecha() {
+		return fecha;
+	}
 
-    public void setFecha(Instant fecha) {
-        this.fecha = fecha;
-    }
+	public void setFecha(LocalDateTime fecha) {
+		this.fecha = fecha;
+	}
 
-    public User getUsuarioFuente() {
-        return usuarioFuente;
-    }
+	public PedidoProveedor getPedidoProveedor() {
+		return pedidoProveedor;
+	}
 
-    public Chat usuarioFuente(User user) {
-        this.usuarioFuente = user;
-        return this;
-    }
+	public void setPedidoProveedor(PedidoProveedor pedidoProveedor) {
+		this.pedidoProveedor = pedidoProveedor;
+	}
 
-    public void setUsuarioFuente(User user) {
-        this.usuarioFuente = user;
-    }
+	public Long getPedidoProveedorId() {
+		return pedidoProveedorId;
+	}
 
-    public User getUsuarioDestino() {
-        return usuarioDestino;
-    }
+	public void setPedidoProveedorId(Long pedidoProveedorId) {
+		this.pedidoProveedorId = pedidoProveedorId;
+	}
 
-    public Chat usuarioDestino(User user) {
-        this.usuarioDestino = user;
-        return this;
-    }
+	public TipoChat getTipoChat() {
+		return tipoChat;
+	}
 
-    public void setUsuarioDestino(User user) {
-        this.usuarioDestino = user;
-    }
+	public void setTipoChat(TipoChat tipoChat) {
+		this.tipoChat = tipoChat;
+	}
 
-    public Adjunto getAdjunto() {
-        return adjunto;
-    }
+	public Long getTipoChatId() {
+		return tipoChatId;
+	}
 
-    public Chat adjunto(Adjunto adjunto) {
-        this.adjunto = adjunto;
-        return this;
-    }
+	public void setTipoChatId(Long tipoChatId) {
+		this.tipoChatId = tipoChatId;
+	}
 
-    public void setAdjunto(Adjunto adjunto) {
-        this.adjunto = adjunto;
-    }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
-
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -132,12 +138,11 @@ public class Chat implements Serializable {
         return 31;
     }
 
-    @Override
-    public String toString() {
-        return "Chat{" +
-            "id=" + getId() +
-            ", mensaje='" + getMensaje() + "'" +
-            ", fecha='" + getFecha() + "'" +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "Chat [id=" + id + ", pedidoProveedorId=" + pedidoProveedorId + ", tipoChatId=" + tipoChatId
+				+ ", usuarioEmisorLogin=" + usuarioEmisorLogin + ", usuarioReceptorLogin=" + usuarioReceptorLogin
+				+ ", fecha=" + fecha + "]";
+	}
+
 }
