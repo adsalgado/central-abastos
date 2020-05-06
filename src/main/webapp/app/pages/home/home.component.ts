@@ -31,7 +31,9 @@ export class HomeComponent implements OnInit {
     prevArrow: "<div class='nav-btn prev-slide'></div>"
   };
 
-  constructor() {}
+  constructor() {
+    console.log('--------.---------');
+  }
 
   ngOnInit() {}
 

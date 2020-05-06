@@ -9,7 +9,7 @@ import { IQueja } from 'app/shared/model/queja.model';
 type EntityResponseType = HttpResponse<IQueja>;
 type EntityArrayResponseType = HttpResponse<IQueja[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class QuejaService {
   public resourceUrl = SERVER_API_URL + 'api/quejas';
 

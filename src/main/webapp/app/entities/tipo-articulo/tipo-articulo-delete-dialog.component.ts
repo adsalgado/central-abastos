@@ -51,11 +51,11 @@ export class TipoArticuloDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.tipoArticulo = tipoArticulo;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/tipo-articulo', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/tipo-articulo']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/tipo-articulo', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/tipo-articulo']);
             this.ngbModalRef = null;
           }
         );

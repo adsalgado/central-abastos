@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SessionStorageService } from 'ngx-webstorage';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class StateStorageService {
   constructor(private $sessionStorage: SessionStorageService) {}
 

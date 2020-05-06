@@ -12,7 +12,7 @@ import { ProductoUpdateComponent } from './producto-update.component';
 import { ProductoDeletePopupComponent } from './producto-delete-dialog.component';
 import { IProducto } from 'app/shared/model/producto.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ProductoResolve implements Resolve<IProducto> {
   constructor(private service: ProductoService) {}
 
@@ -87,7 +87,7 @@ export const productoPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.producto.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    ////outlet: 'popup'
   }
 ];

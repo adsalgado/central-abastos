@@ -54,11 +54,11 @@ export class TransportistaTarifaDeletePopupComponent implements OnInit, OnDestro
         this.ngbModalRef.componentInstance.transportistaTarifa = transportistaTarifa;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/transportista-tarifa', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/transportista-tarifa']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/transportista-tarifa', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/transportista-tarifa']);
             this.ngbModalRef = null;
           }
         );

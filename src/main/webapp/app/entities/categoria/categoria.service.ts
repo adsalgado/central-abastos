@@ -9,7 +9,7 @@ import { ICategoria } from 'app/shared/model/categoria.model';
 type EntityResponseType = HttpResponse<ICategoria>;
 type EntityArrayResponseType = HttpResponse<ICategoria[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class CategoriaService {
   public resourceUrl = SERVER_API_URL + 'api/categorias';
 

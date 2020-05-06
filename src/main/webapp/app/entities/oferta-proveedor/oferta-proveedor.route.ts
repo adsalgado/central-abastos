@@ -12,7 +12,7 @@ import { OfertaProveedorUpdateComponent } from './oferta-proveedor-update.compon
 import { OfertaProveedorDeletePopupComponent } from './oferta-proveedor-delete-dialog.component';
 import { IOfertaProveedor } from 'app/shared/model/oferta-proveedor.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class OfertaProveedorResolve implements Resolve<IOfertaProveedor> {
   constructor(private service: OfertaProveedorService) {}
 
@@ -87,7 +87,7 @@ export const ofertaProveedorPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.ofertaProveedor.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

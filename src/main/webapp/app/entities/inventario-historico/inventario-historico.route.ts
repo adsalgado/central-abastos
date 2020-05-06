@@ -12,7 +12,7 @@ import { InventarioHistoricoUpdateComponent } from './inventario-historico-updat
 import { InventarioHistoricoDeletePopupComponent } from './inventario-historico-delete-dialog.component';
 import { IInventarioHistorico } from 'app/shared/model/inventario-historico.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class InventarioHistoricoResolve implements Resolve<IInventarioHistorico> {
   constructor(private service: InventarioHistoricoService) {}
 
@@ -87,7 +87,7 @@ export const inventarioHistoricoPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.inventarioHistorico.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

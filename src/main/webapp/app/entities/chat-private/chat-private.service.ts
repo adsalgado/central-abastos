@@ -12,7 +12,7 @@ import { IChatPrivate } from 'app/shared/model/chat-private.model';
 type EntityResponseType = HttpResponse<IChatPrivate>;
 type EntityArrayResponseType = HttpResponse<IChatPrivate[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChatPrivateService {
   public resourceUrl = SERVER_API_URL + 'api/chat-privates';
 

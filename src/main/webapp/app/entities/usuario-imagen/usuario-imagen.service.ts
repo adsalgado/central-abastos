@@ -12,7 +12,7 @@ import { IUsuarioImagen } from 'app/shared/model/usuario-imagen.model';
 type EntityResponseType = HttpResponse<IUsuarioImagen>;
 type EntityArrayResponseType = HttpResponse<IUsuarioImagen[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class UsuarioImagenService {
   public resourceUrl = SERVER_API_URL + 'api/usuario-imagens';
 

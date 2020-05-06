@@ -12,7 +12,7 @@ import { IChat } from 'app/shared/model/chat.model';
 type EntityResponseType = HttpResponse<IChat>;
 type EntityArrayResponseType = HttpResponse<IChat[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChatService {
   public resourceUrl = SERVER_API_URL + 'api/chats';
 

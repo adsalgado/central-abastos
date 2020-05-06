@@ -6,7 +6,7 @@ import { createRequestOption } from 'app/shared';
 import { SERVER_API_URL } from 'app/app.constants';
 import { Audit } from './audit.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AuditsService {
   constructor(private http: HttpClient) {}
 

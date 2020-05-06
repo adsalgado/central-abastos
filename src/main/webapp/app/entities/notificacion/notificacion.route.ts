@@ -12,7 +12,7 @@ import { NotificacionUpdateComponent } from './notificacion-update.component';
 import { NotificacionDeletePopupComponent } from './notificacion-delete-dialog.component';
 import { INotificacion } from 'app/shared/model/notificacion.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class NotificacionResolve implements Resolve<INotificacion> {
   constructor(private service: NotificacionService) {}
 
@@ -87,7 +87,7 @@ export const notificacionPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.notificacion.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

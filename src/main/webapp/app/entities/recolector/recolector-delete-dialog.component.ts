@@ -51,11 +51,11 @@ export class RecolectorDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.recolector = recolector;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/recolector', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/recolector']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/recolector', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/recolector']);
             this.ngbModalRef = null;
           }
         );

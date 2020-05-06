@@ -9,7 +9,7 @@ import { IRecolectorTarifa } from 'app/shared/model/recolector-tarifa.model';
 type EntityResponseType = HttpResponse<IRecolectorTarifa>;
 type EntityArrayResponseType = HttpResponse<IRecolectorTarifa[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class RecolectorTarifaService {
   public resourceUrl = SERVER_API_URL + 'api/recolector-tarifas';
 

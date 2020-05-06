@@ -12,7 +12,7 @@ import { QuejaUpdateComponent } from './queja-update.component';
 import { QuejaDeletePopupComponent } from './queja-delete-dialog.component';
 import { IQueja } from 'app/shared/model/queja.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class QuejaResolve implements Resolve<IQueja> {
   constructor(private service: QuejaService) {}
 
@@ -87,7 +87,7 @@ export const quejaPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.queja.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

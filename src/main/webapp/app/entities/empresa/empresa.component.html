@@ -29,19 +29,19 @@
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['/empresa', empresa.id, 'view' ]"
+                                [routerLink]="['/main/entities/empresa', empresa.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/empresa', empresa.id, 'edit']"
+                                [routerLink]="['/main/entities/empresa', empresa.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/empresa', { outlets: { popup: empresa.id + '/delete'} }]"
+                                [routerLink]="['/main/entities/empresa', empresa.id, 'delete']"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

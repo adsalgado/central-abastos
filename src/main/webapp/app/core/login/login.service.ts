@@ -4,7 +4,7 @@ import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
 import { JhiTrackerService } from 'app/core/tracker/tracker.service';
 import { JhiEventManager } from 'ng-jhipster';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class LoginService {
   constructor(
     private accountService: AccountService,

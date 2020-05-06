@@ -9,7 +9,7 @@ import { INotificacion } from 'app/shared/model/notificacion.model';
 type EntityResponseType = HttpResponse<INotificacion>;
 type EntityArrayResponseType = HttpResponse<INotificacion[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class NotificacionService {
   public resourceUrl = SERVER_API_URL + 'api/notificacions';
 

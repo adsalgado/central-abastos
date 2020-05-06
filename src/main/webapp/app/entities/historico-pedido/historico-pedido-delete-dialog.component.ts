@@ -51,11 +51,11 @@ export class HistoricoPedidoDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.historicoPedido = historicoPedido;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/historico-pedido', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/historico-pedido']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/historico-pedido', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/historico-pedido']);
             this.ngbModalRef = null;
           }
         );

@@ -12,7 +12,7 @@ import { TipoOfertaUpdateComponent } from './tipo-oferta-update.component';
 import { TipoOfertaDeletePopupComponent } from './tipo-oferta-delete-dialog.component';
 import { ITipoOferta } from 'app/shared/model/tipo-oferta.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class TipoOfertaResolve implements Resolve<ITipoOferta> {
   constructor(private service: TipoOfertaService) {}
 
@@ -87,7 +87,7 @@ export const tipoOfertaPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.tipoOferta.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

@@ -12,7 +12,7 @@ import { ChatUpdateComponent } from './chat-update.component';
 import { ChatDeletePopupComponent } from './chat-delete-dialog.component';
 import { IChat } from 'app/shared/model/chat.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChatResolve implements Resolve<IChat> {
   constructor(private service: ChatService) {}
 
@@ -87,7 +87,7 @@ export const chatPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.chat.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

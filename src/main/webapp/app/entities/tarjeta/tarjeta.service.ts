@@ -12,7 +12,7 @@ import { ITarjeta } from 'app/shared/model/tarjeta.model';
 type EntityResponseType = HttpResponse<ITarjeta>;
 type EntityArrayResponseType = HttpResponse<ITarjeta[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class TarjetaService {
   public resourceUrl = SERVER_API_URL + 'api/tarjetas';
 

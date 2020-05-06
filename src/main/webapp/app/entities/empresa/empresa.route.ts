@@ -12,7 +12,7 @@ import { EmpresaUpdateComponent } from './empresa-update.component';
 import { EmpresaDeletePopupComponent } from './empresa-delete-dialog.component';
 import { IEmpresa } from 'app/shared/model/empresa.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class EmpresaResolve implements Resolve<IEmpresa> {
   constructor(private service: EmpresaService) {}
 
@@ -87,7 +87,7 @@ export const empresaPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.empresa.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

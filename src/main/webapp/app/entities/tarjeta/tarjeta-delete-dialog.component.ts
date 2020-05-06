@@ -47,11 +47,11 @@ export class TarjetaDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.tarjeta = tarjeta;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/tarjeta', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/tarjeta']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/tarjeta', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/tarjeta']);
             this.ngbModalRef = null;
           }
         );

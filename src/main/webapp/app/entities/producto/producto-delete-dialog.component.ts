@@ -38,20 +38,24 @@ export class ProductoDeleteDialogComponent {
 export class ProductoDeletePopupComponent implements OnInit, OnDestroy {
   protected ngbModalRef: NgbModalRef;
 
-  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
+  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {
+    console.log('constructor productos');
+  }
 
   ngOnInit() {
+    console.log('producto delete');
+
     this.activatedRoute.data.subscribe(({ producto }) => {
       setTimeout(() => {
         this.ngbModalRef = this.modalService.open(ProductoDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
         this.ngbModalRef.componentInstance.producto = producto;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/producto', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/producto']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/producto', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/producto']);
             this.ngbModalRef = null;
           }
         );

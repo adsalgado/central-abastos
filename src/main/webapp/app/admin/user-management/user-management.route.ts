@@ -7,7 +7,7 @@ import { UserMgmtComponent } from './user-management.component';
 import { UserMgmtDetailComponent } from './user-management-detail.component';
 import { UserMgmtUpdateComponent } from './user-management-update.component';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class UserResolve implements CanActivate {
   constructor(private accountService: AccountService) {}
 
@@ -16,7 +16,7 @@ export class UserResolve implements CanActivate {
   }
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class UserMgmtResolve implements Resolve<any> {
   constructor(private service: UserService) {}
 

@@ -47,11 +47,11 @@ export class CategoriaDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.categoria = categoria;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/categoria', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/categoria']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/categoria', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/categoria']);
             this.ngbModalRef = null;
           }
         );

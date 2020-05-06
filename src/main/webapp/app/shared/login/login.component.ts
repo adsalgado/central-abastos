@@ -78,11 +78,15 @@ export class JhiLoginModalComponent implements AfterViewInit {
 
   register() {
     this.activeModal.dismiss('to state register');
-    this.router.navigate(['/register']);
+    this.router.navigate(['/main/admin/register']);
   }
 
   requestResetPassword() {
     this.activeModal.dismiss('to state requestReset');
     this.router.navigate(['/reset', 'request']);
+  }
+
+  close() {
+    this.router.navigate(['/main/public-home']);
   }
 }

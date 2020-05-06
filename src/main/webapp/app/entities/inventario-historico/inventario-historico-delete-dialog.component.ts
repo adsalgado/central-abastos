@@ -54,11 +54,11 @@ export class InventarioHistoricoDeletePopupComponent implements OnInit, OnDestro
         this.ngbModalRef.componentInstance.inventarioHistorico = inventarioHistorico;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/inventario-historico', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/inventario-historico']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/inventario-historico', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/inventario-historico']);
             this.ngbModalRef = null;
           }
         );

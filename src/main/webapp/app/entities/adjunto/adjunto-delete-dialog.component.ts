@@ -47,11 +47,11 @@ export class AdjuntoDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.adjunto = adjunto;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/adjunto', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/adjunto']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/adjunto', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/adjunto']);
             this.ngbModalRef = null;
           }
         );

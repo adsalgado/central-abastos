@@ -12,7 +12,7 @@ import { IPedido } from 'app/shared/model/pedido.model';
 type EntityResponseType = HttpResponse<IPedido>;
 type EntityArrayResponseType = HttpResponse<IPedido[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class PedidoService {
   public resourceUrl = SERVER_API_URL + 'api/pedidos';
 

@@ -47,11 +47,11 @@ export class PagosDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.pagos = pagos;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/pagos', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/pagos']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/pagos', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/pagos']);
             this.ngbModalRef = null;
           }
         );

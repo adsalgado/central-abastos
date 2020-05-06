@@ -12,7 +12,7 @@ import { AdjuntoUpdateComponent } from './adjunto-update.component';
 import { AdjuntoDeletePopupComponent } from './adjunto-delete-dialog.component';
 import { IAdjunto } from 'app/shared/model/adjunto.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AdjuntoResolve implements Resolve<IAdjunto> {
   constructor(private service: AdjuntoService) {}
 
@@ -87,7 +87,7 @@ export const adjuntoPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.adjunto.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    ////outlet: 'popup'
   }
 ];

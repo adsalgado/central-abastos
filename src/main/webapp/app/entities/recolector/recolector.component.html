@@ -47,19 +47,19 @@
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['/recolector', recolector.id, 'view' ]"
+                                [routerLink]="['/main/entities/recolector', recolector.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/recolector', recolector.id, 'edit']"
+                                [routerLink]="['/main/entities/recolector', recolector.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/recolector', { outlets: { popup: recolector.id + '/delete'} }]"
+                                [routerLink]="['/main/entities/recolector', recolector.id, 'delete']"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

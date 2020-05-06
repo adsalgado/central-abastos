@@ -12,7 +12,7 @@ import { IProveedor } from 'app/shared/model/proveedor.model';
 type EntityResponseType = HttpResponse<IProveedor>;
 type EntityArrayResponseType = HttpResponse<IProveedor[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ProveedorService {
   public resourceUrl = SERVER_API_URL + 'api/proveedors';
 

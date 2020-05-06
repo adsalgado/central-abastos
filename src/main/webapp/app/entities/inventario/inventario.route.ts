@@ -12,7 +12,7 @@ import { InventarioUpdateComponent } from './inventario-update.component';
 import { InventarioDeletePopupComponent } from './inventario-delete-dialog.component';
 import { IInventario } from 'app/shared/model/inventario.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class InventarioResolve implements Resolve<IInventario> {
   constructor(private service: InventarioService) {}
 
@@ -87,7 +87,7 @@ export const inventarioPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.inventario.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

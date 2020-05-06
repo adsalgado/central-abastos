@@ -9,7 +9,7 @@ import { ITransportistaTarifa } from 'app/shared/model/transportista-tarifa.mode
 type EntityResponseType = HttpResponse<ITransportistaTarifa>;
 type EntityArrayResponseType = HttpResponse<ITransportistaTarifa[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class TransportistaTarifaService {
   public resourceUrl = SERVER_API_URL + 'api/transportista-tarifas';
 

@@ -12,7 +12,7 @@ import { RecolectorTarifaUpdateComponent } from './recolector-tarifa-update.comp
 import { RecolectorTarifaDeletePopupComponent } from './recolector-tarifa-delete-dialog.component';
 import { IRecolectorTarifa } from 'app/shared/model/recolector-tarifa.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class RecolectorTarifaResolve implements Resolve<IRecolectorTarifa> {
   constructor(private service: RecolectorTarifaService) {}
 
@@ -87,7 +87,7 @@ export const recolectorTarifaPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.recolectorTarifa.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

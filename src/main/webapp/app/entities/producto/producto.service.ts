@@ -12,7 +12,7 @@ import { IProducto } from 'app/shared/model/producto.model';
 type EntityResponseType = HttpResponse<IProducto>;
 type EntityArrayResponseType = HttpResponse<IProducto[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ProductoService {
   public resourceUrl = SERVER_API_URL + 'api/productos';
 

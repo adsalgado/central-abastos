@@ -16,15 +16,7 @@ import {
 
 @NgModule({
   imports: [AbastosSharedModule, RouterModule.forChild(accountState)],
-  declarations: [
-    ActivateComponent,
-    RegisterComponent,
-    PasswordComponent,
-    PasswordStrengthBarComponent,
-    PasswordResetInitComponent,
-    PasswordResetFinishComponent,
-    SettingsComponent
-  ],
+  declarations: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AbastosAccountModule {}

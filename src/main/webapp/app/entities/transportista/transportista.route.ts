@@ -12,7 +12,7 @@ import { TransportistaUpdateComponent } from './transportista-update.component';
 import { TransportistaDeletePopupComponent } from './transportista-delete-dialog.component';
 import { ITransportista } from 'app/shared/model/transportista.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class TransportistaResolve implements Resolve<ITransportista> {
   constructor(private service: TransportistaService) {}
 
@@ -87,7 +87,7 @@ export const transportistaPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.transportista.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

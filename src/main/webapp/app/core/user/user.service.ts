@@ -6,7 +6,7 @@ import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { IUser } from './user.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class UserService {
   public resourceUrl = SERVER_API_URL + 'api/users';
 

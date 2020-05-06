@@ -5,16 +5,12 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
   templateUrl: './configuration.component.html',
   styleUrls: ['./configuration.component.scss']
 })
-export class ConfigurationComponent implements OnInit, OnDestroy {
+export class ConfigurationComponent implements OnInit {
   public mostrarSide: boolean = false;
 
   constructor() {}
 
   ngOnInit() {}
-
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
-  }
 
   show() {
     this.mostrarSide = !this.mostrarSide;

@@ -31,19 +31,19 @@
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['/estatus', estatus.id, 'view' ]"
+                                [routerLink]="['/main/entities/estatus', estatus.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/estatus', estatus.id, 'edit']"
+                                [routerLink]="['/main/entities/estatus', estatus.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/estatus', { outlets: { popup: estatus.id + '/delete'} }]"
+                                [routerLink]="['/main/entities/estatus', estatus.id, 'delete']"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

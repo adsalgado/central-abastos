@@ -51,11 +51,11 @@ export class CarritoHistoricoDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.carritoHistorico = carritoHistorico;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/carrito-historico', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/carrito-historico']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/carrito-historico', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/carrito-historico']);
             this.ngbModalRef = null;
           }
         );

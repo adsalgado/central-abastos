@@ -9,7 +9,7 @@ import { IUnidadMedida } from 'app/shared/model/unidad-medida.model';
 type EntityResponseType = HttpResponse<IUnidadMedida>;
 type EntityArrayResponseType = HttpResponse<IUnidadMedida[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class UnidadMedidaService {
   public resourceUrl = SERVER_API_URL + 'api/unidad-medidas';
 

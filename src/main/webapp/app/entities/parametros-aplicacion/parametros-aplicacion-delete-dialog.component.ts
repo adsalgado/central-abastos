@@ -54,11 +54,11 @@ export class ParametrosAplicacionDeletePopupComponent implements OnInit, OnDestr
         this.ngbModalRef.componentInstance.parametrosAplicacion = parametrosAplicacion;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/parametros-aplicacion', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/parametros-aplicacion']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/parametros-aplicacion', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/parametros-aplicacion']);
             this.ngbModalRef = null;
           }
         );

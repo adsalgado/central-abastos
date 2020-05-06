@@ -5,7 +5,7 @@ import { SERVER_API_URL } from 'app/app.constants';
 import { ProfileInfo } from './profile-info.model';
 import { map } from 'rxjs/operators';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ProfileService {
   private infoUrl = SERVER_API_URL + 'management/info';
   private profileInfo: Promise<ProfileInfo>;

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponentMain implements OnInit {
   private listTitles: any[];
   location: Location;
   mobile_menu_visible: any = 0;
@@ -109,16 +109,15 @@ export class NavbarComponent implements OnInit {
   }
 
   getTitle() {
-    var titlee = this.location.prepareExternalUrl(this.location.path());
-    if (titlee.charAt(0) === '#') {
-      titlee = titlee.slice(1);
-    }
+    let ruta: string = '';
+    switch (this.router.url) {
+      case '/main/public-home':
+        ruta = 'Bienvenid@';
+        break;
 
-    for (var item = 0; item < this.listTitles.length; item++) {
-      if (this.listTitles[item].path === titlee) {
-        return this.listTitles[item].title;
-      }
+      default:
+        break;
     }
-    return 'Dashboard';
+    return ruta;
   }
 }

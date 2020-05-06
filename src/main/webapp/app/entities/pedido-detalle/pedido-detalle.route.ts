@@ -12,7 +12,7 @@ import { PedidoDetalleUpdateComponent } from './pedido-detalle-update.component'
 import { PedidoDetalleDeletePopupComponent } from './pedido-detalle-delete-dialog.component';
 import { IPedidoDetalle } from 'app/shared/model/pedido-detalle.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class PedidoDetalleResolve implements Resolve<IPedidoDetalle> {
   constructor(private service: PedidoDetalleService) {}
 
@@ -87,7 +87,7 @@ export const pedidoDetallePopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.pedidoDetalle.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

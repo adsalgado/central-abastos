@@ -47,11 +47,11 @@ export class SeccionDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.seccion = seccion;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/seccion', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/seccion']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/seccion', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/seccion']);
             this.ngbModalRef = null;
           }
         );

@@ -9,7 +9,7 @@ import { IParametrosAplicacion } from 'app/shared/model/parametros-aplicacion.mo
 type EntityResponseType = HttpResponse<IParametrosAplicacion>;
 type EntityArrayResponseType = HttpResponse<IParametrosAplicacion[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ParametrosAplicacionService {
   public resourceUrl = SERVER_API_URL + 'api/parametros-aplicacions';
 

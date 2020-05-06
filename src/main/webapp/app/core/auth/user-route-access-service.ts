@@ -1,17 +1,20 @@
+import { NavParamsService } from './../../services/nav-params.service';
 import { Injectable, isDevMode } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 
 import { AccountService } from 'app/core/';
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { StateStorageService } from './state-storage.service';
+import { JhiLoginModalComponent } from 'app/shared/login/login.component';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class UserRouteAccessService implements CanActivate {
   constructor(
     private router: Router,
     private loginModalService: LoginModalService,
     private accountService: AccountService,
-    private stateStorageService: StateStorageService
+    private stateStorageService: StateStorageService,
+    private navParamsService: NavParamsService
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<boolean> {
@@ -40,8 +43,9 @@ export class UserRouteAccessService implements CanActivate {
         return false;
       }
 
-      this.stateStorageService.storeUrl(url);
-      this.loginModalService.open();
+      //this.stateStorageService.storeUrl(url);
+      //this.loginModalService.open();
+      this.navParamsService.push('main/login');
       return false;
     });
   }

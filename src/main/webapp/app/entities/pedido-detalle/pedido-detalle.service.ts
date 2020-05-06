@@ -9,7 +9,7 @@ import { IPedidoDetalle } from 'app/shared/model/pedido-detalle.model';
 type EntityResponseType = HttpResponse<IPedidoDetalle>;
 type EntityArrayResponseType = HttpResponse<IPedidoDetalle[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class PedidoDetalleService {
   public resourceUrl = SERVER_API_URL + 'api/pedido-detalles';
 

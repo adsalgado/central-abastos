@@ -5,12 +5,8 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
   templateUrl: './container.component.html',
   styleUrls: ['./container.component.scss']
 })
-export class ContainerComponent implements OnInit, OnDestroy {
+export class ContainerComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
-
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
-  }
 }

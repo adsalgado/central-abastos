@@ -47,11 +47,11 @@ export class QuejaDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.queja = queja;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/queja', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/queja']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/queja', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/queja']);
             this.ngbModalRef = null;
           }
         );

@@ -12,7 +12,7 @@ import { UnidadMedidaUpdateComponent } from './unidad-medida-update.component';
 import { UnidadMedidaDeletePopupComponent } from './unidad-medida-delete-dialog.component';
 import { IUnidadMedida } from 'app/shared/model/unidad-medida.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class UnidadMedidaResolve implements Resolve<IUnidadMedida> {
   constructor(private service: UnidadMedidaService) {}
 
@@ -87,7 +87,7 @@ export const unidadMedidaPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.unidadMedida.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

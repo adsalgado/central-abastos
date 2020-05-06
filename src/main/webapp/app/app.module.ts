@@ -19,56 +19,26 @@ import { AbastosAccountModule } from './account/account.module';
 import { AbastosEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
-import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
+import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 import { ComponentsModule } from './components.module';
 import { ProvidersModule } from './providers.module';
+import { AppComponent } from './app.component';
+import { RouterModule } from '@angular/router';
+
 @NgModule({
   imports: [
-    BrowserModule,
-    //NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-' }),
-    NgJhipsterModule.forRoot({
-      // set below to true to make alerts look like toast
-      alertAsToast: false,
-      alertTimeout: 5000,
-      i18nEnabled: true,
-      defaultI18nLang: 'es'
-    }),
-    AbastosSharedModule.forRoot(),
-    AbastosCoreModule,
-    AbastosHomeModule,
-    AbastosAccountModule,
-    // jhipster-needle-angular-add-module JHipster will add new module here
-    AbastosEntityModule,
-    AbastosAppRoutingModule,
     NgbModule,
     ProvidersModule,
     //HttpClientModule,
     ComponentsModule
   ],
-  declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthExpiredInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorHandlerInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: NotificationInterceptor,
-      multi: true
-    }
-  ],
-  bootstrap: [JhiMainComponent]
+
+  bootstrap: [AppComponent],
+
+  exports: [
+    NgbModule
+    //NgbActiveModal
+  ]
 })
 export class AbastosAppModule {
   constructor(private dpConfig: NgbDatepickerConfig) {

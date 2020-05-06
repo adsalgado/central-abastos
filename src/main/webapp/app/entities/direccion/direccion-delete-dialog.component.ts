@@ -47,11 +47,11 @@ export class DireccionDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.direccion = direccion;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/direccion', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/direccion']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/direccion', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/direccion']);
             this.ngbModalRef = null;
           }
         );

@@ -9,7 +9,7 @@ import { IEstatus } from 'app/shared/model/estatus.model';
 type EntityResponseType = HttpResponse<IEstatus>;
 type EntityArrayResponseType = HttpResponse<IEstatus[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class EstatusService {
   public resourceUrl = SERVER_API_URL + 'api/estatuses';
 

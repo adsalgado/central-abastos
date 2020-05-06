@@ -51,11 +51,11 @@ export class TransportistaDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.transportista = transportista;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/transportista', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/transportista']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/transportista', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/transportista']);
             this.ngbModalRef = null;
           }
         );

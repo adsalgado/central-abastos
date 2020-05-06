@@ -12,7 +12,7 @@ import { TarjetaUpdateComponent } from './tarjeta-update.component';
 import { TarjetaDeletePopupComponent } from './tarjeta-delete-dialog.component';
 import { ITarjeta } from 'app/shared/model/tarjeta.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class TarjetaResolve implements Resolve<ITarjeta> {
   constructor(private service: TarjetaService) {}
 
@@ -87,7 +87,7 @@ export const tarjetaPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.tarjeta.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

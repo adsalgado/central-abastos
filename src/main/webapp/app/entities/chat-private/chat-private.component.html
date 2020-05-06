@@ -33,19 +33,19 @@
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['/chat-private', chatPrivate.id, 'view' ]"
+                                [routerLink]="['/main/entities/chat-private', chatPrivate.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/chat-private', chatPrivate.id, 'edit']"
+                                [routerLink]="['/main/entities/chat-private', chatPrivate.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/chat-private', { outlets: { popup: chatPrivate.id + '/delete'} }]"
+                                [routerLink]="['/main/entities/chat-private', chatPrivate.id, 'delete']"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

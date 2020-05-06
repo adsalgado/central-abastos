@@ -12,7 +12,7 @@ import { TipoArticuloUpdateComponent } from './tipo-articulo-update.component';
 import { TipoArticuloDeletePopupComponent } from './tipo-articulo-delete-dialog.component';
 import { ITipoArticulo } from 'app/shared/model/tipo-articulo.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class TipoArticuloResolve implements Resolve<ITipoArticulo> {
   constructor(private service: TipoArticuloService) {}
 
@@ -87,7 +87,7 @@ export const tipoArticuloPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.tipoArticulo.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

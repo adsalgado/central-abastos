@@ -51,11 +51,11 @@ export class OfertaProveedorDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.ofertaProveedor = ofertaProveedor;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/oferta-proveedor', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/oferta-proveedor']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/oferta-proveedor', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/oferta-proveedor']);
             this.ngbModalRef = null;
           }
         );

@@ -10,12 +10,30 @@ import { ViewModule } from './view.module';
 import { HeaderComponent } from './components/header/header.component';
 import { HomePublicComponent } from './pages/home-layout/home-public.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
+import { NavbarComponentMain } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ConfigurationComponent } from './components/configuration/configuration.component';
 import { ContainerComponent } from './components/container/container.component';
 import { HomeComponent } from './pages/home/home.component';
 import { HeaderWithoutMenuComponent } from './components/header-without-menu/header-without-menu.component';
+import { JhiMainComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponentJHI, NavbarComponent } from './layouts';
+import {
+  UserMgmtComponent,
+  AuditsComponent,
+  JhiConfigurationComponent,
+  JhiDocsComponent,
+  JhiHealthCheckComponent,
+  LogsComponent,
+  JhiTrackerComponent,
+  UserMgmtDetailComponent,
+  UserMgmtUpdateComponent,
+  JhiMetricsMonitoringComponent,
+  UserMgmtDeleteDialogComponent,
+  JhiHealthModalComponent
+} from './admin';
+import { HomePublicMainComponent } from './pages/home-public/home-public-main.component';
+import { ProductoDeleteDialogComponent, ProductoDeletePopupComponent } from './entities/producto';
+//import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 
 @NgModule({
   declarations: [
@@ -29,12 +47,30 @@ import { HeaderWithoutMenuComponent } from './components/header-without-menu/hea
     HeaderComponent,
     HomePublicComponent,
     SidebarComponent,
-    NavbarComponent,
+    NavbarComponentMain,
     FooterComponent,
     ConfigurationComponent,
     ContainerComponent,
     HomeComponent,
-    HeaderWithoutMenuComponent
+    HeaderWithoutMenuComponent,
+    HomePublicMainComponent,
+    NavbarComponent,
+    ErrorComponent,
+    PageRibbonComponent,
+    ActiveMenuDirective,
+    FooterComponent
+
+    // UserMgmtComponent,
+    /*AuditsComponent,
+    JhiConfigurationComponent,
+    JhiDocsComponent,
+    JhiHealthCheckComponent,
+    LogsComponent,
+    JhiTrackerComponent,
+    UserMgmtDetailComponent,
+    UserMgmtUpdateComponent,
+    JhiMetricsMonitoringComponent,
+    UserMgmtDeleteDialogComponent, */
   ],
 
   imports: [ViewModule],
@@ -54,7 +90,24 @@ import { HeaderWithoutMenuComponent } from './components/header-without-menu/hea
     ConfigurationComponent,
     ContainerComponent,
     HomeComponent,
-    HeaderWithoutMenuComponent
+    HeaderWithoutMenuComponent,
+    HomePublicMainComponent,
+    NavbarComponent,
+    ErrorComponent,
+    PageRibbonComponent,
+    ActiveMenuDirective,
+    FooterComponent
+    // UserMgmtComponent,
+    /*AuditsComponent,
+    JhiConfigurationComponent,
+    JhiDocsComponent,
+    JhiHealthCheckComponent,
+    LogsComponent,
+    JhiTrackerComponent,
+    UserMgmtDetailComponent,
+    UserMgmtUpdateComponent,
+    JhiMetricsMonitoringComponent,
+    UserMgmtDeleteDialogComponent, */
   ],
   entryComponents: [
     //Producto

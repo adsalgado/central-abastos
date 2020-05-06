@@ -9,7 +9,7 @@ import { IEmpresa } from 'app/shared/model/empresa.model';
 type EntityResponseType = HttpResponse<IEmpresa>;
 type EntityArrayResponseType = HttpResponse<IEmpresa[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class EmpresaService {
   public resourceUrl = SERVER_API_URL + 'api/empresas';
 

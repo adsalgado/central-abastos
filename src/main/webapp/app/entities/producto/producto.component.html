@@ -1,7 +1,7 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="abastosApp.producto.home.title">Productos</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-producto" [routerLink]="['/producto/new']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-producto"  [routerLink]="['new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span  jhiTranslate="abastosApp.producto.home.createLabel">
             Create a new Producto
@@ -97,19 +97,19 @@
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['/producto', producto.id, 'view' ]"
+                                [routerLink]="['/main/entities/producto', producto.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/producto', producto.id, 'edit']"
+                                [routerLink]="['/main/entities/producto', producto.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/producto', { outlets: { popup: producto.id + '/delete'} }]"
+                                [routerLink]="['/main/entities/producto', producto.id, 'delete']"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

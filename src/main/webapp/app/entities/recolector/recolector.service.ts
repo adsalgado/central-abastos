@@ -12,7 +12,7 @@ import { IRecolector } from 'app/shared/model/recolector.model';
 type EntityResponseType = HttpResponse<IRecolector>;
 type EntityArrayResponseType = HttpResponse<IRecolector[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class RecolectorService {
   public resourceUrl = SERVER_API_URL + 'api/recolectors';
 

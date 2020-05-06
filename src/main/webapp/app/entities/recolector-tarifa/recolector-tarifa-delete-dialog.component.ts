@@ -51,11 +51,11 @@ export class RecolectorTarifaDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.recolectorTarifa = recolectorTarifa;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/recolector-tarifa', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/recolector-tarifa']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/recolector-tarifa', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/recolector-tarifa']);
             this.ngbModalRef = null;
           }
         );

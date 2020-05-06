@@ -12,7 +12,7 @@ import { DireccionUpdateComponent } from './direccion-update.component';
 import { DireccionDeletePopupComponent } from './direccion-delete-dialog.component';
 import { IDireccion } from 'app/shared/model/direccion.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class DireccionResolve implements Resolve<IDireccion> {
   constructor(private service: DireccionService) {}
 
@@ -87,7 +87,7 @@ export const direccionPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.direccion.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

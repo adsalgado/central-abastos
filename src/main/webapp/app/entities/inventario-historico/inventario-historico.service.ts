@@ -12,7 +12,7 @@ import { IInventarioHistorico } from 'app/shared/model/inventario-historico.mode
 type EntityResponseType = HttpResponse<IInventarioHistorico>;
 type EntityArrayResponseType = HttpResponse<IInventarioHistorico[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class InventarioHistoricoService {
   public resourceUrl = SERVER_API_URL + 'api/inventario-historicos';
 

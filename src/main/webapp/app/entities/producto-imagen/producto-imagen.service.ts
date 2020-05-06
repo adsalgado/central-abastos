@@ -12,7 +12,7 @@ import { IProductoImagen } from 'app/shared/model/producto-imagen.model';
 type EntityResponseType = HttpResponse<IProductoImagen>;
 type EntityArrayResponseType = HttpResponse<IProductoImagen[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ProductoImagenService {
   public resourceUrl = SERVER_API_URL + 'api/producto-imagens';
 

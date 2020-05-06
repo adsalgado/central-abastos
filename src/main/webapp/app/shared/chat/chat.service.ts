@@ -5,7 +5,7 @@ import { Observable, Observer, Subscription } from 'rxjs';
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'webstomp-client';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChatService {
   stompClient = null;
   subscriber = null;

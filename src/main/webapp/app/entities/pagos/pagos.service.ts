@@ -9,7 +9,7 @@ import { IPagos } from 'app/shared/model/pagos.model';
 type EntityResponseType = HttpResponse<IPagos>;
 type EntityArrayResponseType = HttpResponse<IPagos[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class PagosService {
   public resourceUrl = SERVER_API_URL + 'api/pagos';
 

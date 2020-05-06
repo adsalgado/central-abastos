@@ -12,7 +12,7 @@ import { HistoricoPedidoUpdateComponent } from './historico-pedido-update.compon
 import { HistoricoPedidoDeletePopupComponent } from './historico-pedido-delete-dialog.component';
 import { IHistoricoPedido } from 'app/shared/model/historico-pedido.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class HistoricoPedidoResolve implements Resolve<IHistoricoPedido> {
   constructor(private service: HistoricoPedidoService) {}
 
@@ -87,7 +87,7 @@ export const historicoPedidoPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.historicoPedido.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

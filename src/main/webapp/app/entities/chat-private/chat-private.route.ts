@@ -12,7 +12,7 @@ import { ChatPrivateUpdateComponent } from './chat-private-update.component';
 import { ChatPrivateDeletePopupComponent } from './chat-private-delete-dialog.component';
 import { IChatPrivate } from 'app/shared/model/chat-private.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChatPrivateResolve implements Resolve<IChatPrivate> {
   constructor(private service: ChatPrivateService) {}
 
@@ -87,7 +87,7 @@ export const chatPrivatePopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.chatPrivate.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

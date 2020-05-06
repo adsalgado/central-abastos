@@ -51,11 +51,11 @@ export class UnidadMedidaDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.unidadMedida = unidadMedida;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/unidad-medida', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/unidad-medida']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/unidad-medida', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/unidad-medida']);
             this.ngbModalRef = null;
           }
         );

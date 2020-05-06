@@ -51,11 +51,11 @@ export class ChatPrivateDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.chatPrivate = chatPrivate;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/chat-private', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/chat-private']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/chat-private', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/chat-private']);
             this.ngbModalRef = null;
           }
         );

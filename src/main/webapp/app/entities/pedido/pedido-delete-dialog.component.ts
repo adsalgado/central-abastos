@@ -47,11 +47,11 @@ export class PedidoDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.pedido = pedido;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/pedido', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/pedido']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/pedido', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/pedido']);
             this.ngbModalRef = null;
           }
         );

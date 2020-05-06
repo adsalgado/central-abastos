@@ -12,7 +12,7 @@ import { ICliente } from 'app/shared/model/cliente.model';
 type EntityResponseType = HttpResponse<ICliente>;
 type EntityArrayResponseType = HttpResponse<ICliente[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ClienteService {
   public resourceUrl = SERVER_API_URL + 'api/clientes';
 

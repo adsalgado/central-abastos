@@ -12,7 +12,7 @@ import { UsuarioImagenUpdateComponent } from './usuario-imagen-update.component'
 import { UsuarioImagenDeletePopupComponent } from './usuario-imagen-delete-dialog.component';
 import { IUsuarioImagen } from 'app/shared/model/usuario-imagen.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class UsuarioImagenResolve implements Resolve<IUsuarioImagen> {
   constructor(private service: UsuarioImagenService) {}
 
@@ -87,7 +87,7 @@ export const usuarioImagenPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.usuarioImagen.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

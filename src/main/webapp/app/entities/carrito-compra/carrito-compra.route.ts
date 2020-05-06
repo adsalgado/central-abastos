@@ -12,7 +12,7 @@ import { CarritoCompraUpdateComponent } from './carrito-compra-update.component'
 import { CarritoCompraDeletePopupComponent } from './carrito-compra-delete-dialog.component';
 import { ICarritoCompra } from 'app/shared/model/carrito-compra.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class CarritoCompraResolve implements Resolve<ICarritoCompra> {
   constructor(private service: CarritoCompraService) {}
 
@@ -87,7 +87,7 @@ export const carritoCompraPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.carritoCompra.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    ////outlet: 'popup'
   }
 ];

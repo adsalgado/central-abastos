@@ -9,7 +9,7 @@ import { ISeccion } from 'app/shared/model/seccion.model';
 type EntityResponseType = HttpResponse<ISeccion>;
 type EntityArrayResponseType = HttpResponse<ISeccion[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class SeccionService {
   public resourceUrl = SERVER_API_URL + 'api/seccions';
 

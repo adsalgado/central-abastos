@@ -47,11 +47,11 @@ export class EstatusDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.estatus = estatus;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/estatus', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/estatus']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/estatus', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/estatus']);
             this.ngbModalRef = null;
           }
         );

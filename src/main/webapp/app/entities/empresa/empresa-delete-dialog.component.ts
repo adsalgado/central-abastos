@@ -47,11 +47,11 @@ export class EmpresaDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.empresa = empresa;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/empresa', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/empresa']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/empresa', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/empresa']);
             this.ngbModalRef = null;
           }
         );

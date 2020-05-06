@@ -12,7 +12,7 @@ import { ProveedorUpdateComponent } from './proveedor-update.component';
 import { ProveedorDeletePopupComponent } from './proveedor-delete-dialog.component';
 import { IProveedor } from 'app/shared/model/proveedor.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ProveedorResolve implements Resolve<IProveedor> {
   constructor(private service: ProveedorService) {}
 
@@ -87,7 +87,7 @@ export const proveedorPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.proveedor.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

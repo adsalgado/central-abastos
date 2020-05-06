@@ -9,7 +9,7 @@ import { IAdjunto } from 'app/shared/model/adjunto.model';
 type EntityResponseType = HttpResponse<IAdjunto>;
 type EntityArrayResponseType = HttpResponse<IAdjunto[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AdjuntoService {
   public resourceUrl = SERVER_API_URL + 'api/adjuntos';
 

@@ -12,7 +12,7 @@ import { ProductoImagenUpdateComponent } from './producto-imagen-update.componen
 import { ProductoImagenDeletePopupComponent } from './producto-imagen-delete-dialog.component';
 import { IProductoImagen } from 'app/shared/model/producto-imagen.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ProductoImagenResolve implements Resolve<IProductoImagen> {
   constructor(private service: ProductoImagenService) {}
 
@@ -87,7 +87,7 @@ export const productoImagenPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.productoImagen.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

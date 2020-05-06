@@ -1,9 +1,20 @@
 <app-container>
     <app-header></app-header>
-    <div class="main-panel" style="height: 100%">
-        <app-navbar></app-navbar>
-        <router-outlet></router-outlet>
+    <div class="main-panel" style="height: 100%;
+    padding-top: 50px;
+    padding-left: 20px;
+    padding-right: 20px;
+    ">
+    <jhi-navbar></jhi-navbar>
+        <div style="background-color: #fff;
+        padding: 20px;
+        box-shadow: 1px 1px 6px #b1b1b1;
+        border-radius: 0px 0px 6px 6px;">
+        
+            <router-outlet></router-outlet>
+        </div>
     </div>
+
     <app-configuration></app-configuration>
-    <app-footer></app-footer>
+    <!-- <app-footer></app-footer> -->
 </app-container>

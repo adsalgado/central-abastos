@@ -39,19 +39,19 @@
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['/recolector-tarifa', recolectorTarifa.id, 'view' ]"
+                                [routerLink]="['/main/entities/recolector-tarifa', recolectorTarifa.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/recolector-tarifa', recolectorTarifa.id, 'edit']"
+                                [routerLink]="['/main/entities/recolector-tarifa', recolectorTarifa.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/recolector-tarifa', { outlets: { popup: recolectorTarifa.id + '/delete'} }]"
+                                [routerLink]="['/main/entities/recolector-tarifa', recolectorTarifa.id, 'delete']"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

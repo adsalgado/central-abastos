@@ -12,7 +12,7 @@ import { CategoriaUpdateComponent } from './categoria-update.component';
 import { CategoriaDeletePopupComponent } from './categoria-delete-dialog.component';
 import { ICategoria } from 'app/shared/model/categoria.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class CategoriaResolve implements Resolve<ICategoria> {
   constructor(private service: CategoriaService) {}
 
@@ -87,7 +87,7 @@ export const categoriaPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.categoria.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

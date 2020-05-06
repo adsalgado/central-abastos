@@ -87,7 +87,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
             exclude: /(node_modules)/
         },
         {
-            test: /\.scss$/,
+            test: /\.(css|scss)$/,
             use: ['to-string-loader', 'css-loader', {
                 loader: 'sass-loader',
                 options: { implementation: sass }

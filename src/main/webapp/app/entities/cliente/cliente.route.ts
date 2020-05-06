@@ -12,7 +12,7 @@ import { ClienteUpdateComponent } from './cliente-update.component';
 import { ClienteDeletePopupComponent } from './cliente-delete-dialog.component';
 import { ICliente } from 'app/shared/model/cliente.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ClienteResolve implements Resolve<ICliente> {
   constructor(private service: ClienteService) {}
 
@@ -87,7 +87,7 @@ export const clientePopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.cliente.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

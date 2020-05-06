@@ -12,7 +12,7 @@ import { CarritoHistoricoUpdateComponent } from './carrito-historico-update.comp
 import { CarritoHistoricoDeletePopupComponent } from './carrito-historico-delete-dialog.component';
 import { ICarritoHistorico } from 'app/shared/model/carrito-historico.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class CarritoHistoricoResolve implements Resolve<ICarritoHistorico> {
   constructor(private service: CarritoHistoricoService) {}
 
@@ -87,7 +87,7 @@ export const carritoHistoricoPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.carritoHistorico.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

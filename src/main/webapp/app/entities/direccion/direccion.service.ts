@@ -9,7 +9,7 @@ import { IDireccion } from 'app/shared/model/direccion.model';
 type EntityResponseType = HttpResponse<IDireccion>;
 type EntityArrayResponseType = HttpResponse<IDireccion[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class DireccionService {
   public resourceUrl = SERVER_API_URL + 'api/direccions';
 

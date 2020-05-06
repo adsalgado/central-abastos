@@ -1,3 +1,4 @@
+import { AbastosAdminModule } from './admin/admin.module';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,10 +13,37 @@ import { AgmCoreModule } from '@agm/core';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MaterialModule } from './material.module';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { AbastosAppRoutingModule } from './app-routing.module';
+import { NgxWebstorageModule } from 'ngx-webstorage';
+import { NgJhipsterModule } from 'ng-jhipster';
+import { AbastosSharedModule } from './shared';
+import { AbastosCoreModule } from './core';
+import { AbastosHomeModule } from './home';
+import { AbastosAccountModule } from './account/account.module';
+import { AbastosEntityModule } from './entities/entity.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { CookieModule } from 'ngx-cookie';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // For MDB Angular Free
 
 @NgModule({
   imports: [
+    AbastosAppRoutingModule,
+    BrowserModule,
+    NgxWebstorageModule.forRoot(),
+    NgJhipsterModule.forRoot({
+      // set below to true to make alerts look like toast
+      alertAsToast: false,
+      alertTimeout: 5000,
+      i18nEnabled: true,
+      defaultI18nLang: 'es'
+    }),
+    AbastosSharedModule.forRoot(),
+    AbastosCoreModule,
+    AbastosHomeModule,
+    // jhipster-needle-angular-add-module JHipster will add new module here
+    AbastosEntityModule,
+    AbastosAdminModule,
     ReactiveFormsModule,
     MaterialModule,
     BrowserModule,
@@ -35,6 +63,16 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
   ],
 
   exports: [
+    BrowserModule,
+    NgxWebstorageModule,
+    NgJhipsterModule,
+    AbastosSharedModule,
+    AbastosCoreModule,
+    AbastosHomeModule,
+    // jhipster-needle-angular-add-module JHipster will add new module here
+    AbastosEntityModule,
+    AbastosAppRoutingModule,
+    AbastosAdminModule,
     ReactiveFormsModule,
     MaterialModule,
     BrowserModule,

@@ -27,10 +27,11 @@ export class HomePublicComponent implements OnInit {
     private alertService: AlertService,
     private localStorageEncryptService: LocalStorageEncryptService,
     private httpService: HttpServiceGeneric,
-    private events: Event,
     public location: Location,
     private router: Router
   ) {
+    console.log('...........');
+
     /* this.staticMenu.push(
       new Menu("Catálogos", false, "assignment_turned_in", null,
         [

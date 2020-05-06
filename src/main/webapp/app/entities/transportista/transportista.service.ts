@@ -12,7 +12,7 @@ import { ITransportista } from 'app/shared/model/transportista.model';
 type EntityResponseType = HttpResponse<ITransportista>;
 type EntityArrayResponseType = HttpResponse<ITransportista[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class TransportistaService {
   public resourceUrl = SERVER_API_URL + 'api/transportistas';
 

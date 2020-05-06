@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { LANGUAGES } from 'app/core/language/language.constants';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class JhiLanguageHelper {
   private renderer: Renderer2 = null;
   private _language: BehaviorSubject<string>;

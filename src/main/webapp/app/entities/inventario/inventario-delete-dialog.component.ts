@@ -51,11 +51,11 @@ export class InventarioDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.inventario = inventario;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/inventario', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/inventario']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/inventario', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/inventario']);
             this.ngbModalRef = null;
           }
         );

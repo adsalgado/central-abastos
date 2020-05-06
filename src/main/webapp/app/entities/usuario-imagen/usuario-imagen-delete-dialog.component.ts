@@ -51,11 +51,11 @@ export class UsuarioImagenDeletePopupComponent implements OnInit, OnDestroy {
         this.ngbModalRef.componentInstance.usuarioImagen = usuarioImagen;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/usuario-imagen', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/usuario-imagen']);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/usuario-imagen', { outlets: { popup: null } }]);
+            this.router.navigate(['/main/entities/usuario-imagen']);
             this.ngbModalRef = null;
           }
         );

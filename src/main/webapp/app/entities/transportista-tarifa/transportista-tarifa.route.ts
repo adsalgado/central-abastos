@@ -12,7 +12,7 @@ import { TransportistaTarifaUpdateComponent } from './transportista-tarifa-updat
 import { TransportistaTarifaDeletePopupComponent } from './transportista-tarifa-delete-dialog.component';
 import { ITransportistaTarifa } from 'app/shared/model/transportista-tarifa.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class TransportistaTarifaResolve implements Resolve<ITransportistaTarifa> {
   constructor(private service: TransportistaTarifaService) {}
 
@@ -87,7 +87,7 @@ export const transportistaTarifaPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.transportistaTarifa.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

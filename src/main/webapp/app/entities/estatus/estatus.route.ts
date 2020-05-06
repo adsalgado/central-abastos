@@ -12,7 +12,7 @@ import { EstatusUpdateComponent } from './estatus-update.component';
 import { EstatusDeletePopupComponent } from './estatus-delete-dialog.component';
 import { IEstatus } from 'app/shared/model/estatus.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class EstatusResolve implements Resolve<IEstatus> {
   constructor(private service: EstatusService) {}
 
@@ -87,7 +87,7 @@ export const estatusPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.estatus.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class JhiConfigurationService {
   constructor(private http: HttpClient) {}
 

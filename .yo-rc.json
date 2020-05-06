@@ -28,7 +28,7 @@
     "clientTheme": "none",
     "clientThemeVariant": "",
     "testFrameworks": [],
-    "jhiPrefix": "jhi",
+
     "entitySuffix": "",
     "dtoSuffix": "DTO",
     "otherModules": [],

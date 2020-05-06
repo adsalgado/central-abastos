@@ -8,7 +8,7 @@ import { SERVER_API_URL } from 'app/app.constants';
 import { Account } from 'app/core/user/account.model';
 import { JhiTrackerService } from '../tracker/tracker.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AccountService {
   private userIdentity: any;
   private authenticated = false;

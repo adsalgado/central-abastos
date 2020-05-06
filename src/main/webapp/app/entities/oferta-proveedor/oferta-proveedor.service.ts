@@ -12,7 +12,7 @@ import { IOfertaProveedor } from 'app/shared/model/oferta-proveedor.model';
 type EntityResponseType = HttpResponse<IOfertaProveedor>;
 type EntityArrayResponseType = HttpResponse<IOfertaProveedor[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class OfertaProveedorService {
   public resourceUrl = SERVER_API_URL + 'api/oferta-proveedors';
 

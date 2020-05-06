@@ -20,6 +20,15 @@ import {
   JhiDocsComponent,
   JhiTrackerComponent
 } from './';
+import {
+  ActivateComponent,
+  RegisterComponent,
+  PasswordComponent,
+  PasswordStrengthBarComponent,
+  PasswordResetInitComponent,
+  PasswordResetFinishComponent,
+  SettingsComponent
+} from 'app/account';
 
 @NgModule({
   imports: [
@@ -39,7 +48,15 @@ import {
     JhiHealthModalComponent,
     JhiDocsComponent,
     JhiTrackerComponent,
-    JhiMetricsMonitoringComponent
+    JhiMetricsMonitoringComponent,
+
+    ActivateComponent,
+    RegisterComponent,
+    PasswordComponent,
+    PasswordStrengthBarComponent,
+    PasswordResetInitComponent,
+    PasswordResetFinishComponent,
+    SettingsComponent
   ],
   providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
   entryComponents: [UserMgmtDeleteDialogComponent, JhiHealthModalComponent],

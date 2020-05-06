@@ -9,7 +9,7 @@ import { IInventario } from 'app/shared/model/inventario.model';
 type EntityResponseType = HttpResponse<IInventario>;
 type EntityArrayResponseType = HttpResponse<IInventario[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class InventarioService {
   public resourceUrl = SERVER_API_URL + 'api/inventarios';
 

@@ -9,7 +9,7 @@ import { ITipoArticulo } from 'app/shared/model/tipo-articulo.model';
 type EntityResponseType = HttpResponse<ITipoArticulo>;
 type EntityArrayResponseType = HttpResponse<ITipoArticulo[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class TipoArticuloService {
   public resourceUrl = SERVER_API_URL + 'api/tipo-articulos';
 

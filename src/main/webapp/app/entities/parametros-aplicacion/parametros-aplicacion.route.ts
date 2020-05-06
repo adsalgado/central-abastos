@@ -12,7 +12,7 @@ import { ParametrosAplicacionUpdateComponent } from './parametros-aplicacion-upd
 import { ParametrosAplicacionDeletePopupComponent } from './parametros-aplicacion-delete-dialog.component';
 import { IParametrosAplicacion } from 'app/shared/model/parametros-aplicacion.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ParametrosAplicacionResolve implements Resolve<IParametrosAplicacion> {
   constructor(private service: ParametrosAplicacionService) {}
 
@@ -87,7 +87,7 @@ export const parametrosAplicacionPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.parametrosAplicacion.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

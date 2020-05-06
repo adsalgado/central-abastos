@@ -12,7 +12,7 @@ import { IHistoricoPedido } from 'app/shared/model/historico-pedido.model';
 type EntityResponseType = HttpResponse<IHistoricoPedido>;
 type EntityArrayResponseType = HttpResponse<IHistoricoPedido[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class HistoricoPedidoService {
   public resourceUrl = SERVER_API_URL + 'api/historico-pedidos';
 

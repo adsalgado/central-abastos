@@ -12,7 +12,7 @@ import { RecolectorUpdateComponent } from './recolector-update.component';
 import { RecolectorDeletePopupComponent } from './recolector-delete-dialog.component';
 import { IRecolector } from 'app/shared/model/recolector.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class RecolectorResolve implements Resolve<IRecolector> {
   constructor(private service: RecolectorService) {}
 
@@ -87,7 +87,7 @@ export const recolectorPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.recolector.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

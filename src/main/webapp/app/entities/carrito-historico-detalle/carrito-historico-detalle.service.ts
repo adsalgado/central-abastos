@@ -9,7 +9,7 @@ import { ICarritoHistoricoDetalle } from 'app/shared/model/carrito-historico-det
 type EntityResponseType = HttpResponse<ICarritoHistoricoDetalle>;
 type EntityArrayResponseType = HttpResponse<ICarritoHistoricoDetalle[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class CarritoHistoricoDetalleService {
   public resourceUrl = SERVER_API_URL + 'api/carrito-historico-detalles';
 

@@ -12,7 +12,7 @@ import { PagosUpdateComponent } from './pagos-update.component';
 import { PagosDeletePopupComponent } from './pagos-delete-dialog.component';
 import { IPagos } from 'app/shared/model/pagos.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class PagosResolve implements Resolve<IPagos> {
   constructor(private service: PagosService) {}
 
@@ -87,7 +87,7 @@ export const pagosPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.pagos.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

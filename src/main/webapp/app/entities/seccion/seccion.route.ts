@@ -12,7 +12,7 @@ import { SeccionUpdateComponent } from './seccion-update.component';
 import { SeccionDeletePopupComponent } from './seccion-delete-dialog.component';
 import { ISeccion } from 'app/shared/model/seccion.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class SeccionResolve implements Resolve<ISeccion> {
   constructor(private service: SeccionService) {}
 
@@ -87,7 +87,7 @@ export const seccionPopupRoute: Routes = [
       authorities: ['ROLE_USER'],
       pageTitle: 'abastosApp.seccion.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];
