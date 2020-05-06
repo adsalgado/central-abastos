@@ -195,7 +195,7 @@ public class PedidoResource {
         
         List<PedidoDTO> lstPedidos = pedidoService.findByClienteId(clienteId);
         for (PedidoDTO pedidoDTO : lstPedidos) {
-			pedidoDTO.setPedidoProveedores(pedidoProveedorService.findByPedidoId(pedidoDTO.getId()));
+//			pedidoDTO.setPedidoProveedores(pedidoProveedorService.findByPedidoId(pedidoDTO.getId()));
 		}
 
         return lstPedidos;
