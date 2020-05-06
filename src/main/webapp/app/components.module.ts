@@ -110,7 +110,8 @@ import { ProductoDeleteDialogComponent, ProductoDeletePopupComponent } from './e
     UserMgmtDeleteDialogComponent, */
   ],
   entryComponents: [
-    //Producto
+    //Producto,
+    SpinnerOverlayComponent
   ]
 })
 export class ComponentsModule {}

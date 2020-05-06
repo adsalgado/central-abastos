@@ -16,7 +16,7 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const ADMIN_ROUTES = [auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, ...userMgmtRoute, metricsRoute];
 const routes: Routes = [
   { path: '', redirectTo: 'main/public-home', data: { title: 'Home' }, pathMatch: 'full' },
-
+  { path: 'main', redirectTo: 'main/public-home', data: { title: 'Home' }, pathMatch: 'full' },
   { path: 'Home', component: HomeComponent },
 
   {

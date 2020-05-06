@@ -12,12 +12,13 @@ export class LoadingService {
   //
   public show(message = '') {
     // Returns an OverlayRef (which is a PortalHost)
+    console.log('open');
 
     if (!this.activo) {
       if (!this.overlayRef) {
         this.overlayRef = this.overlay.create();
       }
-
+      this.activo = true;
       // Create ComponentPortal that can be attached to a PortalHost
       const spinnerOverlayPortal = new ComponentPortal(SpinnerOverlayComponent);
       const component = this.overlayRef.attach(spinnerOverlayPortal); // Attach ComponentPortal to PortalHost
@@ -25,8 +26,12 @@ export class LoadingService {
   }
 
   public hide() {
+    console.log('ocultando...');
+    console.log(this.activo);
+
     if (this.activo) {
-      if (!!this.overlayRef) {
+      this.activo = false;
+      if (this.overlayRef) {
         this.overlayRef.detach();
       }
     }

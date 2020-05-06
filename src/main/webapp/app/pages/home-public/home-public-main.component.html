@@ -1,3 +1,61 @@
-<p>
-  home-public works!
-</p>
+<div *ngIf="dataFilter.nombre.length > 0" class="contenedor-busqueda">
+    <div class="resultado" *ngFor="let p of productosBuscados" (click)="viewDetail(p)">
+      <div class="c-i "><img src="{{env.getImagenIndividual}}{{p.producto.adjuntoId}}" alt=""></div>
+      <div class="r">{{ p.producto.nombre }} - {{p.proveedor.nombre}}</div>
+    </div>
+
+    <div *ngIf="productosBuscados.length <= 0" class="no-en">
+      No se encontraron resultados
+    </div>
+  </div>
+
+  <div *ngIf="dataFilter.nombre.length<=0">
+    <div style="margin-top: 8px"></div>
+
+    <div class="scrolling-wrapper-flexbox" style="margin-top:0px">
+      <div class="promociones" [style.background-image]="'url('+env.getImagenIndividual+promo.adjuntoId+')'" *ngFor="let promo of promociones">
+        <div class="contenedor-imagen">
+          <!-- <img src="../../../assets/imgs/home/images.jpeg" alt=""> -->
+        </div>
+        <div class="info">
+          <p class="titulo">{{promo.titulo}}</p>
+          <p class="subtitulo">{{promo.descripcion}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="scrolling-wrapper" style="margin-top: 15px">
+      <div class="buttons">
+        <button [ngStyle]="{'background-color': color}" (click)="ordena(1)">
+          <img src="../../../assets/imgs/home/milk.png" alt="">
+          Artículos
+        </button>
+      </div>
+      <div class="buttons">
+        <button [ngStyle]="{'background-color': color}" (click)="ordena(2)">
+          <img src="../../../assets/imgs/home/services.png" alt="">
+          Servicios
+        </button>
+      </div>
+
+    </div>
+
+    <div class="card-super" *ngIf="productosCategorias.length > 0">
+      <div class="cont">
+        <div class="principal" (click)="irToCategoria(productosCategorias[0])">
+          <img src="{{env.getImagenIndividual}}{{productosCategorias[0].categoria.adjuntoId}}" alt="">
+          <div class="seccion-principal" [ngStyle]="{'color': color}">{{productosCategorias[0].categoria.nombre}}</div>
+        </div>
+
+        <div class="borde-b"></div>
+
+        <div class="contenedor-tres">
+          <div class="contenedor-int" (click)="irToCategoria(cat)" *ngFor="let cat of productosCategoriasSub">
+            <img src="{{env.getImagenIndividual}}{{cat.categoria.adjuntoId}}" alt="">
+            <div class="seccion-sub-principal" [ngStyle]="{'color': color}">{{cat.categoria.nombre}}</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>

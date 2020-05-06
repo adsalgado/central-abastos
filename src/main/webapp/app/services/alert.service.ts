@@ -23,6 +23,16 @@ export class AlertService {
     });
   }
 
+  errorAlertGeneric(message: string) {
+    swal.fire({
+      type: 'error',
+      title: AlertService.titleError,
+      text: message
+      //text: 'Something went wrong!',
+      //footer: '<a href>Why do I have this issue?</a>'
+    });
+  }
+
   info(message: string) {
     swal.fire({
       type: 'info',
