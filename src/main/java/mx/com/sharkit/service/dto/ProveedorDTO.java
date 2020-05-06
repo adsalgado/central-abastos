@@ -13,6 +13,8 @@ public class ProveedorDTO implements Serializable {
 
     private Long id;
 
+    private Long usuarioId;
+    
     @NotNull
     @Size(max = 256)
     private String nombre;
@@ -134,6 +136,14 @@ public class ProveedorDTO implements Serializable {
 		this.transportistaId = transportistaId;
 	}
 
+	public Long getUsuarioId() {
+		return usuarioId;
+	}
+
+	public void setUsuarioId(Long usuarioId) {
+		this.usuarioId = usuarioId;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -159,6 +169,7 @@ public class ProveedorDTO implements Serializable {
     public String toString() {
         return "ProveedorDTO{" +
             "id=" + getId() +
+            ", usuarioId=" + getUsuarioId() +
             ", nombre='" + getNombre() + "'" +
             ", fechaAlta='" + getFechaAlta() + "'" +
             ", fechaModificacion='" + getFechaModificacion() + "'" +

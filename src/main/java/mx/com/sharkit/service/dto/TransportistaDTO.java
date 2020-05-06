@@ -1,8 +1,9 @@
 package mx.com.sharkit.service.dto;
-import java.time.Instant;
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.Transportista} entity.
@@ -11,78 +12,88 @@ public class TransportistaDTO implements Serializable {
 
     private Long id;
 
-    @NotNull
-    @Size(max = 128)
+	private Long usuarioId;
+
     private String nombre;
 
-    private Instant fechaAlta;
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
+    private LocalDateTime fechaAlta;
 
-    private Instant fechaModificacion;
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
+    private LocalDateTime fechaModificacion;
 
+	private Long usuarioAltaId;
 
-    private Long usuarioAltaId;
+	private Long usuarioModificacionId;
 
-    private Long usuarioModificacionId;
+	private Long empresaId;
 
-    private Long empresaId;
 
     public Long getId() {
-        return id;
-    }
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getNombre() {
-        return nombre;
-    }
+	public Long getUsuarioId() {
+		return usuarioId;
+	}
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+	public void setUsuarioId(Long usuarioId) {
+		this.usuarioId = usuarioId;
+	}
 
-    public Instant getFechaAlta() {
-        return fechaAlta;
-    }
+	public String getNombre() {
+		return nombre;
+	}
 
-    public void setFechaAlta(Instant fechaAlta) {
-        this.fechaAlta = fechaAlta;
-    }
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
-    public Instant getFechaModificacion() {
-        return fechaModificacion;
-    }
+	public LocalDateTime getFechaAlta() {
+		return fechaAlta;
+	}
 
-    public void setFechaModificacion(Instant fechaModificacion) {
-        this.fechaModificacion = fechaModificacion;
-    }
+	public void setFechaAlta(LocalDateTime fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
 
-    public Long getUsuarioAltaId() {
-        return usuarioAltaId;
-    }
+	public LocalDateTime getFechaModificacion() {
+		return fechaModificacion;
+	}
 
-    public void setUsuarioAltaId(Long userId) {
-        this.usuarioAltaId = userId;
-    }
+	public void setFechaModificacion(LocalDateTime fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+	}
 
-    public Long getUsuarioModificacionId() {
-        return usuarioModificacionId;
-    }
+	public Long getUsuarioAltaId() {
+		return usuarioAltaId;
+	}
 
-    public void setUsuarioModificacionId(Long userId) {
-        this.usuarioModificacionId = userId;
-    }
+	public void setUsuarioAltaId(Long usuarioAltaId) {
+		this.usuarioAltaId = usuarioAltaId;
+	}
 
-    public Long getEmpresaId() {
-        return empresaId;
-    }
+	public Long getUsuarioModificacionId() {
+		return usuarioModificacionId;
+	}
 
-    public void setEmpresaId(Long empresaId) {
-        this.empresaId = empresaId;
-    }
+	public void setUsuarioModificacionId(Long usuarioModificacionId) {
+		this.usuarioModificacionId = usuarioModificacionId;
+	}
 
-    @Override
+	public Long getEmpresaId() {
+		return empresaId;
+	}
+
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -103,16 +114,11 @@ public class TransportistaDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "TransportistaDTO{" +
-            "id=" + getId() +
-            ", nombre='" + getNombre() + "'" +
-            ", fechaAlta='" + getFechaAlta() + "'" +
-            ", fechaModificacion='" + getFechaModificacion() + "'" +
-            ", usuarioAlta=" + getUsuarioAltaId() +
-            ", usuarioModificacion=" + getUsuarioModificacionId() +
-            ", empresa=" + getEmpresaId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "TransportistaDTO [id=" + id + ", usuarioId=" + usuarioId + ", nombre=" + nombre + ", fechaAlta="
+				+ fechaAlta + ", fechaModificacion=" + fechaModificacion + ", usuarioAltaId=" + usuarioAltaId
+				+ ", usuarioModificacionId=" + usuarioModificacionId + ", empresaId=" + empresaId + "]";
+	}
+
 }

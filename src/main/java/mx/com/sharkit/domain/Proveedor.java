@@ -1,4 +1,5 @@
 package mx.com.sharkit.domain;
+
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -22,135 +23,139 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "proveedor")
 public class Proveedor implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @NotNull
-    @Size(max = 256)
-    @Column(name = "nombre", length = 256, nullable = false)
-    private String nombre;
+	@Column(name = "usuario_id")
+	private Long usuarioId;
 
-    @Column(name = "fecha_alta")
-    private Instant fechaAlta;
+	@NotNull
+	@Size(max = 256)
+	@Column(name = "nombre", length = 256, nullable = false)
+	private String nombre;
 
-    @Column(name = "fecha_modificacion")
-    private Instant fechaModificacion;
+	@Column(name = "fecha_alta")
+	private Instant fechaAlta;
 
-    @ManyToOne
-    @JoinColumn(name = "direccion_id", insertable = false, updatable = false)
-    private Direccion direccion;
+	@Column(name = "fecha_modificacion")
+	private Instant fechaModificacion;
 
-    @Column(name = "direccion_id")
-    private Long direccionId;
+	@ManyToOne
+	@JoinColumn(name = "direccion_id", insertable = false, updatable = false)
+	private Direccion direccion;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_alta_id", insertable = false, updatable = false)
-    private User usuarioAlta;
+	@Column(name = "direccion_id")
+	private Long direccionId;
 
-    @Column(name = "usuario_alta_id")
-    private Long usuarioAltaId;
-    
-    @ManyToOne
-    @JoinColumn(name = "usuario_modificacion_id", insertable = false, updatable = false)
-    private User usuarioModificacion;
+	@ManyToOne
+	@JoinColumn(name = "usuario_alta_id", insertable = false, updatable = false)
+	private User usuarioAlta;
 
-    @Column(name = "usuario_modificacion_id")
-    private Long usuarioModificacionId;
-    
-    @ManyToOne
-    @JoinColumn(name = "empresa_id", insertable = false, updatable = false)
-    @JsonIgnoreProperties("proveedors")
-    private Empresa empresa;
+	@Column(name = "usuario_alta_id")
+	private Long usuarioAltaId;
 
-    @Column(name = "empresa_id")
-    private Long empresaId;
+	@ManyToOne
+	@JoinColumn(name = "usuario_modificacion_id", insertable = false, updatable = false)
+	private User usuarioModificacion;
 
-    @ManyToOne
-    @JoinColumn(name = "transportista_id", insertable = false, updatable = false)
-    @JsonIgnoreProperties("proveedors")
-    private Transportista transportista;
+	@Column(name = "usuario_modificacion_id")
+	private Long usuarioModificacionId;
 
-    @Column(name = "transportista_id")
-    private Long transportistaId;
+	@ManyToOne
+	@JoinColumn(name = "empresa_id", insertable = false, updatable = false)
+	@JsonIgnoreProperties("proveedors")
+	private Empresa empresa;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
-    public Long getId() {
-        return id;
-    }
+	@Column(name = "empresa_id")
+	private Long empresaId;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@ManyToOne
+	@JoinColumn(name = "transportista_id", insertable = false, updatable = false)
+	@JsonIgnoreProperties("proveedors")
+	private Transportista transportista;
 
-    public String getNombre() {
-        return nombre;
-    }
+	@Column(name = "transportista_id")
+	private Long transportistaId;
 
-    public Proveedor nombre(String nombre) {
-        this.nombre = nombre;
-        return this;
-    }
+	// jhipster-needle-entity-add-field - JHipster will add fields here, do not
+	// remove
+	public Long getId() {
+		return id;
+	}
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Instant getFechaAlta() {
-        return fechaAlta;
-    }
+	public String getNombre() {
+		return nombre;
+	}
 
-    public Proveedor fechaAlta(Instant fechaAlta) {
-        this.fechaAlta = fechaAlta;
-        return this;
-    }
+	public Proveedor nombre(String nombre) {
+		this.nombre = nombre;
+		return this;
+	}
 
-    public void setFechaAlta(Instant fechaAlta) {
-        this.fechaAlta = fechaAlta;
-    }
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
-    public Instant getFechaModificacion() {
-        return fechaModificacion;
-    }
+	public Instant getFechaAlta() {
+		return fechaAlta;
+	}
 
-    public Proveedor fechaModificacion(Instant fechaModificacion) {
-        this.fechaModificacion = fechaModificacion;
-        return this;
-    }
+	public Proveedor fechaAlta(Instant fechaAlta) {
+		this.fechaAlta = fechaAlta;
+		return this;
+	}
 
-    public void setFechaModificacion(Instant fechaModificacion) {
-        this.fechaModificacion = fechaModificacion;
-    }
+	public void setFechaAlta(Instant fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
 
-    public User getUsuarioAlta() {
-        return usuarioAlta;
-    }
+	public Instant getFechaModificacion() {
+		return fechaModificacion;
+	}
 
-    public Proveedor usuarioAlta(User user) {
-        this.usuarioAlta = user;
-        return this;
-    }
+	public Proveedor fechaModificacion(Instant fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+		return this;
+	}
 
-    public void setUsuarioAlta(User user) {
-        this.usuarioAlta = user;
-    }
+	public void setFechaModificacion(Instant fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+	}
 
-    public User getUsuarioModificacion() {
-        return usuarioModificacion;
-    }
+	public User getUsuarioAlta() {
+		return usuarioAlta;
+	}
 
-    public Proveedor usuarioModificacion(User user) {
-        this.usuarioModificacion = user;
-        return this;
-    }
+	public Proveedor usuarioAlta(User user) {
+		this.usuarioAlta = user;
+		return this;
+	}
 
-    public void setUsuarioModificacion(User user) {
-        this.usuarioModificacion = user;
-    }
+	public void setUsuarioAlta(User user) {
+		this.usuarioAlta = user;
+	}
 
-    public Direccion getDireccion() {
+	public User getUsuarioModificacion() {
+		return usuarioModificacion;
+	}
+
+	public Proveedor usuarioModificacion(User user) {
+		this.usuarioModificacion = user;
+		return this;
+	}
+
+	public void setUsuarioModificacion(User user) {
+		this.usuarioModificacion = user;
+	}
+
+	public Direccion getDireccion() {
 		return direccion;
 	}
 
@@ -182,23 +187,23 @@ public class Proveedor implements Serializable {
 		this.usuarioModificacionId = usuarioModificacionId;
 	}
 
-    public Empresa getEmpresa() {
-        return empresa;
-    }
+	public Empresa getEmpresa() {
+		return empresa;
+	}
 
-    public Proveedor empresa(Empresa empresa) {
-        this.empresa = empresa;
-        return this;
-    }
+	public Proveedor empresa(Empresa empresa) {
+		this.empresa = empresa;
+		return this;
+	}
 
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
-    }
-    
-    
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
 
-    public Long getEmpresaId() {
+	// jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+	// setters here, do not remove
+
+	public Long getEmpresaId() {
 		return empresaId;
 	}
 
@@ -222,28 +227,36 @@ public class Proveedor implements Serializable {
 		this.transportistaId = transportistaId;
 	}
 
-	@Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Proveedor)) {
-            return false;
-        }
-        return id != null && id.equals(((Proveedor) o).id);
-    }
+	public Long getUsuarioId() {
+		return usuarioId;
+	}
 
-    @Override
-    public int hashCode() {
-        return 31;
-    }
+	public void setUsuarioId(Long usuarioId) {
+		this.usuarioId = usuarioId;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Proveedor)) {
+			return false;
+		}
+		return id != null && id.equals(((Proveedor) o).id);
+	}
+
+	@Override
+	public int hashCode() {
+		return 31;
+	}
 
 	@Override
 	public String toString() {
 		return "Proveedor [id=" + id + ", nombre=" + nombre + ", fechaAlta=" + fechaAlta + ", fechaModificacion="
 				+ fechaModificacion + ", direccionId=" + direccionId + ", usuarioAltaId=" + usuarioAltaId
-				+ ", usuarioModificacionId=" + usuarioModificacionId + ", empresaId=" + empresaId + ", transportistaId="
-				+ transportistaId + "]";
+				+ ", usuarioId=" + usuarioId + ", usuarioModificacionId=" + usuarioModificacionId + ", empresaId="
+				+ empresaId + ", transportistaId=" + transportistaId + "]";
 	}
 
 }
