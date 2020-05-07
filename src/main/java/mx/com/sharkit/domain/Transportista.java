@@ -27,6 +27,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Transportista implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    public static final Long GENERICO = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

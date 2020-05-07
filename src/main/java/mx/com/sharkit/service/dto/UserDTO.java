@@ -73,6 +73,8 @@ public class UserDTO {
     
     private String token;
 
+    private Long adjuntoId;
+
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -97,6 +99,7 @@ public class UserDTO {
         this.lastModifiedDate = user.getLastModifiedDate();
         this.token = user.getToken();
         this.tipoUsuarioId = user.getTipoUsuarioId();
+        this.adjuntoId = user.getAdjuntoId();
         this.authorities = user.getAuthorities().stream()
             .map(Authority::getName)
             .collect(Collectors.toSet());
@@ -254,6 +257,14 @@ public class UserDTO {
 		this.token = token;
 	}
 
+	public Long getAdjuntoId() {
+		return adjuntoId;
+	}
+
+	public void setAdjuntoId(Long adjuntoId) {
+		this.adjuntoId = adjuntoId;
+	}
+
 	@Override
     public String toString() {
         return "UserDTO{" +
@@ -273,6 +284,7 @@ public class UserDTO {
             ", lastModifiedBy='" + lastModifiedBy + '\'' +
             ", lastModifiedDate=" + lastModifiedDate +
             ", tipoUsuarioId='" + tipoUsuarioId + '\'' +
+            ", adjuntoId='" + adjuntoId + '\'' +
             ", authorities=" + authorities +
             "}";
     }

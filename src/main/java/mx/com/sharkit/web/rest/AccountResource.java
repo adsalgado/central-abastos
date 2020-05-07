@@ -72,6 +72,28 @@ public class AccountResource {
 	}
 
     /**
+     * {@code POST  /register} : register the user.
+     *
+     * @param managedUserVM the managed user View Model.
+     * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
+     * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
+     * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
+     */
+    @PostMapping("/register/proveedor")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registerAccountProveedor(@Valid @RequestBody ManagedUserVM managedUserVM) {
+		log.debug("managedUserVM: {}", managedUserVM);
+		if (!checkPasswordLength(managedUserVM.getPassword())) {
+			throw new InvalidPasswordException();
+		}
+		User user = userService.registerUserProveedor(managedUserVM, managedUserVM.getPassword(), managedUserVM.isActivated(), managedUserVM.getAdjunto());
+		if (!managedUserVM.isActivated()) {
+			mailService.sendActivationEmail(user);
+		}
+	}
+
+    
+    /**
      * {@code GET  /activate} : activate the registered user.
      *
      * @param key the activation key.

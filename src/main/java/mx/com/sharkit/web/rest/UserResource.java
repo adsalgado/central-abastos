@@ -1,19 +1,11 @@
 package mx.com.sharkit.web.rest;
 
-import mx.com.sharkit.config.Constants;
-import mx.com.sharkit.domain.User;
-import mx.com.sharkit.repository.UserRepository;
-import mx.com.sharkit.security.AuthoritiesConstants;
-import mx.com.sharkit.service.MailService;
-import mx.com.sharkit.service.UserService;
-import mx.com.sharkit.service.dto.UserDTO;
-import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
-import mx.com.sharkit.web.rest.errors.EmailAlreadyUsedException;
-import mx.com.sharkit.web.rest.errors.LoginAlreadyUsedException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,13 +16,29 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import mx.com.sharkit.config.Constants;
+import mx.com.sharkit.domain.User;
+import mx.com.sharkit.repository.UserRepository;
+import mx.com.sharkit.security.AuthoritiesConstants;
+import mx.com.sharkit.service.MailService;
+import mx.com.sharkit.service.UserService;
+import mx.com.sharkit.service.dto.UserDTO;
+import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
+import mx.com.sharkit.web.rest.errors.EmailAlreadyUsedException;
+import mx.com.sharkit.web.rest.errors.LoginAlreadyUsedException;
 
 /**
  * REST controller for managing users.
@@ -132,6 +140,28 @@ public class UserResource {
             throw new LoginAlreadyUsedException();
         }
         Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
+
+        return ResponseUtil.wrapOrNotFound(updatedUser,
+            HeaderUtil.createAlert(applicationName, "userManagement.updated", userDTO.getLogin()));
+    }
+
+    /**
+     * {@code PUT /users} : Updates an existing User.
+     *
+     * @param userDTO the user to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated user.
+     * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already in use.
+     * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already in use.
+     */
+    @PutMapping("/usuarios")
+//    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<UserDTO> updateUserToken(@Valid @RequestBody UserDTO userDTO) {
+        log.debug("REST request to update User : {}", userDTO);
+        Optional<User> existingUser = userRepository.findOneByLogin(userDTO.getLogin().toLowerCase());
+        if (!existingUser.isPresent()) {
+        	throw new BadRequestAlertException("No se encontró el usuario en la base.", "Users", "idnull");
+        }
+        Optional<UserDTO> updatedUser = userService.updateUserToken(userDTO);
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
             HeaderUtil.createAlert(applicationName, "userManagement.updated", userDTO.getLogin()));

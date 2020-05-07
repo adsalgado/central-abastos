@@ -22,6 +22,8 @@ import javax.validation.constraints.Size;
 public class Empresa implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    public static final Long CENTRAL_ABASTOS = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

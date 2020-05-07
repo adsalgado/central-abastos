@@ -19,6 +19,11 @@ import javax.validation.constraints.Size;
 public class TipoUsuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    public static final Long ADMINISTRADOR = 1L;
+    public static final Long CLIENTE = 2L;
+    public static final Long PROVEEDOR = 3L;
+    public static final Long TRANSPORTISTA = 4L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

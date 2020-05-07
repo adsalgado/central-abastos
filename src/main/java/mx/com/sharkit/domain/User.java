@@ -104,6 +104,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "token")
     private String token;
 
+    @Column(name = "adjunto_id")
+    private Long adjuntoId;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -268,6 +271,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		this.token = token;
 	}
 
+	public Long getAdjuntoId() {
+		return adjuntoId;
+	}
+
+	public void setAdjuntoId(Long adjuntoId) {
+		this.adjuntoId = adjuntoId;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -296,6 +307,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", fechaNacimiento='" + fechaNacimiento + '\'' +
             ", email='" + email + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
+            ", adjuntoId='" + adjuntoId + '\'' +
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +

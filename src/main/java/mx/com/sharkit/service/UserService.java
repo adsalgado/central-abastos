@@ -1,6 +1,7 @@
 package mx.com.sharkit.service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,10 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
 import mx.com.sharkit.config.Constants;
 import mx.com.sharkit.domain.Adjunto;
 import mx.com.sharkit.domain.Authority;
+import mx.com.sharkit.domain.Empresa;
+import mx.com.sharkit.domain.Proveedor;
+import mx.com.sharkit.domain.TipoUsuario;
+import mx.com.sharkit.domain.Transportista;
 import mx.com.sharkit.domain.User;
-import mx.com.sharkit.domain.UsuarioImagen;
 import mx.com.sharkit.repository.AdjuntoRepository;
 import mx.com.sharkit.repository.AuthorityRepository;
+import mx.com.sharkit.repository.ProveedorRepository;
 import mx.com.sharkit.repository.UserRepository;
 import mx.com.sharkit.repository.UsuarioImagenRepository;
 import mx.com.sharkit.security.AuthoritiesConstants;
@@ -54,14 +60,17 @@ public class UserService {
 
 	private final AdjuntoRepository adjuntoRepository;
 
+	private final ProveedorRepository proveedorRepository;
+
 	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
 			AuthorityRepository authorityRepository, UsuarioImagenRepository usuarioImagenRepository,
-			AdjuntoRepository adjuntoRepository) {
+			AdjuntoRepository adjuntoRepository, ProveedorRepository proveedorRepository) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.authorityRepository = authorityRepository;
 		this.usuarioImagenRepository = usuarioImagenRepository;
 		this.adjuntoRepository = adjuntoRepository;
+		this.proveedorRepository = proveedorRepository;
 	}
 
 	public Optional<User> activateRegistration(String key) {
@@ -95,61 +104,131 @@ public class UserService {
 	}
 
 	public User registerUser(UserDTO userDTO, String password, boolean isActivated, AdjuntoDTO adjunto) {
-        userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).ifPresent(existingUser -> {
-            boolean removed = removeNonActivatedUser(existingUser);
-            if (!removed) {
-                throw new LoginAlreadyUsedException();
-            }
-        });
-        userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).ifPresent(existingUser -> {
-            boolean removed = removeNonActivatedUser(existingUser);
-            if (!removed) {
-                throw new EmailAlreadyUsedException();
-            }
-        });
-        User newUser = new User();
-        String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(userDTO.getLogin().toLowerCase());
-        // new user gets initially a generated password
-        newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(userDTO.getFirstName());
-        newUser.setLastName(userDTO.getLastName());
-        newUser.setMotherLastName(userDTO.getMotherLastName());
-        newUser.setTelefono(userDTO.getTelefono());
-        newUser.setGenero(userDTO.getGenero());
-        newUser.setFechaNacimiento(userDTO.getFechaNacimiento());
-        newUser.setEmail(userDTO.getEmail().toLowerCase());
-        newUser.setImageUrl(userDTO.getImageUrl());
-        newUser.setLangKey(userDTO.getLangKey());
-        // new user is not active
-        newUser.setActivated(isActivated);
-        // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
-        Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
-        newUser.setAuthorities(authorities);
-        userRepository.save(newUser);
-        
-        if (adjunto != null) {
-        	
-        	Adjunto adj = new Adjunto();
-        	adj.setContentType(adjunto.getContentType());
-        	adj.setFileContentType(adjunto.getFileContentType());
-        	adj.setSize(adjunto.getSize());
-        	adj.setFileName(adjunto.getFileName());
-        	adj.setFile(adjunto.getFile());
-        	
-        	UsuarioImagen usuarioImagen = new UsuarioImagen();
-        	usuarioImagen.setUsuario(newUser);
-        	usuarioImagen.setAdjunto(adj);
-        	usuarioImagen.setFechaAlta(Instant.now());
-        	usuarioImagenRepository.save(usuarioImagen);
+		userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).ifPresent(existingUser -> {
+			boolean removed = removeNonActivatedUser(existingUser);
+			if (!removed) {
+				throw new LoginAlreadyUsedException();
+			}
+		});
+		userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).ifPresent(existingUser -> {
+			boolean removed = removeNonActivatedUser(existingUser);
+			if (!removed) {
+				throw new EmailAlreadyUsedException();
+			}
+		});
+		User newUser = new User();
+		String encryptedPassword = passwordEncoder.encode(password);
+		newUser.setLogin(userDTO.getLogin().toLowerCase());
+		// new user gets initially a generated password
+		newUser.setPassword(encryptedPassword);
+		newUser.setFirstName(userDTO.getFirstName());
+		newUser.setLastName(userDTO.getLastName());
+		newUser.setMotherLastName(userDTO.getMotherLastName());
+		newUser.setTelefono(userDTO.getTelefono());
+		newUser.setGenero(userDTO.getGenero());
+		newUser.setFechaNacimiento(userDTO.getFechaNacimiento());
+		newUser.setEmail(userDTO.getEmail().toLowerCase());
+		newUser.setImageUrl(userDTO.getImageUrl());
+		newUser.setCreatedDate(Instant.now());
 
-        }
-        
-        log.debug("Created Information for User: {}", newUser);
-        return newUser;
-    }
+		String langKey = StringUtils.isAllBlank(userDTO.getLangKey()) ? Constants.DEFAULT_LANGUAGE : userDTO.getLangKey();
+		newUser.setLangKey(langKey);
+		// new user is not active
+		newUser.setActivated(isActivated);
+		newUser.setTipoUsuarioId(TipoUsuario.CLIENTE);
+		// new user gets registration key
+		newUser.setActivationKey(RandomUtil.generateActivationKey());
+		Set<Authority> authorities = new HashSet<>();
+		authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+		newUser.setAuthorities(authorities);
+		
+		if (adjunto != null) {
+			Adjunto adj = new Adjunto();
+			adj.setContentType(adjunto.getContentType());
+			adj.setFileContentType(adjunto.getFileContentType());
+			adj.setSize(adjunto.getSize());
+			adj.setFileName(adjunto.getFileName());
+			adj.setFile(adjunto.getFile());
+			adj = adjuntoRepository.save(adj);
+			newUser.setAdjuntoId(adj.getId());
+		}
+
+		userRepository.save(newUser);
+
+		log.debug("Created Information for User: {}", newUser);
+		return newUser;
+	}
+
+	public User registerUserProveedor(UserDTO userDTO, String password, boolean isActivated, AdjuntoDTO adjunto) {
+		userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).ifPresent(existingUser -> {
+			boolean removed = removeNonActivatedUser(existingUser);
+			if (!removed) {
+				throw new LoginAlreadyUsedException();
+			}
+		});
+		userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).ifPresent(existingUser -> {
+			boolean removed = removeNonActivatedUser(existingUser);
+			if (!removed) {
+				throw new EmailAlreadyUsedException();
+			}
+		});
+
+		LocalDateTime now = LocalDateTime.now();
+		User newUser = new User();
+		String encryptedPassword = passwordEncoder.encode(password);
+		newUser.setLogin(userDTO.getLogin().toLowerCase());
+		// new user gets initially a generated password
+		newUser.setPassword(encryptedPassword);
+		newUser.setFirstName(userDTO.getFirstName());
+		newUser.setLastName(userDTO.getLastName());
+		newUser.setMotherLastName(userDTO.getMotherLastName());
+		newUser.setTelefono(userDTO.getTelefono());
+		newUser.setGenero(userDTO.getGenero());
+		newUser.setFechaNacimiento(userDTO.getFechaNacimiento());
+		newUser.setEmail(userDTO.getEmail().toLowerCase());
+		newUser.setImageUrl(userDTO.getImageUrl());
+		newUser.setCreatedDate(Instant.now());
+
+		String langKey = StringUtils.isAllBlank(userDTO.getLangKey()) ? Constants.DEFAULT_LANGUAGE : userDTO.getLangKey();
+		newUser.setLangKey(langKey);
+		// new user is not active
+		newUser.setActivated(isActivated);
+		newUser.setTipoUsuarioId(TipoUsuario.PROVEEDOR);
+
+		// new user gets registration key
+		newUser.setActivationKey(RandomUtil.generateActivationKey());
+		Set<Authority> authorities = new HashSet<>();
+		authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+		authorityRepository.findById(AuthoritiesConstants.PROVEEDOR).ifPresent(authorities::add);
+		newUser.setAuthorities(authorities);
+
+		if (adjunto != null) {
+			Adjunto adj = new Adjunto();
+			adj.setContentType(adjunto.getContentType());
+			adj.setFileContentType(adjunto.getFileContentType());
+			adj.setSize(adjunto.getSize());
+			adj.setFileName(adjunto.getFileName());
+			adj.setFile(adjunto.getFile());
+			adj = adjuntoRepository.save(adj);
+			newUser.setAdjuntoId(adj.getId());
+		}
+
+		newUser = userRepository.save(newUser);
+
+		// Crear registro en proveedor
+		Proveedor proveedor = new Proveedor();
+		proveedor.setNombre(
+				String.format("%s %s %s", userDTO.getFirstName(), userDTO.getLastName(), userDTO.getMotherLastName()));
+		proveedor.setEmpresaId(Empresa.CENTRAL_ABASTOS);
+		proveedor.setFechaAlta(now);
+		proveedor.setUsuarioAltaId(newUser.getId());
+		proveedor.setUsuarioId(newUser.getId());
+		proveedor.setTransportistaId(Transportista.GENERICO);
+		proveedor = proveedorRepository.save(proveedor);
+
+		log.debug("Created Information for User: {}", newUser);
+		return newUser;
+	}
 
 	private boolean removeNonActivatedUser(User existingUser) {
 		if (existingUser.getActivated()) {
@@ -206,6 +285,36 @@ public class UserService {
 			user.setImageUrl(imageUrl);
 			log.debug("Changed Information for User: {}", user);
 		});
+	}
+
+	public Optional<UserDTO> updateUserToken(UserDTO userDTO) {
+		return Optional.of(userRepository.findOneByLogin(userDTO.getLogin())).filter(Optional::isPresent).map(Optional::get)
+				.map(user -> {
+					
+					if (userDTO.getFirstName() != null) {
+						user.setFirstName(userDTO.getFirstName());	
+					}
+					if (userDTO.getLastName() != null) {
+						user.setLastName(userDTO.getLastName());
+					}
+					if (userDTO.getMotherLastName() != null) {
+						user.setMotherLastName(userDTO.getMotherLastName());	
+					}
+					if (userDTO.getToken() != null) {
+						user.setToken(userDTO.getToken());	
+					}
+					if (userDTO.getTelefono() != null) {
+						user.setTelefono(userDTO.getTelefono());	
+					}
+					if (userDTO.getGenero() != null) {
+						user.setGenero(userDTO.getGenero());	
+					}
+					if (userDTO.getFechaNacimiento() != null) {
+						user.setFechaNacimiento(userDTO.getFechaNacimiento());	
+					}
+					log.debug("Changed Information for User: {}", user);
+					return user;
+				}).map(UserDTO::new);
 	}
 
 	/**

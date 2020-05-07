@@ -1,10 +1,12 @@
 package mx.com.sharkit.service.dto;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.Proveedor} entity.
@@ -19,9 +21,11 @@ public class ProveedorDTO implements Serializable {
     @Size(max = 256)
     private String nombre;
 
-    private Instant fechaAlta;
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es")
+    private LocalDateTime fechaAlta;
 
-    private Instant fechaModificacion;
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es")
+    private LocalDateTime fechaModificacion;
 
     private EmpresaDTO empresa;
 
@@ -56,19 +60,19 @@ public class ProveedorDTO implements Serializable {
         this.nombre = nombre;
     }
 
-    public Instant getFechaAlta() {
+    public LocalDateTime getFechaAlta() {
         return fechaAlta;
     }
 
-    public void setFechaAlta(Instant fechaAlta) {
+    public void setFechaAlta(LocalDateTime fechaAlta) {
         this.fechaAlta = fechaAlta;
     }
 
-    public Instant getFechaModificacion() {
+    public LocalDateTime getFechaModificacion() {
         return fechaModificacion;
     }
 
-    public void setFechaModificacion(Instant fechaModificacion) {
+    public void setFechaModificacion(LocalDateTime fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
     }
 
