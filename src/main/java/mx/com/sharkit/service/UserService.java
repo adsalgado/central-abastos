@@ -131,7 +131,8 @@ public class UserService {
 		newUser.setImageUrl(userDTO.getImageUrl());
 		newUser.setCreatedDate(Instant.now());
 
-		String langKey = StringUtils.isAllBlank(userDTO.getLangKey()) ? Constants.DEFAULT_LANGUAGE : userDTO.getLangKey();
+		String langKey = StringUtils.isAllBlank(userDTO.getLangKey()) ? Constants.DEFAULT_LANGUAGE
+				: userDTO.getLangKey();
 		newUser.setLangKey(langKey);
 		// new user is not active
 		newUser.setActivated(isActivated);
@@ -141,7 +142,7 @@ public class UserService {
 		Set<Authority> authorities = new HashSet<>();
 		authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
 		newUser.setAuthorities(authorities);
-		
+
 		if (adjunto != null) {
 			Adjunto adj = new Adjunto();
 			adj.setContentType(adjunto.getContentType());
@@ -189,7 +190,8 @@ public class UserService {
 		newUser.setImageUrl(userDTO.getImageUrl());
 		newUser.setCreatedDate(Instant.now());
 
-		String langKey = StringUtils.isAllBlank(userDTO.getLangKey()) ? Constants.DEFAULT_LANGUAGE : userDTO.getLangKey();
+		String langKey = StringUtils.isAllBlank(userDTO.getLangKey()) ? Constants.DEFAULT_LANGUAGE
+				: userDTO.getLangKey();
 		newUser.setLangKey(langKey);
 		// new user is not active
 		newUser.setActivated(isActivated);
@@ -288,33 +290,61 @@ public class UserService {
 	}
 
 	public Optional<UserDTO> updateUserToken(UserDTO userDTO) {
-		return Optional.of(userRepository.findOneByLogin(userDTO.getLogin())).filter(Optional::isPresent).map(Optional::get)
+
+		return Optional.of(userRepository.findById(userDTO.getId())).filter(Optional::isPresent).map(Optional::get)
 				.map(user -> {
-					
+
 					if (userDTO.getFirstName() != null) {
-						user.setFirstName(userDTO.getFirstName());	
+						user.setFirstName(userDTO.getFirstName());
 					}
 					if (userDTO.getLastName() != null) {
 						user.setLastName(userDTO.getLastName());
 					}
 					if (userDTO.getMotherLastName() != null) {
-						user.setMotherLastName(userDTO.getMotherLastName());	
+						user.setMotherLastName(userDTO.getMotherLastName());
 					}
 					if (userDTO.getToken() != null) {
-						user.setToken(userDTO.getToken());	
+						user.setToken(userDTO.getToken());
 					}
 					if (userDTO.getTelefono() != null) {
-						user.setTelefono(userDTO.getTelefono());	
+						user.setTelefono(userDTO.getTelefono());
 					}
 					if (userDTO.getGenero() != null) {
-						user.setGenero(userDTO.getGenero());	
+						user.setGenero(userDTO.getGenero());
 					}
 					if (userDTO.getFechaNacimiento() != null) {
-						user.setFechaNacimiento(userDTO.getFechaNacimiento());	
+						user.setFechaNacimiento(userDTO.getFechaNacimiento());
 					}
+
+					if (userDTO.getAdjunto() != null) {
+						Adjunto adjunto = null;
+						if (userDTO.getAdjunto().getId() != null && userDTO.getAdjunto().getId() > 0) {
+							adjunto = adjuntoRepository.findById(userDTO.getAdjunto().getId()).orElse(null);
+							if (adjunto != null) {
+								adjunto.setContentType(userDTO.getAdjunto().getContentType());
+								adjunto.setFile(userDTO.getAdjunto().getFile());
+								adjunto.setFileContentType(userDTO.getAdjunto().getFileContentType());
+								adjunto.setFileName(userDTO.getAdjunto().getFileName());
+								adjunto.setSize(userDTO.getAdjunto().getSize());
+							}
+						}
+						if (adjunto == null) {
+							adjunto = new Adjunto();
+							adjunto.setContentType(userDTO.getAdjunto().getContentType());
+							adjunto.setFile(userDTO.getAdjunto().getFile());
+							adjunto.setFileContentType(userDTO.getAdjunto().getFileContentType());
+							adjunto.setFileName(userDTO.getAdjunto().getFileName());
+							adjunto.setSize(userDTO.getAdjunto().getSize());
+
+							adjunto = adjuntoRepository.save(adjunto);
+							user.setAdjuntoId(adjunto.getId());
+						}
+					}
+
 					log.debug("Changed Information for User: {}", user);
 					return user;
 				}).map(UserDTO::new);
+
 	}
 
 	/**
@@ -324,6 +354,7 @@ public class UserService {
 	 * @return updated user.
 	 */
 	public Optional<UserDTO> updateUser(UserDTO userDTO) {
+
 		return Optional.of(userRepository.findById(userDTO.getId())).filter(Optional::isPresent).map(Optional::get)
 				.map(user -> {
 					user.setLogin(userDTO.getLogin().toLowerCase());
@@ -340,6 +371,7 @@ public class UserService {
 					log.debug("Changed Information for User: {}", user);
 					return user;
 				}).map(UserDTO::new);
+
 	}
 
 	public void deleteUser(String login) {

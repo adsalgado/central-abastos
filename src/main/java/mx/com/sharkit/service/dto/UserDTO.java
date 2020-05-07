@@ -74,6 +74,8 @@ public class UserDTO {
     private String token;
 
     private Long adjuntoId;
+    
+    private AdjuntoDTO adjunto;
 
 
     public UserDTO() {
@@ -265,6 +267,14 @@ public class UserDTO {
 		this.adjuntoId = adjuntoId;
 	}
 
+	public AdjuntoDTO getAdjunto() {
+		return adjunto;
+	}
+
+	public void setAdjunto(AdjuntoDTO adjunto) {
+		this.adjunto = adjunto;
+	}
+
 	@Override
     public String toString() {
         return "UserDTO{" +
@@ -286,6 +296,7 @@ public class UserDTO {
             ", tipoUsuarioId='" + tipoUsuarioId + '\'' +
             ", adjuntoId='" + adjuntoId + '\'' +
             ", authorities=" + authorities +
+            ", adjunto=" + adjunto +
             "}";
     }
 }

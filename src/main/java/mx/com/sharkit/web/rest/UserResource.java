@@ -161,6 +161,7 @@ public class UserResource {
         if (!existingUser.isPresent()) {
         	throw new BadRequestAlertException("No se encontró el usuario en la base.", "Users", "idnull");
         }
+        userDTO.setId(existingUser.orElse(new User()).getId());
         Optional<UserDTO> updatedUser = userService.updateUserToken(userDTO);
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
