@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.sharkit.domain.Estatus;
 import mx.com.sharkit.domain.Pedido;
+import mx.com.sharkit.domain.PedidoDetalle;
+import mx.com.sharkit.domain.PedidoProveedor;
+import mx.com.sharkit.repository.PedidoDetalleRepository;
+import mx.com.sharkit.repository.PedidoProveedorRepository;
 import mx.com.sharkit.repository.PedidoRepository;
 import mx.com.sharkit.service.DireccionService;
-import mx.com.sharkit.service.PedidoDetalleService;
-import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.ProductoProveedorService;
 import mx.com.sharkit.service.dto.DireccionDTO;
@@ -31,7 +34,9 @@ import mx.com.sharkit.service.dto.PedidoProveedorDTO;
 import mx.com.sharkit.service.dto.ProductoProveedorDTO;
 import mx.com.sharkit.service.dto.ProveedorDTO;
 import mx.com.sharkit.service.dto.UserDTO;
+import mx.com.sharkit.service.mapper.PedidoDetalleMapper;
 import mx.com.sharkit.service.mapper.PedidoMapper;
+import mx.com.sharkit.service.mapper.PedidoProveedorMapper;
 
 /**
  * Service Implementation for managing {@link Pedido}.
@@ -46,23 +51,30 @@ public class PedidoServiceImpl implements PedidoService {
 
 	private final PedidoMapper pedidoMapper;
 
+	private final PedidoProveedorMapper pedidoProveedorMapper;
+
+	private final PedidoDetalleMapper pedidoDetalleMapper;
+
 	private final ProductoProveedorService productoProveedorService;
 
-	private final PedidoProveedorService pedidoProveedorService;
+	private final PedidoProveedorRepository pedidoProveedorRepository;
 
-	private final PedidoDetalleService pedidoDetalleService;
-	
+	private final PedidoDetalleRepository pedidoDetalleRepository;
+
 	private final DireccionService direccionService;
 
 	public PedidoServiceImpl(PedidoRepository pedidoRepository, PedidoMapper pedidoMapper,
-			ProductoProveedorService productoProveedorService, PedidoProveedorService pedidoProveedorService,
-			PedidoDetalleService pedidoDetalleService, DireccionService direccionService) {
+			ProductoProveedorService productoProveedorService, PedidoProveedorRepository pedidoProveedorRepository,
+			PedidoDetalleRepository pedidoDetalleRepository, DireccionService direccionService,
+			PedidoProveedorMapper pedidoProveedorMapper, PedidoDetalleMapper pedidoDetalleMapper) {
 		this.pedidoRepository = pedidoRepository;
 		this.pedidoMapper = pedidoMapper;
 		this.productoProveedorService = productoProveedorService;
-		this.pedidoProveedorService = pedidoProveedorService;
-		this.pedidoDetalleService = pedidoDetalleService;
+		this.pedidoProveedorRepository = pedidoProveedorRepository;
+		this.pedidoDetalleRepository = pedidoDetalleRepository;
 		this.direccionService = direccionService;
+		this.pedidoProveedorMapper = pedidoProveedorMapper;
+		this.pedidoDetalleMapper = pedidoDetalleMapper;
 	}
 
 	/**
@@ -124,7 +136,7 @@ public class PedidoServiceImpl implements PedidoService {
 		Map<Long, BigDecimal> sumaSinIvaProveedor = new HashMap<>();
 		BigDecimal total = BigDecimal.ZERO;
 		BigDecimal totalSinIva = BigDecimal.ZERO;
-		
+
 		LocalDateTime fechaAlta = LocalDateTime.now();
 
 		// Crear pedido
@@ -141,16 +153,15 @@ public class PedidoServiceImpl implements PedidoService {
 		pedidoDTO.setTelefonoContacto(pedidoAltaDTO.getTelefonoContacto());
 		pedidoDTO.setCorreoContacto(pedidoAltaDTO.getCorreoContacto());
 
-
 		for (PedidoDetalleAltaDTO prod : pedidoAltaDTO.getProductos()) {
-			
+
 			Optional<ProductoProveedorDTO> prodProvDTO = productoProveedorService
 					.findOne(prod.getProductoProveedorId());
-			
+
 			if (prodProvDTO.isPresent()) {
 				ProductoProveedorDTO prodProdDTO = prodProvDTO.get();
 				ProveedorDTO proveedorDTO = prodProdDTO.getProveedor();
-				
+
 				if (!mapProveedores.containsKey(proveedorDTO.getId())) { // Ya se dio de alta el proveedor
 					PedidoProveedorDTO pedidoProveedorDTO = new PedidoProveedorDTO();
 					pedidoProveedorDTO.setEstatusId(Estatus.ESTATUS_PEDIDO_SOLICITADO);
@@ -161,16 +172,16 @@ public class PedidoServiceImpl implements PedidoService {
 					pedidoProveedorDTO.setFechaAlta(fechaAlta);
 					pedidoProveedorDTO.setUsuarioAltaId(pedidoAltaDTO.getUsuarioId());
 					pedidoProveedorDTO.setProveedorId(proveedorDTO.getId());
-					
+
 					pedidoDTO.getPedidoProveedores().add(pedidoProveedorDTO);
 					mapProveedores.put(proveedorDTO.getId(), pedidoProveedorDTO);
 					sumaProveedor.put(proveedorDTO.getId(), BigDecimal.ZERO);
 					sumaSinIvaProveedor.put(proveedorDTO.getId(), BigDecimal.ZERO);
 
 				}
-					
+
 				PedidoProveedorDTO pedidoProveedor = mapProveedores.get(proveedorDTO.getId());
-				
+
 				PedidoDetalleDTO pedidoDetalleDTO = new PedidoDetalleDTO();
 				pedidoDetalleDTO.setCantidad(prod.getCantidad());
 				pedidoDetalleDTO.setEstatusId(Estatus.ESTATUS_PEDIDO_SOLICITADO);
@@ -179,24 +190,25 @@ public class PedidoServiceImpl implements PedidoService {
 				pedidoDetalleDTO.setProductoProveedorId(prod.getProductoProveedorId());
 				pedidoDetalleDTO.setTotal(prodProdDTO.getPrecio().multiply(prod.getCantidad()));
 				pedidoDetalleDTO.setTotalSinIva(prodProdDTO.getPrecioSinIva().multiply(prod.getCantidad()));
-				
+
 				BigDecimal totalProveedor = sumaProveedor.get(proveedorDTO.getId()).add(pedidoDetalleDTO.getTotal());
-				BigDecimal totalSinIvaProveedor = sumaSinIvaProveedor.get(proveedorDTO.getId()).add(pedidoDetalleDTO.getTotalSinIva());
-				
+				BigDecimal totalSinIvaProveedor = sumaSinIvaProveedor.get(proveedorDTO.getId())
+						.add(pedidoDetalleDTO.getTotalSinIva());
+
 				sumaProveedor.put(proveedorDTO.getId(), totalProveedor);
 				sumaSinIvaProveedor.put(proveedorDTO.getId(), totalSinIvaProveedor);
-				
+
 				total = total.add(totalProveedor);
 				totalSinIva = totalSinIva.add(totalSinIvaProveedor);
-				
+
 				pedidoProveedor.getPedidoDetalles().add(pedidoDetalleDTO);
-				
+
 			} else {
 				throw new Exception("No se encontró el producto en la base.");
 			}
 
 		}
-		
+
 		// Guardar dirección de contacto
 		if (pedidoAltaDTO.getDireccionContacto() != null) {
 			DireccionDTO direccion = pedidoAltaDTO.getDireccionContacto();
@@ -208,48 +220,59 @@ public class PedidoServiceImpl implements PedidoService {
 				pedidoDTO.setDireccionContactoId(direccionNew.getId());
 			}
 		}
-		
+
 		UserDTO user = new UserDTO();
 		user.setId(pedidoDTO.getClienteId());
 		pedidoDTO.setCliente(user);
 		pedidoDTO.setTotal(total);
 		pedidoDTO.setTotalSinIva(totalSinIva);
-		PedidoDTO pedido = this.save(pedidoDTO);
-		
+
+		Pedido pedidoEntity = pedidoMapper.toEntity(pedidoDTO);
+		pedidoEntity = pedidoRepository.save(pedidoEntity);
+		pedidoEntity.setFolio("P" + StringUtils.leftPad(pedidoEntity.getId().toString(), 9, "0"));
+
+		PedidoDTO pedido = pedidoMapper.toDto(pedidoEntity);
+
 		Long pedidoId = pedido.getId();
 		pedidoDTO.getPedidoProveedores().forEach(pedProv -> {
 			pedProv.setPedidoId(pedidoId);
 			pedProv.setTotal(sumaProveedor.get(pedProv.getProveedorId()));
 			pedProv.setTotalSinIva(sumaSinIvaProveedor.get(pedProv.getProveedorId()));
+
+			PedidoProveedor pedidoProveedor = pedidoProveedorMapper.toEntity(pedProv);
+			pedidoProveedor = pedidoProveedorRepository.save(pedidoProveedor);
+			pedidoProveedor.setFolio("PV" + StringUtils.leftPad(pedidoProveedor.getId().toString(), 10, "0"));
 			
-			PedidoProveedorDTO pedProvSaved = pedidoProveedorService.save(pedProv);
+			PedidoProveedorDTO pedProvSaved = pedidoProveedorMapper.toDto(pedidoProveedor);
 			pedido.getPedidoProveedores().add(pedProvSaved);
-			
+
 			pedProv.getPedidoDetalles().forEach(pedDet -> {
 				pedDet.setPedidoProveedorId(pedProvSaved.getId());
-				PedidoDetalleDTO pedidoDetalle = pedidoDetalleService.save(pedDet);		
-				pedProvSaved.getPedidoDetalles().add(pedidoDetalle);
+				
+				PedidoDetalle pedidoDetalle = pedidoDetalleMapper.toEntity(pedDet);
+		        pedidoDetalle = pedidoDetalleRepository.save(pedidoDetalle);
+		        pedidoDetalle.setFolio("PR" + StringUtils.leftPad(pedidoDetalle.getId().toString(), 10, "0"));
+				   
+				PedidoDetalleDTO pedidoDetalleSaved = pedidoDetalleMapper.toDto(pedidoDetalle);
+				pedProvSaved.getPedidoDetalles().add(pedidoDetalleSaved);
 			});
 
 		});
-		
-//		pedido.setFolio("P" + StringUtils.leftPad(pedido.getId().toString(), 9, "0"));
-//		pedido = this.save(pedido);
-//		
+
 		return pedido;
 	}
-	
+
 	/**
-     * Get all the pedidos by clienteId.
-     *
-     * @param clienteId
-     * @return the list of entities.
-     */
+	 * Get all the pedidos by clienteId.
+	 *
+	 * @param clienteId
+	 * @return the list of entities.
+	 */
 	@Override
-    public List<PedidoDTO> findByClienteId(Long clienteId) {
+	public List<PedidoDTO> findByClienteId(Long clienteId) {
 		log.debug("Request to get all Pedidos by clienteId: {}", clienteId);
 		return pedidoRepository.findByClienteId(clienteId).stream().map(pedidoMapper::toDto)
 				.collect(Collectors.toCollection(LinkedList::new));
-    }
-    
+	}
+
 }

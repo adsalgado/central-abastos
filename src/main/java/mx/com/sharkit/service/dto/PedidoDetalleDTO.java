@@ -12,6 +12,8 @@ import javax.validation.constraints.NotNull;
 public class PedidoDetalleDTO implements Serializable {
 
     private Long id;
+    
+	private String folio;
 
     private Long pedidoProveedorId;
 
@@ -40,6 +42,14 @@ public class PedidoDetalleDTO implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getFolio() {
+		return folio;
+	}
+
+	public void setFolio(String folio) {
+		this.folio = folio;
 	}
 
 	public Long getPedidoProveedorId() {
@@ -147,7 +157,7 @@ public class PedidoDetalleDTO implements Serializable {
 	public String toString() {
 		return "PedidoDetalleDTO [id=" + id + ", pedidoProveedorId=" + pedidoProveedorId + ", productoProveedorId="
 				+ productoProveedorId + ", estatusId=" + estatusId + ", cantidad=" + cantidad + ", totalSinIva="
-				+ totalSinIva + ", total=" + total + ", precioSinIva=" + precioSinIva + ", precio=" + precio + "]";
+				+ totalSinIva + ", folio=" + folio + ", total=" + total + ", precioSinIva=" + precioSinIva + ", precio=" + precio + "]";
 	}
 
 
