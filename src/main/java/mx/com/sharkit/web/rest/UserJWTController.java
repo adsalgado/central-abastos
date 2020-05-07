@@ -72,6 +72,8 @@ public class UserJWTController {
 		}
 
 		JWTToken jwtToken = new JWTToken(jwt, loginVM.getUsername(), user.getTipoUsuarioId());
+		jwtToken.setNombre(String.format("%s %s %s", user.getFirstName(), user.getLastName(), user.getMotherLastName()));
+		jwtToken.setEmail(user.getEmail());
 		jwtToken.setParams(parametrosAplicacionService.findAll().stream()
 				.collect(Collectors.toMap(ParametrosAplicacionDTO::getClave, ParametrosAplicacionDTO::getDescripcion)));
 		return new ResponseEntity<>(jwtToken, httpHeaders, HttpStatus.OK);
@@ -87,6 +89,10 @@ public class UserJWTController {
 		private String login;
 
 		private Long tipoUsuarioId;
+
+		private String email;
+
+		private String nombre;
 
 		private Map<String, Object> params = new HashMap<>();
 
@@ -134,6 +140,22 @@ public class UserJWTController {
 
 		public void setParams(Map<String, Object> params) {
 			this.params = params;
+		}
+
+		public String getEmail() {
+			return email;
+		}
+
+		public void setEmail(String email) {
+			this.email = email;
+		}
+
+		public String getNombre() {
+			return nombre;
+		}
+
+		public void setNombre(String nombre) {
+			this.nombre = nombre;
 		}
 
 	}
