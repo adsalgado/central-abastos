@@ -24,6 +24,7 @@ import { ComponentsModule } from './components.module';
 import { ProvidersModule } from './providers.module';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 @NgModule({
   imports: [
@@ -31,12 +32,14 @@ import { RouterModule } from '@angular/router';
     ProvidersModule,
     //HttpClientModule,
     ComponentsModule
+    //IonicModule.forRoot(AppComponent),
   ],
 
   bootstrap: [AppComponent],
 
   exports: [
     NgbModule
+
     //NgbActiveModal
   ]
 })

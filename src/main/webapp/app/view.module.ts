@@ -24,6 +24,8 @@ import { AbastosEntityModule } from './entities/entity.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CookieModule } from 'ngx-cookie';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AppComponent } from './app.component';
+import { IonicModule } from 'ionic-angular';
 // For MDB Angular Free
 
 @NgModule({
@@ -51,6 +53,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HttpClientModule,
     NgbModule,
     FormsModule,
+
     //NgbActiveModal,
     TableModule,
     CalendarModule,

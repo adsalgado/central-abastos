@@ -11,6 +11,7 @@ import { HomePublicMainComponent } from './pages/home-public/home-public-main.co
 import { UserRouteAccessService } from './core';
 import { auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, userMgmtRoute, metricsRoute } from './admin';
 import { JhiLoginModalComponent } from './shared/login/login.component';
+import { PasswordResetFinishComponent } from './account/password-reset/finish/password-reset-finish.component';
 
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const ADMIN_ROUTES = [auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, ...userMgmtRoute, metricsRoute];
@@ -24,7 +25,7 @@ const routes: Routes = [
     component: HomePublicComponent,
     children: [
       { path: 'public-home', component: HomePublicMainComponent },
-      { path: 'login', component: JhiLoginModalComponent },
+      //{ path: 'login', component: JhiLoginModalComponent },
       { path: 'home', component: HomeComponent },
       { path: 'users', component: UserMgmtComponent },
       {
@@ -34,6 +35,10 @@ const routes: Routes = [
       {
         path: 'entities',
         loadChildren: () => import('./entities/entity.module').then(m => m.AbastosEntityModule)
+      },
+      {
+        path: 'reset/finish',
+        component: PasswordResetFinishComponent
       }
     ]
   }

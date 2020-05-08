@@ -31,7 +31,9 @@ export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
     private elementRef: ElementRef,
     private renderer: Renderer,
     private fb: FormBuilder
-  ) {}
+  ) {
+    console.log('------------------');
+  }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
