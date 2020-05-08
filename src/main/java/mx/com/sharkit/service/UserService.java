@@ -24,6 +24,7 @@ import mx.com.sharkit.domain.Adjunto;
 import mx.com.sharkit.domain.Authority;
 import mx.com.sharkit.domain.Empresa;
 import mx.com.sharkit.domain.Proveedor;
+import mx.com.sharkit.domain.TipoPersona;
 import mx.com.sharkit.domain.TipoUsuario;
 import mx.com.sharkit.domain.Transportista;
 import mx.com.sharkit.domain.User;
@@ -134,6 +135,12 @@ public class UserService {
 		String langKey = StringUtils.isAllBlank(userDTO.getLangKey()) ? Constants.DEFAULT_LANGUAGE
 				: userDTO.getLangKey();
 		newUser.setLangKey(langKey);
+		
+		Long tipoPersonaId = (userDTO.getTipoPersonaId() != null && userDTO.getTipoPersonaId() > 0)
+				? userDTO.getTipoPersonaId()
+				: TipoPersona.FISICA;
+		newUser.setTipoPersonaId(tipoPersonaId);
+		
 		// new user is not active
 		newUser.setActivated(isActivated);
 		newUser.setTipoUsuarioId(TipoUsuario.CLIENTE);
@@ -196,6 +203,11 @@ public class UserService {
 		// new user is not active
 		newUser.setActivated(isActivated);
 		newUser.setTipoUsuarioId(TipoUsuario.PROVEEDOR);
+
+		Long tipoPersonaId = (userDTO.getTipoPersonaId() != null && userDTO.getTipoPersonaId() > 0)
+				? userDTO.getTipoPersonaId()
+				: TipoPersona.FISICA;
+		newUser.setTipoPersonaId(tipoPersonaId);
 
 		// new user gets registration key
 		newUser.setActivationKey(RandomUtil.generateActivationKey());
@@ -314,6 +326,9 @@ public class UserService {
 					}
 					if (userDTO.getFechaNacimiento() != null) {
 						user.setFechaNacimiento(userDTO.getFechaNacimiento());
+					}
+					if (userDTO.getTipoPersonaId() != null) {
+						user.setTipoPersonaId(userDTO.getTipoPersonaId());
 					}
 
 					if (userDTO.getAdjunto() != null) {

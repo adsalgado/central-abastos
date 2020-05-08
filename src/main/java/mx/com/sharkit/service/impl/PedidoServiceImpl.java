@@ -275,4 +275,17 @@ public class PedidoServiceImpl implements PedidoService {
 				.collect(Collectors.toCollection(LinkedList::new));
 	}
 
+	/**
+     * Get all the pedidos by proveedorId.
+     *
+     * @param proveedorId
+     * @return the list of entities.
+     */
+	@Override
+	public List<PedidoDTO> findByProveedorId(Long proveedorId) {
+		log.debug("Request to get all Pedidos by proveedorId: {}", proveedorId);
+		return pedidoRepository.findByClienteId(proveedorId).stream().map(pedidoMapper::toDto)
+				.collect(Collectors.toCollection(LinkedList::new));
+	}
+
 }

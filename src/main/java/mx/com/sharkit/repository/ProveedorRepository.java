@@ -1,6 +1,7 @@
 package mx.com.sharkit.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -24,5 +25,7 @@ public interface ProveedorRepository extends IBaseRepositorio<Proveedor, Long>, 
 			"WHERE   producto_id = ?1 \n" + 
 			"ORDER BY prv.nombre", nativeQuery = true)
 	List<Proveedor> findByProductoId(Long productoId);
+	
+	Optional<Proveedor> findOneByusuarioId(Long usuarioId);
 	
 }

@@ -107,6 +107,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "adjunto_id")
     private Long adjuntoId;
 
+    @Column(name = "tipo_persona_id")
+    private Long tipoPersonaId;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -277,6 +280,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
 	public void setAdjuntoId(Long adjuntoId) {
 		this.adjuntoId = adjuntoId;
+	}
+
+	public Long getTipoPersonaId() {
+		return tipoPersonaId;
+	}
+
+	public void setTipoPersonaId(Long tipoPersonaId) {
+		this.tipoPersonaId = tipoPersonaId;
 	}
 
 	@Override

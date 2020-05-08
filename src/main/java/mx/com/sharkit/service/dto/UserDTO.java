@@ -76,6 +76,8 @@ public class UserDTO {
     private Long adjuntoId;
     
     private AdjuntoDTO adjunto;
+    
+    private Long tipoPersonaId;
 
 
     public UserDTO() {
@@ -101,6 +103,7 @@ public class UserDTO {
         this.lastModifiedDate = user.getLastModifiedDate();
         this.token = user.getToken();
         this.tipoUsuarioId = user.getTipoUsuarioId();
+        this.tipoPersonaId = user.getTipoPersonaId();
         this.adjuntoId = user.getAdjuntoId();
         this.authorities = user.getAuthorities().stream()
             .map(Authority::getName)
@@ -275,6 +278,14 @@ public class UserDTO {
 		this.adjunto = adjunto;
 	}
 
+	public Long getTipoPersonaId() {
+		return tipoPersonaId;
+	}
+
+	public void setTipoPersonaId(Long tipoPersonaId) {
+		this.tipoPersonaId = tipoPersonaId;
+	}
+
 	@Override
     public String toString() {
         return "UserDTO{" +
@@ -293,6 +304,7 @@ public class UserDTO {
             ", createdDate=" + createdDate +
             ", lastModifiedBy='" + lastModifiedBy + '\'' +
             ", lastModifiedDate=" + lastModifiedDate +
+            ", tipoPersonaId='" + tipoPersonaId + '\'' +
             ", tipoUsuarioId='" + tipoUsuarioId + '\'' +
             ", adjuntoId='" + adjuntoId + '\'' +
             ", authorities=" + authorities +

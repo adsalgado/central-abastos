@@ -57,5 +57,13 @@ public interface PedidoService {
      * @return the list of entities.
      */
     List<PedidoDTO> findByClienteId(Long clienteId);
+    
+    /**
+     * Get all the pedidos by proveedorId.
+     *
+     * @param proveedorId
+     * @return the list of entities.
+     */
+    List<PedidoDTO> findByProveedorId(Long proveedorId);
 
 }
