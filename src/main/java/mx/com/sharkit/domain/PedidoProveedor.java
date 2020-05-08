@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 /**
  * A Pedido.
@@ -24,6 +25,10 @@ public class PedidoProveedor implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Size(max = 12)
+    @Column(name = "folio", length = 12)
+    private String folio;
 
     @ManyToOne
     @JoinColumn(name = "pedido_id", insertable = false, updatable = false)
@@ -83,6 +88,14 @@ public class PedidoProveedor implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getFolio() {
+		return folio;
+	}
+
+	public void setFolio(String folio) {
+		this.folio = folio;
 	}
 
 	public Pedido getPedido() {
@@ -231,12 +244,12 @@ public class PedidoProveedor implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PedidoProveedor [id=" + id + ", pedidoId=" + pedidoId + ", proveedorId=" + proveedorId + ", estatusId="
-				+ estatusId + ", transportistaId=" + transportistaId + ", recolectorId=" + recolectorId + ", total="
-				+ total + ", totalSinIva=" + totalSinIva + ", comisionTransportista=" + comisionTransportista
-				+ ", comisionPreparador=" + comisionPreparador + ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta="
-				+ fechaAlta + ", usuarioModificacionId=" + usuarioModificacionId + ", fechaModificacion="
-				+ fechaModificacion + "]";
+		return "PedidoProveedor [id=" + id + ", folio=" + folio + ", pedidoId=" + pedidoId + ", proveedorId="
+				+ proveedorId + ", estatusId=" + estatusId + ", transportistaId=" + transportistaId + ", recolectorId="
+				+ recolectorId + ", total=" + total + ", totalSinIva=" + totalSinIva + ", comisionTransportista="
+				+ comisionTransportista + ", comisionPreparador=" + comisionPreparador + ", usuarioAltaId="
+				+ usuarioAltaId + ", fechaAlta=" + fechaAlta + ", usuarioModificacionId=" + usuarioModificacionId
+				+ ", fechaModificacion=" + fechaModificacion + "]";
 	}
 
 }

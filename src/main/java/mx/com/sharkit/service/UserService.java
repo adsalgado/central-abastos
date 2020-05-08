@@ -24,6 +24,7 @@ import mx.com.sharkit.domain.Adjunto;
 import mx.com.sharkit.domain.Authority;
 import mx.com.sharkit.domain.Empresa;
 import mx.com.sharkit.domain.Proveedor;
+import mx.com.sharkit.domain.TipoPersona;
 import mx.com.sharkit.domain.TipoUsuario;
 import mx.com.sharkit.domain.Transportista;
 import mx.com.sharkit.domain.User;
@@ -131,8 +132,15 @@ public class UserService {
 		newUser.setImageUrl(userDTO.getImageUrl());
 		newUser.setCreatedDate(Instant.now());
 
-		String langKey = StringUtils.isAllBlank(userDTO.getLangKey()) ? Constants.DEFAULT_LANGUAGE : userDTO.getLangKey();
+		String langKey = StringUtils.isAllBlank(userDTO.getLangKey()) ? Constants.DEFAULT_LANGUAGE
+				: userDTO.getLangKey();
 		newUser.setLangKey(langKey);
+		
+		Long tipoPersonaId = (userDTO.getTipoPersonaId() != null && userDTO.getTipoPersonaId() > 0)
+				? userDTO.getTipoPersonaId()
+				: TipoPersona.FISICA;
+		newUser.setTipoPersonaId(tipoPersonaId);
+		
 		// new user is not active
 		newUser.setActivated(isActivated);
 		newUser.setTipoUsuarioId(TipoUsuario.CLIENTE);
@@ -141,7 +149,7 @@ public class UserService {
 		Set<Authority> authorities = new HashSet<>();
 		authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
 		newUser.setAuthorities(authorities);
-		
+
 		if (adjunto != null) {
 			Adjunto adj = new Adjunto();
 			adj.setContentType(adjunto.getContentType());
@@ -159,7 +167,7 @@ public class UserService {
 		return newUser;
 	}
 
-	public User registerUserProveedor(UserDTO userDTO, String password, boolean isActivated, AdjuntoDTO adjunto) {
+	public User registerUserProveedor(UserDTO userDTO, String razonSocial, String password, boolean isActivated, AdjuntoDTO adjunto) {
 		userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).ifPresent(existingUser -> {
 			boolean removed = removeNonActivatedUser(existingUser);
 			if (!removed) {
@@ -189,11 +197,17 @@ public class UserService {
 		newUser.setImageUrl(userDTO.getImageUrl());
 		newUser.setCreatedDate(Instant.now());
 
-		String langKey = StringUtils.isAllBlank(userDTO.getLangKey()) ? Constants.DEFAULT_LANGUAGE : userDTO.getLangKey();
+		String langKey = StringUtils.isAllBlank(userDTO.getLangKey()) ? Constants.DEFAULT_LANGUAGE
+				: userDTO.getLangKey();
 		newUser.setLangKey(langKey);
 		// new user is not active
 		newUser.setActivated(isActivated);
 		newUser.setTipoUsuarioId(TipoUsuario.PROVEEDOR);
+
+		Long tipoPersonaId = (userDTO.getTipoPersonaId() != null && userDTO.getTipoPersonaId() > 0)
+				? userDTO.getTipoPersonaId()
+				: TipoPersona.FISICA;
+		newUser.setTipoPersonaId(tipoPersonaId);
 
 		// new user gets registration key
 		newUser.setActivationKey(RandomUtil.generateActivationKey());
@@ -217,8 +231,7 @@ public class UserService {
 
 		// Crear registro en proveedor
 		Proveedor proveedor = new Proveedor();
-		proveedor.setNombre(
-				String.format("%s %s %s", userDTO.getFirstName(), userDTO.getLastName(), userDTO.getMotherLastName()));
+		proveedor.setNombre(razonSocial);
 		proveedor.setEmpresaId(Empresa.CENTRAL_ABASTOS);
 		proveedor.setFechaAlta(now);
 		proveedor.setUsuarioAltaId(newUser.getId());
@@ -288,33 +301,64 @@ public class UserService {
 	}
 
 	public Optional<UserDTO> updateUserToken(UserDTO userDTO) {
-		return Optional.of(userRepository.findOneByLogin(userDTO.getLogin())).filter(Optional::isPresent).map(Optional::get)
+
+		return Optional.of(userRepository.findById(userDTO.getId())).filter(Optional::isPresent).map(Optional::get)
 				.map(user -> {
-					
+
 					if (userDTO.getFirstName() != null) {
-						user.setFirstName(userDTO.getFirstName());	
+						user.setFirstName(userDTO.getFirstName());
 					}
 					if (userDTO.getLastName() != null) {
 						user.setLastName(userDTO.getLastName());
 					}
 					if (userDTO.getMotherLastName() != null) {
-						user.setMotherLastName(userDTO.getMotherLastName());	
+						user.setMotherLastName(userDTO.getMotherLastName());
 					}
 					if (userDTO.getToken() != null) {
-						user.setToken(userDTO.getToken());	
+						user.setToken(userDTO.getToken());
 					}
 					if (userDTO.getTelefono() != null) {
-						user.setTelefono(userDTO.getTelefono());	
+						user.setTelefono(userDTO.getTelefono());
 					}
 					if (userDTO.getGenero() != null) {
-						user.setGenero(userDTO.getGenero());	
+						user.setGenero(userDTO.getGenero());
 					}
 					if (userDTO.getFechaNacimiento() != null) {
-						user.setFechaNacimiento(userDTO.getFechaNacimiento());	
+						user.setFechaNacimiento(userDTO.getFechaNacimiento());
 					}
+					if (userDTO.getTipoPersonaId() != null) {
+						user.setTipoPersonaId(userDTO.getTipoPersonaId());
+					}
+
+					if (userDTO.getAdjunto() != null) {
+						Adjunto adjunto = null;
+						if (userDTO.getAdjunto().getId() != null && userDTO.getAdjunto().getId() > 0) {
+							adjunto = adjuntoRepository.findById(userDTO.getAdjunto().getId()).orElse(null);
+							if (adjunto != null) {
+								adjunto.setContentType(userDTO.getAdjunto().getContentType());
+								adjunto.setFile(userDTO.getAdjunto().getFile());
+								adjunto.setFileContentType(userDTO.getAdjunto().getFileContentType());
+								adjunto.setFileName(userDTO.getAdjunto().getFileName());
+								adjunto.setSize(userDTO.getAdjunto().getSize());
+							}
+						}
+						if (adjunto == null) {
+							adjunto = new Adjunto();
+							adjunto.setContentType(userDTO.getAdjunto().getContentType());
+							adjunto.setFile(userDTO.getAdjunto().getFile());
+							adjunto.setFileContentType(userDTO.getAdjunto().getFileContentType());
+							adjunto.setFileName(userDTO.getAdjunto().getFileName());
+							adjunto.setSize(userDTO.getAdjunto().getSize());
+
+							adjunto = adjuntoRepository.save(adjunto);
+							user.setAdjuntoId(adjunto.getId());
+						}
+					}
+
 					log.debug("Changed Information for User: {}", user);
 					return user;
 				}).map(UserDTO::new);
+
 	}
 
 	/**
@@ -324,6 +368,7 @@ public class UserService {
 	 * @return updated user.
 	 */
 	public Optional<UserDTO> updateUser(UserDTO userDTO) {
+
 		return Optional.of(userRepository.findById(userDTO.getId())).filter(Optional::isPresent).map(Optional::get)
 				.map(user -> {
 					user.setLogin(userDTO.getLogin().toLowerCase());
@@ -340,6 +385,7 @@ public class UserService {
 					log.debug("Changed Information for User: {}", user);
 					return user;
 				}).map(UserDTO::new);
+
 	}
 
 	public void deleteUser(String login) {

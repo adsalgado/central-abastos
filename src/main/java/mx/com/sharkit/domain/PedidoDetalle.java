@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -26,6 +27,10 @@ public class PedidoDetalle implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Size(max = 12)
+    @Column(name = "folio", length = 12)
+    private String folio;
 
     @ManyToOne
     @JoinColumn(name = "pedido_proveedor_id", insertable = false, updatable = false)
@@ -72,6 +77,14 @@ public class PedidoDetalle implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getFolio() {
+		return folio;
+	}
+
+	public void setFolio(String folio) {
+		this.folio = folio;
 	}
 
 	public PedidoProveedor getPedidoProveedor() {
@@ -182,7 +195,7 @@ public class PedidoDetalle implements Serializable {
 	public String toString() {
 		return "PedidoDetalle [id=" + id + ", pedidoProveedorId=" + pedidoProveedorId + ", productoProveedorId="
 				+ productoProveedorId + ", estatusId=" + estatusId + ", cantidad=" + cantidad + ", total=" + total
-				+ ", totalSinIva=" + totalSinIva + ", precioSinIva=" + precioSinIva + ", precio=" + precio + "]";
+				+ ", folio=" + folio + ", totalSinIva=" + totalSinIva + ", precioSinIva=" + precioSinIva + ", precio=" + precio + "]";
 	}
 
 

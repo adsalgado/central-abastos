@@ -1,4 +1,5 @@
 package mx.com.sharkit.service.dto;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,48 +14,58 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 public class PedidoProveedorDTO implements Serializable {
 
-    private Long id;
-    
-    private Long pedidoId;
+	private Long id;
 
-    private ProveedorDTO proveedor;
-    
-    private Long proveedorId;
-    
-    private EstatusDTO estatus;
-    
-    private Long estatusId;
+	private String folio;
 
-    private Long transportistaId;
+	private Long pedidoId;
 
-    private Long recolectorId;
-    
-    private BigDecimal total;
+	private ProveedorDTO proveedor;
 
-    private BigDecimal totalSinIva;
+	private Long proveedorId;
 
-    private BigDecimal comisionTransportista;
+	private EstatusDTO estatus;
 
-    private BigDecimal comisionPreparador;
-    
-    private Long usuarioAltaId;
+	private Long estatusId;
 
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
-    private LocalDateTime fechaAlta;
+	private Long transportistaId;
 
-    private Long usuarioModificacionId;
+	private Long recolectorId;
 
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss", locale="es_MX")
-    private LocalDateTime fechaModificacion;
+	private BigDecimal total;
 
-    private List<PedidoDetalleDTO> pedidoDetalles = new ArrayList<>();
-    
+	private BigDecimal totalSinIva;
+
+	private BigDecimal comisionTransportista;
+
+	private BigDecimal comisionPreparador;
+
+	private Long usuarioAltaId;
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+	private LocalDateTime fechaAlta;
+
+	private Long usuarioModificacionId;
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+	private LocalDateTime fechaModificacion;
+
+	private List<PedidoDetalleDTO> pedidoDetalles = new ArrayList<>();
+
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getFolio() {
+		return folio;
+	}
+
+	public void setFolio(String folio) {
+		this.folio = folio;
 	}
 
 	public Long getPedidoId() {
@@ -186,31 +197,31 @@ public class PedidoProveedorDTO implements Serializable {
 	}
 
 	@Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
-        PedidoProveedorDTO pedidoDTO = (PedidoProveedorDTO) o;
-        if (pedidoDTO.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), pedidoDTO.getId());
-    }
+		PedidoProveedorDTO pedidoDTO = (PedidoProveedorDTO) o;
+		if (pedidoDTO.getId() == null || getId() == null) {
+			return false;
+		}
+		return Objects.equals(getId(), pedidoDTO.getId());
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(getId());
+	}
 
 	@Override
 	public String toString() {
-		return "PedidoProveedorDTO [id=" + id + ", pedidoId=" + pedidoId + ", proveedorId=" + proveedorId
-				+ ", estatusId=" + estatusId + ", transportistaId=" + transportistaId + ", recolectorId=" + recolectorId
-				+ ", total=" + total + ", totalSinIva=" + totalSinIva + ", comisionTransportista="
+		return "PedidoProveedorDTO [id=" + id + ", pedidoId=" + pedidoId + ", proveedorId=" + proveedorId + ", folio="
+				+ folio + ", estatusId=" + estatusId + ", transportistaId=" + transportistaId + ", recolectorId="
+				+ recolectorId + ", total=" + total + ", totalSinIva=" + totalSinIva + ", comisionTransportista="
 				+ comisionTransportista + ", comisionPreparador=" + comisionPreparador + ", usuarioAltaId="
 				+ usuarioAltaId + ", fechaAlta=" + fechaAlta + ", usuarioModificacionId=" + usuarioModificacionId
 				+ ", fechaModificacion=" + fechaModificacion + "]";

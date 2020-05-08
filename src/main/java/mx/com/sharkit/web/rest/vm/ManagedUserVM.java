@@ -20,6 +20,8 @@ public class ManagedUserVM extends UserDTO {
 
     private AdjuntoDTO adjunto;
     
+    private String razonSocial;
+    
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
     }
@@ -46,6 +48,14 @@ public class ManagedUserVM extends UserDTO {
 
 	public void setAdjunto(AdjuntoDTO adjunto) {
 		this.adjunto = adjunto;
+	}
+
+	public String getRazonSocial() {
+		return razonSocial;
+	}
+
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
 	}
 
 	@Override

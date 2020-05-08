@@ -108,4 +108,15 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 		return lstPedidoProveedor;
 	}
 
+	@Override
+	public List<PedidoProveedorDTO> findByPedidoIdAndProveedorId(Long pedidoId, Long proveedorId) {
+		log.debug("Request to get all PedidoProveedors by pedidoId: {} and proveedorId: {}", pedidoId, proveedorId);
+		List<PedidoProveedorDTO> lstPedidoProveedor = pedidoProveedorRepository.findByPedidoIdAndProveedorId(pedidoId, proveedorId).stream()
+				.map(pedidoProveedorMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+		lstPedidoProveedor.forEach(pp -> {
+			pp.setPedidoDetalles(pedidoDetalleService.findByPedidoProveedorId(pp.getId()));
+		});
+		return lstPedidoProveedor;
+	}
+
 }
