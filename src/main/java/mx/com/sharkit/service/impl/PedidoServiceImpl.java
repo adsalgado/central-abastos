@@ -284,7 +284,7 @@ public class PedidoServiceImpl implements PedidoService {
 	@Override
 	public List<PedidoDTO> findByProveedorId(Long proveedorId) {
 		log.debug("Request to get all Pedidos by proveedorId: {}", proveedorId);
-		return pedidoRepository.findByClienteId(proveedorId).stream().map(pedidoMapper::toDto)
+		return pedidoRepository.findByProveedorId(proveedorId).stream().map(pedidoMapper::toDto)
 				.collect(Collectors.toCollection(LinkedList::new));
 	}
 

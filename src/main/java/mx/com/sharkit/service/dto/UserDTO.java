@@ -79,7 +79,6 @@ public class UserDTO {
     
     private Long tipoPersonaId;
 
-
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }

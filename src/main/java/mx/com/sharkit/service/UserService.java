@@ -167,7 +167,7 @@ public class UserService {
 		return newUser;
 	}
 
-	public User registerUserProveedor(UserDTO userDTO, String password, boolean isActivated, AdjuntoDTO adjunto) {
+	public User registerUserProveedor(UserDTO userDTO, String razonSocial, String password, boolean isActivated, AdjuntoDTO adjunto) {
 		userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).ifPresent(existingUser -> {
 			boolean removed = removeNonActivatedUser(existingUser);
 			if (!removed) {
@@ -231,8 +231,7 @@ public class UserService {
 
 		// Crear registro en proveedor
 		Proveedor proveedor = new Proveedor();
-		proveedor.setNombre(
-				String.format("%s %s %s", userDTO.getFirstName(), userDTO.getLastName(), userDTO.getMotherLastName()));
+		proveedor.setNombre(razonSocial);
 		proveedor.setEmpresaId(Empresa.CENTRAL_ABASTOS);
 		proveedor.setFechaAlta(now);
 		proveedor.setUsuarioAltaId(newUser.getId());

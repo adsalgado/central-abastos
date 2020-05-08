@@ -261,7 +261,7 @@ public class PedidoResource {
 	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
 	 *         of pedidos in body.
 	 */
-	@GetMapping("/pedidos/proveedores")
+	@GetMapping("proveedor/pedidos")
 	public List<PedidoDTO> getAllPedidosProveedor() {
 		log.debug("REST request to get all Pedidos");
 		Optional<User> user = userService.getUserWithAuthorities();
@@ -277,7 +277,7 @@ public class PedidoResource {
 		
 		List<PedidoDTO> lstPedidos = pedidoService.findByProveedorId(proveedorId);
 		for (PedidoDTO pedidoDTO : lstPedidos) {
-//			pedidoDTO.setPedidoProveedores(pedidoProveedorService.findByPedidoId(pedidoDTO.getId()));
+			pedidoDTO.setPedidoProveedores(pedidoProveedorService.findByPedidoIdAndProveedorId(pedidoDTO.getId(), proveedorId));
 		}
 
 		return lstPedidos;
