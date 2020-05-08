@@ -41,4 +41,6 @@ public interface ChatDetalleService {
      */
     void delete(Long id);
     
+    List<ChatDetalleDTO> findByChatIdOrderById(Long chatId);
+    
 }

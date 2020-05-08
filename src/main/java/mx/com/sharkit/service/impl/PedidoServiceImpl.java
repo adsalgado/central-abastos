@@ -141,7 +141,7 @@ public class PedidoServiceImpl implements PedidoService {
 
 		// Crear pedido
 		PedidoDTO pedidoDTO = new PedidoDTO();
-		pedidoDTO.setEstatusId(Estatus.ESTATUS_PEDIDO_SOLICITADO);
+		pedidoDTO.setEstatusId(Estatus.PEDIDO_SOLICITADO);
 		pedidoDTO.setClienteId(pedidoAltaDTO.getUsuarioId());
 		pedidoDTO.setFechaAlta(fechaAlta);
 		pedidoDTO.setUsuarioAltaId(pedidoAltaDTO.getUsuarioId());
@@ -164,7 +164,7 @@ public class PedidoServiceImpl implements PedidoService {
 
 				if (!mapProveedores.containsKey(proveedorDTO.getId())) { // Ya se dio de alta el proveedor
 					PedidoProveedorDTO pedidoProveedorDTO = new PedidoProveedorDTO();
-					pedidoProveedorDTO.setEstatusId(Estatus.ESTATUS_PEDIDO_SOLICITADO);
+					pedidoProveedorDTO.setEstatusId(Estatus.PEDIDO_SOLICITADO);
 					pedidoProveedorDTO.setTotal(BigDecimal.ZERO);
 					pedidoProveedorDTO.setTotalSinIva(BigDecimal.ZERO);
 					pedidoProveedorDTO.setComisionTransportista(BigDecimal.ZERO);
@@ -184,7 +184,7 @@ public class PedidoServiceImpl implements PedidoService {
 
 				PedidoDetalleDTO pedidoDetalleDTO = new PedidoDetalleDTO();
 				pedidoDetalleDTO.setCantidad(prod.getCantidad());
-				pedidoDetalleDTO.setEstatusId(Estatus.ESTATUS_PEDIDO_SOLICITADO);
+				pedidoDetalleDTO.setEstatusId(Estatus.PEDIDO_SOLICITADO);
 				pedidoDetalleDTO.setPrecio(prodProdDTO.getPrecio());
 				pedidoDetalleDTO.setPrecioSinIva(prodProdDTO.getPrecioSinIva());
 				pedidoDetalleDTO.setProductoProveedorId(prod.getProductoProveedorId());

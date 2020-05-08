@@ -1,5 +1,6 @@
 package mx.com.sharkit.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.sharkit.domain.Estatus;
 import mx.com.sharkit.domain.PedidoProveedor;
+import mx.com.sharkit.repository.PedidoDetalleRepository;
 import mx.com.sharkit.repository.PedidoProveedorRepository;
 import mx.com.sharkit.service.PedidoDetalleService;
 import mx.com.sharkit.service.PedidoProveedorService;
@@ -30,14 +33,18 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 	private final PedidoProveedorRepository pedidoProveedorRepository;
 
 	private final PedidoProveedorMapper pedidoProveedorMapper;
-	
+
 	private final PedidoDetalleService pedidoDetalleService;
 
+	private final PedidoDetalleRepository pedidoDetalleRepository;
+
 	public PedidoProveedorServiceImpl(PedidoProveedorRepository pedidoProveedorRepository,
-			PedidoProveedorMapper pedidoProveedorMapper, PedidoDetalleService pedidoDetalleService) {
+			PedidoProveedorMapper pedidoProveedorMapper, PedidoDetalleService pedidoDetalleService,
+			PedidoDetalleRepository pedidoDetalleRepository) {
 		this.pedidoProveedorRepository = pedidoProveedorRepository;
 		this.pedidoProveedorMapper = pedidoProveedorMapper;
 		this.pedidoDetalleService = pedidoDetalleService;
+		this.pedidoDetalleRepository = pedidoDetalleRepository;
 	}
 
 	/**
@@ -111,12 +118,37 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 	@Override
 	public List<PedidoProveedorDTO> findByPedidoIdAndProveedorId(Long pedidoId, Long proveedorId) {
 		log.debug("Request to get all PedidoProveedors by pedidoId: {} and proveedorId: {}", pedidoId, proveedorId);
-		List<PedidoProveedorDTO> lstPedidoProveedor = pedidoProveedorRepository.findByPedidoIdAndProveedorId(pedidoId, proveedorId).stream()
-				.map(pedidoProveedorMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+		List<PedidoProveedorDTO> lstPedidoProveedor = pedidoProveedorRepository
+				.findByPedidoIdAndProveedorId(pedidoId, proveedorId).stream().map(pedidoProveedorMapper::toDto)
+				.collect(Collectors.toCollection(LinkedList::new));
 		lstPedidoProveedor.forEach(pp -> {
 			pp.setPedidoDetalles(pedidoDetalleService.findByPedidoProveedorId(pp.getId()));
 		});
 		return lstPedidoProveedor;
+	}
+
+	@Override
+	public PedidoProveedorDTO cambiaEstatusPedidoProveedorAndDetalles(Long pedidoProveedorId, Long estatus,
+			Long usuarioEstatus) {
+		LocalDateTime now = LocalDateTime.now();
+		PedidoProveedor pedidoProveedor = pedidoProveedorRepository.findById(pedidoProveedorId).orElse(null);
+		if (pedidoProveedor != null) {
+			pedidoDetalleRepository.findByPedidoProveedorId(pedidoProveedorId).forEach(pd -> {
+				pd.setEstatusId(estatus);
+			});
+			pedidoProveedor.setEstatusId(estatus);
+			pedidoProveedor.setUsuarioModificacionId(usuarioEstatus);
+			pedidoProveedor.setFechaModificacion(now);
+
+			if (estatus == Estatus.PEDIDO_PREPARADO) {
+				pedidoProveedor.setFechaPreparacion(now);
+			} else if (estatus == Estatus.PEDIDO_ENVIADO) {
+				pedidoProveedor.setFechaEnvio(now);
+			} else if (estatus == Estatus.PEDIDO_ENTREGADO) {
+				pedidoProveedor.setFechaEntrega(now);
+			}
+		}
+		return pedidoProveedorMapper.toDto(pedidoProveedor);
 	}
 
 }

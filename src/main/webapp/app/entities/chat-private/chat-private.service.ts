@@ -84,7 +84,7 @@ export class ChatPrivateService {
     if (this.stompClient !== null && this.stompClient.connected) {
       this.stompClient.send(
         '/secured/room', // destination
-        JSON.stringify({ from: fromUser, to: toUser, text: message, pedidoProveedorId: 28, tipoChatId: 1, tipoUsuarioId: 2 }), // body
+        JSON.stringify({ from: fromUser, to: toUser, text: message, chatId: 16 }), // body
         {} // header
       );
     }

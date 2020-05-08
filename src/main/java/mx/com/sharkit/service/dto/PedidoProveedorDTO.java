@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.Column;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
@@ -51,6 +53,21 @@ public class PedidoProveedorDTO implements Serializable {
 	private LocalDateTime fechaModificacion;
 
 	private List<PedidoDetalleDTO> pedidoDetalles = new ArrayList<>();
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+	private LocalDateTime fechaPreparacion;
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+	private LocalDateTime fechaEnvio;
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+	private LocalDateTime fechaEntrega;
+
+	private String personaEntrega;
+
+    private Long chatProveedorid;
+
+    private Long chatTransportistaId;
 
 	public Long getId() {
 		return id;
@@ -196,6 +213,54 @@ public class PedidoProveedorDTO implements Serializable {
 		this.pedidoDetalles = pedidoDetalles;
 	}
 
+	public LocalDateTime getFechaPreparacion() {
+		return fechaPreparacion;
+	}
+
+	public void setFechaPreparacion(LocalDateTime fechaPreparacion) {
+		this.fechaPreparacion = fechaPreparacion;
+	}
+
+	public LocalDateTime getFechaEnvio() {
+		return fechaEnvio;
+	}
+
+	public void setFechaEnvio(LocalDateTime fechaEnvio) {
+		this.fechaEnvio = fechaEnvio;
+	}
+
+	public LocalDateTime getFechaEntrega() {
+		return fechaEntrega;
+	}
+
+	public void setFechaEntrega(LocalDateTime fechaEntrega) {
+		this.fechaEntrega = fechaEntrega;
+	}
+
+	public String getPersonaEntrega() {
+		return personaEntrega;
+	}
+
+	public void setPersonaEntrega(String personaEntrega) {
+		this.personaEntrega = personaEntrega;
+	}
+
+	public Long getChatProveedorid() {
+		return chatProveedorid;
+	}
+
+	public void setChatProveedorid(Long chatProveedorid) {
+		this.chatProveedorid = chatProveedorid;
+	}
+
+	public Long getChatTransportistaId() {
+		return chatTransportistaId;
+	}
+
+	public void setChatTransportistaId(Long chatTransportistaId) {
+		this.chatTransportistaId = chatTransportistaId;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -219,12 +284,15 @@ public class PedidoProveedorDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PedidoProveedorDTO [id=" + id + ", pedidoId=" + pedidoId + ", proveedorId=" + proveedorId + ", folio="
-				+ folio + ", estatusId=" + estatusId + ", transportistaId=" + transportistaId + ", recolectorId="
-				+ recolectorId + ", total=" + total + ", totalSinIva=" + totalSinIva + ", comisionTransportista="
-				+ comisionTransportista + ", comisionPreparador=" + comisionPreparador + ", usuarioAltaId="
-				+ usuarioAltaId + ", fechaAlta=" + fechaAlta + ", usuarioModificacionId=" + usuarioModificacionId
-				+ ", fechaModificacion=" + fechaModificacion + "]";
+		return "PedidoProveedorDTO [id=" + id + ", folio=" + folio + ", pedidoId=" + pedidoId + ", proveedor="
+				+ proveedor + ", proveedorId=" + proveedorId + ", estatus=" + estatus + ", estatusId=" + estatusId
+				+ ", transportistaId=" + transportistaId + ", recolectorId=" + recolectorId + ", total=" + total
+				+ ", totalSinIva=" + totalSinIva + ", comisionTransportista=" + comisionTransportista
+				+ ", comisionPreparador=" + comisionPreparador + ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta="
+				+ fechaAlta + ", usuarioModificacionId=" + usuarioModificacionId + ", fechaModificacion="
+				+ fechaModificacion + ", pedidoDetalles=" + pedidoDetalles + ", fechaPreparacion=" + fechaPreparacion
+				+ ", fechaEnvio=" + fechaEnvio + ", fechaEntrega=" + fechaEntrega + ", personaEntrega=" + personaEntrega
+				+ ", chatProveedorid=" + chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + "]";
 	}
 
 }

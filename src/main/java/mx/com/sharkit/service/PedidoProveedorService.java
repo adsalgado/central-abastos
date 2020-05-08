@@ -59,5 +59,14 @@ public interface PedidoProveedorService extends BaseService<PedidoProveedor, Lon
      * @return the list of entities.
      */
     List<PedidoProveedorDTO> findByPedidoIdAndProveedorId(Long pedidoId, Long proveedorId);
+    
+    
+    /**
+     * Save a pedidoProveedor.
+     *
+     * @param pedidoProveedorDTO the entity to save.
+     * @return the persisted entity.
+     */
+    PedidoProveedorDTO cambiaEstatusPedidoProveedorAndDetalles(Long pedidoProveedorId, Long estatus, Long usuarioEstatus);
 
 }
