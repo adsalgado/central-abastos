@@ -119,6 +119,10 @@ public class ChatResource {
 	public ResponseEntity<ChatDTO> getChat(@PathVariable Long id) {
 		log.debug("REST request to get Chat : {}", id);
 		Optional<ChatDTO> chatDTO = chatService.findOne(id);
+		if (chatDTO.isPresent()) {
+			ChatDTO chat = chatDTO.get();
+			chat.setChatDetalles(chatDetalleService.findByChatIdOrderById(chat.getId()));			
+		}
 		return ResponseUtil.wrapOrNotFound(chatDTO);
 	}
 
@@ -144,7 +148,7 @@ public class ChatResource {
 	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
 	 *         of chats in body.
 	 */
-	@GetMapping("/chats/pedido-proveedor/{pedidoProveedorId}/tipoChat/{tipoChatId}")
+	@GetMapping("/proveedor/chats/pedido-proveedor/{pedidoProveedorId}/tipoChat/{tipoChatId}")
 	public ResponseEntity<ChatDTO> getAllChatsByPedidoProveedorAndTipoChat(@PathVariable Long pedidoProveedorId,
 			@PathVariable Long tipoChatId) {
 		log.debug("REST request to get all Chats");
