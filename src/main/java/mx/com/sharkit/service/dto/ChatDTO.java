@@ -1,6 +1,8 @@
 package mx.com.sharkit.service.dto;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -21,6 +23,8 @@ public class ChatDTO implements Serializable {
     private String usuarioEmisorLogin;
 
     private String usuarioReceptorLogin;
+    
+    private List<ChatDetalleDTO> chatDetalles = new ArrayList<>();
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime fecha;
@@ -80,6 +84,14 @@ public class ChatDTO implements Serializable {
 
 	public void setTipoChatId(Long tipoChatId) {
 		this.tipoChatId = tipoChatId;
+	}
+
+	public List<ChatDetalleDTO> getChatDetalles() {
+		return chatDetalles;
+	}
+
+	public void setChatDetalles(List<ChatDetalleDTO> chatDetalles) {
+		this.chatDetalles = chatDetalles;
 	}
 
 	@Override

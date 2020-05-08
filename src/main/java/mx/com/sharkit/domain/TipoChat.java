@@ -20,6 +20,9 @@ public class TipoChat implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static final Long PROVEEDOR = 1L;
+    public static final Long TRANSPORTISTA = 2L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

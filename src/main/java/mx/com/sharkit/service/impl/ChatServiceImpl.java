@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.sharkit.domain.Chat;
+import mx.com.sharkit.domain.PedidoProveedor;
+import mx.com.sharkit.domain.TipoChat;
 import mx.com.sharkit.repository.ChatRepository;
+import mx.com.sharkit.repository.PedidoProveedorRepository;
 import mx.com.sharkit.service.ChatDetalleService;
 import mx.com.sharkit.service.ChatService;
 import mx.com.sharkit.service.dto.ChatDTO;
@@ -32,13 +35,17 @@ public class ChatServiceImpl implements ChatService {
 	private final ChatRepository chatRepository;
 
 	private final ChatMapper chatMapper;
-	
-	private final ChatDetalleService chatDetalleService;
 
-	public ChatServiceImpl(ChatRepository chatRepository, ChatMapper chatMapper, ChatDetalleService chatDetalleService) {
+	private final ChatDetalleService chatDetalleService;
+	
+	private final PedidoProveedorRepository pedidoProveedorRepository;
+
+	public ChatServiceImpl(ChatRepository chatRepository, ChatMapper chatMapper,
+			ChatDetalleService chatDetalleService, PedidoProveedorRepository pedidoProveedorRepository) {
 		this.chatRepository = chatRepository;
 		this.chatMapper = chatMapper;
 		this.chatDetalleService = chatDetalleService;
+		this.pedidoProveedorRepository = pedidoProveedorRepository;
 	}
 
 	/**
@@ -100,38 +107,57 @@ public class ChatServiceImpl implements ChatService {
 	 */
 	@Override
 	public ChatDetalleDTO saveMensajeChat(MessageChatDTO msgChatDTO) {
-		ChatDTO chat = chatRepository
-				.findOneByPedidoProveedorIdAndTipoChatId(msgChatDTO.getPedidoProveedorId(), msgChatDTO.getTipoChatId())
-				.map(chatMapper::toDto).orElse(null);
-		
-		if(chat == null) {
-			chat = new ChatDTO();
-			chat.setFecha(LocalDateTime.now());
-			chat.setPedidoProveedorId(msgChatDTO.getPedidoProveedorId());
-			chat.setTipoChatId(msgChatDTO.getTipoChatId());
-			if (msgChatDTO.getTipoUsuarioId() == 2L) { //Cliente
-				chat.setUsuarioReceptorLogin(msgChatDTO.getFrom());
-				chat.setUsuarioEmisorLogin(msgChatDTO.getTo());
-			} else {
-				chat.setUsuarioEmisorLogin(msgChatDTO.getFrom());
-				chat.setUsuarioReceptorLogin(msgChatDTO.getTo());
-			}
-			chat = this.save(chat);
-		}
-		
+
+//		ChatDTO chat = chatRepository
+//				.findOneByPedidoProveedorIdAndTipoChatId(msgChatDTO.getPedidoProveedorId(), msgChatDTO.getTipoChatId())
+//				.map(chatMapper::toDto).orElse(null);
+
 		ChatDetalleDTO detalleDTO = new ChatDetalleDTO();
-		detalleDTO.setChatId(chat.getId());
-		detalleDTO.setMensaje(msgChatDTO.getText());
 		detalleDTO.setFecha(LocalDateTime.now());
-		if (msgChatDTO.getTipoUsuarioId() == 2L) { //Cliente
-			detalleDTO.setUsuarioReceptorLogin(msgChatDTO.getFrom());
-			detalleDTO.setUsuarioEmisorLogin(msgChatDTO.getTo());
-		} else {
-			detalleDTO.setUsuarioEmisorLogin(msgChatDTO.getFrom());
-			detalleDTO.setUsuarioReceptorLogin(msgChatDTO.getTo());
-		}
+		detalleDTO.setChatId(msgChatDTO.getChatId());
+		detalleDTO.setMensaje(msgChatDTO.getText());
+		detalleDTO.setUsuarioEmisorLogin(msgChatDTO.getFrom());
+		detalleDTO.setUsuarioReceptorLogin(msgChatDTO.getTo());
 		
 		return chatDetalleService.save(detalleDTO);
 	}
-	
+
+	/**
+	 * Get the chat ByPedidoProveedorIdAndTipoChatId
+	 *
+	 * @param pedidoProveedorId the pedidoProveedorId of the entity.
+	 * @param tipoChatId        the tipoChatId of the entity.
+	 * @return the entity.
+	 */
+	@Override
+	public Optional<ChatDTO> findOneByPedidoProveedorIdAndTipoChatId(Long pedidoProveedorId, Long tipoChatId) {
+		return chatRepository.findOneByPedidoProveedorIdAndTipoChatId(pedidoProveedorId, tipoChatId)
+				.map(chatMapper::toDto);
+	}
+
+	@Override
+	public ChatDTO getOrCreateChatPedidoProveedor(Long pedidoProveedorId, Long tipoChatId) throws Exception {
+		
+		PedidoProveedor pedidoProveedor = pedidoProveedorRepository.findById(pedidoProveedorId).orElse(null);
+		if (pedidoProveedor == null) {
+			throw new Exception("Pedido proveedor no existe.");
+		}
+		ChatDTO chat = this.findOneByPedidoProveedorIdAndTipoChatId(pedidoProveedorId, tipoChatId).orElse(null);
+		if (chat == null) {
+			chat = new ChatDTO();
+			chat.setFecha(LocalDateTime.now());
+			chat.setPedidoProveedorId(pedidoProveedorId);
+			chat.setTipoChatId(tipoChatId);
+			chat = this.save(chat);
+			if (tipoChatId == TipoChat.PROVEEDOR) {
+				pedidoProveedor.setChatProveedorid(chat.getId());				
+			} else {
+				pedidoProveedor.setChatTransportistaId(chat.getId());	
+			}
+		} else {
+			chat.setChatDetalles(chatDetalleService.findByChatIdOrderById(chat.getId()));
+		}
+		return chat;
+	}
+
 }

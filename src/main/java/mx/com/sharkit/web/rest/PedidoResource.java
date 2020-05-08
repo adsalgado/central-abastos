@@ -255,7 +255,7 @@ public class PedidoResource {
 	}
 
 	/**
-	 * {@code GET  /pedidos} : get all the pedidos.
+	 * {@code GET  /proveedor/pedidos} : get all the pedidos of proveedor.
 	 *
 	 * 
 	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
@@ -282,4 +282,6 @@ public class PedidoResource {
 
 		return lstPedidos;
 	}
+	
+
 }

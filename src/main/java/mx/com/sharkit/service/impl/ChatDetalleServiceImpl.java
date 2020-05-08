@@ -85,4 +85,11 @@ public class ChatDetalleServiceImpl implements ChatDetalleService {
 		chatDetalleRepository.deleteById(id);
 	}
 
+	@Override
+	public List<ChatDetalleDTO> findByChatIdOrderById(Long chatId) {
+		log.debug("Request to get all ChatDetalles");
+		return chatDetalleRepository.findByChatIdOrderById(chatId).stream().map(chatDetalleMapper::toDto)
+				.collect(Collectors.toCollection(LinkedList::new));
+	}
+
 }
