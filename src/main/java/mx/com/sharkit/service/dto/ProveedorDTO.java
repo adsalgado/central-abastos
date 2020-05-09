@@ -15,6 +15,8 @@ public class ProveedorDTO implements Serializable {
 
     private Long id;
 
+	private UserDTO usuario;
+
     private Long usuarioId;
     
     @NotNull
@@ -148,6 +150,14 @@ public class ProveedorDTO implements Serializable {
 		this.usuarioId = usuarioId;
 	}
 
+	public UserDTO getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(UserDTO usuario) {
+		this.usuario = usuario;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -169,17 +179,13 @@ public class ProveedorDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "ProveedorDTO{" +
-            "id=" + getId() +
-            ", usuarioId=" + getUsuarioId() +
-            ", nombre='" + getNombre() + "'" +
-            ", fechaAlta='" + getFechaAlta() + "'" +
-            ", fechaModificacion='" + getFechaModificacion() + "'" +
-            ", usuarioAlta=" + getUsuarioAltaId() +
-            ", usuarioModificacion=" + getUsuarioModificacionId() +
-            ", empresa=" + getEmpresaId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "ProveedorDTO [id=" + id + ", usuario=" + usuario + ", usuarioId=" + usuarioId + ", nombre=" + nombre
+				+ ", fechaAlta=" + fechaAlta + ", fechaModificacion=" + fechaModificacion + ", empresa=" + empresa
+				+ ", empresaId=" + empresaId + ", direccion=" + direccion + ", direccionId=" + direccionId
+				+ ", usuarioAltaId=" + usuarioAltaId + ", usuarioModificacionId=" + usuarioModificacionId
+				+ ", transportista=" + transportista + ", transportistaId=" + transportistaId + "]";
+	}
+
 }

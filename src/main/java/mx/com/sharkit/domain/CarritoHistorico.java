@@ -49,9 +49,6 @@ public class CarritoHistorico implements Serializable {
     @Column(name = "cliente_id")
     private Long clienteId;
 
-    @OneToMany(mappedBy = "carritoHistorico")
-    private Set<CarritoHistoricoDetalle> carritoHistoricoDetalles = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -85,31 +82,6 @@ public class CarritoHistorico implements Serializable {
 
     public void setFechaAlta(LocalDateTime fechaAlta) {
         this.fechaAlta = fechaAlta;
-    }
-
-    public Set<CarritoHistoricoDetalle> getCarritoHistoricoDetalles() {
-        return carritoHistoricoDetalles;
-    }
-
-    public CarritoHistorico carritoHistoricoDetalles(Set<CarritoHistoricoDetalle> carritoHistoricoDetalles) {
-        this.carritoHistoricoDetalles = carritoHistoricoDetalles;
-        return this;
-    }
-
-    public CarritoHistorico addCarritoHistoricoDetalle(CarritoHistoricoDetalle carritoHistoricoDetalle) {
-        this.carritoHistoricoDetalles.add(carritoHistoricoDetalle);
-        carritoHistoricoDetalle.setCarritoHistorico(this);
-        return this;
-    }
-
-    public CarritoHistorico removeCarritoHistoricoDetalle(CarritoHistoricoDetalle carritoHistoricoDetalle) {
-        this.carritoHistoricoDetalles.remove(carritoHistoricoDetalle);
-        carritoHistoricoDetalle.setCarritoHistorico(null);
-        return this;
-    }
-
-    public void setCarritoHistoricoDetalles(Set<CarritoHistoricoDetalle> carritoHistoricoDetalles) {
-        this.carritoHistoricoDetalles = carritoHistoricoDetalles;
     }
 
     public Cliente getCliente() {

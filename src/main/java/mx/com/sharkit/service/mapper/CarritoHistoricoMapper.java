@@ -1,9 +1,10 @@
 package mx.com.sharkit.service.mapper;
 
-import mx.com.sharkit.domain.*;
-import mx.com.sharkit.service.dto.CarritoHistoricoDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import org.mapstruct.*;
+import mx.com.sharkit.domain.CarritoHistorico;
+import mx.com.sharkit.service.dto.CarritoHistoricoDTO;
 
 /**
  * Mapper for the entity {@link CarritoHistorico} and its DTO {@link CarritoHistoricoDTO}.
@@ -14,8 +15,6 @@ public interface CarritoHistoricoMapper extends EntityMapper<CarritoHistoricoDTO
     @Mapping(source = "cliente.id", target = "clienteId")
     CarritoHistoricoDTO toDto(CarritoHistorico carritoHistorico);
 
-    @Mapping(target = "carritoHistoricoDetalles", ignore = true)
-    @Mapping(target = "removeCarritoHistoricoDetalle", ignore = true)
     @Mapping(source = "clienteId", target = "cliente")
     CarritoHistorico toEntity(CarritoHistoricoDTO carritoHistoricoDTO);
 
