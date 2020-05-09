@@ -49,4 +49,13 @@ public interface ProveedorService extends BaseService<Proveedor, Long> {
      */
     List<ProveedorDTO> findAllByProductoId(Long productoId);
     
+    /**
+     * Get the "id" proveedor by usuarioId.
+     *
+     * @param usuarioId the usuarioId of the entity.
+     * @return the entity.
+     */
+    Optional<ProveedorDTO> findOneByusuarioId(Long usuarioId);
+
+    
 }

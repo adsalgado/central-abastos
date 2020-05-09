@@ -91,4 +91,16 @@ public class ProveedorServiceImpl extends BaseServiceImpl<Proveedor, Long> imple
 		return proveedorRepository.findByProductoId(productoId).stream().map(proveedorMapper::toDto)
 				.collect(Collectors.toCollection(LinkedList::new));
 	}
+
+	/**
+     * Get the "id" proveedor by usuarioId.
+     *
+     * @param usuarioId the usuarioId of the entity.
+     * @return the entity.
+     */
+	@Override
+	public Optional<ProveedorDTO> findOneByusuarioId(Long usuarioId) {
+		log.debug("Request to get Proveedor : {}", usuarioId);
+		return proveedorRepository.findOneByusuarioId(usuarioId).map(proveedorMapper::toDto);
+	}
 }

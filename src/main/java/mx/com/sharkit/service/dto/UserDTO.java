@@ -83,6 +83,10 @@ public class UserDTO implements Serializable {
     private AdjuntoDTO adjunto;
     
     private Long tipoPersonaId;
+    
+    private String razonSocial;
+
+    private DireccionDTO direccion;
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -293,29 +297,32 @@ public class UserDTO implements Serializable {
 		this.tipoPersonaId = tipoPersonaId;
 	}
 
+	public DireccionDTO getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(DireccionDTO direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getRazonSocial() {
+		return razonSocial;
+	}
+
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
+	}
+
 	@Override
-    public String toString() {
-        return "UserDTO{" +
-            "login='" + login + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", motherLastName='" + motherLastName + '\'' +
-            ", telefono='" + telefono + '\'' +
-            ", genero='" + genero + '\'' +
-            ", fechaNacimiento='" + fechaNacimiento + '\'' +
-            ", email='" + email + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", activated=" + activated +
-            ", langKey='" + langKey + '\'' +
-            ", createdBy=" + createdBy +
-            ", createdDate=" + createdDate +
-            ", lastModifiedBy='" + lastModifiedBy + '\'' +
-            ", lastModifiedDate=" + lastModifiedDate +
-            ", tipoPersonaId='" + tipoPersonaId + '\'' +
-            ", tipoUsuarioId='" + tipoUsuarioId + '\'' +
-            ", adjuntoId='" + adjuntoId + '\'' +
-            ", authorities=" + authorities +
-            ", adjunto=" + adjunto +
-            "}";
-    }
+	public String toString() {
+		return "UserDTO [id=" + id + ", login=" + login + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", email=" + email + ", motherLastName=" + motherLastName + ", telefono=" + telefono + ", genero="
+				+ genero + ", fechaNacimiento=" + fechaNacimiento + ", imageUrl=" + imageUrl + ", activated="
+				+ activated + ", langKey=" + langKey + ", createdBy=" + createdBy + ", createdDate=" + createdDate
+				+ ", lastModifiedBy=" + lastModifiedBy + ", lastModifiedDate=" + lastModifiedDate + ", authorities="
+				+ authorities + ", tipoUsuarioId=" + tipoUsuarioId + ", token=" + token + ", adjuntoId=" + adjuntoId
+				+ ", adjunto=" + adjunto + ", tipoPersonaId=" + tipoPersonaId + ", razonSocial=" + razonSocial
+				+ ", direccion=" + direccion + "]";
+	}
+
 }

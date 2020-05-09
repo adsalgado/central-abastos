@@ -36,6 +36,7 @@ import mx.com.sharkit.repository.UsuarioImagenRepository;
 import mx.com.sharkit.security.AuthoritiesConstants;
 import mx.com.sharkit.security.SecurityUtils;
 import mx.com.sharkit.service.dto.AdjuntoDTO;
+import mx.com.sharkit.service.dto.DireccionDTO;
 import mx.com.sharkit.service.dto.UserDTO;
 import mx.com.sharkit.service.util.RandomUtil;
 import mx.com.sharkit.web.rest.errors.EmailAlreadyUsedException;
@@ -63,15 +64,19 @@ public class UserService {
 
 	private final ProveedorRepository proveedorRepository;
 
+	private final DireccionService direccionService;
+
 	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
 			AuthorityRepository authorityRepository, UsuarioImagenRepository usuarioImagenRepository,
-			AdjuntoRepository adjuntoRepository, ProveedorRepository proveedorRepository) {
+			AdjuntoRepository adjuntoRepository, ProveedorRepository proveedorRepository,
+			DireccionService direccionService) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.authorityRepository = authorityRepository;
 		this.usuarioImagenRepository = usuarioImagenRepository;
 		this.adjuntoRepository = adjuntoRepository;
 		this.proveedorRepository = proveedorRepository;
+		this.direccionService = direccionService;
 	}
 
 	public Optional<User> activateRegistration(String key) {
@@ -301,6 +306,7 @@ public class UserService {
 	}
 
 	public Optional<UserDTO> updateUserToken(UserDTO userDTO) {
+		log.debug("Datos a actualizar, userDTO: {}", userDTO);
 
 		return Optional.of(userRepository.findById(userDTO.getId())).filter(Optional::isPresent).map(Optional::get)
 				.map(user -> {
@@ -354,6 +360,23 @@ public class UserService {
 							user.setAdjuntoId(adjunto.getId());
 						}
 					}
+					
+					if (user.getTipoUsuarioId() == TipoUsuario.PROVEEDOR) {
+						Proveedor proveedor = proveedorRepository.findOneByusuarioId(userDTO.getId()).orElse(null);
+
+						if (userDTO.getDireccion() != null ) {
+							if (proveedor != null) {
+								DireccionDTO direccion = direccionService.save(userDTO.getDireccion()); 
+								proveedor.setDireccionId(direccion.getId());
+							}	
+						}
+						
+						if (userDTO.getRazonSocial() != null) {
+							proveedor.setNombre(userDTO.getRazonSocial());
+						}
+						
+					}
+					
 
 					log.debug("Changed Information for User: {}", user);
 					return user;
