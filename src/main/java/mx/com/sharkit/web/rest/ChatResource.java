@@ -25,7 +25,9 @@ import io.github.jhipster.web.util.ResponseUtil;
 import mx.com.sharkit.service.ChatDetalleService;
 import mx.com.sharkit.service.ChatService;
 import mx.com.sharkit.service.dto.ChatDTO;
+import mx.com.sharkit.service.dto.ChatDetalleDTO;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
+import mx.com.sharkit.web.websocket.dto.MessageChatDTO;
 
 /**
  * REST controller for managing {@link mx.com.sharkit.domain.Chat}.
@@ -160,4 +162,26 @@ public class ChatResource {
 		}
 		return ResponseEntity.ok().body(chat);
 	}
+	
+	/**
+	 * {@code POST  /chats/messages} : Create a new chat.
+	 *
+	 * @param chatDTO the chatDTO to create.
+	 * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+	 *         body the new chatDTO, or with status {@code 400 (Bad Request)} if the
+	 *         chat has already an ID.
+	 * @throws URISyntaxException if the Location URI syntax is incorrect.
+	 */
+	@PostMapping("/chats/messages")
+	public ResponseEntity<ChatDetalleDTO> saveMessageChat(@Valid @RequestBody MessageChatDTO msgChatDTO) throws URISyntaxException {
+		log.debug("REST request to save Chat : {}", msgChatDTO);
+		if (msgChatDTO.getChatId() == null) {
+			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+		}
+		ChatDetalleDTO chatDetalleDTO = chatService.saveMensajeChat(msgChatDTO);
+		
+		return ResponseEntity.ok()
+				.body(chatDetalleDTO);
+	}
+
 }
