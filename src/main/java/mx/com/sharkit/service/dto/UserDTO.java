@@ -1,11 +1,11 @@
 package mx.com.sharkit.service.dto;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -20,9 +20,14 @@ import mx.com.sharkit.domain.User;
 /**
  * A DTO representing a user, with his authorities.
  */
-public class UserDTO {
+public class UserDTO implements Serializable {
 
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     @NotBlank
     @Pattern(regexp = Constants.LOGIN_REGEX)
@@ -84,29 +89,32 @@ public class UserDTO {
     }
 
     public UserDTO(User user) {
-        this.id = user.getId();
-        this.login = user.getLogin();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.motherLastName = user.getMotherLastName();
-        this.telefono = user.getTelefono();
-        this.genero = user.getGenero();
-        this.fechaNacimiento = user.getFechaNacimiento();
-        this.email = user.getEmail();
-        this.activated = user.getActivated();
-        this.imageUrl = user.getImageUrl();
-        this.langKey = user.getLangKey();
-        this.createdBy = user.getCreatedBy();
-        this.createdDate = user.getCreatedDate();
-        this.lastModifiedBy = user.getLastModifiedBy();
-        this.lastModifiedDate = user.getLastModifiedDate();
-        this.token = user.getToken();
-        this.tipoUsuarioId = user.getTipoUsuarioId();
-        this.tipoPersonaId = user.getTipoPersonaId();
-        this.adjuntoId = user.getAdjuntoId();
-        this.authorities = user.getAuthorities().stream()
-            .map(Authority::getName)
-            .collect(Collectors.toSet());
+    	if (user != null) {
+            this.id = user.getId();
+            this.login = user.getLogin();
+            this.firstName = user.getFirstName();
+            this.lastName = user.getLastName();
+            this.motherLastName = user.getMotherLastName();
+            this.telefono = user.getTelefono();
+            this.genero = user.getGenero();
+            this.fechaNacimiento = user.getFechaNacimiento();
+            this.email = user.getEmail();
+            this.activated = user.getActivated();
+            this.imageUrl = user.getImageUrl();
+            this.langKey = user.getLangKey();
+            this.createdBy = user.getCreatedBy();
+            this.createdDate = user.getCreatedDate();
+            this.lastModifiedBy = user.getLastModifiedBy();
+            this.lastModifiedDate = user.getLastModifiedDate();
+            this.token = user.getToken();
+            this.tipoUsuarioId = user.getTipoUsuarioId();
+            this.tipoPersonaId = user.getTipoPersonaId();
+            this.adjuntoId = user.getAdjuntoId();
+            this.authorities = user.getAuthorities().stream()
+                .map(Authority::getName)
+                .collect(Collectors.toSet());
+    		
+    	} 
     }
 
     public Long getId() {

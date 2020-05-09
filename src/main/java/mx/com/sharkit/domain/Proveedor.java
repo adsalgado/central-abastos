@@ -1,7 +1,6 @@
 package mx.com.sharkit.domain;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -30,6 +29,10 @@ public class Proveedor implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@ManyToOne
+	@JoinColumn(name = "usuario_id", insertable = false, updatable = false)
+	private User usuario;
+
 	@Column(name = "usuario_id")
 	private Long usuarioId;
 
@@ -51,16 +54,8 @@ public class Proveedor implements Serializable {
 	@Column(name = "direccion_id")
 	private Long direccionId;
 
-	@ManyToOne
-	@JoinColumn(name = "usuario_alta_id", insertable = false, updatable = false)
-	private User usuarioAlta;
-
 	@Column(name = "usuario_alta_id")
 	private Long usuarioAltaId;
-
-	@ManyToOne
-	@JoinColumn(name = "usuario_modificacion_id", insertable = false, updatable = false)
-	private User usuarioModificacion;
 
 	@Column(name = "usuario_modificacion_id")
 	private Long usuarioModificacionId;
@@ -128,32 +123,6 @@ public class Proveedor implements Serializable {
 
 	public void setFechaModificacion(LocalDateTime fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
-	}
-
-	public User getUsuarioAlta() {
-		return usuarioAlta;
-	}
-
-	public Proveedor usuarioAlta(User user) {
-		this.usuarioAlta = user;
-		return this;
-	}
-
-	public void setUsuarioAlta(User user) {
-		this.usuarioAlta = user;
-	}
-
-	public User getUsuarioModificacion() {
-		return usuarioModificacion;
-	}
-
-	public Proveedor usuarioModificacion(User user) {
-		this.usuarioModificacion = user;
-		return this;
-	}
-
-	public void setUsuarioModificacion(User user) {
-		this.usuarioModificacion = user;
 	}
 
 	public Direccion getDireccion() {
@@ -234,6 +203,14 @@ public class Proveedor implements Serializable {
 
 	public void setUsuarioId(Long usuarioId) {
 		this.usuarioId = usuarioId;
+	}
+
+	public User getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(User usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override
