@@ -151,28 +151,28 @@ public class UsuarioDocumentoResource {
 	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
 	 *         of usuarioDocumentos in body.
 	 */
-	@GetMapping("/usuario-documentos")
-	public List<UsuarioDocumentoDTO> getAllUsuarioDocumentos() {
-		log.debug("REST request to get all UsuarioDocumentos");
-
-		Optional<User> user = userService.getUserWithAuthorities();
-		Long usuarioId = user.isPresent() ? user.get().getId() : 0L;
-		if (usuarioId == 0) {
-			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idexists");
-		}
-		
-
-		return usuarioDocumentoService.findByUsuarioId(usuarioId);
-	}
+//	@GetMapping("/usuario-documentos")
+//	public List<UsuarioDocumentoDTO> getAllUsuarioDocumentos() {
+//		log.debug("REST request to get all UsuarioDocumentos");
+//
+//		Optional<User> user = userService.getUserWithAuthorities();
+//		Long usuarioId = user.isPresent() ? user.get().getId() : 0L;
+//		if (usuarioId == 0) {
+//			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idexists");
+//		}
+//		
+//
+//		return usuarioDocumentoService.findByUsuarioId(usuarioId);
+//	}
 
 	/**
-	 * {@code GET  /usuario-documentos/tipo-usuario/{tipoUsuarioId}} : get all the usuarioDocumentos.
+	 * {@code GET  /usuario-documentos : get all the usuarioDocumentos.
 	 *
 	 * 
 	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
 	 *         of usuarioDocumentos in body.
 	 */
-	@GetMapping("/usuario-documentos/tipo-usuario")
+	@GetMapping("/usuario-documentos")
 	public List<Map<String, Object>> getAllDocumentosUsuarioByTipoUsuario() {
 		log.debug("REST request to get all UsuarioDocumentos");
 
