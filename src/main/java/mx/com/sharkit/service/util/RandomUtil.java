@@ -38,4 +38,13 @@ public final class RandomUtil {
     public static String generateResetKey() {
         return RandomStringUtils.randomNumeric(DEF_COUNT);
     }
+    
+    /**
+     * Generate a password.
+     *
+     * @return the generated password.
+     */
+    public static String generateToken(int size) {
+        return RandomStringUtils.randomAlphanumeric(size);
+    }
 }

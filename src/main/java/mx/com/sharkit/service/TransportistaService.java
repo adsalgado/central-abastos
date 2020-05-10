@@ -40,4 +40,7 @@ public interface TransportistaService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    Optional<TransportistaDTO> findOneByusuarioId(Long usuarioId);
+    
 }

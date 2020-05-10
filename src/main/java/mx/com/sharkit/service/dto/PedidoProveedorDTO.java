@@ -68,6 +68,8 @@ public class PedidoProveedorDTO implements Serializable {
     private Long chatProveedorid;
 
     private Long chatTransportistaId;
+    
+    private String token;
 
 	public Long getId() {
 		return id;
@@ -261,6 +263,14 @@ public class PedidoProveedorDTO implements Serializable {
 		this.chatTransportistaId = chatTransportistaId;
 	}
 
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -292,7 +302,8 @@ public class PedidoProveedorDTO implements Serializable {
 				+ fechaAlta + ", usuarioModificacionId=" + usuarioModificacionId + ", fechaModificacion="
 				+ fechaModificacion + ", pedidoDetalles=" + pedidoDetalles + ", fechaPreparacion=" + fechaPreparacion
 				+ ", fechaEnvio=" + fechaEnvio + ", fechaEntrega=" + fechaEntrega + ", personaEntrega=" + personaEntrega
-				+ ", chatProveedorid=" + chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + "]";
+				+ ", chatProveedorid=" + chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + ", token="
+				+ token + "]";
 	}
 
 }

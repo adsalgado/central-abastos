@@ -31,6 +31,7 @@ import mx.com.sharkit.domain.User;
 import mx.com.sharkit.repository.AdjuntoRepository;
 import mx.com.sharkit.repository.AuthorityRepository;
 import mx.com.sharkit.repository.ProveedorRepository;
+import mx.com.sharkit.repository.TransportistaRepository;
 import mx.com.sharkit.repository.UserRepository;
 import mx.com.sharkit.repository.UsuarioImagenRepository;
 import mx.com.sharkit.security.AuthoritiesConstants;
@@ -65,11 +66,13 @@ public class UserService {
 	private final ProveedorRepository proveedorRepository;
 
 	private final DireccionService direccionService;
+	
+	private final TransportistaRepository transportistaRepository;
 
 	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
 			AuthorityRepository authorityRepository, UsuarioImagenRepository usuarioImagenRepository,
 			AdjuntoRepository adjuntoRepository, ProveedorRepository proveedorRepository,
-			DireccionService direccionService) {
+			DireccionService direccionService, TransportistaRepository transportistaRepository) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.authorityRepository = authorityRepository;
@@ -77,6 +80,7 @@ public class UserService {
 		this.adjuntoRepository = adjuntoRepository;
 		this.proveedorRepository = proveedorRepository;
 		this.direccionService = direccionService;
+		this.transportistaRepository = transportistaRepository;
 	}
 
 	public Optional<User> activateRegistration(String key) {
@@ -248,6 +252,81 @@ public class UserService {
 		return newUser;
 	}
 
+	public User registerUserTransportista(UserDTO userDTO, String razonSocial, String password, boolean isActivated, AdjuntoDTO adjunto) {
+		userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).ifPresent(existingUser -> {
+			boolean removed = removeNonActivatedUser(existingUser);
+			if (!removed) {
+				throw new LoginAlreadyUsedException();
+			}
+		});
+		userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).ifPresent(existingUser -> {
+			boolean removed = removeNonActivatedUser(existingUser);
+			if (!removed) {
+				throw new EmailAlreadyUsedException();
+			}
+		});
+
+		LocalDateTime now = LocalDateTime.now();
+		User newUser = new User();
+		String encryptedPassword = passwordEncoder.encode(password);
+		newUser.setLogin(userDTO.getLogin().toLowerCase());
+		// new user gets initially a generated password
+		newUser.setPassword(encryptedPassword);
+		newUser.setFirstName(userDTO.getFirstName());
+		newUser.setLastName(userDTO.getLastName());
+		newUser.setMotherLastName(userDTO.getMotherLastName());
+		newUser.setTelefono(userDTO.getTelefono());
+		newUser.setGenero(userDTO.getGenero());
+		newUser.setFechaNacimiento(userDTO.getFechaNacimiento());
+		newUser.setEmail(userDTO.getEmail().toLowerCase());
+		newUser.setImageUrl(userDTO.getImageUrl());
+		newUser.setCreatedDate(Instant.now());
+
+		String langKey = StringUtils.isAllBlank(userDTO.getLangKey()) ? Constants.DEFAULT_LANGUAGE
+				: userDTO.getLangKey();
+		newUser.setLangKey(langKey);
+		// new user is not active
+		newUser.setActivated(isActivated);
+		newUser.setTipoUsuarioId(TipoUsuario.TRANSPORTISTA);
+
+		Long tipoPersonaId = (userDTO.getTipoPersonaId() != null && userDTO.getTipoPersonaId() > 0)
+				? userDTO.getTipoPersonaId()
+				: TipoPersona.FISICA;
+		newUser.setTipoPersonaId(tipoPersonaId);
+
+		// new user gets registration key
+		newUser.setActivationKey(RandomUtil.generateActivationKey());
+		Set<Authority> authorities = new HashSet<>();
+		authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+		authorityRepository.findById(AuthoritiesConstants.TRANSPORTISTA).ifPresent(authorities::add);
+		newUser.setAuthorities(authorities);
+
+		if (adjunto != null) {
+			Adjunto adj = new Adjunto();
+			adj.setContentType(adjunto.getContentType());
+			adj.setFileContentType(adjunto.getFileContentType());
+			adj.setSize(adjunto.getSize());
+			adj.setFileName(adjunto.getFileName());
+			adj.setFile(adjunto.getFile());
+			adj = adjuntoRepository.save(adj);
+			newUser.setAdjuntoId(adj.getId());
+		}
+
+		newUser = userRepository.save(newUser);
+
+		// Crear registro en transportista
+		Transportista transportista = new Transportista();
+		transportista.setNombre(razonSocial);
+		transportista.setEmpresaId(Empresa.CENTRAL_ABASTOS);
+		transportista.setFechaAlta(now);
+		transportista.setUsuarioAltaId(newUser.getId());
+		transportista.setUsuarioId(newUser.getId());
+		transportista = transportistaRepository.save(transportista);
+
+		log.debug("Created Information for User: {}", newUser);
+		return newUser;
+	}
+
 	private boolean removeNonActivatedUser(User existingUser) {
 		if (existingUser.getActivated()) {
 			return false;
@@ -375,6 +454,19 @@ public class UserService {
 							proveedor.setNombre(userDTO.getRazonSocial());
 						}
 						
+					} else if (user.getTipoUsuarioId() == TipoUsuario.TRANSPORTISTA) {
+						Transportista transportista = transportistaRepository.findOneByusuarioId(userDTO.getId()).orElse(null);
+
+						if (userDTO.getDireccion() != null ) {
+							if (transportista != null) {
+								DireccionDTO direccion = direccionService.save(userDTO.getDireccion()); 
+								transportista.setDireccionId(direccion.getId());
+							}	
+						}
+						
+						if (userDTO.getRazonSocial() != null) {
+							transportista.setNombre(userDTO.getRazonSocial());
+						}
 					}
 					
 
