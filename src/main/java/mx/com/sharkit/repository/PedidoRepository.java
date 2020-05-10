@@ -24,5 +24,12 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 			"	ON (pp.pedido_id = pe.id)\n" + 
 			"WHERE   pp.proveedor_id = ?1", nativeQuery=true)
 	List<Pedido> findByProveedorId(Long proveedorId);
-	
+
+	@Query(value="SELECT  pe.*\n" + 
+			"FROM		pedido pe\n" + 
+			"INNER JOIN pedido_proveedor pp\n" + 
+			"	ON (pp.pedido_id = pe.id)\n" + 
+			"WHERE   pp.transportista_id = ?1", nativeQuery=true)
+	List<Pedido> findByTransportistaId(Long transportistaId);
+
 }

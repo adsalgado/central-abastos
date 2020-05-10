@@ -24,8 +24,10 @@ import com.stripe.model.Charge;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import mx.com.sharkit.domain.Proveedor;
+import mx.com.sharkit.domain.Transportista;
 import mx.com.sharkit.domain.User;
 import mx.com.sharkit.repository.ProveedorRepository;
+import mx.com.sharkit.repository.TransportistaRepository;
 import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.StripeService;
@@ -61,14 +63,17 @@ public class PedidoResource {
 
 	private final ProveedorRepository proveedorRepository;
 
+	private final TransportistaRepository transportistaRepository;
+
 	public PedidoResource(PedidoService pedidoService, UserService userService,
 			PedidoProveedorService pedidoProveedorService, StripeService stripeService,
-			ProveedorRepository proveedorRepository) {
+			ProveedorRepository proveedorRepository, TransportistaRepository transportistaRepository) {
 		this.pedidoService = pedidoService;
 		this.userService = userService;
 		this.pedidoProveedorService = pedidoProveedorService;
 		this.stripeService = stripeService;
 		this.proveedorRepository = proveedorRepository;
+		this.transportistaRepository = transportistaRepository;
 	}
 
 	/**
@@ -283,5 +288,33 @@ public class PedidoResource {
 		return lstPedidos;
 	}
 	
+	/**
+	 * {@code GET  /transportista/pedidos} : get all the pedidos of Transportista.
+	 *
+	 * 
+	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+	 *         of pedidos in body.
+	 */
+	@GetMapping("transportista/pedidos")
+	public List<PedidoDTO> getAllPedidosTransportista() {
+		log.debug("REST request to get all Pedidos of Transportista");
+		Optional<User> user = userService.getUserWithAuthorities();
+		Long usuarioId = user.isPresent() ? user.get().getId() : 0L;
+		if (usuarioId == 0) {
+			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+		}
+		Optional<Transportista> transportista = transportistaRepository.findOneByusuarioId(usuarioId);
+		Long transportistaId = transportista.isPresent()  ? transportista.get().getId() : 0L;
+		if (transportistaId == 0) {
+			throw new BadRequestAlertException("El usuario no es transportistaId", ENTITY_NAME, "idnull");
+		}
+		log.debug("Transportista: {}", transportistaId);
+		List<PedidoDTO> lstPedidos = pedidoService.findByTransportistaId(transportistaId);
+		for (PedidoDTO pedidoDTO : lstPedidos) {
+			pedidoDTO.setPedidoProveedores(pedidoProveedorService.findByPedidoIdAndTransportistaId(pedidoDTO.getId(), transportistaId));
+		}
+
+		return lstPedidos;
+	}
 
 }

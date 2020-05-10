@@ -18,6 +18,8 @@ public interface PedidoProveedorRepository  extends IBaseRepositorio<PedidoProve
 	List<PedidoProveedor> findByPedidoId(Long pedidoId);
 	
 	List<PedidoProveedor> findByPedidoIdAndProveedorId(Long pedidoId, Long proveedorId);
-	
+
+	List<PedidoProveedor> findByPedidoIdAndTransportistaId(Long pedidoId, Long transportistaId);
+
 }
 

@@ -175,6 +175,7 @@ public class PedidoServiceImpl implements PedidoService {
 					pedidoProveedorDTO.setFechaAlta(fechaAlta);
 					pedidoProveedorDTO.setUsuarioAltaId(pedidoAltaDTO.getUsuarioId());
 					pedidoProveedorDTO.setProveedorId(proveedorDTO.getId());
+					pedidoProveedorDTO.setTransportistaId(proveedorDTO.getTransportistaId());
 
 					pedidoDTO.getPedidoProveedores().add(pedidoProveedorDTO);
 					mapProveedores.put(proveedorDTO.getId(), pedidoProveedorDTO);
@@ -292,6 +293,13 @@ public class PedidoServiceImpl implements PedidoService {
 	public List<PedidoDTO> findByProveedorId(Long proveedorId) {
 		log.debug("Request to get all Pedidos by proveedorId: {}", proveedorId);
 		return pedidoRepository.findByProveedorId(proveedorId).stream().map(pedidoMapper::toDto)
+				.collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public List<PedidoDTO> findByTransportistaId(Long transportistaId) {
+		log.debug("Request to get all Pedidos by transportistaId: {}", transportistaId);
+		return pedidoRepository.findByTransportistaId(transportistaId).stream().map(pedidoMapper::toDto)
 				.collect(Collectors.toCollection(LinkedList::new));
 	}
 
