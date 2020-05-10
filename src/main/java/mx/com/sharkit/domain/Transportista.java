@@ -62,6 +62,12 @@ public class Transportista implements Serializable {
 	@Column(name = "empresa_id")
 	private Long empresaId;
 
+	@ManyToOne
+	@JoinColumn(name = "direccion_id", insertable = false, updatable = false)
+	private Direccion direccion;
+
+	@Column(name = "direccion_id")
+	private Long direccionId;
 
     public Long getId() {
 		return id;
@@ -135,6 +141,22 @@ public class Transportista implements Serializable {
 		this.empresaId = empresaId;
 	}
 
+	public Direccion getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(Direccion direccion) {
+		this.direccion = direccion;
+	}
+
+	public Long getDireccionId() {
+		return direccionId;
+	}
+
+	public void setDireccionId(Long direccionId) {
+		this.direccionId = direccionId;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -156,7 +178,7 @@ public class Transportista implements Serializable {
 		return "Transportista [id=" + id + ", usuarioId=" + usuarioId + ", nombre=" + nombre + ", fechaAlta="
 				+ fechaAlta + ", fechaModificacion=" + fechaModificacion + ", usuarioAltaId=" + usuarioAltaId
 				+ ", usuarioModificacionId=" + usuarioModificacionId + ", empresa=" + empresa + ", empresaId="
-				+ empresaId + "]";
+				+ empresaId + ", direccion=" + direccion + ", direccionId=" + direccionId + "]";
 	}
 
 }

@@ -28,6 +28,9 @@ public class TransportistaDTO implements Serializable {
 
 	private Long empresaId;
 
+    private DireccionDTO direccion;
+
+    private Long direccionId;
 
     public Long getId() {
 		return id;
@@ -93,6 +96,22 @@ public class TransportistaDTO implements Serializable {
 		this.empresaId = empresaId;
 	}
 
+	public DireccionDTO getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(DireccionDTO direccion) {
+		this.direccion = direccion;
+	}
+
+	public Long getDireccionId() {
+		return direccionId;
+	}
+
+	public void setDireccionId(Long direccionId) {
+		this.direccionId = direccionId;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -118,7 +137,8 @@ public class TransportistaDTO implements Serializable {
 	public String toString() {
 		return "TransportistaDTO [id=" + id + ", usuarioId=" + usuarioId + ", nombre=" + nombre + ", fechaAlta="
 				+ fechaAlta + ", fechaModificacion=" + fechaModificacion + ", usuarioAltaId=" + usuarioAltaId
-				+ ", usuarioModificacionId=" + usuarioModificacionId + ", empresaId=" + empresaId + "]";
+				+ ", usuarioModificacionId=" + usuarioModificacionId + ", empresaId=" + empresaId + ", direccion="
+				+ direccion + ", direccionId=" + direccionId + "]";
 	}
 
 }

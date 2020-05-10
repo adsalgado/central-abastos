@@ -72,7 +72,7 @@ public class AccountResource {
 	}
 
     /**
-     * {@code POST  /register} : register the user.
+     * {@code POST  /register/proveedor} : register the user.
      *
      * @param managedUserVM the managed user View Model.
      * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
@@ -87,6 +87,27 @@ public class AccountResource {
 			throw new InvalidPasswordException();
 		}
 		User user = userService.registerUserProveedor(managedUserVM, managedUserVM.getRazonSocial(), managedUserVM.getPassword(), managedUserVM.isActivated(), managedUserVM.getAdjunto());
+		if (!managedUserVM.isActivated()) {
+			mailService.sendActivationEmail(user);
+		}
+	}
+
+    /**
+     * {@code POST  /register} : register the user.
+     *
+     * @param managedUserVM the managed user View Model.
+     * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
+     * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
+     * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
+     */
+    @PostMapping("/register/transportista")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registerAccountTransportista(@Valid @RequestBody ManagedUserVM managedUserVM) {
+		log.debug("managedUserVM: {}", managedUserVM);
+		if (!checkPasswordLength(managedUserVM.getPassword())) {
+			throw new InvalidPasswordException();
+		}
+		User user = userService.registerUserTransportista(managedUserVM, managedUserVM.getRazonSocial(), managedUserVM.getPassword(), managedUserVM.isActivated(), managedUserVM.getAdjunto());
 		if (!managedUserVM.isActivated()) {
 			mailService.sendActivationEmail(user);
 		}

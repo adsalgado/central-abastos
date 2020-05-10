@@ -100,6 +100,9 @@ public class PedidoProveedor implements Serializable {
 
     @Column(name = "chat_transportista_id")
     private Long chatTransportistaId;
+    
+    @Column(name = "token")
+    private String token;
 
 	public Long getId() {
 		return id;
@@ -293,6 +296,14 @@ public class PedidoProveedor implements Serializable {
 		this.chatTransportistaId = chatTransportistaId;
 	}
 
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -319,7 +330,7 @@ public class PedidoProveedor implements Serializable {
 				+ fechaAlta + ", usuarioModificacionId=" + usuarioModificacionId + ", fechaModificacion="
 				+ fechaModificacion + ", fechaPreparacion=" + fechaPreparacion + ", fechaEnvio=" + fechaEnvio
 				+ ", fechaEntrega=" + fechaEntrega + ", personaEntrega=" + personaEntrega + ", chatProveedorid="
-				+ chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + "]";
+				+ chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + ", token=" + token + "]";
 	}
 
 }

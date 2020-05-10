@@ -37,6 +37,7 @@ import mx.com.sharkit.service.dto.UserDTO;
 import mx.com.sharkit.service.mapper.PedidoDetalleMapper;
 import mx.com.sharkit.service.mapper.PedidoMapper;
 import mx.com.sharkit.service.mapper.PedidoProveedorMapper;
+import mx.com.sharkit.service.util.RandomUtil;
 
 /**
  * Service Implementation for managing {@link Pedido}.
@@ -44,6 +45,8 @@ import mx.com.sharkit.service.mapper.PedidoProveedorMapper;
 @Service
 @Transactional
 public class PedidoServiceImpl implements PedidoService {
+
+	private static final int SIZE_TOKEN_PEDIDO = 5;
 
 	private final Logger log = LoggerFactory.getLogger(PedidoServiceImpl.class);
 
@@ -172,6 +175,7 @@ public class PedidoServiceImpl implements PedidoService {
 					pedidoProveedorDTO.setFechaAlta(fechaAlta);
 					pedidoProveedorDTO.setUsuarioAltaId(pedidoAltaDTO.getUsuarioId());
 					pedidoProveedorDTO.setProveedorId(proveedorDTO.getId());
+					pedidoProveedorDTO.setTransportistaId(proveedorDTO.getTransportistaId());
 
 					pedidoDTO.getPedidoProveedores().add(pedidoProveedorDTO);
 					mapProveedores.put(proveedorDTO.getId(), pedidoProveedorDTO);
@@ -238,6 +242,10 @@ public class PedidoServiceImpl implements PedidoService {
 			pedProv.setPedidoId(pedidoId);
 			pedProv.setTotal(sumaProveedor.get(pedProv.getProveedorId()));
 			pedProv.setTotalSinIva(sumaSinIvaProveedor.get(pedProv.getProveedorId()));
+			
+			String token = RandomUtil.generateToken(SIZE_TOKEN_PEDIDO);
+			log.debug("Token: {}", token);
+			pedProv.setToken(token);
 
 			PedidoProveedor pedidoProveedor = pedidoProveedorMapper.toEntity(pedProv);
 			pedidoProveedor = pedidoProveedorRepository.save(pedidoProveedor);
@@ -285,6 +293,13 @@ public class PedidoServiceImpl implements PedidoService {
 	public List<PedidoDTO> findByProveedorId(Long proveedorId) {
 		log.debug("Request to get all Pedidos by proveedorId: {}", proveedorId);
 		return pedidoRepository.findByProveedorId(proveedorId).stream().map(pedidoMapper::toDto)
+				.collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public List<PedidoDTO> findByTransportistaId(Long transportistaId) {
+		log.debug("Request to get all Pedidos by transportistaId: {}", transportistaId);
+		return pedidoRepository.findByTransportistaId(transportistaId).stream().map(pedidoMapper::toDto)
 				.collect(Collectors.toCollection(LinkedList::new));
 	}
 

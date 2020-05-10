@@ -87,4 +87,11 @@ public class TransportistaServiceImpl implements TransportistaService {
         log.debug("Request to delete Transportista : {}", id);
         transportistaRepository.deleteById(id);
     }
+
+	@Override
+	public Optional<TransportistaDTO> findOneByusuarioId(Long usuarioId) {
+		log.debug("Request to get Transportista by usuarioId : {}", usuarioId);
+        return transportistaRepository.findOneByusuarioId(usuarioId)
+            .map(transportistaMapper::toDto);
+	}
 }
