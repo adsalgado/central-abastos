@@ -28,7 +28,8 @@ public class PushNotificationController {
 	public ResponseEntity<String> send() throws JSONException {
 
 		JSONObject body = new JSONObject();
-		body.put("to", "/topics/" + TOPIC);
+//		body.put("to", "/topics/" + TOPIC);
+		body.put("to", "fEmlU4miqjQ:APA91bGVFDGwrH__e0DBr0965HSRfDaHKryoiDs1f3nyokcZk59dcOo1aOwv7Pr6qIS4Js773znhGjMi7YSKpMgiGB8hRhCm-WhL9TFEIlrHaXW912Ao2YYXt9XJwy3TPVCtZr8MC8gx");
 		body.put("priority", "high");
 
 		JSONObject notification = new JSONObject();

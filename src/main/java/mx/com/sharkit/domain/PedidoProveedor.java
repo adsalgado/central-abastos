@@ -103,6 +103,13 @@ public class PedidoProveedor implements Serializable {
     
     @Column(name = "token")
     private String token;
+    
+    @Column(name = "calificacion_servicio")
+    private Integer calificacionServicio;
+    
+    @Size(max = 512)
+    @Column(name = "comentarios", length = 512)
+    private String comentarios;
 
 	public Long getId() {
 		return id;
@@ -304,6 +311,22 @@ public class PedidoProveedor implements Serializable {
 		this.token = token;
 	}
 
+	public Integer getCalificacionServicio() {
+		return calificacionServicio;
+	}
+
+	public void setCalificacionServicio(Integer calificacionServicio) {
+		this.calificacionServicio = calificacionServicio;
+	}
+
+	public String getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(String comentarios) {
+		this.comentarios = comentarios;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -330,7 +353,8 @@ public class PedidoProveedor implements Serializable {
 				+ fechaAlta + ", usuarioModificacionId=" + usuarioModificacionId + ", fechaModificacion="
 				+ fechaModificacion + ", fechaPreparacion=" + fechaPreparacion + ", fechaEnvio=" + fechaEnvio
 				+ ", fechaEntrega=" + fechaEntrega + ", personaEntrega=" + personaEntrega + ", chatProveedorid="
-				+ chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + ", token=" + token + "]";
+				+ chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + ", token=" + token
+				+ ", calificacionServicio=" + calificacionServicio + ", comentarios=" + comentarios + "]";
 	}
 
 }

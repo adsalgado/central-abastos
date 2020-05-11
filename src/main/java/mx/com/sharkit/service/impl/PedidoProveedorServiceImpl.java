@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,10 @@ import mx.com.sharkit.repository.PedidoDetalleRepository;
 import mx.com.sharkit.repository.PedidoProveedorRepository;
 import mx.com.sharkit.service.PedidoDetalleService;
 import mx.com.sharkit.service.PedidoProveedorService;
+import mx.com.sharkit.service.dto.CalificacionPedidoProveedorDTO;
 import mx.com.sharkit.service.dto.PedidoProveedorDTO;
+import mx.com.sharkit.service.dto.TerminarServicioPedidoProveedorDTO;
+import mx.com.sharkit.service.dto.UserDTO;
 import mx.com.sharkit.service.mapper.PedidoProveedorMapper;
 
 /**
@@ -140,11 +144,11 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 			pedidoProveedor.setUsuarioModificacionId(usuarioEstatus);
 			pedidoProveedor.setFechaModificacion(now);
 
-			if (estatus == Estatus.PEDIDO_PREPARADO) {
+			if (estatus.equals(Estatus.PEDIDO_PREPARADO)) {
 				pedidoProveedor.setFechaPreparacion(now);
-			} else if (estatus == Estatus.PEDIDO_ENVIADO) {
+			} else if (estatus.equals(Estatus.PEDIDO_ENVIADO)) {
 				pedidoProveedor.setFechaEnvio(now);
-			} else if (estatus == Estatus.PEDIDO_ENTREGADO) {
+			} else if (estatus.equals(Estatus.PEDIDO_ENTREGADO)) {
 				pedidoProveedor.setFechaEntrega(now);
 			}
 		}
@@ -153,7 +157,8 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 
 	@Override
 	public List<PedidoProveedorDTO> findByPedidoIdAndTransportistaId(Long pedidoId, Long transportistaId) {
-		log.debug("Request to get all PedidoProveedors by pedidoId: {} and transportistaId: {}", pedidoId, transportistaId);
+		log.debug("Request to get all PedidoProveedors by pedidoId: {} and transportistaId: {}", pedidoId,
+				transportistaId);
 		List<PedidoProveedorDTO> lstPedidoProveedor = pedidoProveedorRepository
 				.findByPedidoIdAndTransportistaId(pedidoId, transportistaId).stream().map(pedidoProveedorMapper::toDto)
 				.collect(Collectors.toCollection(LinkedList::new));
@@ -162,6 +167,46 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 		});
 		return lstPedidoProveedor;
 
+	}
+
+	@Override
+	public PedidoProveedorDTO actualizaCalificacionServicio(CalificacionPedidoProveedorDTO calificacionDTO,
+			Long usuarioId) {
+//		Optional<PedidoProveedor> pedidoProveedor = pedidoProveedorRepository.findById(calificacionDTO.getPedidoProveedorId()).filter(Optional::isPresent).map(Optional::get)
+
+		PedidoProveedor pedidoProveedor = pedidoProveedorRepository.findById(calificacionDTO.getPedidoProveedorId())
+				.orElse(null);
+		if (pedidoProveedor != null) {
+			pedidoProveedor.setCalificacionServicio(calificacionDTO.getCalificacionServicio());
+			pedidoProveedor.setComentarios(calificacionDTO.getComentarios());
+			pedidoProveedor.setFechaModificacion(LocalDateTime.now());
+			pedidoProveedor.setUsuarioModificacionId(usuarioId);
+		}
+
+		return pedidoProveedorMapper.toDto(pedidoProveedor);
+	}
+
+	@Override
+	public PedidoProveedorDTO terminarServicio(TerminarServicioPedidoProveedorDTO terminarDTO, Long usuarioId)
+			throws Exception {
+		
+		PedidoProveedor pedidoProveedor = pedidoProveedorRepository.findById(terminarDTO.getPedidoProveedorId())
+				.orElse(null);
+
+		if (pedidoProveedor != null) {
+
+			if (StringUtils.equals(pedidoProveedor.getToken(), terminarDTO.getToken())) {
+				this.cambiaEstatusPedidoProveedorAndDetalles(terminarDTO.getPedidoProveedorId(), Estatus.PEDIDO_ENTREGADO,
+						usuarioId);		
+			} else {
+				throw new Exception("token inválido");
+			}
+		
+		} else {
+			throw new Exception("Pedido proveedor id no existe.");
+		}
+
+		return pedidoProveedorMapper.toDto(pedidoProveedor);
 	}
 
 }
