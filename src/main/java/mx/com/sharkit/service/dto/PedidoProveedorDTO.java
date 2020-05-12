@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -70,6 +71,10 @@ public class PedidoProveedorDTO implements Serializable {
     private Long chatTransportistaId;
     
     private String token;
+    
+    private Integer calificacionServicio;
+    
+    private String comentarios;
 
 	public Long getId() {
 		return id;
@@ -271,6 +276,22 @@ public class PedidoProveedorDTO implements Serializable {
 		this.token = token;
 	}
 
+	public Integer getCalificacionServicio() {
+		return calificacionServicio;
+	}
+
+	public void setCalificacionServicio(Integer calificacionServicio) {
+		this.calificacionServicio = calificacionServicio;
+	}
+
+	public String getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(String comentarios) {
+		this.comentarios = comentarios;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -303,7 +324,7 @@ public class PedidoProveedorDTO implements Serializable {
 				+ fechaModificacion + ", pedidoDetalles=" + pedidoDetalles + ", fechaPreparacion=" + fechaPreparacion
 				+ ", fechaEnvio=" + fechaEnvio + ", fechaEntrega=" + fechaEntrega + ", personaEntrega=" + personaEntrega
 				+ ", chatProveedorid=" + chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + ", token="
-				+ token + "]";
+				+ token + ", calificacionServicio=" + calificacionServicio + ", comentarios=" + comentarios + "]";
 	}
 
 }

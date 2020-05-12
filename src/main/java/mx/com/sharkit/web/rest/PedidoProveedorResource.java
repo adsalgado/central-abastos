@@ -24,14 +24,16 @@ import org.springframework.web.bind.annotation.RestController;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import mx.com.sharkit.domain.Proveedor;
+import mx.com.sharkit.domain.Transportista;
 import mx.com.sharkit.domain.User;
 import mx.com.sharkit.repository.ProveedorRepository;
+import mx.com.sharkit.repository.TransportistaRepository;
 import mx.com.sharkit.service.PedidoProveedorService;
-import mx.com.sharkit.service.ProductoProveedorService;
 import mx.com.sharkit.service.UserService;
+import mx.com.sharkit.service.dto.CalificacionPedidoProveedorDTO;
 import mx.com.sharkit.service.dto.ChangeEstatusPedidoProveedorDTO;
-import mx.com.sharkit.service.dto.PedidoDTO;
 import mx.com.sharkit.service.dto.PedidoProveedorDTO;
+import mx.com.sharkit.service.dto.TerminarServicioPedidoProveedorDTO;
 import mx.com.sharkit.service.mapper.PedidoProveedorMapper;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 
@@ -60,15 +62,18 @@ public class PedidoProveedorResource {
 	private final UserService userService;
 
 	private final ProveedorRepository proveedorRepository;
+	
+	private final TransportistaRepository transportistaRepository;
 
 	@Autowired
 	private PedidoProveedorMapper pedidoProveedorMapper;
 
 	public PedidoProveedorResource(PedidoProveedorService pedidoProveedorService, UserService userService,
-			ProveedorRepository proveedorRepository) {
+			ProveedorRepository proveedorRepository, TransportistaRepository transportistaRepository) {
 		this.pedidoProveedorService = pedidoProveedorService;
 		this.userService = userService;
 		this.proveedorRepository = proveedorRepository;
+		this.transportistaRepository = transportistaRepository;
 	}
 
 	/**
@@ -191,6 +196,79 @@ public class PedidoProveedorResource {
 
 		return ResponseEntity.ok()
 				.headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, proveedorId.toString()))
+				.body(result);
+
+	}
+
+	/**
+	 * {@code PUT  /pedido-proveedores/calificacion-servicio} : Updates an existing
+	 * pedido proveedor.
+	 *
+	 * @param pedidoDTO the pedidoDTO to update.
+	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+	 *         the updated pedidoDTO, or with status {@code 400 (Bad Request)} if
+	 *         the pedidoDTO is not valid, or with status
+	 *         {@code 500 (Internal Server Error)} if the pedidoDTO couldn't be
+	 *         updated.
+	 * @throws URISyntaxException if the Location URI syntax is incorrect.
+	 */
+	@PutMapping("/pedido-proveedores/calificacion-servicio")
+	public ResponseEntity<PedidoProveedorDTO> updateCalificacionPedido(
+			@RequestBody CalificacionPedidoProveedorDTO calificacionDTO) throws URISyntaxException {
+		
+		log.debug("REST request to update Pedido : {}", calificacionDTO);
+		Optional<User> user = userService.getUserWithAuthorities();
+		Long usuarioId = user.isPresent() ? user.get().getId() : 0L;
+		if (usuarioId == 0) {
+			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+		}
+
+		PedidoProveedorDTO result = pedidoProveedorService.actualizaCalificacionServicio(calificacionDTO, usuarioId);
+
+		return ResponseEntity.ok()
+				.headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, calificacionDTO.getPedidoProveedorId().toString()))
+				.body(result);
+
+	}
+
+	/**
+	 * {@code PUT  /transportista/pedido-proveedores/terminar-servicio} : Updates an existing
+	 * pedido proveedor.
+	 *
+	 * @param pedidoDTO the pedidoDTO to update.
+	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+	 *         the updated pedidoDTO, or with status {@code 400 (Bad Request)} if
+	 *         the pedidoDTO is not valid, or with status
+	 *         {@code 500 (Internal Server Error)} if the pedidoDTO couldn't be
+	 *         updated.
+	 * @throws URISyntaxException if the Location URI syntax is incorrect.
+	 */
+	@PutMapping("/transportista/pedido-proveedores/terminar-servicio")
+	public ResponseEntity<PedidoProveedorDTO> terminarServicio(
+			@RequestBody TerminarServicioPedidoProveedorDTO terminarDTO) throws URISyntaxException {
+		
+		log.debug("REST request to terminarServicio Pedido : {}", terminarDTO);
+		Optional<User> user = userService.getUserWithAuthorities();
+		Long usuarioId = user.isPresent() ? user.get().getId() : 0L;
+		if (usuarioId == 0) {
+			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+		}
+		
+		Optional<Transportista> transportista = transportistaRepository.findOneByusuarioId(usuarioId);
+		Long transportistaId = transportista.isPresent() ? transportista.get().getId() : 0L;
+		if (transportistaId == 0) {
+			throw new BadRequestAlertException("El usuario no es transportistaId", ENTITY_NAME, "idnull");
+		}
+
+		PedidoProveedorDTO result;
+		try {
+			result = pedidoProveedorService.terminarServicio(terminarDTO, usuarioId);
+		} catch (Exception e) {
+			throw new BadRequestAlertException(e.getMessage(), ENTITY_NAME, "idnull");
+		}
+
+		return ResponseEntity.ok()
+				.headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, terminarDTO.getPedidoProveedorId().toString()))
 				.body(result);
 
 	}

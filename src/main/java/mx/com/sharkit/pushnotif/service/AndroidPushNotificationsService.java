@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class AndroidPushNotificationsService {
 
-	private static final String FIREBASE_SERVER_KEY_ANDROID = "AIzaSyCA4iHXRLkp6uYcguXjdCyLkamJ6RgD9P4";
+	private static final String FIREBASE_SERVER_KEY_ANDROID = "AAAAKsiEY9M:APA91bF7qUMreQg_e9awGaJ_hVT8OI55FEXLEp0U71UE2bvgJBs9pZpQVItNKa7kxMrF_09EmAnIxfzm-oR9eoZKueVfn5WC2j8ysVo7ZLq4D1lieIetwRMPfaHM-xWZSBBVlPArYYLl";
 	private static final String FIREBASE_SERVER_KEY_IOS_ = "AIzaSyBQc4pUXm9D7T6tt5X3_CMcex7Ws4rurB0";
 	private static final String FIREBASE_API_URL = "https://fcm.googleapis.com/fcm/send";
 
@@ -29,6 +29,7 @@ public class AndroidPushNotificationsService {
 		ArrayList<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
 		interceptors.add(new HeaderRequestInterceptor("Authorization", "key=" + FIREBASE_SERVER_KEY_ANDROID));
 		interceptors.add(new HeaderRequestInterceptor("Content-Type", "application/json"));
+		interceptors.add(new HeaderRequestInterceptor("project_id", "183752745939"));
 		restTemplate.setInterceptors(interceptors);
 
 		String firebaseResponse = restTemplate.postForObject(FIREBASE_API_URL, entity, String.class);

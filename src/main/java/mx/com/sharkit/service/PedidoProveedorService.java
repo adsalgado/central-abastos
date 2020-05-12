@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import mx.com.sharkit.domain.PedidoProveedor;
+import mx.com.sharkit.service.dto.CalificacionPedidoProveedorDTO;
 import mx.com.sharkit.service.dto.PedidoProveedorDTO;
+import mx.com.sharkit.service.dto.TerminarServicioPedidoProveedorDTO;
 
 /**
  * Service Interface for managing {@link mx.com.sharkit.domain.PedidoProveedor}.
@@ -78,5 +80,15 @@ public interface PedidoProveedorService extends BaseService<PedidoProveedor, Lon
      * @return the persisted entity.
      */
     PedidoProveedorDTO cambiaEstatusPedidoProveedorAndDetalles(Long pedidoProveedorId, Long estatus, Long usuarioEstatus);
+
+    /**
+     * Save a pedidoProveedor.
+     *
+     * @param pedidoProveedorDTO the entity to save.
+     * @return the persisted entity.
+     */
+	PedidoProveedorDTO actualizaCalificacionServicio(CalificacionPedidoProveedorDTO calificacionDTO, Long usuarioId);
+
+	PedidoProveedorDTO terminarServicio(TerminarServicioPedidoProveedorDTO terminarDTO, Long usuarioId) throws Exception;
 
 }
