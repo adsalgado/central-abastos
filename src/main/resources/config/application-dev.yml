@@ -119,3 +119,8 @@ jhipster:
 # ===================================================================
 
 # application:
+stripe:
+  public:
+    key: pk_test_TNjRZggfGMHinhrlBVIP1P1B00d8WURtiI
+  secret:
+    key: sk_test_BDQpRihwXwK00K7EN1aMifQc00CHosOopt
