@@ -13,15 +13,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.sharkit.domain.Estatus;
+import mx.com.sharkit.domain.Pedido;
 import mx.com.sharkit.domain.PedidoProveedor;
 import mx.com.sharkit.repository.PedidoDetalleRepository;
 import mx.com.sharkit.repository.PedidoProveedorRepository;
+import mx.com.sharkit.repository.PedidoRepository;
 import mx.com.sharkit.service.PedidoDetalleService;
 import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.dto.CalificacionPedidoProveedorDTO;
 import mx.com.sharkit.service.dto.PedidoProveedorDTO;
 import mx.com.sharkit.service.dto.TerminarServicioPedidoProveedorDTO;
-import mx.com.sharkit.service.dto.UserDTO;
 import mx.com.sharkit.service.mapper.PedidoProveedorMapper;
 
 /**
@@ -42,13 +43,16 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 
 	private final PedidoDetalleRepository pedidoDetalleRepository;
 
+	private final PedidoRepository pedidoRepository;
+
 	public PedidoProveedorServiceImpl(PedidoProveedorRepository pedidoProveedorRepository,
 			PedidoProveedorMapper pedidoProveedorMapper, PedidoDetalleService pedidoDetalleService,
-			PedidoDetalleRepository pedidoDetalleRepository) {
+			PedidoDetalleRepository pedidoDetalleRepository, PedidoRepository pedidoRepository) {
 		this.pedidoProveedorRepository = pedidoProveedorRepository;
 		this.pedidoProveedorMapper = pedidoProveedorMapper;
 		this.pedidoDetalleService = pedidoDetalleService;
 		this.pedidoDetalleRepository = pedidoDetalleRepository;
+		this.pedidoRepository = pedidoRepository;
 	}
 
 	/**
@@ -151,6 +155,16 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 			} else if (estatus.equals(Estatus.PEDIDO_ENTREGADO)) {
 				pedidoProveedor.setFechaEntrega(now);
 			}
+
+			List<PedidoProveedor> listPedidoPrv = pedidoProveedorRepository
+					.findByPedidoId(pedidoProveedor.getPedidoId());
+			Long countEstatus = listPedidoPrv.stream().filter(pp -> pp.getEstatusId().equals(estatus)).count();
+			if (listPedidoPrv.size() == countEstatus.intValue()) {
+				Pedido pedido = pedidoRepository.findById(pedidoProveedor.getPedidoId()).orElse(null);
+				if (pedido != null) {
+					pedido.setEstatusId(estatus);
+				}
+			}
 		}
 		return pedidoProveedorMapper.toDto(pedidoProveedor);
 	}
@@ -189,19 +203,19 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 	@Override
 	public PedidoProveedorDTO terminarServicio(TerminarServicioPedidoProveedorDTO terminarDTO, Long usuarioId)
 			throws Exception {
-		
+
 		PedidoProveedor pedidoProveedor = pedidoProveedorRepository.findById(terminarDTO.getPedidoProveedorId())
 				.orElse(null);
 
 		if (pedidoProveedor != null) {
 
 			if (StringUtils.equals(pedidoProveedor.getToken(), terminarDTO.getToken())) {
-				this.cambiaEstatusPedidoProveedorAndDetalles(terminarDTO.getPedidoProveedorId(), Estatus.PEDIDO_ENTREGADO,
-						usuarioId);		
+				this.cambiaEstatusPedidoProveedorAndDetalles(terminarDTO.getPedidoProveedorId(),
+						Estatus.PEDIDO_ENTREGADO, usuarioId);
 			} else {
 				throw new Exception("token inválido");
 			}
-		
+
 		} else {
 			throw new Exception("Pedido proveedor id no existe.");
 		}
