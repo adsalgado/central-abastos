@@ -1,3 +1,4 @@
+import { GenericService } from './services/generic.service';
 import { Overlay } from '@angular/cdk/overlay';
 import { NgModule } from '@angular/core';
 import { AlertService } from './services/alert.service';
@@ -75,6 +76,8 @@ import {
 } from './admin';
 import { Register, PasswordService, PasswordResetInitService, PasswordResetFinishService, ActivateService } from './account';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { RequestInterceptorService } from './interceptors/request-interceptor.service';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   providers: [
@@ -183,14 +186,16 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     PasswordResetInitService,
     PasswordResetFinishService,
     ActivateService,
+    AuthService,
+    GenericService,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
+      useClass: RequestInterceptorService,
       multi: true
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthExpiredInterceptor,
+      useClass: NotificationInterceptor,
       multi: true
     },
     {
@@ -200,7 +205,12 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: NotificationInterceptor,
+      useClass: AuthExpiredInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true
     },
     NgbActiveModal

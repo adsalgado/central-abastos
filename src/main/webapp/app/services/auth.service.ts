@@ -1,7 +1,6 @@
 import { GenericService } from './generic.service';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { App, Events } from 'ionic-angular';
 import 'rxjs/add/observable/of';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment.prod';
@@ -12,8 +11,6 @@ import { LoadingService } from './loading-service';
 export class AuthService {
   constructor(
     private http: GenericService,
-    public app: App,
-    public events: Events,
     private localStorageEncryptService: LocalStorageEncryptService,
     private loadingService: LoadingService
   ) {}
@@ -21,7 +18,13 @@ export class AuthService {
   /**Método que retorna si el usuario esta logueado */
   isAuthenticated() {
     let user = this.localStorageEncryptService.getFromLocalStorage(`userSession`);
-    return user.id_token != null;
+    return user ? user.id_token != null : null;
+  }
+
+  /**Método que retorna si el usuario esta logueado */
+  isAuthenticatedBoolean() {
+    let user = this.localStorageEncryptService.getFromLocalStorage(`userSession`);
+    return user ? true : false;
   }
 
   /**Método de logout, cierra sesión */

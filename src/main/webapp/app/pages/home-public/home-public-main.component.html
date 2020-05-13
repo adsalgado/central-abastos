@@ -15,7 +15,7 @@
     <div class="scrolling-wrapper-flexbox" style="margin-top:0px">
       <div class="promociones" [style.background-image]="'url('+env.getImagenIndividual+promo.adjuntoId+')'" *ngFor="let promo of promociones">
         <div class="contenedor-imagen">
-          <!-- <img src="../../../assets/imgs/home/images.jpeg" alt=""> -->
+          <!-- <img src="../../../content/imgs/home/images.jpeg" alt=""> -->
         </div>
         <div class="info">
           <p class="titulo">{{promo.titulo}}</p>
@@ -27,13 +27,13 @@
     <div class="scrolling-wrapper" style="margin-top: 15px">
       <div class="buttons">
         <button [ngStyle]="{'background-color': color}" (click)="ordena(1)">
-          <img src="../../../assets/imgs/home/milk.png" alt="">
+          <img src="../../../content/imgs/home/milk.png" alt="">
           Artículos
         </button>
       </div>
       <div class="buttons">
         <button [ngStyle]="{'background-color': color}" (click)="ordena(2)">
-          <img src="../../../assets/imgs/home/services.png" alt="">
+          <img src="../../../content/imgs/home/services.png" alt="">
           Servicios
         </button>
       </div>

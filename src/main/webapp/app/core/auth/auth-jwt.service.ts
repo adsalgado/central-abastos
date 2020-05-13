@@ -5,10 +5,16 @@ import { map } from 'rxjs/operators';
 import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 
 import { SERVER_API_URL } from 'app/app.constants';
+import { LocalStorageEncryptService } from 'app/services/local-storage-encrypt-service';
 
 @Injectable()
 export class AuthServerProvider {
-  constructor(private http: HttpClient, private $localStorage: LocalStorageService, private $sessionStorage: SessionStorageService) {}
+  constructor(
+    private http: HttpClient,
+    private $localStorage: LocalStorageService,
+    private $sessionStorage: SessionStorageService,
+    private localStorageEncryptService: LocalStorageEncryptService
+  ) {}
 
   getToken() {
     return this.$localStorage.retrieve('authenticationToken') || this.$sessionStorage.retrieve('authenticationToken');
@@ -20,9 +26,13 @@ export class AuthServerProvider {
       password: credentials.password,
       rememberMe: credentials.rememberMe
     };
+    let component: any = this;
+    console.log(component);
     return this.http.post(SERVER_API_URL + 'api/authenticate', data, { observe: 'response' }).pipe(map(authenticateSuccess.bind(this)));
 
     function authenticateSuccess(resp) {
+      //console.log(resp.body);
+      component.localStorageEncryptService.setToLocalStorage('userSession', resp.body);
       const bearerToken = resp.headers.get('Authorization');
       if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
         const jwt = bearerToken.slice(7, bearerToken.length);

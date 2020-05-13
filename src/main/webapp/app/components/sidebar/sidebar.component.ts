@@ -55,9 +55,9 @@ export class SidebarComponent implements OnInit {
     }
   }
   isMobileMenu() {
-    if ($(window).width() > 991) {
+    /* if ($(window).width() > 991) {
       return false;
-    }
+    } */
     return true;
   }
 }

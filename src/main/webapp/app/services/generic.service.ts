@@ -6,7 +6,6 @@ import { catchError, timeout } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { Observable, TimeoutError } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Events } from 'ionic-angular';
 import { LocalStorageEncryptService } from './local-storage-encrypt-service';
 
 export const TIME_OUT = 1000 * 60 * 1; //ultimo número define en minutos
@@ -14,20 +13,8 @@ export const TIME_OUT = 1000 * 60 * 1; //ultimo número define en minutos
 @Injectable()
 export class GenericService {
   public user: any = null;
-  constructor(private readonly http: HttpClient, private localStorageEncryptService: LocalStorageEncryptService, private events: Events) {
+  constructor(private readonly http: HttpClient, private localStorageEncryptService: LocalStorageEncryptService) {
     this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
-
-    this.events.subscribe('reloadUser', data => {
-      try {
-        this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
-      } catch (error) {}
-    });
-
-    this.events.subscribe('changeColor', data => {
-      try {
-        this.getColor();
-      } catch (error) {}
-    });
   }
 
   /**Método que hace peticiones tipo GET */

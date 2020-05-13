@@ -21,6 +21,9 @@ export class LoginService {
         data => {
           this.accountService.identity(true).then(account => {
             this.trackerService.sendActivity();
+            /* console.log("-----------------");
+            console.log(data);
+             */
             resolve(data);
           });
           return cb();

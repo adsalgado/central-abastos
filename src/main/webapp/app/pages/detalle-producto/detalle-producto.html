@@ -1,0 +1,116 @@
+<div class="slider-io animated bounceInLeft" *ngIf="producto.photos.length > 0">
+  <!-- <ion-slides autoplay="5000" zoom="true" loop="true" #slides2 loop="false">
+    <ion-slide *ngFor="let photo of producto.photos; let i=index" (click)="imagesLoaded(i)">
+      <div>
+        <img src="{{photo.img}}" alt="">
+        <div class="div-foto">
+          <ion-icon ios="ios-images-outline" md="ios-images-outline"></ion-icon>
+          <p>{{i+1}}/{{producto.photos.length}}</p>
+        </div>
+      </div>
+    </ion-slide>
+  </ion-slides> -->
+  <div class="arrows-lateral" *ngIf="1===2">
+    <div (tap)="prev1()">
+      <i class="material-icons">arrow-back</i>
+    </div>
+    <div (tap)="next1()">
+      <i class="material-icons">arrow-forward</i>
+    </div>
+  </div>
+</div>
+
+<div class="descripcion" [ngStyle]="{'color': color}">
+  {{producto.precio | currency}} MXN
+</div>
+
+<div class="space-desc">
+  <i class="material-icons" *ngIf="verDescripcion" (click)="verDes()">arrow-upward</i>
+  <i class="material-icons" *ngIf="!verDescripcion" (click)="verDes()">arrow_downward</i>
+  <h4>Descripción</h4>
+  <div class="descripcion-gral" *ngIf="verDescripcion">{{producto.producto.descripcion}}</div>
+</div>
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 2;">
+
+  <!-- Background of PhotoSwipe. 
+         It's a separate element, as animating opacity is faster than rgba(). -->
+  <div class="pswp__bg"></div>
+
+  <!-- Slides wrapper with overflow:hidden. -->
+  <div class="pswp__scroll-wrap">
+
+    <!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+    <!-- don't modify these 3 pswp__item elements, data is added later on. -->
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+
+    <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+    <div class="pswp__ui pswp__ui--hidden">
+
+      <div class="pswp__top-bar" style="opacity: 1;z-index: 99999999;" [ngStyle]="{'top': fixedContentTop == '56' ? '56px' : '44px'}">
+
+        <!--  Controls are self-explanatory. Order can be changed. -->
+
+        <div class="pswp__counter"></div>
+
+        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+        <!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
+        <!-- element will get class pswp__preloader--active when preloader is running -->
+        <div class="pswp__preloader">
+          <div class="pswp__preloader__icn">
+            <div class="pswp__preloader__cut">
+              <div class="pswp__preloader__donut"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip"></div>
+      </div>
+
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+      </button>
+
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+      </button>
+
+      <div class="pswp__caption">
+        <div class="pswp__caption__center"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+<div class="footer-detalle">
+  <div class="cont-e">
+    <div class="suma">
+      <div class="menos" (click)="decrementar(producto)">
+        <div [ngStyle]="{'color': color, 'border-color': color}">-</div>
+      </div>
+      <div class="cantidad">
+        <div [ngStyle]="{'color': color}">{{producto.cantidad}} {{producto.cantidad == 1 ? 'pza' : 'pzas'}}</div>
+      </div>
+      <div class="mas" (click)="incrementa(producto)">
+        <div [ngStyle]="{'color': color, 'border-color': color}">+</div>
+      </div>
+    </div>
+    <button (click)="agregarCarrito(producto)" [ngStyle]="{'background-color': color}">
+      Agregar a carrito
+    </button>
+  </div>
+</div>
+<!-- Root element of PhotoSwipe. Must have class pswp. -->

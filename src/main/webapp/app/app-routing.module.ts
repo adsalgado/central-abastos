@@ -1,3 +1,4 @@
+import { CategoriaPage } from './pages/categoria/categoria';
 import { ProductoComponent } from 'app/entities/producto/producto.component';
 import { UserMgmtComponent } from 'app/admin/user-management/user-management.component';
 import { NgModule } from '@angular/core';
@@ -12,6 +13,7 @@ import { UserRouteAccessService } from './core';
 import { auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, userMgmtRoute, metricsRoute } from './admin';
 import { JhiLoginModalComponent } from './shared/login/login.component';
 import { PasswordResetFinishComponent } from './account/password-reset/finish/password-reset-finish.component';
+import { DetalleProductoPage } from './pages/detalle-producto/detalle-producto';
 
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const ADMIN_ROUTES = [auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, ...userMgmtRoute, metricsRoute];
@@ -28,6 +30,8 @@ const routes: Routes = [
       //{ path: 'login', component: JhiLoginModalComponent },
       { path: 'home', component: HomeComponent },
       { path: 'users', component: UserMgmtComponent },
+      { path: 'categoria', component: CategoriaPage },
+      { path: 'detalle', component: DetalleProductoPage },
       {
         path: 'admin',
         loadChildren: () => import('./admin/admin.module').then(m => m.AbastosAdminModule)

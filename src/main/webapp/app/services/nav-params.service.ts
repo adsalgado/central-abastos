@@ -27,6 +27,8 @@ export class NavParamsService {
       console.log(this.params);
     }
     this.localStorageEncryptService.setToLocalStorage(this.key, this.params);
+    console.log(routerLink);
+
     this.router.navigate([routerLink]);
   }
 

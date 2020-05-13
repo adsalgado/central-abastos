@@ -27,10 +27,10 @@ export class HomePublicMainComponent implements OnDestroy, OnInit {
   public proveedores: Proveedor[] = [];
   public secciones: Seccion[] = [];
 
-  public imgBusqueda: any = '/../../../assets/imgs/home/search.png';
+  public imgBusqueda: any = '/../../../content/imgs/home/search.png';
   public textoBusqueda: string = '';
 
-  public pruebaImg: string = '../../../assets/imgs/home/images.jpeg';
+  public pruebaImg: string = '../../../content/imgs/home/images.jpeg';
 
   private dataFilter: any = {
     idProveedor: null,
@@ -123,15 +123,15 @@ export class HomePublicMainComponent implements OnDestroy, OnInit {
 
   buscando() {
     if (this.textoBusqueda.length > 0) {
-      this.imgBusqueda = '/../../../assets/imgs/home/close.png';
+      this.imgBusqueda = '/../../../content/imgs/home/close.png';
     } else {
-      this.imgBusqueda = '/../../../assets/imgs/home/search.png';
+      this.imgBusqueda = '/../../../content/imgs/home/search.png';
     }
   }
 
   close() {
-    if (this.imgBusqueda == '/../../../assets/imgs/home/close.png') {
-      this.imgBusqueda = '/../../../assets/imgs/home/search.png';
+    if (this.imgBusqueda == '/../../../content/imgs/home/close.png') {
+      this.imgBusqueda = '/../../../content/imgs/home/search.png';
       this.textoBusqueda = '';
     }
   }
@@ -401,7 +401,7 @@ export class HomePublicMainComponent implements OnDestroy, OnInit {
 
   irToCategoria(categoria: any) {
     //this.navCtrl.push(CategoriaPage, { categoria });
-    this.navParamsService.push('categoria', { categoria: categoria });
+    this.navParamsService.push('main/categoria', { categoria: categoria });
   }
 
   viewDetail(producto: any) {

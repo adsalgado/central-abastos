@@ -14,6 +14,8 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
         (event: HttpEvent<any>) => {},
         (err: any) => {
           if (err instanceof HttpErrorResponse) {
+            console.log('-------------');
+
             if (!(err.status === 401 && (err.message === '' || (err.url && err.url.includes('api/account'))))) {
               this.eventManager.broadcast({ name: 'abastosApp.httpError', content: err });
             }

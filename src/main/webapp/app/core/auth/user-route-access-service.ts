@@ -6,6 +6,7 @@ import { AccountService } from 'app/core/';
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { StateStorageService } from './state-storage.service';
 import { JhiLoginModalComponent } from 'app/shared/login/login.component';
+import { JhiEventManager } from 'ng-jhipster';
 
 @Injectable()
 export class UserRouteAccessService implements CanActivate {
@@ -14,7 +15,8 @@ export class UserRouteAccessService implements CanActivate {
     private loginModalService: LoginModalService,
     private accountService: AccountService,
     private stateStorageService: StateStorageService,
-    private navParamsService: NavParamsService
+    private navParamsService: NavParamsService,
+    private eventManager: JhiEventManager
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<boolean> {
@@ -45,7 +47,8 @@ export class UserRouteAccessService implements CanActivate {
 
       //this.stateStorageService.storeUrl(url);
       //this.loginModalService.open();
-      this.navParamsService.push('main/login');
+      //this.navParamsService.push('main/login');
+      //this.eventManager.broadcast({ name: "startSession", content: {} });
       return false;
     });
   }

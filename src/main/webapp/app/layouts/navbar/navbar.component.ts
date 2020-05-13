@@ -1,3 +1,5 @@
+import { AuthService } from './../../services/auth.service';
+import { GenericService } from './../../services/generic.service';
 import { NavParamsService } from 'app/services/nav-params.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -16,7 +18,7 @@ import { ProfileService } from 'app/layouts/profiles/profile.service';
 })
 export class NavbarComponent implements OnInit {
   inProduction: boolean;
-  isNavbarCollapsed: boolean;
+  isNavbarCollapsed: boolean = false;
   languages: any[];
   swaggerEnabled: boolean;
   modalRef: NgbModalRef;
@@ -31,7 +33,9 @@ export class NavbarComponent implements OnInit {
     private loginModalService: LoginModalService,
     private profileService: ProfileService,
     private router: Router,
-    private navParamsService: NavParamsService
+    private navParamsService: NavParamsService,
+    private genericService: GenericService,
+    private authService: AuthService
   ) {
     this.version = VERSION ? 'v' + VERSION : '';
     this.isNavbarCollapsed = true;
@@ -58,7 +62,9 @@ export class NavbarComponent implements OnInit {
   }
 
   isAuthenticated() {
+    //return this.authService.isAuthenticatedBoolean();
     return this.accountService.isAuthenticated();
+    //return true;
   }
 
   login() {

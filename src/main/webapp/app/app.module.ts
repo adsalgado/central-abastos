@@ -25,6 +25,7 @@ import { ProvidersModule } from './providers.module';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { RequestInterceptorService } from './interceptors/request-interceptor.service';
 
 @NgModule({
   imports: [
