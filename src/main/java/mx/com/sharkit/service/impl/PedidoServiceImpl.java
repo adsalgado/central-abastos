@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.stripe.model.Charge;
+
 import mx.com.sharkit.domain.Estatus;
 import mx.com.sharkit.domain.Pedido;
 import mx.com.sharkit.domain.PedidoDetalle;
@@ -301,6 +303,41 @@ public class PedidoServiceImpl implements PedidoService {
 		log.debug("Request to get all Pedidos by transportistaId: {}", transportistaId);
 		return pedidoRepository.findByTransportistaId(transportistaId).stream().map(pedidoMapper::toDto)
 				.collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public PedidoDTO cambiaEstatusPedidoAndPedidoProveedores(Long pedidoId, Long estatus, Long usuarioEstatus) {
+		LocalDateTime now = LocalDateTime.now();
+		Pedido pedido = pedidoRepository.findById(pedidoId).orElse(null);
+		if (pedido != null) {
+			pedido.setEstatusId(estatus);
+			pedidoProveedorRepository.findByPedidoId(pedidoId).forEach(pp -> {
+				pp.setEstatusId(estatus);
+				pp.setUsuarioModificacionId(usuarioEstatus);
+				pp.setFechaModificacion(now);
+				
+				pedidoDetalleRepository.findByPedidoProveedorId(pp.getId()).forEach(pd -> {
+					pd.setEstatusId(estatus);
+				});
+			});
+		}
+				
+		return pedidoMapper.toDto(pedido);
+	}
+
+	@Override
+	public PedidoDTO registraPagoPedido(Long pedidoId, Charge charge, Long usuarioEstatus) {
+		PedidoDTO pedidoDTO = null;
+		Pedido pedido = pedidoRepository.findById(pedidoId).orElse(null);
+		if (pedido != null) {
+			pedido.setStatusPago(charge.getStatus());
+			pedido.setBalanceTransaction(charge.getBalanceTransaction());
+			pedido.setChargeId(charge.getId());
+			pedido.setReceiptUrl(charge.getReceiptUrl());
+			
+			pedidoDTO = cambiaEstatusPedidoAndPedidoProveedores(pedidoId, Estatus.PEDIDO_PAGADO, usuarioEstatus);
+		}
+		return pedidoDTO;
 	}
 
 }

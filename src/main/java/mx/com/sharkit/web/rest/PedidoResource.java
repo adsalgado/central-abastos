@@ -165,9 +165,17 @@ public class PedidoResource {
 	 * @throws URISyntaxException if the Location URI syntax is incorrect.
 	 */
 	@PutMapping("/pedidos/pago")
-	public ResponseEntity<PedidoPagoDTO> updatePedido(@RequestBody PedidoPagoDTO pedidopagoDTO)
+	public ResponseEntity<PedidoDTO> updatePedido(@RequestBody PedidoPagoDTO pedidopagoDTO)
 			throws URISyntaxException {
+		
 		log.debug("REST request to update Pedido : {}", pedidopagoDTO);
+		
+		Optional<User> user = userService.getUserWithAuthorities();
+		Long clienteId = user.isPresent() ? user.get().getId() : 0L;
+		if (clienteId == 0) {
+			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+		}
+		
 		if (pedidopagoDTO.getPedidoId() == null) {
 			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
 		}
@@ -185,17 +193,15 @@ public class PedidoResource {
 		chargeRequest.setDescription("Pago de pedido: " + pedido.getId());
 		chargeRequest.setStripeToken(pedidopagoDTO.getToken());
 
-		Charge charge = null;
 		try {
-			charge = stripeService.charge(chargeRequest);
+			Charge charge = stripeService.charge(chargeRequest);
+			pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
 		} catch (StripeException e) {
 			log.error("Error Stripe: {}", e);
+			throw new BadRequestAlertException("Error al procesar el pago.", ENTITY_NAME, "errorStripe");
 		}
 
-		PedidoPagoDTO result = pedidopagoDTO;
-
-		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME,
-				pedidopagoDTO.getPedidoId().toString())).body(result);
+		return ResponseEntity.ok().body(pedido);
 	}
 
 	/**
