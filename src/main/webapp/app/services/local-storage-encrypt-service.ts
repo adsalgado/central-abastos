@@ -66,7 +66,8 @@ export class LocalStorageEncryptService {
    */
   clearProperty(property: string) {
     const encryptedKey = CryptoJS.SHA256(property).toString();
-    localStorage.removeItem(encryptedKey);
+    //localStorage.removeItem(encryptedKey);
+    localStorage.removeItem(property);
   }
 
   /**
