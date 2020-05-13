@@ -104,6 +104,19 @@ public class Pedido implements Serializable {
     @Column(name = "fecha_alta")
     private LocalDateTime fechaAlta;
 
+    @Column(name = "status_pago")
+    private String statusPago;
+
+    @Column(name = "balance_transaction")
+    private String balanceTransaction;
+
+    @Column(name = "charge_id")
+    private String chargeId;
+
+    @Column(name = "receipt_url")
+    private String receiptUrl;
+
+
     public Long getId() {
 		return id;
 	}
@@ -281,6 +294,38 @@ public class Pedido implements Serializable {
 		this.direccionContactoId = direccionContactoId;
 	}
 
+	public String getStatusPago() {
+		return statusPago;
+	}
+
+	public void setStatusPago(String statusPago) {
+		this.statusPago = statusPago;
+	}
+
+	public String getBalanceTransaction() {
+		return balanceTransaction;
+	}
+
+	public void setBalanceTransaction(String balanceTransaction) {
+		this.balanceTransaction = balanceTransaction;
+	}
+
+	public String getChargeId() {
+		return chargeId;
+	}
+
+	public void setChargeId(String chargeId) {
+		this.chargeId = chargeId;
+	}
+
+	public String getReceiptUrl() {
+		return receiptUrl;
+	}
+
+	public void setReceiptUrl(String receiptUrl) {
+		this.receiptUrl = receiptUrl;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -299,14 +344,16 @@ public class Pedido implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Pedido [id=" + id + ", folio=" + folio + ", estatusId=" + estatusId + ", clienteId=" + clienteId
-				+ ", total=" + total + ", totalSinIva=" + totalSinIva + ", comisionTransportista="
-				+ comisionTransportista + ", comisionPreparador=" + comisionPreparador + ", fechaPedido=" + fechaPedido
-				+ ", fechaPreparacion=" + fechaPreparacion + ", fechaCobro=" + fechaCobro + ", fechaEntrega="
-				+ fechaEntrega + ", nombreContacto=" + nombreContacto + ", telefonoContacto=" + telefonoContacto
-				+ ", correoContacto=" + correoContacto + ", direccionContactoId=" + direccionContactoId
+		return "Pedido [id=" + id + ", folio=" + folio + ", estatus=" + estatus + ", estatusId=" + estatusId
+				+ ", cliente=" + cliente + ", clienteId=" + clienteId + ", total=" + total + ", totalSinIva="
+				+ totalSinIva + ", comisionTransportista=" + comisionTransportista + ", comisionPreparador="
+				+ comisionPreparador + ", fechaPedido=" + fechaPedido + ", fechaPreparacion=" + fechaPreparacion
+				+ ", fechaCobro=" + fechaCobro + ", fechaEntrega=" + fechaEntrega + ", nombreContacto=" + nombreContacto
+				+ ", telefonoContacto=" + telefonoContacto + ", correoContacto=" + correoContacto
+				+ ", direccionContacto=" + direccionContacto + ", direccionContactoId=" + direccionContactoId
 				+ ", historicoPedidos=" + historicoPedidos + ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta="
-				+ fechaAlta + "]";
+				+ fechaAlta + ", statusPago=" + statusPago + ", balanceTransaction=" + balanceTransaction
+				+ ", chargeId=" + chargeId + ", receiptUrl=" + receiptUrl + "]";
 	}
 
 

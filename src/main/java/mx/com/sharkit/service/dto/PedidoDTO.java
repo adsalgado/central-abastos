@@ -67,6 +67,14 @@ public class PedidoDTO implements Serializable {
     
     private Long direccionContactoId;
 
+    private String statusPago;
+
+    private String balanceTransaction;
+
+    private String chargeId;
+
+    private String receiptUrl;
+
 
 	@OneToMany(mappedBy = "pedido")
 	private Set<HistoricoPedidoDTO> historicoPedidos = new HashSet<>();
@@ -257,6 +265,38 @@ public class PedidoDTO implements Serializable {
 		this.direccionContactoId = direccionContactoId;
 	}
 
+	public String getStatusPago() {
+		return statusPago;
+	}
+
+	public void setStatusPago(String statusPago) {
+		this.statusPago = statusPago;
+	}
+
+	public String getBalanceTransaction() {
+		return balanceTransaction;
+	}
+
+	public void setBalanceTransaction(String balanceTransaction) {
+		this.balanceTransaction = balanceTransaction;
+	}
+
+	public String getChargeId() {
+		return chargeId;
+	}
+
+	public void setChargeId(String chargeId) {
+		this.chargeId = chargeId;
+	}
+
+	public String getReceiptUrl() {
+		return receiptUrl;
+	}
+
+	public void setReceiptUrl(String receiptUrl) {
+		this.receiptUrl = receiptUrl;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -280,14 +320,16 @@ public class PedidoDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PedidoDTO [id=" + id + ", folio=" + folio + ", estatusId=" + estatusId + ", clienteId=" + clienteId
-				+ ", total=" + total + ", totalSinIva=" + totalSinIva + ", comisionTransportista="
-				+ comisionTransportista + ", comisionPreparador=" + comisionPreparador + ", fechaPedido=" + fechaPedido
-				+ ", fechaPreparacion=" + fechaPreparacion + ", fechaCobro=" + fechaCobro + ", fechaEntrega="
-				+ fechaEntrega + ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta=" + fechaAlta + ", nombreContacto="
-				+ nombreContacto + ", telefonoContacto=" + telefonoContacto + ", correoContacto=" + correoContacto
-				+ ", direccionContactoId=" + direccionContactoId + ", historicoPedidos=" + historicoPedidos
-				+ ", pedidoProveedores=" + pedidoProveedores + "]";
+		return "PedidoDTO [id=" + id + ", folio=" + folio + ", estatus=" + estatus + ", estatusId=" + estatusId
+				+ ", cliente=" + cliente + ", clienteId=" + clienteId + ", total=" + total + ", totalSinIva="
+				+ totalSinIva + ", comisionTransportista=" + comisionTransportista + ", comisionPreparador="
+				+ comisionPreparador + ", fechaPedido=" + fechaPedido + ", fechaPreparacion=" + fechaPreparacion
+				+ ", fechaCobro=" + fechaCobro + ", fechaEntrega=" + fechaEntrega + ", usuarioAltaId=" + usuarioAltaId
+				+ ", fechaAlta=" + fechaAlta + ", nombreContacto=" + nombreContacto + ", telefonoContacto="
+				+ telefonoContacto + ", correoContacto=" + correoContacto + ", direccionContacto=" + direccionContacto
+				+ ", direccionContactoId=" + direccionContactoId + ", statusPago=" + statusPago
+				+ ", balanceTransaction=" + balanceTransaction + ", chargeId=" + chargeId + ", receiptUrl=" + receiptUrl
+				+ ", historicoPedidos=" + historicoPedidos + ", pedidoProveedores=" + pedidoProveedores + "]";
 	}
 
 }
