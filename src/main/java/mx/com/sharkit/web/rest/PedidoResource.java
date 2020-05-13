@@ -179,9 +179,8 @@ public class PedidoResource {
 
 		PedidoDTO pedido = optPedido.get();
 		// Checar el moto
-		Integer amount = pedido.getTotal().intValue();
 		ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
-		chargeRequest.setAmount(amount);
+		chargeRequest.setAmount(pedido.getTotal());
 		chargeRequest.setCurrency(Currency.MXN);
 		chargeRequest.setDescription("Pago de pedido: " + pedido.getId());
 		chargeRequest.setStripeToken(pedidopagoDTO.getToken());

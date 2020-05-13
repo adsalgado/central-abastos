@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,16 +28,20 @@ public class StripeResource {
 	
 	private final Logger log = LoggerFactory.getLogger(StripeResource.class);
 
+	@Value("${stripe.public.key}")
+    private String publicKey;
 
 	@Autowired
     private StripeService paymentsService;
  
-    @PostMapping("/charge")
+    @PostMapping("/stripe/charge")
     public ResponseEntity<Charge> charge(@RequestBody ChargeRequestDTO chargeRequest)
       throws StripeException {
         chargeRequest.setDescription("Example charge");
         chargeRequest.setCurrency(Currency.MXN);
-        
+        // para pruebas only
+        chargeRequest.setStripeToken(publicKey);
+
         Optional<Charge> opt = Optional.ofNullable(paymentsService.charge(chargeRequest));
         return ResponseUtil.wrapOrNotFound(opt);
     }
