@@ -57,6 +57,7 @@ public class PushNotificationsService {
 		JSONObject notification = new JSONObject();
 		notification.put("title", notificationTitle);
 		notification.put("body", notificationBody);
+		notification.put("click_action", "FCM_PLUGIN_ACTIVITY");
 
 		ObjectMapper obj = new ObjectMapper();
 		String json = "";
