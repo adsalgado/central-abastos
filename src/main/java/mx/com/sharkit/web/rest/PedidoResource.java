@@ -201,7 +201,7 @@ public class PedidoResource {
 		ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
 		chargeRequest.setAmount(pedido.getTotal());
 		chargeRequest.setCurrency(Currency.MXN);
-		chargeRequest.setDescription("Pago de pedido: " + pedido.getId());
+		chargeRequest.setDescription("Pago de pedido: " + pedido.getFolio());
 		chargeRequest.setStripeToken(pedidopagoDTO.getToken());
 
 		Charge charge = null;
@@ -343,6 +343,37 @@ public class PedidoResource {
 		}
 
 		return lstPedidos;
+	}
+
+	/**
+	 * {@code GET  /proveedor/pedidos/{pedidoId}} : get the pedidos of proveedor by pedidoId.
+	 *
+	 * 
+	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+	 *         of pedidos in body.
+	 */
+	@GetMapping("proveedor/pedidos/{pedidoId}")
+	public ResponseEntity<PedidoDTO> getPedidoProveedor(@PathVariable Long pedidoId) {
+		log.debug("REST request to get Pedido by pedidoId");
+		Optional<User> user = userService.getUserWithAuthorities();
+		Long usuarioId = user.isPresent() ? user.get().getId() : 0L;
+		if (usuarioId == 0) {
+			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+		}
+		Optional<Proveedor> proveedor = proveedorRepository.findOneByusuarioId(usuarioId);
+		Long proveedorId = proveedor.isPresent() ? proveedor.get().getId() : 0L;
+		if (proveedorId == 0) {
+			throw new BadRequestAlertException("El usuario no es proveedor", ENTITY_NAME, "idnull");
+		}
+
+		PedidoDTO pedidoDTO = pedidoService.findOne(pedidoId).orElse(null);
+		if (pedidoDTO != null) {
+			pedidoDTO.setPedidoProveedores(
+					pedidoProveedorService.findByPedidoIdAndProveedorId(pedidoDTO.getId(), proveedorId));
+			
+		}
+		
+		return ResponseEntity.ok().body(pedidoDTO);
 	}
 
 	/**
