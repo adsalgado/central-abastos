@@ -193,7 +193,7 @@ import { AuthService } from './services/auth.service';
       useClass: RequestInterceptorService,
       multi: true
     },
-    {
+    /* {
       provide: HTTP_INTERCEPTORS,
       useClass: NotificationInterceptor,
       multi: true
@@ -212,7 +212,7 @@ import { AuthService } from './services/auth.service';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    },
+    }, */
     NgbActiveModal
   ]
 })

@@ -1,3 +1,4 @@
+import { LocalStorageEncryptService } from './../../services/local-storage-encrypt-service';
 import { Injectable } from '@angular/core';
 import { AccountService } from 'app/core/auth/account.service';
 import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
@@ -10,7 +11,8 @@ export class LoginService {
     private accountService: AccountService,
     private trackerService: JhiTrackerService,
     private eventManager: JhiEventManager,
-    private authServerProvider: AuthServerProvider
+    private authServerProvider: AuthServerProvider,
+    private localStorageEncryptService: LocalStorageEncryptService
   ) {}
 
   login(credentials, callback?) {
@@ -43,6 +45,7 @@ export class LoginService {
 
   logout() {
     this.authServerProvider.logout().subscribe(null, null, () => this.accountService.authenticate(null));
+    this.localStorageEncryptService.clearProperty('userSession');
     this.eventManager.broadcast({
       name: 'logoutSuccess',
       content: 'Sending Logout Success'

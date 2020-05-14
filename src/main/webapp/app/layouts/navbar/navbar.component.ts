@@ -62,8 +62,8 @@ export class NavbarComponent implements OnInit {
   }
 
   isAuthenticated() {
-    //return this.authService.isAuthenticatedBoolean();
-    return this.accountService.isAuthenticated();
+    return this.authService.isAuthenticatedBoolean();
+    //return this.accountService.isAuthenticated();
     //return true;
   }
 
@@ -82,6 +82,6 @@ export class NavbarComponent implements OnInit {
   }
 
   getImageUrl() {
-    return this.isAuthenticated() ? this.accountService.getImageUrl() : null;
+    //return this.isAuthenticated() ? this.accountService.getImageUrl() : null;
   }
 }
