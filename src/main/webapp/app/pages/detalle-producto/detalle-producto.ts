@@ -3,7 +3,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { User } from './../../models/User';
 import { GenericService } from './../../services/generic.service';
 import { environment } from './../../../environments/environment.prod';
-import { Component, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, Slides, Events } from 'ionic-angular';
 import * as PhotoSwipe from 'photoswipe';
 import * as PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default';
@@ -19,7 +19,7 @@ import { NavParamsService } from 'app/services/nav-params.service';
   templateUrl: 'detalle-producto.html',
   styleUrls: ['./detalle-producto.scss']
 })
-export class DetalleProductoPage implements OnDestroy {
+export class DetalleProductoPage implements OnDestroy, OnInit {
   public producto: any = null;
 
   public productosTemp: any = [];
@@ -32,6 +32,25 @@ export class DetalleProductoPage implements OnDestroy {
   public color: any = '#3b64c0';
 
   public data: any = {};
+
+  public dynamicDots: any = `dots${Math.floor(Math.random() + 999999)}`;
+  public leftArrowsSlider: any = `left-arrw-${Math.floor(Math.random() + 999999)}`;
+  public rightArrowsSlider: any = `right-arrw-${Math.floor(Math.random() + 999999)}`;
+
+  public slideConfig: any = {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    appendDots: `.${this.dynamicDots}`,
+    dots: true,
+    autoplaySpeed: 3000,
+    pauseOnDotsHover: true,
+    infinite: true,
+    focusOnSelect: true,
+    nextArrow: "<div class='nav-btn next-slide'></div>",
+    prevArrow: "<div class='nav-btn prev-slide'></div>"
+  };
+
   constructor(
     private genericService: GenericService,
     private localStorageEncryptService: LocalStorageEncryptService,
@@ -42,6 +61,8 @@ export class DetalleProductoPage implements OnDestroy {
     private navParams: NavParamsService
   ) {
     this.producto = navParams.get('producto');
+    console.log(this.producto);
+
     this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
 
     this.producto.photos = [];
@@ -49,7 +70,8 @@ export class DetalleProductoPage implements OnDestroy {
       this.producto.imagenes.forEach(element => {
         this.producto.photos.push({
           id: element.id,
-          img: `data:image/jpeg;base64,${element.file}`
+          img: `data:image/jpeg;base64,${element.file}`,
+          view: false
         });
       });
     }
@@ -79,6 +101,48 @@ export class DetalleProductoPage implements OnDestroy {
           this.color = this.localStorageEncryptService.getFromLocalStorage('theme');
         }
       } catch (error) {}
+    });
+  }
+
+  public slideIndex = 0;
+
+  plusDivs(n, pos) {
+    console.log('n' + n);
+    switch (pos) {
+      case 'left':
+        this.slideIndex--;
+        break;
+
+      default:
+        this.slideIndex++;
+        break;
+    }
+    this.showDivs(this.slideIndex);
+  }
+
+  showDivs(i) {
+    this.producto.photos.forEach(element => {
+      element.view = false;
+    });
+    if (i < 0) {
+      i = this.producto.photos.length - 1;
+    } else if (i > this.producto.photos.length - 1) {
+      i = 0;
+    }
+    console.log(i);
+    this.slideIndex = i;
+    this.producto.photos[i].view = true;
+  }
+
+  ngOnInit() {
+    this.showDivs(0);
+
+    this.producto.photos.forEach(phot => {
+      let img: any = new Image();
+      img.src = phot.img;
+      img.onload = () => {
+        this.productosTemp.push({ img: phot.img, w: img.width, h: img.height, i: phot.id });
+      };
     });
   }
 

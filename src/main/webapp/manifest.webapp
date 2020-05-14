@@ -1,6 +1,7 @@
 {
   "name": "Abastos",
   "short_name": "Abastos",
+  "gcm_sender_id": "183752745939",
   "icons": [
       {
           "src": "./content/images/jhipster_family_member_3_head-192.png",

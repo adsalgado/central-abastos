@@ -26,7 +26,12 @@ import { CookieModule } from 'ngx-cookie';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppComponent } from './app.component';
 import { IonicModule } from 'ionic-angular';
+import { environment } from '../environments/environment.prod';
 // For MDB Angular Free
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireModule, FirebaseOptionsToken, FirebaseNameOrConfigToken } from '@angular/fire';
 
 @NgModule({
   imports: [

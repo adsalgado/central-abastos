@@ -78,6 +78,8 @@ import { Register, PasswordService, PasswordResetInitService, PasswordResetFinis
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RequestInterceptorService } from './interceptors/request-interceptor.service';
 import { AuthService } from './services/auth.service';
+import { MessagingService } from './services/firebase.service';
+import { AsyncPipe } from '@angular/common';
 
 @NgModule({
   providers: [
@@ -213,7 +215,9 @@ import { AuthService } from './services/auth.service';
       useClass: AuthInterceptor,
       multi: true
     }, */
-    NgbActiveModal
+    NgbActiveModal,
+    MessagingService,
+    AsyncPipe
   ]
 })
 export class ProvidersModule {}

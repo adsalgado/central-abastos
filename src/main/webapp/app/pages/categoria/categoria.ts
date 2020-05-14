@@ -9,6 +9,7 @@ import { LoadingService } from 'app/services/loading-service';
 import { LocalStorageEncryptService } from 'app/services/local-storage-encrypt-service';
 import { JhiEventManager } from 'ng-jhipster';
 import { NavParamsService } from 'app/services/nav-params.service';
+import { MapaProveedoresPage } from '../mapa-proveedores/mapa-proveedores';
 
 @Component({
   selector: 'page-categoria',
@@ -74,7 +75,7 @@ export class CategoriaPage implements OnDestroy {
       this.genericService.sendGetRequest(`${environment.proveedorProductos}/producto/${producto.id}`).subscribe(
         (response: any) => {
           //this.navCtrl.push(MapaProveedoresPage, { proveedores: response, producto });
-          //this.navParams.push();
+          this.navParams.push('/main/mapa-proveedores', { proveedores: response, producto });
           this.loadingService.hide();
         },
         (error: HttpErrorResponse) => {

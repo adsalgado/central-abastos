@@ -26,14 +26,27 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { RequestInterceptorService } from './interceptors/request-interceptor.service';
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from '../environments/environment.prod';
 
 @NgModule({
   imports: [
     NgbModule,
     ProvidersModule,
     //HttpClientModule,
-    ComponentsModule
+    ComponentsModule,
     //IonicModule.forRoot(AppComponent),
+    /* AngularFireDatabaseModule,
+    AngularFireAuthModule,
+    AngularFireMessagingModule,
+    AngularFireModule.initializeApp(environment.firebase) */
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
+    AngularFireMessagingModule,
+    AngularFireModule.initializeApp(environment.firebase)
   ],
 
   bootstrap: [AppComponent],

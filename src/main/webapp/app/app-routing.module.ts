@@ -1,3 +1,4 @@
+import { MapaProveedoresPage } from './pages/mapa-proveedores/mapa-proveedores';
 import { CategoriaPage } from './pages/categoria/categoria';
 import { ProductoComponent } from 'app/entities/producto/producto.component';
 import { UserMgmtComponent } from 'app/admin/user-management/user-management.component';
@@ -32,6 +33,8 @@ const routes: Routes = [
       { path: 'users', component: UserMgmtComponent },
       { path: 'categoria', component: CategoriaPage },
       { path: 'detalle', component: DetalleProductoPage },
+      { path: 'mapa-proveedores', component: MapaProveedoresPage },
+
       {
         path: 'admin',
         loadChildren: () => import('./admin/admin.module').then(m => m.AbastosAdminModule)

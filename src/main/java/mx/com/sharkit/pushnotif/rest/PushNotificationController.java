@@ -35,7 +35,7 @@ public class PushNotificationController {
 		JSONObject notification = new JSONObject();
 		notification.put("title", "JSA Notification");
 		notification.put("body", "Happy Message!");
-
+		notification.put("click_action", "FCM_PLUGIN_ACTIVITY");
 		JSONObject data = new JSONObject();
 		data.put("Key-1", "JSA Data 1");
 		data.put("Key-2", "JSA Data 2");

@@ -1,0 +1,72 @@
+
+  <div class="mapp">
+    <div id="map_canvas" class="mapita-google">
+
+    </div>
+    <button *ngIf="proveedorActivo" class="boton-mapa" [ngStyle]="{'background-color': genericService.getColorHex()}" (click)="comparativa()">Comparar precios</button>
+  </div>
+
+  <div class="contenedor-card" style="background-color: black;" *ngIf="proveedorActivo" [ngStyle]="{'background-color': genericService.getColorHex()}">
+    <div id="card-{{i}}" class="card animated lightSpeedIn">
+      <!-- <div class="tacha">
+                    <div class="mini-tacha">
+                        <ion-icon ios="ios-cart-outline" md="ios-cart-outline" style="color: #3b64bf;" *ngIf="!p.carrito" (click)="agregarToCarrito(p)"></ion-icon>
+                        <ion-icon ios="ios-cart" md="ios-cart" *ngIf="p.carrito" style="color: #3b64bf;" (click)="productoService.deleteFavorito(p)"></ion-icon>
+                    </div>
+                  </div> -->
+      <div class="container-card" style="">
+
+        <img src="{{env.getImagenIndividual}}{{proveedorActivo.producto.adjuntoId}}" />
+      </div>
+      <div class="container-text">{{proveedorActivo.producto.nombre}}</div>
+      <div class="description">{{proveedorActivo.producto.descripcion}}</div>
+      <div class="precio">{{proveedorActivo.precio | currency}}</div>
+
+      <!-- <div class="contenedor-carrito" [ngStyle]="{'text-align': !p.cantidad || p.cantidad <= 0 ? 'end' : ''}">
+        <div class="menos" *ngIf="p.cantidad > 0" (click)="decrementar(p)">
+          <div [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">-</div>
+        </div>
+        <div class="cantidad" *ngIf="p.cantidad > 0">
+          <div [ngStyle]="{'color': genericService.getColorHex()}">{{p.cantidad}}</div>
+        </div>
+        <div class="mas" (click)="incrementa(p)">
+          <div [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">+</div>
+        </div>
+      </div> -->
+    </div>
+    <div class="informa">
+      <div class="nombre">{{proveedorActivo.proveedor.nombre}}</div>
+
+      <div class="ofrece">A tu servicio: </div>
+      <div class="nombre">{{proveedorActivo.proveedor.empresa.nombre}}</div>
+
+      <div class="ofrece">Estamos ubicados en</div>
+      <div class="nombre">{{proveedorActivo.proveedor.direccion.direccion}}</div>
+      <div class="nombre" *ngIf="proveedorActivo.proveedor.direccion.colonia">col.
+        {{proveedorActivo.proveedor.direccion.colonia}}</div>
+      <div class="nombre">{{proveedorActivo.proveedor.direccion.codigoPostal}}</div>
+    </div>
+
+    <div class="todos" (click)="viewDetailAll(proveedorActivo)">Ver todos</div>
+    <div class="logo"><img src="../../../assets/imgs/logo.png" style="    width: 33px;"></div>
+  </div>
+
+<div class="footer-detalle" *ngIf="proveedorActivo" style="box-shadow: none;">
+  <div class="cont-e">
+    <!-- <div class="suma">
+        <div class="menos" (click)="decrementar(producto)" >
+          <div [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">-</div>
+        </div>
+        <div class="cantidad" >
+          <div [ngStyle]="{'color': genericService.getColorHex()}">{{producto.cantidad}} {{producto.cantidad == 1 ? 'pza' : 'pzas'}}</div>
+        </div>
+        <div class="mas" (click)="incrementa(producto)">
+          <div [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">+</div>
+        </div>
+      </div> -->
+    <button style="width:100%;color: #fff;
+    padding: 11px;" (click)="agregarCarrito()" [ngStyle]="{'background-color': genericService.getColorHex()}">
+      Agregar a carrito
+    </button>
+  </div>
+</div>

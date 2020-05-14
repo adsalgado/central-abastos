@@ -38,13 +38,14 @@ export class JhiLanguageHelper {
    * 3. 'global.title'
    */
   updateTitle(titleKey?: string) {
-    if (!titleKey) {
+    /* if (!titleKey) {
       titleKey = this.getPageTitle(this.router.routerState.snapshot.root);
     }
 
     this.translateService.get(titleKey).subscribe(title => {
       this.titleService.setTitle(title);
-    });
+    }); */
+    //fallo de title
   }
 
   private init() {

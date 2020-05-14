@@ -24,6 +24,7 @@ export class NavbarComponent implements OnInit {
   modalRef: NgbModalRef;
   version: string;
 
+  public habilitado: boolean = false;
   constructor(
     private loginService: LoginService,
     private languageService: JhiLanguageService,
@@ -79,6 +80,8 @@ export class NavbarComponent implements OnInit {
 
   toggleNavbar() {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+
+    this.habilitado = !this.habilitado;
   }
 
   getImageUrl() {

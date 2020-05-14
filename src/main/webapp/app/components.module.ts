@@ -35,6 +35,7 @@ import { HomePublicMainComponent } from './pages/home-public/home-public-main.co
 import { ProductoDeleteDialogComponent, ProductoDeletePopupComponent } from './entities/producto';
 import { CategoriaPage } from './pages/categoria/categoria';
 import { DetalleProductoPage } from './pages/detalle-producto/detalle-producto';
+import { MapaProveedoresPage } from './pages/mapa-proveedores/mapa-proveedores';
 //import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 
 @NgModule({
@@ -62,8 +63,8 @@ import { DetalleProductoPage } from './pages/detalle-producto/detalle-producto';
     ActiveMenuDirective,
     FooterComponent,
     CategoriaPage,
-    DetalleProductoPage
-
+    DetalleProductoPage,
+    MapaProveedoresPage
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,
@@ -101,7 +102,8 @@ import { DetalleProductoPage } from './pages/detalle-producto/detalle-producto';
     ActiveMenuDirective,
     FooterComponent,
     CategoriaPage,
-    DetalleProductoPage
+    DetalleProductoPage,
+    MapaProveedoresPage
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,

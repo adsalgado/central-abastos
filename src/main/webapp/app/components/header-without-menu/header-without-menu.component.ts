@@ -109,6 +109,6 @@ export class HeaderWithoutMenuComponent implements OnInit {
   }
 
   getTitle() {
-    return this.router.url;
+    //return this.router.url;
   }
 }

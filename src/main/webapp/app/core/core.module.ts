@@ -12,7 +12,6 @@ import { NgbDateMomentAdapter } from 'app/shared/util/datepicker-adapter';
   exports: [],
   declarations: [],
   providers: [
-    Title,
     {
       provide: LOCALE_ID,
       useValue: 'es'

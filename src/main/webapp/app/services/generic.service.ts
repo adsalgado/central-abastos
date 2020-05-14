@@ -116,7 +116,7 @@ export class GenericService {
   getColorHex() {
     let color: any = this.localStorageEncryptService.getFromLocalStorage('theme');
 
-    return color;
+    return color ? color : 'black';
   }
 
   getColorClass() {

@@ -108,7 +108,7 @@ export class NavbarComponentMain implements OnInit {
   }
 
   getTitle() {
-    let ruta: string = '';
+    /* let ruta: string = '';
     switch (this.router.url) {
       case '/main/public-home':
         ruta = 'Bienvenid@';
@@ -117,6 +117,6 @@ export class NavbarComponentMain implements OnInit {
       default:
         break;
     }
-    return ruta;
+    return ruta; */
   }
 }
