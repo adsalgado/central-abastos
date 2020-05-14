@@ -236,7 +236,7 @@ public class PedidoProveedorResource {
 	 * @throws URISyntaxException if the Location URI syntax is incorrect.
 	 */
 	@PutMapping("/pedido-proveedores/calificacion-servicio")
-	public ResponseEntity<PedidoProveedorDTO> updateCalificacionPedido(
+	public ResponseEntity<PedidoProveedorDTO> calificacionServicio(
 			@RequestBody CalificacionPedidoProveedorDTO calificacionDTO) throws URISyntaxException {
 
 		log.debug("REST request to update Pedido : {}", calificacionDTO);
@@ -247,6 +247,9 @@ public class PedidoProveedorResource {
 		}
 
 		PedidoProveedorDTO result = pedidoProveedorService.actualizaCalificacionServicio(calificacionDTO, usuarioId);
+		if (result != null && result.getCalificacionServicio() != null) {
+			sendPushNotificationCalificacionServicio(result);
+		}
 
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME,
 				calificacionDTO.getPedidoProveedorId().toString())).body(result);
@@ -285,12 +288,63 @@ public class PedidoProveedorResource {
 		PedidoProveedorDTO result;
 		try {
 			result = pedidoProveedorService.terminarServicio(terminarDTO, usuarioId);
+			if (result != null && result.getEstatusId().equals(Estatus.PEDIDO_ENTREGADO)) {
+				sendPushNotificationPedidoEntregado(result);
+			}
 		} catch (Exception e) {
 			throw new BadRequestAlertException(e.getMessage(), ENTITY_NAME, "idnull");
 		}
 
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME,
 				terminarDTO.getPedidoProveedorId().toString())).body(result);
+
+	}
+
+	private void sendPushNotificationPedidoEntregado(PedidoProveedorDTO pedidoProveedorDTO) {
+
+		PedidoProveedorDTO pprovDTO = pedidoProveedorService.findOne(pedidoProveedorDTO.getId()).orElse(null);
+		if (pprovDTO != null) {
+
+			PedidoDTO pedido = pedidoService.findOne(pprovDTO.getPedidoId()).orElse(null);
+			if (pedido != null) {
+				try {
+
+					String notificationTitle = String.format("Se entregó tu pedido %s", pedido.getFolio());
+					String notificationBody = "Hemos confirmado que tu pedido ha sido entregado, califica al transportista";
+					String messageTitle = "Hemos confirmado que tu pedido ha sido entregado, califica al transportista";
+
+					String toCliente = pedido.getCliente().getToken();
+
+					Map<String, Object> mapData = new HashMap<>();
+					mapData.put("pedidoId", pedido.getId());
+					mapData.put("pedidoProveedorId", pprovDTO.getId());
+
+					HttpEntity<String> requestCliente = pushNotificationsService.createRequestNotification(toCliente,
+							notificationTitle, notificationBody, messageTitle, EnumPantallas.PEDIDO_ENTREGADO.getView(),
+							mapData);
+
+					log.debug("requestCliente: {}", requestCliente);
+					CompletableFuture<String> pushNotificationCliente = pushNotificationsService.send(requestCliente);
+					CompletableFuture.allOf(pushNotificationCliente).join();
+
+					try {
+						String firebaseResponseCliente = pushNotificationCliente.get();
+						log.debug("firebaseResponseCliente: {}", firebaseResponseCliente);
+
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
+				} catch (JSONException e) {
+					log.debug("JSONException e: {}", e);
+				} catch (HttpClientErrorException e) {
+					log.debug("HttpClientErrorException e: {}", e);
+				}
+
+			}
+
+		}
 
 	}
 
@@ -340,6 +394,89 @@ public class PedidoProveedorResource {
 						log.debug("firebaseResponseCliente: {}", firebaseResponseCliente);
 
 						String firebaseResponseTransportista = pushNotificationCliente.get();
+						log.debug("firebaseResponseTransportista: {}", firebaseResponseTransportista);
+
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
+				} catch (JSONException e) {
+					log.debug("JSONException e: {}", e);
+				} catch (HttpClientErrorException e) {
+					log.debug("HttpClientErrorException e: {}", e);
+				}
+
+			}
+
+		}
+
+	}
+
+	private void sendPushNotificationCalificacionServicio(PedidoProveedorDTO pedidoProveedorDTO) {
+
+		PedidoProveedorDTO pprovDTO = pedidoProveedorService.findOne(pedidoProveedorDTO.getId()).orElse(null);
+		if (pprovDTO != null) {
+
+			PedidoDTO pedido = pedidoService.findOne(pprovDTO.getPedidoId()).orElse(null);
+			if (pedido != null) {
+				try {
+
+					String calificacionServicio = "";
+					switch (pprovDTO.getCalificacionServicio()) {
+					case 1:
+						calificacionServicio = "PESIMO";
+						break;
+					case 2:
+						calificacionServicio = "MALO";
+						break;
+					case 3:
+						calificacionServicio = "REGULAR";
+						break;
+					case 4:
+						calificacionServicio = "BUENO";
+						break;
+					case 5:
+						calificacionServicio = "EXCELENTE";
+						break;
+					}
+
+					String notificationTitle = "Pedido entregado";
+					String notificationBody = String.format("El cliente ha calificado el servicio como: %s",
+							calificacionServicio);
+					String messageTitle = String.format("El cliente ha calificado el servicio como: %s",
+							calificacionServicio);
+
+					String toProveedor = pprovDTO.getProveedor().getUsuario().getToken();
+					String toTransportista = pprovDTO.getProveedor().getTransportista().getUsuario().getToken();
+
+					Map<String, Object> mapData = new HashMap<>();
+					mapData.put("pedidoId", pedido.getId());
+					mapData.put("pedidoProveedorId", pprovDTO.getId());
+
+					HttpEntity<String> requestProveedor = pushNotificationsService.createRequestNotification(
+							toProveedor, notificationTitle, notificationBody, messageTitle,
+							EnumPantallas.PEDIDO_CALIFICADO.getView(), mapData);
+
+					log.debug("requestProveedor: {}", requestProveedor);
+					CompletableFuture<String> pushNotificationProveedor = pushNotificationsService
+							.send(requestProveedor);
+					CompletableFuture.allOf(pushNotificationProveedor).join();
+
+					HttpEntity<String> requestTransportista = pushNotificationsService.createRequestNotification(
+							toTransportista, notificationTitle, notificationBody, messageTitle,
+							EnumPantallas.PEDIDO_CALIFICADO.getView(), mapData);
+
+					log.debug("request: {}", requestTransportista);
+					CompletableFuture<String> pushNotificationTransportista = pushNotificationsService
+							.send(requestTransportista);
+					CompletableFuture.allOf(pushNotificationTransportista).join();
+
+					try {
+						String firebaseResponseProveedor = pushNotificationProveedor.get();
+						log.debug("firebaseResponseProveedor: {}", firebaseResponseProveedor);
+
+						String firebaseResponseTransportista = pushNotificationTransportista.get();
 						log.debug("firebaseResponseTransportista: {}", firebaseResponseTransportista);
 
 					} catch (InterruptedException e) {
