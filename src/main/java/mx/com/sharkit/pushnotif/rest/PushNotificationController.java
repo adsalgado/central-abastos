@@ -3,6 +3,8 @@ package mx.com.sharkit.pushnotif.rest;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -13,33 +15,57 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import mx.com.sharkit.pushnotif.service.AndroidPushNotificationsService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import mx.com.sharkit.pushnotif.service.PushNotificationsService;
+import mx.com.sharkit.service.PedidoService;
+import mx.com.sharkit.service.dto.PedidoDTO;
+import mx.com.sharkit.web.rest.PedidoResource;
 
 @RestController
 @RequestMapping("/api")
 public class PushNotificationController {
+	
+	private final Logger log = LoggerFactory.getLogger(PushNotificationController.class);
 
 	private final String TOPIC = "JavaSampleApproach";
 
 	@Autowired
-	private AndroidPushNotificationsService androidPushNotificationsService;
+	private PushNotificationsService androidPushNotificationsService;
+	
+	@Autowired
+	private PedidoService pedidoService;
 
 	@GetMapping("/push/send")
 	public ResponseEntity<String> send() throws JSONException {
 
 		JSONObject body = new JSONObject();
 //		body.put("to", "/topics/" + TOPIC);
-		body.put("to", "fEmlU4miqjQ:APA91bGVFDGwrH__e0DBr0965HSRfDaHKryoiDs1f3nyokcZk59dcOo1aOwv7Pr6qIS4Js773znhGjMi7YSKpMgiGB8hRhCm-WhL9TFEIlrHaXW912Ao2YYXt9XJwy3TPVCtZr8MC8gx");
+		body.put("to", "e6_eYZfsCtQ:APA91bGSqosLYVSTf4F9W3nrQIER0gWNb981bGLXH5aqsMYxEHQuyw91yGUVujKeOHqEjOhkFLs3Luhvm7M8wOBZqDJzjFSHpHgSK1WzSmxkBuzqT9rg19sGWxs9LEQtdGmT36z8t-ID");
 		body.put("priority", "high");
-
+		
 		JSONObject notification = new JSONObject();
 		notification.put("title", "JSA Notification");
 		notification.put("body", "Happy Message!");
 
-		JSONObject data = new JSONObject();
-		data.put("Key-1", "JSA Data 1");
-		data.put("Key-2", "JSA Data 2");
+		
+		PedidoDTO pedido = pedidoService.findOne(34L).orElse(null);
 
+		ObjectMapper obj = new ObjectMapper();
+		String json = "";
+		try {
+			json = obj.writeValueAsString(pedido);
+		} catch (JsonProcessingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		JSONObject data = new JSONObject();
+		data.put("pedido", json);
+		data.put("view", "1");
+
+		
 		body.put("notification", notification);
 		body.put("data", data);
 
@@ -49,6 +75,7 @@ public class PushNotificationController {
 		 * "/topics/JavaSampleApproach", "priority": "high" }
 		 */
 
+		log.info(body.toString());
 		HttpEntity<String> request = new HttpEntity<>(body.toString());
 
 		CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request);

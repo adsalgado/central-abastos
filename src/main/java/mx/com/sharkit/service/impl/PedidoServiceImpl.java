@@ -204,8 +204,8 @@ public class PedidoServiceImpl implements PedidoService {
 				sumaProveedor.put(proveedorDTO.getId(), totalProveedor);
 				sumaSinIvaProveedor.put(proveedorDTO.getId(), totalSinIvaProveedor);
 
-				total = total.add(totalProveedor);
-				totalSinIva = totalSinIva.add(totalSinIvaProveedor);
+				total = total.add(pedidoDetalleDTO.getTotalSinIva());
+				totalSinIva = totalSinIva.add(pedidoDetalleDTO.getTotalSinIva());
 
 				pedidoProveedor.getPedidoDetalles().add(pedidoDetalleDTO);
 
