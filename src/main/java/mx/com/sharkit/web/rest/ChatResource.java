@@ -2,7 +2,9 @@ package mx.com.sharkit.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -11,6 +13,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpEntity;
@@ -34,8 +37,10 @@ import mx.com.sharkit.pushnotif.service.PushNotificationsService;
 import mx.com.sharkit.repository.UserRepository;
 import mx.com.sharkit.service.ChatDetalleService;
 import mx.com.sharkit.service.ChatService;
+import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.dto.ChatDTO;
 import mx.com.sharkit.service.dto.ChatDetalleDTO;
+import mx.com.sharkit.service.dto.PedidoProveedorDTO;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 import mx.com.sharkit.web.websocket.dto.MessageChatDTO;
 
@@ -61,6 +66,9 @@ public class ChatResource {
 
 	private final PushNotificationsService pushNotificationsService;
 
+	@Autowired
+	private PedidoProveedorService pedidoProveedorService;
+	
 	public ChatResource(ChatService chatService, ChatDetalleService chatDetalleService, UserRepository userRepository,
 			PushNotificationsService pushNotificationsService) {
 		this.chatService = chatService;
@@ -220,9 +228,21 @@ public class ChatResource {
 			try {
 				String title = String.format("El %s %s %s te envió un mensaje", emisor, userFrom.getFirstName(),
 						userFrom.getLastName());
+				
+				Map<String, Object> mapData = new HashMap<>();
+				mapData.put("chatId", msgChatDTO.getChatId());
+				
+				ChatDTO chat = chatService.findOne(msgChatDTO.getChatId()).orElse(null);
+				if (chat != null) {
+					mapData.put("pedidoProveedorId", chat.getPedidoProveedorId());
+					PedidoProveedorDTO pprov = pedidoProveedorService.findOne(chat.getPedidoProveedorId()).orElse(null);
+					if (pprov != null) {
+						mapData.put("pedidoId", pprov.getPedidoId());	
+					}
+				}
 
 				HttpEntity<String> request = pushNotificationsService.createRequestNotification(userTo.getToken(),
-						title, msgChatDTO.getText(), title, EnumPantallas.CHAT.getView(), msgChatDTO.getChatId());
+						title, msgChatDTO.getText(), title, EnumPantallas.CHAT.getView(), mapData);
 
 				log.debug("request: {}", request);
 				CompletableFuture<String> pushNotification = pushNotificationsService.send(request);

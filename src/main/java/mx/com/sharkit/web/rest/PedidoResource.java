@@ -2,7 +2,9 @@ package mx.com.sharkit.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -166,7 +168,7 @@ public class PedidoResource {
 	}
 
 	/**
-	 * {@code PUT  /pedidos} : Updates an existing pedido.
+	 * {@code PUT  /pedidos/pago} : Pago de pedido with Stripe.
 	 *
 	 * @param pedidoDTO the pedidoDTO to update.
 	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
@@ -177,7 +179,7 @@ public class PedidoResource {
 	 * @throws URISyntaxException if the Location URI syntax is incorrect.
 	 */
 	@PutMapping("/pedidos/pago")
-	public ResponseEntity<PedidoDTO> updatePedido(@RequestBody PedidoPagoDTO pedidopagoDTO) throws URISyntaxException {
+	public ResponseEntity<PedidoDTO> pagoPedido(@RequestBody PedidoPagoDTO pedidopagoDTO) throws URISyntaxException {
 
 		log.debug("REST request to update Pedido : {}", pedidopagoDTO);
 
@@ -207,53 +209,18 @@ public class PedidoResource {
 		Charge charge = null;
 		try {
 			charge = stripeService.charge(chargeRequest);
+			pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
+			//Envío de notificación push con Firebase
+			sendPushNotificationPedidoPagado(pedido);
+			
 		} catch (StripeException e) {
 			log.error("Error Stripe: {}", e);
-//			throw new BadRequestAlertException("Error al procesar el pago.", ENTITY_NAME, "errorStripe");
-		}
-
-		if (charge == null) {
-			charge = new Charge();
-		}
-		pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
-
-		List<PedidoProveedorDTO> lstPprov = pedidoProveedorService.findByPedidoId(pedido.getId());
-		for (PedidoProveedorDTO pprov : lstPprov) {
-			try {
-				
-				HttpEntity<String> request = pushNotificationsService.createRequestNotification(
-						pprov.getProveedor().getUsuario().getToken(),
-						String.format("El pedido es %s", pedido.getFolio()),
-						String.format("El cliente %s %s ha solicitado un pedido", pedido.getCliente().getFirstName(),
-								pedido.getCliente().getLastName()),
-						String.format("El cliente %s %s ha solicitado un pedido %s", pedido.getCliente().getFirstName(),
-								pedido.getCliente().getLastName(), pedido.getFolio()),
-						EnumPantallas.SOLICITUD_PEDIDO.getView(), pedido.getId());
-				
-				log.debug("request: {}", request);
-				CompletableFuture<String> pushNotification = pushNotificationsService.send(request);
-
-					CompletableFuture.allOf(pushNotification).join();
-
-					try {
-						String firebaseResponse = pushNotification.get();
-						log.debug("firebaseResponse: {}", firebaseResponse);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						e.printStackTrace();
-					}
-
-			} catch (JSONException e) {
-				log.debug("JSONException e: {}", e);
-			} catch (HttpClientErrorException e) {
-				log.debug("HttpClientErrorException e: {}", e);
-			}
-
+			throw new BadRequestAlertException("Error al procesar el pago.", ENTITY_NAME, "errorStripe");
 		}
 
 		return ResponseEntity.ok().body(pedido);
 	}
+
 
 	/**
 	 * {@code GET  /pedidos} : get all the pedidos.
@@ -346,7 +313,8 @@ public class PedidoResource {
 	}
 
 	/**
-	 * {@code GET  /proveedor/pedidos/{pedidoId}} : get the pedidos of proveedor by pedidoId.
+	 * {@code GET /proveedor/pedidos/{pedidoId}} : get the pedidos of proveedor by
+	 * pedidoId.
 	 *
 	 * 
 	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
@@ -370,9 +338,9 @@ public class PedidoResource {
 		if (pedidoDTO != null) {
 			pedidoDTO.setPedidoProveedores(
 					pedidoProveedorService.findByPedidoIdAndProveedorId(pedidoDTO.getId(), proveedorId));
-			
+
 		}
-		
+
 		return ResponseEntity.ok().body(pedidoDTO);
 	}
 
@@ -405,5 +373,49 @@ public class PedidoResource {
 
 		return lstPedidos;
 	}
+	
+	private void sendPushNotificationPedidoPagado(PedidoDTO pedido) {
+
+		List<PedidoProveedorDTO> lstPprov = pedidoProveedorService.findByPedidoId(pedido.getId());
+		for (PedidoProveedorDTO pprov : lstPprov) {
+			try {
+				
+				Map<String, Object> mapData = new HashMap<>();
+				mapData.put("pedidoId", pedido.getId());
+				mapData.put("pedidoProveedorId", pprov.getId());
+				
+				HttpEntity<String> request = pushNotificationsService.createRequestNotification(
+						pprov.getProveedor().getUsuario().getToken(),
+						String.format("El pedido es %s", pedido.getFolio()),
+						String.format("El cliente %s %s ha solicitado un pedido", pedido.getCliente().getFirstName(),
+								pedido.getCliente().getLastName()),
+						String.format("El cliente %s %s ha solicitado un pedido %s", pedido.getCliente().getFirstName(),
+								pedido.getCliente().getLastName(), pedido.getFolio()),
+						EnumPantallas.SOLICITUD_PEDIDO.getView(), mapData);
+
+				log.debug("request: {}", request);
+				CompletableFuture<String> pushNotification = pushNotificationsService.send(request);
+
+				CompletableFuture.allOf(pushNotification).join();
+
+				try {
+					String firebaseResponse = pushNotification.get();
+					log.debug("firebaseResponse: {}", firebaseResponse);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
+
+			} catch (JSONException e) {
+				log.debug("JSONException e: {}", e);
+			} catch (HttpClientErrorException e) {
+				log.debug("HttpClientErrorException e: {}", e);
+			}
+
+		}
+
+	}
+
 
 }

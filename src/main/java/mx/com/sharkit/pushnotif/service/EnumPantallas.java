@@ -3,6 +3,8 @@ package mx.com.sharkit.pushnotif.service;
 public enum EnumPantallas {
 	
 	SOLICITUD_PEDIDO(1),
+	PEDIDO_CONFIRMADO_CLIENTE(2),
+	PEDIDO_CONFIRMADO_TRANSPORTISTA(3),
 	CHAT(10);
 	
 	private int view;

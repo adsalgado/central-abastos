@@ -1,6 +1,7 @@
 package mx.com.sharkit.pushnotif.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
@@ -71,6 +72,39 @@ public class PushNotificationsService {
 		data.put("data", json);
 		data.put("title", messageTitle);
 		data.put("view", messageView);
+
+		body.put("notification", notification);
+		body.put("data", data);
+
+		return new HttpEntity<>(body.toString());
+
+	}
+
+	
+	public HttpEntity<String> createRequestNotification(String to, String notificationTitle, String notificationBody,
+			String messageTitle, Integer messageView, Map<String, Object> mapData) throws JSONException {
+		
+		JSONObject body = new JSONObject();
+
+		body.put("to", to);
+		body.put("priority", "high");
+
+		JSONObject notification = new JSONObject();
+		notification.put("title", notificationTitle);
+		notification.put("body", notificationBody);
+		notification.put("click_action", "FCM_PLUGIN_ACTIVITY");
+
+		JSONObject data = new JSONObject();
+		data.put("title", messageTitle);
+		data.put("view", messageView);
+		
+		mapData.keySet().forEach(key -> {
+			try {
+				data.put(key, mapData.get(key));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		});
 
 		body.put("notification", notification);
 		body.put("data", data);

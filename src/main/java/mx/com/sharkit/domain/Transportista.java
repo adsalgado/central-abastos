@@ -34,6 +34,10 @@ public class Transportista implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+	@ManyToOne
+	@JoinColumn(name = "usuario_id", insertable = false, updatable = false)
+	private User usuario;
+
 	@Column(name = "usuario_id")
 	private Long usuarioId;
 
@@ -155,6 +159,14 @@ public class Transportista implements Serializable {
 
 	public void setDireccionId(Long direccionId) {
 		this.direccionId = direccionId;
+	}
+
+	public User getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(User usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override
