@@ -2,7 +2,8 @@ package mx.com.sharkit.pushnotif.service;
 
 public enum EnumPantallas {
 	
-	SOLICITUD_PEDIDO(1);
+	SOLICITUD_PEDIDO(1),
+	CHAT(10);
 	
 	private int view;
 	
