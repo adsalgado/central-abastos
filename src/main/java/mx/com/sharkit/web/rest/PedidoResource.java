@@ -2,12 +2,18 @@ package mx.com.sharkit.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
@@ -26,6 +33,8 @@ import io.github.jhipster.web.util.ResponseUtil;
 import mx.com.sharkit.domain.Proveedor;
 import mx.com.sharkit.domain.Transportista;
 import mx.com.sharkit.domain.User;
+import mx.com.sharkit.pushnotif.service.EnumPantallas;
+import mx.com.sharkit.pushnotif.service.PushNotificationsService;
 import mx.com.sharkit.repository.ProveedorRepository;
 import mx.com.sharkit.repository.TransportistaRepository;
 import mx.com.sharkit.service.PedidoProveedorService;
@@ -37,6 +46,7 @@ import mx.com.sharkit.service.dto.ChargeRequestDTO.Currency;
 import mx.com.sharkit.service.dto.PedidoAltaDTO;
 import mx.com.sharkit.service.dto.PedidoDTO;
 import mx.com.sharkit.service.dto.PedidoPagoDTO;
+import mx.com.sharkit.service.dto.PedidoProveedorDTO;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -65,15 +75,19 @@ public class PedidoResource {
 
 	private final TransportistaRepository transportistaRepository;
 
+	private final PushNotificationsService pushNotificationsService;
+
 	public PedidoResource(PedidoService pedidoService, UserService userService,
 			PedidoProveedorService pedidoProveedorService, StripeService stripeService,
-			ProveedorRepository proveedorRepository, TransportistaRepository transportistaRepository) {
+			ProveedorRepository proveedorRepository, TransportistaRepository transportistaRepository,
+			PushNotificationsService pushNotificationsService) {
 		this.pedidoService = pedidoService;
 		this.userService = userService;
 		this.pedidoProveedorService = pedidoProveedorService;
 		this.stripeService = stripeService;
 		this.proveedorRepository = proveedorRepository;
 		this.transportistaRepository = transportistaRepository;
+		this.pushNotificationsService = pushNotificationsService;
 	}
 
 	/**
@@ -154,7 +168,7 @@ public class PedidoResource {
 	}
 
 	/**
-	 * {@code PUT  /pedidos} : Updates an existing pedido.
+	 * {@code PUT  /pedidos/pago} : Pago de pedido with Stripe.
 	 *
 	 * @param pedidoDTO the pedidoDTO to update.
 	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
@@ -165,17 +179,16 @@ public class PedidoResource {
 	 * @throws URISyntaxException if the Location URI syntax is incorrect.
 	 */
 	@PutMapping("/pedidos/pago")
-	public ResponseEntity<PedidoDTO> updatePedido(@RequestBody PedidoPagoDTO pedidopagoDTO)
-			throws URISyntaxException {
-		
+	public ResponseEntity<PedidoDTO> pagoPedido(@RequestBody PedidoPagoDTO pedidopagoDTO) throws URISyntaxException {
+
 		log.debug("REST request to update Pedido : {}", pedidopagoDTO);
-		
+
 		Optional<User> user = userService.getUserWithAuthorities();
 		Long clienteId = user.isPresent() ? user.get().getId() : 0L;
 		if (clienteId == 0) {
 			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
 		}
-		
+
 		if (pedidopagoDTO.getPedidoId() == null) {
 			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
 		}
@@ -190,12 +203,16 @@ public class PedidoResource {
 		ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
 		chargeRequest.setAmount(pedido.getTotal());
 		chargeRequest.setCurrency(Currency.MXN);
-		chargeRequest.setDescription("Pago de pedido: " + pedido.getId());
+		chargeRequest.setDescription("Pago de pedido: " + pedido.getFolio());
 		chargeRequest.setStripeToken(pedidopagoDTO.getToken());
 
+		Charge charge = null;
 		try {
-			Charge charge = stripeService.charge(chargeRequest);
+			charge = stripeService.charge(chargeRequest);
 			pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
+			//Envío de notificación push con Firebase
+			sendPushNotificationPedidoPagado(pedido);
+			
 		} catch (StripeException e) {
 			log.error("Error Stripe: {}", e);
 			throw new BadRequestAlertException("Error al procesar el pago.", ENTITY_NAME, "errorStripe");
@@ -203,6 +220,7 @@ public class PedidoResource {
 
 		return ResponseEntity.ok().body(pedido);
 	}
+
 
 	/**
 	 * {@code GET  /pedidos} : get all the pedidos.
@@ -280,19 +298,52 @@ public class PedidoResource {
 			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
 		}
 		Optional<Proveedor> proveedor = proveedorRepository.findOneByusuarioId(usuarioId);
-		Long proveedorId = proveedor.isPresent()  ? proveedor.get().getId() : 0L;
+		Long proveedorId = proveedor.isPresent() ? proveedor.get().getId() : 0L;
 		if (proveedorId == 0) {
 			throw new BadRequestAlertException("El usuario no es proveedor", ENTITY_NAME, "idnull");
 		}
-		
+
 		List<PedidoDTO> lstPedidos = pedidoService.findByProveedorId(proveedorId);
 		for (PedidoDTO pedidoDTO : lstPedidos) {
-			pedidoDTO.setPedidoProveedores(pedidoProveedorService.findByPedidoIdAndProveedorId(pedidoDTO.getId(), proveedorId));
+			pedidoDTO.setPedidoProveedores(
+					pedidoProveedorService.findByPedidoIdAndProveedorId(pedidoDTO.getId(), proveedorId));
 		}
 
 		return lstPedidos;
 	}
-	
+
+	/**
+	 * {@code GET /proveedor/pedidos/{pedidoId}} : get the pedidos of proveedor by
+	 * pedidoId.
+	 *
+	 * 
+	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+	 *         of pedidos in body.
+	 */
+	@GetMapping("proveedor/pedidos/{pedidoId}")
+	public ResponseEntity<PedidoDTO> getPedidoProveedor(@PathVariable Long pedidoId) {
+		log.debug("REST request to get Pedido by pedidoId");
+		Optional<User> user = userService.getUserWithAuthorities();
+		Long usuarioId = user.isPresent() ? user.get().getId() : 0L;
+		if (usuarioId == 0) {
+			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+		}
+		Optional<Proveedor> proveedor = proveedorRepository.findOneByusuarioId(usuarioId);
+		Long proveedorId = proveedor.isPresent() ? proveedor.get().getId() : 0L;
+		if (proveedorId == 0) {
+			throw new BadRequestAlertException("El usuario no es proveedor", ENTITY_NAME, "idnull");
+		}
+
+		PedidoDTO pedidoDTO = pedidoService.findOne(pedidoId).orElse(null);
+		if (pedidoDTO != null) {
+			pedidoDTO.setPedidoProveedores(
+					pedidoProveedorService.findByPedidoIdAndProveedorId(pedidoDTO.getId(), proveedorId));
+
+		}
+
+		return ResponseEntity.ok().body(pedidoDTO);
+	}
+
 	/**
 	 * {@code GET  /transportista/pedidos} : get all the pedidos of Transportista.
 	 *
@@ -309,17 +360,62 @@ public class PedidoResource {
 			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
 		}
 		Optional<Transportista> transportista = transportistaRepository.findOneByusuarioId(usuarioId);
-		Long transportistaId = transportista.isPresent()  ? transportista.get().getId() : 0L;
+		Long transportistaId = transportista.isPresent() ? transportista.get().getId() : 0L;
 		if (transportistaId == 0) {
 			throw new BadRequestAlertException("El usuario no es transportistaId", ENTITY_NAME, "idnull");
 		}
 		log.debug("Transportista: {}", transportistaId);
 		List<PedidoDTO> lstPedidos = pedidoService.findByTransportistaId(transportistaId);
 		for (PedidoDTO pedidoDTO : lstPedidos) {
-			pedidoDTO.setPedidoProveedores(pedidoProveedorService.findByPedidoIdAndTransportistaId(pedidoDTO.getId(), transportistaId));
+			pedidoDTO.setPedidoProveedores(
+					pedidoProveedorService.findByPedidoIdAndTransportistaId(pedidoDTO.getId(), transportistaId));
 		}
 
 		return lstPedidos;
 	}
+	
+	private void sendPushNotificationPedidoPagado(PedidoDTO pedido) {
+
+		List<PedidoProveedorDTO> lstPprov = pedidoProveedorService.findByPedidoId(pedido.getId());
+		for (PedidoProveedorDTO pprov : lstPprov) {
+			try {
+				
+				Map<String, Object> mapData = new HashMap<>();
+				mapData.put("pedidoId", pedido.getId());
+				mapData.put("pedidoProveedorId", pprov.getId());
+				
+				HttpEntity<String> request = pushNotificationsService.createRequestNotification(
+						pprov.getProveedor().getUsuario().getToken(),
+						String.format("El pedido es %s", pedido.getFolio()),
+						String.format("El cliente %s %s ha solicitado un pedido", pedido.getCliente().getFirstName(),
+								pedido.getCliente().getLastName()),
+						String.format("El cliente %s %s ha solicitado un pedido %s", pedido.getCliente().getFirstName(),
+								pedido.getCliente().getLastName(), pedido.getFolio()),
+						EnumPantallas.SOLICITUD_PEDIDO.getView(), mapData);
+
+				log.debug("request: {}", request);
+				CompletableFuture<String> pushNotification = pushNotificationsService.send(request);
+
+				CompletableFuture.allOf(pushNotification).join();
+
+				try {
+					String firebaseResponse = pushNotification.get();
+					log.debug("firebaseResponse: {}", firebaseResponse);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
+
+			} catch (JSONException e) {
+				log.debug("JSONException e: {}", e);
+			} catch (HttpClientErrorException e) {
+				log.debug("HttpClientErrorException e: {}", e);
+			}
+
+		}
+
+	}
+
 
 }

@@ -12,6 +12,8 @@ public class TransportistaDTO implements Serializable {
 
     private Long id;
 
+    private UserDTO usuario;
+    
 	private Long usuarioId;
 
     private String nombre;
@@ -50,6 +52,14 @@ public class TransportistaDTO implements Serializable {
 
 	public String getNombre() {
 		return nombre;
+	}
+
+	public UserDTO getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(UserDTO usuario) {
+		this.usuario = usuario;
 	}
 
 	public void setNombre(String nombre) {
