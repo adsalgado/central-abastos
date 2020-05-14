@@ -228,7 +228,7 @@ public class PedidoResource {
 								pedido.getCliente().getLastName()),
 						String.format("El cliente %s %s ha solicitado un pedido %s", pedido.getCliente().getFirstName(),
 								pedido.getCliente().getLastName(), pedido.getFolio()),
-						EnumPantallas.SOLICITUD_PEDIDO.getView(), pedido);
+						EnumPantallas.SOLICITUD_PEDIDO.getView(), pedido.getId());
 				
 				log.debug("request: {}", request);
 				CompletableFuture<String> pushNotification = pushNotificationsService.send(request);

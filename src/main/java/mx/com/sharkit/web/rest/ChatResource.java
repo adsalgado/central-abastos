@@ -222,7 +222,7 @@ public class ChatResource {
 						userFrom.getLastName());
 
 				HttpEntity<String> request = pushNotificationsService.createRequestNotification(userTo.getToken(),
-						title, msgChatDTO.getText(), title, EnumPantallas.CHAT.getView(), msgChatDTO);
+						title, msgChatDTO.getText(), title, EnumPantallas.CHAT.getView(), msgChatDTO.getChatId());
 
 				log.debug("request: {}", request);
 				CompletableFuture<String> pushNotification = pushNotificationsService.send(request);
