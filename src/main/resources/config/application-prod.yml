@@ -138,6 +138,10 @@ jhipster:
 # application:
 stripe:
   public:
-    key: pk_test_abc123
+    key: pk_live_4f4ddGQitsEeJ0I1zg84xkRZ00mUNujYXd
   secret:
-    key: sk_test_abc123
+    key: sk_live_fcKnhw5seaKkY2ERdjJcKBOC007a6LoXl0
+
+api:
+  key:
+    google: AIzaSyDpg-WwghYJCwSq1Q8nM_5ZW5IY5tLNFmQ

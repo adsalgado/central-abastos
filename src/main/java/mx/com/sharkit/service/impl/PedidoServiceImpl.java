@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +25,12 @@ import mx.com.sharkit.domain.PedidoProveedor;
 import mx.com.sharkit.repository.PedidoDetalleRepository;
 import mx.com.sharkit.repository.PedidoProveedorRepository;
 import mx.com.sharkit.repository.PedidoRepository;
+import mx.com.sharkit.repository.UserRepository;
 import mx.com.sharkit.service.DireccionService;
+import mx.com.sharkit.service.GoogleService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.ProductoProveedorService;
+import mx.com.sharkit.service.TransportistaService;
 import mx.com.sharkit.service.dto.DireccionDTO;
 import mx.com.sharkit.service.dto.PedidoAltaDTO;
 import mx.com.sharkit.service.dto.PedidoDTO;
@@ -67,6 +71,15 @@ public class PedidoServiceImpl implements PedidoService {
 	private final PedidoDetalleRepository pedidoDetalleRepository;
 
 	private final DireccionService direccionService;
+
+	@Autowired
+	private GoogleService googleService;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private TransportistaService transportistaService;
 
 	public PedidoServiceImpl(PedidoRepository pedidoRepository, PedidoMapper pedidoMapper,
 			ProductoProveedorService productoProveedorService, PedidoProveedorRepository pedidoProveedorRepository,
@@ -158,6 +171,8 @@ public class PedidoServiceImpl implements PedidoService {
 		pedidoDTO.setTelefonoContacto(pedidoAltaDTO.getTelefonoContacto());
 		pedidoDTO.setCorreoContacto(pedidoAltaDTO.getCorreoContacto());
 
+//		User userPedido = userRepository.findById(pedidoAltaDTO.getUsuarioId()).orElse(null);
+
 		for (PedidoDetalleAltaDTO prod : pedidoAltaDTO.getProductos()) {
 
 			Optional<ProductoProveedorDTO> prodProvDTO = productoProveedorService
@@ -178,6 +193,18 @@ public class PedidoServiceImpl implements PedidoService {
 					pedidoProveedorDTO.setUsuarioAltaId(pedidoAltaDTO.getUsuarioId());
 					pedidoProveedorDTO.setProveedorId(proveedorDTO.getId());
 					pedidoProveedorDTO.setTransportistaId(proveedorDTO.getTransportistaId());
+
+//					String direccionProveedor = String.format("%s,%s", proveedorDTO.getDireccion().getLatitud(),
+//							proveedorDTO.getDireccion().getLongitud());
+//					String direccionUsuario = "";
+//					if (userPedido != null) {
+//						direccionUsuario = String.format("%s,%s", proveedorDTO.getDireccion().getLatitud(),
+//								proveedorDTO.getDireccion().getLongitud());
+//
+//					}
+//
+//					Long distanciaKm = googleService.getDistanciaKilometros(direccionProveedor, direccionUsuario);
+					
 
 					pedidoDTO.getPedidoProveedores().add(pedidoProveedorDTO);
 					mapProveedores.put(proveedorDTO.getId(), pedidoProveedorDTO);
@@ -244,7 +271,7 @@ public class PedidoServiceImpl implements PedidoService {
 			pedProv.setPedidoId(pedidoId);
 			pedProv.setTotal(sumaProveedor.get(pedProv.getProveedorId()));
 			pedProv.setTotalSinIva(sumaSinIvaProveedor.get(pedProv.getProveedorId()));
-			
+
 			String token = RandomUtil.generateToken(SIZE_TOKEN_PEDIDO);
 			log.debug("Token: {}", token);
 			pedProv.setToken(token);
@@ -252,17 +279,17 @@ public class PedidoServiceImpl implements PedidoService {
 			PedidoProveedor pedidoProveedor = pedidoProveedorMapper.toEntity(pedProv);
 			pedidoProveedor = pedidoProveedorRepository.save(pedidoProveedor);
 			pedidoProveedor.setFolio("PV" + StringUtils.leftPad(pedidoProveedor.getId().toString(), 10, "0"));
-			
+
 			PedidoProveedorDTO pedProvSaved = pedidoProveedorMapper.toDto(pedidoProveedor);
 			pedido.getPedidoProveedores().add(pedProvSaved);
 
 			pedProv.getPedidoDetalles().forEach(pedDet -> {
 				pedDet.setPedidoProveedorId(pedProvSaved.getId());
-				
+
 				PedidoDetalle pedidoDetalle = pedidoDetalleMapper.toEntity(pedDet);
-		        pedidoDetalle = pedidoDetalleRepository.save(pedidoDetalle);
-		        pedidoDetalle.setFolio("PR" + StringUtils.leftPad(pedidoDetalle.getId().toString(), 10, "0"));
-				   
+				pedidoDetalle = pedidoDetalleRepository.save(pedidoDetalle);
+				pedidoDetalle.setFolio("PR" + StringUtils.leftPad(pedidoDetalle.getId().toString(), 10, "0"));
+
 				PedidoDetalleDTO pedidoDetalleSaved = pedidoDetalleMapper.toDto(pedidoDetalle);
 				pedProvSaved.getPedidoDetalles().add(pedidoDetalleSaved);
 			});
@@ -286,11 +313,11 @@ public class PedidoServiceImpl implements PedidoService {
 	}
 
 	/**
-     * Get all the pedidos by proveedorId.
-     *
-     * @param proveedorId
-     * @return the list of entities.
-     */
+	 * Get all the pedidos by proveedorId.
+	 *
+	 * @param proveedorId
+	 * @return the list of entities.
+	 */
 	@Override
 	public List<PedidoDTO> findByProveedorId(Long proveedorId) {
 		log.debug("Request to get all Pedidos by proveedorId: {}", proveedorId);
@@ -315,13 +342,13 @@ public class PedidoServiceImpl implements PedidoService {
 				pp.setEstatusId(estatus);
 				pp.setUsuarioModificacionId(usuarioEstatus);
 				pp.setFechaModificacion(now);
-				
+
 				pedidoDetalleRepository.findByPedidoProveedorId(pp.getId()).forEach(pd -> {
 					pd.setEstatusId(estatus);
 				});
 			});
 		}
-				
+
 		return pedidoMapper.toDto(pedido);
 	}
 
@@ -334,7 +361,7 @@ public class PedidoServiceImpl implements PedidoService {
 			pedido.setBalanceTransaction(charge.getBalanceTransaction());
 			pedido.setChargeId(charge.getId());
 			pedido.setReceiptUrl(charge.getReceiptUrl());
-			
+
 			pedidoDTO = cambiaEstatusPedidoAndPedidoProveedores(pedidoId, Estatus.PEDIDO_PAGADO, usuarioEstatus);
 		}
 		return pedidoDTO;

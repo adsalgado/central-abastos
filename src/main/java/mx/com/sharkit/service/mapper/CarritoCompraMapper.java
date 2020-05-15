@@ -8,7 +8,7 @@ import mx.com.sharkit.service.dto.CarritoCompraDTO;
 /**
  * Mapper for the entity {@link CarritoCompra} and its DTO {@link CarritoCompraDTO}.
  */
-@Mapper(componentModel = "spring", uses = {ClienteMapper.class, ProductoProveedorMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, ProductoProveedorMapper.class})
 public interface CarritoCompraMapper extends EntityMapper<CarritoCompraDTO, CarritoCompra> {
 
     CarritoCompraDTO toDto(CarritoCompra carritoCompra);
