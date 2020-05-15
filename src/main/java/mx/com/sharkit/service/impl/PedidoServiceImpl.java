@@ -22,6 +22,7 @@ import mx.com.sharkit.domain.Estatus;
 import mx.com.sharkit.domain.Pedido;
 import mx.com.sharkit.domain.PedidoDetalle;
 import mx.com.sharkit.domain.PedidoProveedor;
+import mx.com.sharkit.domain.User;
 import mx.com.sharkit.repository.PedidoDetalleRepository;
 import mx.com.sharkit.repository.PedidoProveedorRepository;
 import mx.com.sharkit.repository.PedidoRepository;
@@ -30,7 +31,7 @@ import mx.com.sharkit.service.DireccionService;
 import mx.com.sharkit.service.GoogleService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.ProductoProveedorService;
-import mx.com.sharkit.service.TransportistaService;
+import mx.com.sharkit.service.TransportistaTarifaService;
 import mx.com.sharkit.service.dto.DireccionDTO;
 import mx.com.sharkit.service.dto.PedidoAltaDTO;
 import mx.com.sharkit.service.dto.PedidoDTO;
@@ -79,7 +80,7 @@ public class PedidoServiceImpl implements PedidoService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private TransportistaService transportistaService;
+	private TransportistaTarifaService transportistaTarifaService;
 
 	public PedidoServiceImpl(PedidoRepository pedidoRepository, PedidoMapper pedidoMapper,
 			ProductoProveedorService productoProveedorService, PedidoProveedorRepository pedidoProveedorRepository,
@@ -149,11 +150,13 @@ public class PedidoServiceImpl implements PedidoService {
 	@Override
 	public PedidoDTO generaNuevoPedido(PedidoAltaDTO pedidoAltaDTO) throws Exception {
 
-		Map<Long, PedidoProveedorDTO> mapProveedores = new HashMap<>();
+		Map<Long, PedidoProveedorDTO> mapPprov = new HashMap<>();
+		Map<Long, ProveedorDTO> mapProveedores = new HashMap<>();
 		Map<Long, BigDecimal> sumaProveedor = new HashMap<>();
 		Map<Long, BigDecimal> sumaSinIvaProveedor = new HashMap<>();
 		BigDecimal total = BigDecimal.ZERO;
 		BigDecimal totalSinIva = BigDecimal.ZERO;
+		BigDecimal totalSinComision = BigDecimal.ZERO;
 
 		LocalDateTime fechaAlta = LocalDateTime.now();
 
@@ -171,8 +174,7 @@ public class PedidoServiceImpl implements PedidoService {
 		pedidoDTO.setTelefonoContacto(pedidoAltaDTO.getTelefonoContacto());
 		pedidoDTO.setCorreoContacto(pedidoAltaDTO.getCorreoContacto());
 
-//		User userPedido = userRepository.findById(pedidoAltaDTO.getUsuarioId()).orElse(null);
-
+		// Separando los productos solicitados por proveedor
 		for (PedidoDetalleAltaDTO prod : pedidoAltaDTO.getProductos()) {
 
 			Optional<ProductoProveedorDTO> prodProvDTO = productoProveedorService
@@ -182,7 +184,7 @@ public class PedidoServiceImpl implements PedidoService {
 				ProductoProveedorDTO prodProdDTO = prodProvDTO.get();
 				ProveedorDTO proveedorDTO = prodProdDTO.getProveedor();
 
-				if (!mapProveedores.containsKey(proveedorDTO.getId())) { // Ya se dio de alta el proveedor
+				if (!mapPprov.containsKey(proveedorDTO.getId())) { // Ya se dio de alta el proveedor
 					PedidoProveedorDTO pedidoProveedorDTO = new PedidoProveedorDTO();
 					pedidoProveedorDTO.setEstatusId(Estatus.PEDIDO_SOLICITADO);
 					pedidoProveedorDTO.setTotal(BigDecimal.ZERO);
@@ -192,28 +194,17 @@ public class PedidoServiceImpl implements PedidoService {
 					pedidoProveedorDTO.setFechaAlta(fechaAlta);
 					pedidoProveedorDTO.setUsuarioAltaId(pedidoAltaDTO.getUsuarioId());
 					pedidoProveedorDTO.setProveedorId(proveedorDTO.getId());
-					pedidoProveedorDTO.setTransportistaId(proveedorDTO.getTransportistaId());
-
-//					String direccionProveedor = String.format("%s,%s", proveedorDTO.getDireccion().getLatitud(),
-//							proveedorDTO.getDireccion().getLongitud());
-//					String direccionUsuario = "";
-//					if (userPedido != null) {
-//						direccionUsuario = String.format("%s,%s", proveedorDTO.getDireccion().getLatitud(),
-//								proveedorDTO.getDireccion().getLongitud());
-//
-//					}
-//
-//					Long distanciaKm = googleService.getDistanciaKilometros(direccionProveedor, direccionUsuario);
-					
+					pedidoProveedorDTO.setTransportistaId(proveedorDTO.getTransportistaId());					
 
 					pedidoDTO.getPedidoProveedores().add(pedidoProveedorDTO);
-					mapProveedores.put(proveedorDTO.getId(), pedidoProveedorDTO);
+					mapPprov.put(proveedorDTO.getId(), pedidoProveedorDTO);
+					mapProveedores.put(proveedorDTO.getId(), proveedorDTO);
 					sumaProveedor.put(proveedorDTO.getId(), BigDecimal.ZERO);
 					sumaSinIvaProveedor.put(proveedorDTO.getId(), BigDecimal.ZERO);
 
 				}
 
-				PedidoProveedorDTO pedidoProveedor = mapProveedores.get(proveedorDTO.getId());
+				PedidoProveedorDTO pedidoProveedor = mapPprov.get(proveedorDTO.getId());
 
 				PedidoDetalleDTO pedidoDetalleDTO = new PedidoDetalleDTO();
 				pedidoDetalleDTO.setCantidad(prod.getCantidad());
@@ -233,6 +224,7 @@ public class PedidoServiceImpl implements PedidoService {
 
 				total = total.add(pedidoDetalleDTO.getTotalSinIva());
 				totalSinIva = totalSinIva.add(pedidoDetalleDTO.getTotalSinIva());
+				totalSinComision= totalSinComision.add(pedidoDetalleDTO.getTotalSinIva());
 
 				pedidoProveedor.getPedidoDetalles().add(pedidoDetalleDTO);
 
@@ -259,15 +251,18 @@ public class PedidoServiceImpl implements PedidoService {
 		pedidoDTO.setCliente(user);
 		pedidoDTO.setTotal(total);
 		pedidoDTO.setTotalSinIva(totalSinIva);
+		pedidoDTO.setTotalSinComision(totalSinComision);
 
 		Pedido pedidoEntity = pedidoMapper.toEntity(pedidoDTO);
 		pedidoEntity = pedidoRepository.save(pedidoEntity);
-		pedidoEntity.setFolio("P" + StringUtils.leftPad(pedidoEntity.getId().toString(), 9, "0"));
 
 		PedidoDTO pedido = pedidoMapper.toDto(pedidoEntity);
+		
+		User userPedido = userRepository.findById(pedidoAltaDTO.getUsuarioId()).orElse(null);
 
 		Long pedidoId = pedido.getId();
-		pedidoDTO.getPedidoProveedores().forEach(pedProv -> {
+		for (PedidoProveedorDTO pedProv : pedidoDTO.getPedidoProveedores()) {
+		
 			pedProv.setPedidoId(pedidoId);
 			pedProv.setTotal(sumaProveedor.get(pedProv.getProveedorId()));
 			pedProv.setTotalSinIva(sumaSinIvaProveedor.get(pedProv.getProveedorId()));
@@ -275,6 +270,37 @@ public class PedidoServiceImpl implements PedidoService {
 			String token = RandomUtil.generateToken(SIZE_TOKEN_PEDIDO);
 			log.debug("Token: {}", token);
 			pedProv.setToken(token);
+			
+			try {
+				ProveedorDTO proveedorDTO = mapProveedores.get(pedProv.getProveedorId());
+
+				log.debug("proveedorDTO. {}", proveedorDTO);
+
+				String direccionProveedor = String.format("%s,%s", proveedorDTO.getDireccion().getLatitud(),
+						proveedorDTO.getDireccion().getLongitud());
+				log.debug("direccionProveedor. {}", direccionProveedor);
+
+				String direccionUsuario = "";
+				if (userPedido != null) {
+					direccionUsuario = String.format("%s,%s", pedidoAltaDTO.getDireccionContacto().getLatitud(),
+							pedidoAltaDTO.getDireccionContacto().getLongitud());
+				}
+				log.debug("direccionUsuario. {}", direccionUsuario);
+
+				Long distanciaKm = googleService.getDistanciaKilometros(direccionProveedor, direccionUsuario);
+				log.debug("distanciaKm. {}", distanciaKm);
+				
+				if (distanciaKm != null) {
+					BigDecimal tarifaTranspore = transportistaTarifaService.calculaTarifaTransportista(proveedorDTO.getTransportistaId(), new BigDecimal(distanciaKm));
+					log.debug("tarifaTranspore. {}", tarifaTranspore);
+					pedProv.setComisionTransportista(tarifaTranspore);
+					total = total.add(tarifaTranspore);
+				}
+				
+			} catch(Exception e) {
+				log.error("Ocurrió un error al calcular la comisión del transporte. {}", e);
+			}
+
 
 			PedidoProveedor pedidoProveedor = pedidoProveedorMapper.toEntity(pedProv);
 			pedidoProveedor = pedidoProveedorRepository.save(pedidoProveedor);
@@ -293,10 +319,16 @@ public class PedidoServiceImpl implements PedidoService {
 				PedidoDetalleDTO pedidoDetalleSaved = pedidoDetalleMapper.toDto(pedidoDetalle);
 				pedProvSaved.getPedidoDetalles().add(pedidoDetalleSaved);
 			});
+			
+			
 
-		});
+		}
+		
+		pedidoEntity.setFolio("P" + StringUtils.leftPad(pedidoEntity.getId().toString(), 9, "0"));
+		pedidoEntity.setTotal(total);
 
 		return pedido;
+		
 	}
 
 	/**

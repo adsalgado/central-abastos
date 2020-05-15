@@ -212,14 +212,21 @@ public class PedidoResource {
 		Charge charge = null;
 		try {
 			charge = stripeService.charge(chargeRequest);
-			pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
-			//Envío de notificación push con Firebase
-			sendPushNotificationPedidoPagado(pedido);
+//			pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
+//			//Envío de notificación push con Firebase
+//			sendPushNotificationPedidoPagado(pedido);
 			
 		} catch (StripeException e) {
 			log.error("Error Stripe: {}", e);
-			throw new BadRequestAlertException("Error al procesar el pago.", ENTITY_NAME, "errorStripe");
+//			throw new BadRequestAlertException("Error al procesar el pago.", ENTITY_NAME, "errorStripe");
 		}
+
+		if (charge == null) {
+			charge = new Charge();
+		}
+		pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
+		//Envío de notificación push con Firebase
+		sendPushNotificationPedidoPagado(pedido);
 
 		return ResponseEntity.ok().body(pedido);
 	}

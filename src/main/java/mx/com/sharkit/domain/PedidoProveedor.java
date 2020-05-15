@@ -110,6 +110,9 @@ public class PedidoProveedor implements Serializable {
     @Size(max = 512)
     @Column(name = "comentarios", length = 512)
     private String comentarios;
+    
+    @Column(name = "distancia_entrega_km")
+	private BigDecimal distanciaEntregaKm;
 
 	public Long getId() {
 		return id;
@@ -327,6 +330,14 @@ public class PedidoProveedor implements Serializable {
 		this.comentarios = comentarios;
 	}
 
+	public BigDecimal getDistanciaEntregaKm() {
+		return distanciaEntregaKm;
+	}
+
+	public void setDistanciaEntregaKm(BigDecimal distanciaEntregaKm) {
+		this.distanciaEntregaKm = distanciaEntregaKm;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -354,7 +365,8 @@ public class PedidoProveedor implements Serializable {
 				+ fechaModificacion + ", fechaPreparacion=" + fechaPreparacion + ", fechaEnvio=" + fechaEnvio
 				+ ", fechaEntrega=" + fechaEntrega + ", personaEntrega=" + personaEntrega + ", chatProveedorid="
 				+ chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + ", token=" + token
-				+ ", calificacionServicio=" + calificacionServicio + ", comentarios=" + comentarios + "]";
+				+ ", calificacionServicio=" + calificacionServicio + ", comentarios=" + comentarios
+				+ ", distanciaEntregaKm=" + distanciaEntregaKm + "]";
 	}
 
 }
