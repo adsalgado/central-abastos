@@ -303,6 +303,7 @@ public class PedidoServiceImpl implements PedidoService {
 
 
 			PedidoProveedor pedidoProveedor = pedidoProveedorMapper.toEntity(pedProv);
+			log.debug("pedidoProveedor to save: {}", pedidoProveedor);
 			pedidoProveedor = pedidoProveedorRepository.save(pedidoProveedor);
 			pedidoProveedor.setFolio("PV" + StringUtils.leftPad(pedidoProveedor.getId().toString(), 10, "0"));
 
@@ -313,6 +314,7 @@ public class PedidoServiceImpl implements PedidoService {
 				pedDet.setPedidoProveedorId(pedProvSaved.getId());
 
 				PedidoDetalle pedidoDetalle = pedidoDetalleMapper.toEntity(pedDet);
+				log.debug("pedidoDetalle to save: {}", pedidoDetalle);
 				pedidoDetalle = pedidoDetalleRepository.save(pedidoDetalle);
 				pedidoDetalle.setFolio("PR" + StringUtils.leftPad(pedidoDetalle.getId().toString(), 10, "0"));
 
