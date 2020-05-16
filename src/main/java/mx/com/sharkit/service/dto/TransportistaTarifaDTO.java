@@ -20,8 +20,9 @@ public class TransportistaTarifaDTO implements Serializable {
     @NotNull
     private BigDecimal precio;
 
-
     private Long transportistaId;
+
+    private String tiempoEntrega;
 
     public Long getId() {
         return id;
@@ -63,7 +64,15 @@ public class TransportistaTarifaDTO implements Serializable {
         this.transportistaId = transportistaId;
     }
 
-    @Override
+    public String getTiempoEntrega() {
+		return tiempoEntrega;
+	}
+
+	public void setTiempoEntrega(String tiempoEntrega) {
+		this.tiempoEntrega = tiempoEntrega;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -84,14 +93,11 @@ public class TransportistaTarifaDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "TransportistaTarifaDTO{" +
-            "id=" + getId() +
-            ", rangoMinimo=" + getRangoMinimo() +
-            ", rangoMaximo=" + getRangoMaximo() +
-            ", precio=" + getPrecio() +
-            ", transportista=" + getTransportistaId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "TransportistaTarifaDTO [id=" + id + ", rangoMinimo=" + rangoMinimo + ", rangoMaximo=" + rangoMaximo
+				+ ", precio=" + precio + ", transportistaId=" + transportistaId + ", tiempoEntrega=" + tiempoEntrega
+				+ "]";
+	}
+
 }

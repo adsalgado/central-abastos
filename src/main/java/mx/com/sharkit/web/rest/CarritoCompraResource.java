@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,6 +32,7 @@ import mx.com.sharkit.domain.User;
 import mx.com.sharkit.service.CarritoCompraService;
 import mx.com.sharkit.service.UserService;
 import mx.com.sharkit.service.dto.CarritoCompraDTO;
+import mx.com.sharkit.service.dto.CarritoComprasCompletoDTO;
 import mx.com.sharkit.service.dto.CarritoComprasProveedorDTO;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 
@@ -196,14 +198,16 @@ public class CarritoCompraResource {
 	 *         of carritoCompras in body.
 	 */
 	@GetMapping("/carrito-compras-proveedor")
-	public List<CarritoComprasProveedorDTO> getAllCarritoOrderByProveedor() {
+	public CarritoComprasCompletoDTO getAllCarritoOrderByProveedor() {
 		log.debug("REST request to get all CarritoCompras");
 		Optional<User> user = userService.getUserWithAuthorities();
 		Long clienteId = user.isPresent() ? user.get().getId() : 0L;
 		if (clienteId == 0) {
 			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
 		}
-		
+
+		CarritoComprasCompletoDTO carritoComprasCompletoDTO = new CarritoComprasCompletoDTO();
+
 		Map<Long, CarritoComprasProveedorDTO> mapProveedores = new HashMap<>();
 
 		List<CarritoCompraDTO> listCarrito = carritoCompraService.findAllByClienteId(clienteId);
@@ -214,19 +218,46 @@ public class CarritoCompraResource {
 				carritoProveedor.setListCarrito(new ArrayList<>());
 				carritoProveedor.setProveedor(carritoCompraDTO.getProductoProveedor().getProveedor());
 				carritoProveedor.setTotal(BigDecimal.ZERO);
+				carritoProveedor.setTotalProductos(BigDecimal.ZERO);
+				// Aqui se debe calcular la comisión del transporte
+				carritoProveedor.setComisionTransporte(BigDecimal.ZERO);
+
 				mapProveedores.put(proveedorId, carritoProveedor);
+
 			}
 			CarritoComprasProveedorDTO carritoProveedor = mapProveedores.get(proveedorId);
 			carritoProveedor.getListCarrito().add(carritoCompraDTO);
-			carritoProveedor.setTotal(carritoProveedor.getTotal().add(carritoCompraDTO.getPrecio().multiply(carritoCompraDTO.getCantidad())));
+			carritoProveedor.setTotalProductos(carritoProveedor.getTotalProductos()
+					.add(carritoCompraDTO.getPrecio().multiply(carritoCompraDTO.getCantidad())));
 		}
 
+		BigDecimal totalProductos = BigDecimal.ZERO;
+		BigDecimal totalComisionTransporte = BigDecimal.ZERO;
 		List<CarritoComprasProveedorDTO> listCarritoProveedorDTO = new ArrayList<>();
-		mapProveedores.keySet().forEach(provId -> {
-			listCarritoProveedorDTO.add(mapProveedores.get(provId));
-		});
-			
-		return listCarritoProveedorDTO;
+		
+		for (Map.Entry<Long, CarritoComprasProveedorDTO> provId : mapProveedores.entrySet()) {
+			CarritoComprasProveedorDTO carritoDTO = provId.getValue();
+			carritoDTO.setTotal(carritoDTO.getTotalProductos().add(carritoDTO.getComisionTransporte()));
+			totalProductos = totalProductos.add(carritoDTO.getTotalProductos());
+			totalComisionTransporte = totalComisionTransporte.add(carritoDTO.getComisionTransporte());
+			listCarritoProveedorDTO.add(carritoDTO);
+		}
+
+		BigDecimal total = BigDecimal.ZERO;
+		BigDecimal totalSinComisionStripe = BigDecimal.ZERO;
+		BigDecimal comisionStripe = BigDecimal.ZERO;
+		totalSinComisionStripe = totalSinComisionStripe.add(totalProductos).add(totalComisionTransporte);
+		comisionStripe = totalSinComisionStripe.multiply(new BigDecimal("0.036")).add(new BigDecimal("3"));
+		total = totalSinComisionStripe.add(comisionStripe);
+		
+		carritoComprasCompletoDTO.setTotal(total);
+		carritoComprasCompletoDTO.setTotalSinComisionStripe(totalSinComisionStripe);
+		carritoComprasCompletoDTO.setComisionStripe(comisionStripe);
+		carritoComprasCompletoDTO.setTotalProductos(totalProductos);
+		carritoComprasCompletoDTO.setTotalComisionTransporte(totalComisionTransporte);
+		carritoComprasCompletoDTO.setListCarritoProveedores(listCarritoProveedorDTO);
+
+		return carritoComprasCompletoDTO;
 
 	}
 

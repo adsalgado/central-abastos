@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpEntity;
@@ -30,6 +31,7 @@ import com.stripe.model.Charge;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import mx.com.sharkit.domain.Estatus;
 import mx.com.sharkit.domain.Proveedor;
 import mx.com.sharkit.domain.Transportista;
 import mx.com.sharkit.domain.User;
@@ -37,6 +39,7 @@ import mx.com.sharkit.pushnotif.service.EnumPantallas;
 import mx.com.sharkit.pushnotif.service.PushNotificationsService;
 import mx.com.sharkit.repository.ProveedorRepository;
 import mx.com.sharkit.repository.TransportistaRepository;
+import mx.com.sharkit.service.CarritoCompraService;
 import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.StripeService;
@@ -76,6 +79,9 @@ public class PedidoResource {
 	private final TransportistaRepository transportistaRepository;
 
 	private final PushNotificationsService pushNotificationsService;
+
+	@Autowired
+	private CarritoCompraService carritoCompraService;
 
 	public PedidoResource(PedidoService pedidoService, UserService userService,
 			PedidoProveedorService pedidoProveedorService, StripeService stripeService,
@@ -222,8 +228,11 @@ public class PedidoResource {
 			charge = new Charge();
 		}
 		pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
-		//Envío de notificación push con Firebase
-		sendPushNotificationPedidoPagado(pedido);
+		if (pedido.getEstatusId() == Estatus.PEDIDO_PAGADO) {
+			//Envío de notificación push con Firebase
+			sendPushNotificationPedidoPagado(pedido);
+			carritoCompraService.deleteByClienteId(clienteId);
+		}
 
 		return ResponseEntity.ok().body(pedido);
 	}

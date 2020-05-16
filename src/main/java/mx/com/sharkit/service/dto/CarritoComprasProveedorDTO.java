@@ -14,6 +14,10 @@ public class CarritoComprasProveedorDTO implements Serializable {
 
 	private BigDecimal total;
 	private ProveedorDTO proveedor;
+	private BigDecimal totalProductos;
+	private BigDecimal comisionTransporte;
+	private String tiempoEntrega;
+	
 	private List<CarritoCompraDTO> listCarrito = new ArrayList<>();
 
 	public BigDecimal getTotal() {
@@ -40,10 +44,35 @@ public class CarritoComprasProveedorDTO implements Serializable {
 		this.listCarrito = listCarrito;
 	}
 
+	public BigDecimal getTotalProductos() {
+		return totalProductos;
+	}
+
+	public void setTotalProductos(BigDecimal totalProductos) {
+		this.totalProductos = totalProductos;
+	}
+
+	public BigDecimal getComisionTransporte() {
+		return comisionTransporte;
+	}
+
+	public void setComisionTransporte(BigDecimal comisionTransporte) {
+		this.comisionTransporte = comisionTransporte;
+	}
+
+	public String getTiempoEntrega() {
+		return tiempoEntrega;
+	}
+
+	public void setTiempoEntrega(String tiempoEntrega) {
+		this.tiempoEntrega = tiempoEntrega;
+	}
+
 	@Override
 	public String toString() {
-		return "CarritoComprasProveedorDTO [total=" + total + ", proveedor=" + proveedor + ", listCarrito="
-				+ listCarrito + "]";
+		return "CarritoComprasProveedorDTO [total=" + total + ", proveedor=" + proveedor + ", totalProductos="
+				+ totalProductos + ", comisionTransporte=" + comisionTransporte + ", tiempoEntrega=" + tiempoEntrega
+				+ ", listCarrito=" + listCarrito + "]";
 	}
 
 }
