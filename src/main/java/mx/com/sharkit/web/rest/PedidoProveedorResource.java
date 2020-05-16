@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -300,6 +301,7 @@ public class PedidoProveedorResource {
 
 	}
 
+	@Async
 	private void sendPushNotificationPedidoEntregado(PedidoProveedorDTO pedidoProveedorDTO) {
 
 		PedidoProveedorDTO pprovDTO = pedidoProveedorService.findOne(pedidoProveedorDTO.getId()).orElse(null);
@@ -332,15 +334,15 @@ public class PedidoProveedorResource {
 						log.debug("firebaseResponseCliente: {}", firebaseResponseCliente);
 
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						log.debug("InterruptedException: {}", e);
 					} catch (ExecutionException e) {
-						e.printStackTrace();
+						log.debug("ExecutionException: {}", e);
+					} catch (Exception e) {
+						log.debug("Exception: {}", e);
 					}
 				} catch (JSONException e) {
 					log.debug("JSONException e: {}", e);
-				} catch (HttpClientErrorException e) {
-					log.debug("HttpClientErrorException e: {}", e);
-				}
+				} 
 
 			}
 
@@ -348,6 +350,7 @@ public class PedidoProveedorResource {
 
 	}
 
+	@Async
 	private void sendPushNotificationPedidoConfirmado(PedidoProveedorDTO pedidoProveedorDTO) {
 
 		PedidoProveedorDTO pprovDTO = pedidoProveedorService.findOne(pedidoProveedorDTO.getId()).orElse(null);
@@ -397,10 +400,13 @@ public class PedidoProveedorResource {
 						log.debug("firebaseResponseTransportista: {}", firebaseResponseTransportista);
 
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						log.debug("InterruptedException: {}", e);
 					} catch (ExecutionException e) {
-						e.printStackTrace();
+						log.debug("ExecutionException: {}", e);
+					} catch (Exception e) {
+						log.debug("Exception: {}", e);
 					}
+					
 				} catch (JSONException e) {
 					log.debug("JSONException e: {}", e);
 				} catch (HttpClientErrorException e) {
@@ -413,6 +419,7 @@ public class PedidoProveedorResource {
 
 	}
 
+	@Async
 	private void sendPushNotificationCalificacionServicio(PedidoProveedorDTO pedidoProveedorDTO) {
 
 		PedidoProveedorDTO pprovDTO = pedidoProveedorService.findOne(pedidoProveedorDTO.getId()).orElse(null);
@@ -480,10 +487,13 @@ public class PedidoProveedorResource {
 						log.debug("firebaseResponseTransportista: {}", firebaseResponseTransportista);
 
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						log.debug("InterruptedException: {}", e);
 					} catch (ExecutionException e) {
-						e.printStackTrace();
+						log.debug("ExecutionException: {}", e);
+					} catch (Exception e) {
+						log.debug("Exception: {}", e);
 					}
+					
 				} catch (JSONException e) {
 					log.debug("JSONException e: {}", e);
 				} catch (HttpClientErrorException e) {

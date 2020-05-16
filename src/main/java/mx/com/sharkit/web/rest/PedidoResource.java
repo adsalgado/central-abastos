@@ -11,11 +11,11 @@ import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
@@ -38,11 +37,9 @@ import mx.com.sharkit.pushnotif.service.EnumPantallas;
 import mx.com.sharkit.pushnotif.service.PushNotificationsService;
 import mx.com.sharkit.repository.ProveedorRepository;
 import mx.com.sharkit.repository.TransportistaRepository;
-import mx.com.sharkit.service.GoogleService;
 import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.StripeService;
-import mx.com.sharkit.service.TransportistaService;
 import mx.com.sharkit.service.UserService;
 import mx.com.sharkit.service.dto.ChargeRequestDTO;
 import mx.com.sharkit.service.dto.ChargeRequestDTO.Currency;
@@ -384,6 +381,7 @@ public class PedidoResource {
 		return lstPedidos;
 	}
 	
+	@Async
 	private void sendPushNotificationPedidoPagado(PedidoDTO pedido) {
 
 		List<PedidoProveedorDTO> lstPprov = pedidoProveedorService.findByPedidoId(pedido.getId());
@@ -412,16 +410,16 @@ public class PedidoResource {
 					String firebaseResponse = pushNotification.get();
 					log.debug("firebaseResponse: {}", firebaseResponse);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					log.debug("InterruptedException: {}", e);
 				} catch (ExecutionException e) {
-					e.printStackTrace();
+					log.debug("ExecutionException: {}", e);
+				} catch (Exception e) {
+					log.debug("Exception: {}", e);
 				}
 
 			} catch (JSONException e) {
 				log.debug("JSONException e: {}", e);
-			} catch (HttpClientErrorException e) {
-				log.debug("HttpClientErrorException e: {}", e);
-			}
+			} 
 
 		}
 

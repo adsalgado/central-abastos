@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import mx.com.sharkit.pushnotif.service.PushNotificationsService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.dto.PedidoDTO;
-import mx.com.sharkit.web.rest.PedidoResource;
 
 @RestController
 @RequestMapping("/api")
@@ -42,7 +41,8 @@ public class PushNotificationController {
 
 		JSONObject body = new JSONObject();
 //		body.put("to", "/topics/" + TOPIC);
-		body.put("to", "e6_eYZfsCtQ:APA91bGSqosLYVSTf4F9W3nrQIER0gWNb981bGLXH5aqsMYxEHQuyw91yGUVujKeOHqEjOhkFLs3Luhvm7M8wOBZqDJzjFSHpHgSK1WzSmxkBuzqT9rg19sGWxs9LEQtdGmT36z8t-ID");
+		body.put("to", "dOgIdRRpI9Q:APA91bGOYe9H7uZPdOgTRWm06-OOuAUIvePu5ayr0sELXDAkRQlmM8e3vjMQz-6LKjcYvC3ARBEj4VOo7VD-9DWu3ydFnfMp9PfZHBccDUgX1KY-oUgHbpVxm5fyMDLGFtE_fptE7QAy");
+//		body.put("to", null);
 		body.put("priority", "high");
 		
 		JSONObject notification = new JSONObject();
@@ -76,18 +76,22 @@ public class PushNotificationController {
 		 */
 
 		log.info(body.toString());
-		HttpEntity<String> request = new HttpEntity<>(body.toString());
-
-		CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request);
-		CompletableFuture.allOf(pushNotification).join();
 
 		try {
+			HttpEntity<String> request = new HttpEntity<>(body.toString());
+
+			CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request);
+			CompletableFuture.allOf(pushNotification).join();
+
 			String firebaseResponse = pushNotification.get();
 
 			return new ResponseEntity<>(firebaseResponse, HttpStatus.OK);
+			
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
