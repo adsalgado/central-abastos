@@ -1,10 +1,13 @@
 package mx.com.sharkit.web.rest;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -31,8 +34,10 @@ import mx.com.sharkit.service.CarritoHistoricoDetalleService;
 import mx.com.sharkit.service.CarritoHistoricoService;
 import mx.com.sharkit.service.UserService;
 import mx.com.sharkit.service.dto.CarritoCompraDTO;
+import mx.com.sharkit.service.dto.CarritoHistoricoCompletoDTO;
 import mx.com.sharkit.service.dto.CarritoHistoricoDTO;
 import mx.com.sharkit.service.dto.CarritoHistoricoDetalleDTO;
+import mx.com.sharkit.service.dto.CarritoHistoricoProveedorDTO;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -179,8 +184,92 @@ public class CarritoHistoricoResource {
     @GetMapping("/carrito-historicos/{id}")
     public ResponseEntity<CarritoHistoricoDTO> getCarritoHistorico(@PathVariable Long id) {
         log.debug("REST request to get CarritoHistorico : {}", id);
+		Optional<User> user = userService.getUserWithAuthorities();
+		Long clienteId = user.isPresent() ? user.get().getId() : 0L;
+		if (clienteId == 0) {
+			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+		}
+
         Optional<CarritoHistoricoDTO> carritoHistoricoDTO = carritoHistoricoService.findOne(id);
         return ResponseUtil.wrapOrNotFound(carritoHistoricoDTO);
+    }
+        
+    /**
+     * {@code GET  /carrito-historicos-proveedores/:id} : get the "id" carritoHistorico.
+     *
+     * @param id the id of the carritoHistoricoDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the carritoHistoricoDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/carrito-historicos-proveedores/{id}")
+    public ResponseEntity<CarritoHistoricoCompletoDTO> getCarritoHistoricoProveedores(@PathVariable Long id) {
+        log.debug("REST request to get CarritoHistorico : {}", id);
+		Optional<User> user = userService.getUserWithAuthorities();
+		Long clienteId = user.isPresent() ? user.get().getId() : 0L;
+		if (clienteId == 0) {
+			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+		}
+
+        CarritoHistoricoDTO carritoHistoricoDTO = carritoHistoricoService.findOne(id).orElse(null);
+		CarritoHistoricoCompletoDTO carritoHistoricoCompletoDTO = new CarritoHistoricoCompletoDTO();
+        
+        if (carritoHistoricoDTO != null) {
+        	carritoHistoricoCompletoDTO.setId(carritoHistoricoDTO.getId());
+    		carritoHistoricoCompletoDTO.setNombre(carritoHistoricoDTO.getNombre());
+    		carritoHistoricoCompletoDTO.setClienteId(clienteId);
+
+    		Map<Long, CarritoHistoricoProveedorDTO> mapProveedores = new HashMap<>();
+    
+    		List<CarritoHistoricoDetalleDTO> listCarrito = carritoHistoricoDetalleService.findByCarritoHistoricoId(carritoHistoricoDTO.getId());
+    		for (CarritoHistoricoDetalleDTO carritoCompraDTO : listCarrito) {
+    			Long proveedorId = carritoCompraDTO.getProductoProveedor().getProveedorId();
+    			if (!mapProveedores.containsKey(proveedorId)) {
+    				CarritoHistoricoProveedorDTO carritoProveedor = new CarritoHistoricoProveedorDTO();
+    				carritoProveedor.setListCarrito(new ArrayList<>());
+    				carritoProveedor.setProveedor(carritoCompraDTO.getProductoProveedor().getProveedor());
+    				carritoProveedor.setTotal(BigDecimal.ZERO);
+    				carritoProveedor.setTotalProductos(BigDecimal.ZERO);
+    				// Aqui se debe calcular la comisión del transporte
+    				carritoProveedor.setComisionTransporte(BigDecimal.ZERO);
+    
+    				mapProveedores.put(proveedorId, carritoProveedor);
+    
+    			}
+    			CarritoHistoricoProveedorDTO carritoProveedor = mapProveedores.get(proveedorId);
+    			carritoProveedor.getListCarrito().add(carritoCompraDTO);
+    			carritoProveedor.setTotalProductos(carritoProveedor.getTotalProductos()
+    					.add(carritoCompraDTO.getPrecio().multiply(carritoCompraDTO.getCantidad())));
+    		}
+    
+    		BigDecimal totalProductos = BigDecimal.ZERO;
+    		BigDecimal totalComisionTransporte = BigDecimal.ZERO;
+    		List<CarritoHistoricoProveedorDTO> listCarritoProveedorDTO = new ArrayList<>();
+    		
+    		for (Map.Entry<Long, CarritoHistoricoProveedorDTO> provId : mapProveedores.entrySet()) {
+    			CarritoHistoricoProveedorDTO carritoDTO = provId.getValue();
+    			carritoDTO.setTotal(carritoDTO.getTotalProductos().add(carritoDTO.getComisionTransporte()));
+    			totalProductos = totalProductos.add(carritoDTO.getTotalProductos());
+    			totalComisionTransporte = totalComisionTransporte.add(carritoDTO.getComisionTransporte());
+    			listCarritoProveedorDTO.add(carritoDTO);
+    		}
+    
+    		BigDecimal total = BigDecimal.ZERO;
+    		BigDecimal totalSinComisionStripe = BigDecimal.ZERO;
+    		BigDecimal comisionStripe = BigDecimal.ZERO;
+    		totalSinComisionStripe = totalSinComisionStripe.add(totalProductos).add(totalComisionTransporte);
+    		comisionStripe = totalSinComisionStripe.multiply(new BigDecimal("0.036")).add(new BigDecimal("3"));
+    		total = totalSinComisionStripe.add(comisionStripe);
+    		
+    		carritoHistoricoCompletoDTO.setTotal(total);
+    		carritoHistoricoCompletoDTO.setTotalSinComisionStripe(totalSinComisionStripe);
+    		carritoHistoricoCompletoDTO.setComisionStripe(comisionStripe);
+    		carritoHistoricoCompletoDTO.setTotalProductos(totalProductos);
+    		carritoHistoricoCompletoDTO.setTotalComisionTransporte(totalComisionTransporte);
+    		carritoHistoricoCompletoDTO.setListHistoricoProveedores(listCarritoProveedorDTO);
+        	
+        }
+
+		return ResponseEntity.ok().body(carritoHistoricoCompletoDTO);
+
     }
 
     /**
