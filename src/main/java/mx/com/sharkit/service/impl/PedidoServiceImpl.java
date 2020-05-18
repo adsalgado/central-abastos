@@ -155,6 +155,9 @@ public class PedidoServiceImpl implements PedidoService {
 		Map<Long, BigDecimal> sumaProveedor = new HashMap<>();
 		Map<Long, BigDecimal> sumaSinIvaProveedor = new HashMap<>();
 		BigDecimal total = BigDecimal.ZERO;
+		BigDecimal totalProductos = BigDecimal.ZERO;
+		BigDecimal comisionTransportista = BigDecimal.ZERO;
+		BigDecimal comisionStripe = BigDecimal.ZERO;
 		BigDecimal totalSinIva = BigDecimal.ZERO;
 		BigDecimal totalSinComision = BigDecimal.ZERO;
 
@@ -194,7 +197,7 @@ public class PedidoServiceImpl implements PedidoService {
 					pedidoProveedorDTO.setFechaAlta(fechaAlta);
 					pedidoProveedorDTO.setUsuarioAltaId(pedidoAltaDTO.getUsuarioId());
 					pedidoProveedorDTO.setProveedorId(proveedorDTO.getId());
-					pedidoProveedorDTO.setTransportistaId(proveedorDTO.getTransportistaId());					
+					pedidoProveedorDTO.setTransportistaId(proveedorDTO.getTransportistaId());
 
 					pedidoDTO.getPedidoProveedores().add(pedidoProveedorDTO);
 					mapPprov.put(proveedorDTO.getId(), pedidoProveedorDTO);
@@ -222,9 +225,9 @@ public class PedidoServiceImpl implements PedidoService {
 				sumaProveedor.put(proveedorDTO.getId(), totalProveedor);
 				sumaSinIvaProveedor.put(proveedorDTO.getId(), totalSinIvaProveedor);
 
-				total = total.add(pedidoDetalleDTO.getTotalSinIva());
+				totalSinComision = totalSinComision.add(pedidoDetalleDTO.getTotal());
+				totalProductos = totalProductos.add(pedidoDetalleDTO.getTotal());
 				totalSinIva = totalSinIva.add(pedidoDetalleDTO.getTotalSinIva());
-				totalSinComision= totalSinComision.add(pedidoDetalleDTO.getTotalSinIva());
 
 				pedidoProveedor.getPedidoDetalles().add(pedidoDetalleDTO);
 
@@ -249,58 +252,64 @@ public class PedidoServiceImpl implements PedidoService {
 		UserDTO user = new UserDTO();
 		user.setId(pedidoDTO.getClienteId());
 		pedidoDTO.setCliente(user);
-		pedidoDTO.setTotal(total);
-		pedidoDTO.setTotalSinIva(totalSinIva);
-		pedidoDTO.setTotalSinComision(totalSinComision);
 
+		// Guardando el pedido
 		Pedido pedidoEntity = pedidoMapper.toEntity(pedidoDTO);
 		pedidoEntity = pedidoRepository.save(pedidoEntity);
 
 		PedidoDTO pedido = pedidoMapper.toDto(pedidoEntity);
-		
-		User userPedido = userRepository.findById(pedidoAltaDTO.getUsuarioId()).orElse(null);
 
 		Long pedidoId = pedido.getId();
 		for (PedidoProveedorDTO pedProv : pedidoDTO.getPedidoProveedores()) {
-		
+
 			pedProv.setPedidoId(pedidoId);
 			pedProv.setTotal(sumaProveedor.get(pedProv.getProveedorId()));
 			pedProv.setTotalSinIva(sumaSinIvaProveedor.get(pedProv.getProveedorId()));
 
+			// Generar token para la entrega
 			String token = RandomUtil.generateToken(SIZE_TOKEN_PEDIDO);
 			log.debug("Token: {}", token);
 			pedProv.setToken(token);
-			
-			try {
-				ProveedorDTO proveedorDTO = mapProveedores.get(pedProv.getProveedorId());
 
-				log.debug("proveedorDTO. {}", proveedorDTO);
+			// Si es picking no se calcula comisión de transporte
+			// El usuario recoge el pedido en dirección de proveedor
+			if (!pedidoAltaDTO.isPicking()) {
+				// Recuperando el cliente del pedido, para la dirección de envío
+				User userPedido = userRepository.findById(pedidoAltaDTO.getUsuarioId()).orElse(null);
 
-				String direccionProveedor = String.format("%s,%s", proveedorDTO.getDireccion().getLatitud(),
-						proveedorDTO.getDireccion().getLongitud());
-				log.debug("direccionProveedor. {}", direccionProveedor);
+				// Calculo de distancia en kilometros y comisión de transportista
+				try {
+					ProveedorDTO proveedorDTO = mapProveedores.get(pedProv.getProveedorId());
 
-				String direccionUsuario = "";
-				if (userPedido != null) {
-					direccionUsuario = String.format("%s,%s", pedidoAltaDTO.getDireccionContacto().getLatitud(),
-							pedidoAltaDTO.getDireccionContacto().getLongitud());
+					log.debug("proveedorDTO. {}", proveedorDTO);
+
+					String direccionProveedor = String.format("%s,%s", proveedorDTO.getDireccion().getLatitud(),
+							proveedorDTO.getDireccion().getLongitud());
+					log.debug("direccionProveedor. {}", direccionProveedor);
+
+					String direccionUsuario = "";
+					if (userPedido != null) {
+						direccionUsuario = String.format("%s,%s", pedidoAltaDTO.getDireccionContacto().getLatitud(),
+								pedidoAltaDTO.getDireccionContacto().getLongitud());
+					}
+					log.debug("direccionUsuario. {}", direccionUsuario);
+
+					Long distanciaKm = googleService.getDistanciaKilometros(direccionProveedor, direccionUsuario);
+					log.debug("distanciaKm. {}", distanciaKm);
+
+					if (distanciaKm != null) {
+						BigDecimal tarifaTranspore = transportistaTarifaService.calculaTarifaTransportista(
+								proveedorDTO.getTransportistaId(), new BigDecimal(distanciaKm));
+						log.debug("tarifaTranspore. {}", tarifaTranspore);
+						pedProv.setComisionTransportista(tarifaTranspore);
+						comisionTransportista = comisionTransportista.add(tarifaTranspore);
+					}
+
+				} catch (Exception e) {
+					log.error("Ocurrió un error al calcular la comisión del transporte. {}", e);
 				}
-				log.debug("direccionUsuario. {}", direccionUsuario);
 
-				Long distanciaKm = googleService.getDistanciaKilometros(direccionProveedor, direccionUsuario);
-				log.debug("distanciaKm. {}", distanciaKm);
-				
-				if (distanciaKm != null) {
-					BigDecimal tarifaTranspore = transportistaTarifaService.calculaTarifaTransportista(proveedorDTO.getTransportistaId(), new BigDecimal(distanciaKm));
-					log.debug("tarifaTranspore. {}", tarifaTranspore);
-					pedProv.setComisionTransportista(tarifaTranspore);
-					total = total.add(tarifaTranspore);
-				}
-				
-			} catch(Exception e) {
-				log.error("Ocurrió un error al calcular la comisión del transporte. {}", e);
 			}
-
 
 			PedidoProveedor pedidoProveedor = pedidoProveedorMapper.toEntity(pedProv);
 			log.debug("pedidoProveedor to save: {}", pedidoProveedor);
@@ -321,16 +330,23 @@ public class PedidoServiceImpl implements PedidoService {
 				PedidoDetalleDTO pedidoDetalleSaved = pedidoDetalleMapper.toDto(pedidoDetalle);
 				pedProvSaved.getPedidoDetalles().add(pedidoDetalleSaved);
 			});
-			
-			
 
 		}
-		
-		pedidoEntity.setFolio("P" + StringUtils.leftPad(pedidoEntity.getId().toString(), 9, "0"));
-		pedidoEntity.setTotal(total);
 
-		return pedido;
+		pedidoEntity.setFolio("P" + StringUtils.leftPad(pedidoEntity.getId().toString(), 9, "0"));
 		
+		totalSinComision = totalProductos.add(comisionTransportista);
+		comisionStripe = totalSinComision.multiply(new BigDecimal("0.036")).add(new BigDecimal("3"));
+		total = totalSinComision.add(comisionStripe);
+		
+		
+		pedidoEntity.setTotalSinIva(totalSinComision);
+		pedidoEntity.setTotalSinComision(totalSinComision);
+		pedidoEntity.setComisionStripe(comisionStripe);
+		pedidoEntity.setTotal(total);
+		
+		return pedido;
+
 	}
 
 	/**

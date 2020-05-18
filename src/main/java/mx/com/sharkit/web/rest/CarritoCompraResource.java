@@ -198,7 +198,7 @@ public class CarritoCompraResource {
 	 *         of carritoCompras in body.
 	 */
 	@GetMapping("/carrito-compras-proveedor")
-	public CarritoComprasCompletoDTO getAllCarritoOrderByProveedor() {
+	public ResponseEntity<CarritoComprasCompletoDTO> getAllCarritoOrderByProveedor() {
 		log.debug("REST request to get all CarritoCompras");
 		Optional<User> user = userService.getUserWithAuthorities();
 		Long clienteId = user.isPresent() ? user.get().getId() : 0L;
@@ -257,7 +257,7 @@ public class CarritoCompraResource {
 		carritoComprasCompletoDTO.setTotalComisionTransporte(totalComisionTransporte);
 		carritoComprasCompletoDTO.setListCarritoProveedores(listCarritoProveedorDTO);
 
-		return carritoComprasCompletoDTO;
+		return ResponseEntity.ok().body(carritoComprasCompletoDTO);
 
 	}
 

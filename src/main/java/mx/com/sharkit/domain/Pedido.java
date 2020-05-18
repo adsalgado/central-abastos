@@ -65,6 +65,9 @@ public class Pedido implements Serializable {
 
     @Column(name = "comision_preparador", precision = 21, scale = 2)
     private BigDecimal comisionPreparador;
+    
+    @Column(name = "comision_stripe", precision = 21, scale = 2)
+    private BigDecimal comisionStripe;
 
     @Column(name = "fecha_pedido")
     private LocalDate fechaPedido;
@@ -198,6 +201,14 @@ public class Pedido implements Serializable {
 
 	public void setComisionPreparador(BigDecimal comisionPreparador) {
 		this.comisionPreparador = comisionPreparador;
+	}
+
+	public BigDecimal getComisionStripe() {
+		return comisionStripe;
+	}
+
+	public void setComisionStripe(BigDecimal comisionStripe) {
+		this.comisionStripe = comisionStripe;
 	}
 
 	public LocalDate getFechaPedido() {
@@ -358,13 +369,14 @@ public class Pedido implements Serializable {
 		return "Pedido [id=" + id + ", folio=" + folio + ", estatus=" + estatus + ", estatusId=" + estatusId
 				+ ", cliente=" + cliente + ", clienteId=" + clienteId + ", total=" + total + ", totalSinComision="
 				+ totalSinComision + ", totalSinIva=" + totalSinIva + ", comisionTransportista=" + comisionTransportista
-				+ ", comisionPreparador=" + comisionPreparador + ", fechaPedido=" + fechaPedido + ", fechaPreparacion="
-				+ fechaPreparacion + ", fechaCobro=" + fechaCobro + ", fechaEntrega=" + fechaEntrega
-				+ ", nombreContacto=" + nombreContacto + ", telefonoContacto=" + telefonoContacto + ", correoContacto="
-				+ correoContacto + ", direccionContacto=" + direccionContacto + ", direccionContactoId="
-				+ direccionContactoId + ", historicoPedidos=" + historicoPedidos + ", usuarioAltaId=" + usuarioAltaId
-				+ ", fechaAlta=" + fechaAlta + ", statusPago=" + statusPago + ", balanceTransaction="
-				+ balanceTransaction + ", chargeId=" + chargeId + ", receiptUrl=" + receiptUrl + "]";
+				+ ", comisionPreparador=" + comisionPreparador + ", comisionStripe=" + comisionStripe + ", fechaPedido="
+				+ fechaPedido + ", fechaPreparacion=" + fechaPreparacion + ", fechaCobro=" + fechaCobro
+				+ ", fechaEntrega=" + fechaEntrega + ", nombreContacto=" + nombreContacto + ", telefonoContacto="
+				+ telefonoContacto + ", correoContacto=" + correoContacto + ", direccionContacto=" + direccionContacto
+				+ ", direccionContactoId=" + direccionContactoId + ", historicoPedidos=" + historicoPedidos
+				+ ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta=" + fechaAlta + ", statusPago=" + statusPago
+				+ ", balanceTransaction=" + balanceTransaction + ", chargeId=" + chargeId + ", receiptUrl=" + receiptUrl
+				+ "]";
 	}
 
 }
