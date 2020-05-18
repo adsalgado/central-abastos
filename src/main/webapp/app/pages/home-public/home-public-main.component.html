@@ -1,6 +1,23 @@
+<div class="division" style="background-color: #f07c1c">
+  <label for="search"></label>
+  <div class="input-image" (click)="close()" [style.background-image]="'url('+imgBusqueda+')'"></div>
+  <input type="text" placeholder="Buscar" class="input-text" id="search" [(ngModel)]="dataFilter.nombre" (keyup)="buscarPorFiltros()">
+  <!-- <ion-icon name="close" style="    position: absolute;
+  right: 14px;
+  /* top: 0px; */
+  padding: 8px;
+  font-size: 19px;" (click)="borraPalabra()"></ion-icon> -->
+  <span class="material-icons" style="    position: absolute;
+  right: 50px;
+  /* top: 0px; */
+  padding: 8px;
+  font-size: 19px;" (click)="borraPalabra()">
+    clear
+    </span>
+</div>
 <div *ngIf="dataFilter.nombre.length > 0" class="contenedor-busqueda">
     <div class="resultado" *ngFor="let p of productosBuscados" (click)="viewDetail(p)">
-      <div class="c-i "><img src="{{env.getImagenIndividual}}{{p.producto.adjuntoId}}" alt=""></div>
+      <div class="c-i "><img style="width: 34px;" src="{{env.getImagenIndividual}}{{p.producto.adjuntoId}}" alt=""></div>
       <div class="r">{{ p.producto.nombre }} - {{p.proveedor.nombre}}</div>
     </div>
 
@@ -9,7 +26,7 @@
     </div>
   </div>
 
-  <div *ngIf="dataFilter.nombre.length<=0">
+  <div >
     <div style="margin-top: 8px"></div>
 
     <div class="scrolling-wrapper-flexbox" style="margin-top:0px">
@@ -26,13 +43,13 @@
 
     <div class="scrolling-wrapper" style="margin-top: 15px">
       <div class="buttons">
-        <button [ngStyle]="{'background-color': color}" (click)="ordena(1)">
+        <button style="    background-color: #f07c1c;" (click)="ordena(1)">
           <img src="../../../content/imgs/home/milk.png" alt="">
           Artículos
         </button>
       </div>
       <div class="buttons">
-        <button [ngStyle]="{'background-color': color}" (click)="ordena(2)">
+        <button style="    background-color: #f07c1c;" (click)="ordena(2)">
           <img src="../../../content/imgs/home/services.png" alt="">
           Servicios
         </button>

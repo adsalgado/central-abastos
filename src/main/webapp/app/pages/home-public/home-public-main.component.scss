@@ -400,7 +400,106 @@
   top: 63px;
   z-index: 3;
 }
+.division {
+  display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 11px;
+  background-color: #3b64c0;
+  label {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+  .input-text {
+    margin: 0;
+    padding: 5px 10px;
+    /* border: 1px solid #88c4d5; */
+    border-radius: 0;
+    width: calc(100% - 36px);
+    font-weight: 200;
+    font-size: 15px;
+    max-width: 100%;
+    border: none;
+    border-radius: 0px 4px 4px 0px;
 
+    .select-text {
+      font-weight: 300;
+      font-size: 15px;
+      text-transform: none;
+      color: #9d9d9d;
+    }
+
+    .select-icon {
+      font-weight: 300;
+      font-size: 15px;
+      text-transform: none;
+      color: #9d9d9d;
+      .select-icon-inner {
+        color: #88c4d5;
+      }
+    }
+  }
+  .input-image {
+    margin: 0;
+    width: 33px;
+    height: 36px;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 0;
+    background-image: url(../../../content/imgs/home/search.png);
+    background-position: center center;
+    background-size: 64%;
+    background-repeat: no-repeat;
+    border-radius: 4px 0px 0px 4px;
+  }
+  .input-image-2 {
+    margin: 0;
+    width: 36px;
+    height: 36px;
+    background-color: #88c4d5;
+    border: 1px solid #88c4d5;
+    border-radius: 0;
+    //background-image: url(../../../content/imgs/wellness/notas/pin.png);
+    background-position: center center;
+    background-size: 156%;
+    background-repeat: no-repeat;
+  }
+}
+.contenedor-busqueda {
+  background-color: #dedede;
+  height: auto;
+  height: 200px;
+  overflow-y: auto;
+  z-index: 5;
+  .resultado {
+    padding: 8px;
+    border-bottom: 1px solid #c3c2c2;
+    .c-i {
+      display: inline-block;
+      width: 10%;
+      vertical-align: -webkit-baseline-middle;
+    }
+    .r {
+      display: inline-block;
+      width: 84%;
+      font-size: 20px;
+      vertical-align: -webkit-baseline-middle;
+      margin-left: 4%;
+    }
+  }
+
+  .no-en {
+    text-align: center;
+    padding: 16px;
+    font-size: 15px;
+  }
+}
+@media only screen and (min-width: 769px) {
+  .contenedor-busqueda {
+    width: 50%;
+    position: absolute;
+  }
+}
 .carrito {
   ion-badge {
     position: absolute;

@@ -99,16 +99,18 @@
   <div class="cont-e">
     <div class="suma">
       <div class="menos" (click)="decrementar(producto)">
-        <div [ngStyle]="{'color': color, 'border-color': color}">-</div>
+        <div style="color: #f07c1c;
+        border-color: #f07c1c;">-</div>
       </div>
       <div class="cantidad">
-        <div [ngStyle]="{'color': color}">{{producto.cantidad}} {{producto.cantidad == 1 ? 'pza' : 'pzas'}}</div>
+        <div style="color: #f07c1c;">{{producto.cantidad}} {{producto.cantidad == 1 ? 'pza' : 'pzas'}}</div>
       </div>
       <div class="mas" (click)="incrementa(producto)">
-        <div [ngStyle]="{'color': color, 'border-color': color}">+</div>
+        <div style="color: #f07c1c;
+        border-color: #f07c1c;">+</div>
       </div>
     </div>
-    <button (click)="agregarCarrito(producto)" [ngStyle]="{'background-color': color}">
+    <button (click)="agregarCarrito(producto)" style="background-color: #f07c1c;">
       Agregar a carrito
     </button>
   </div>

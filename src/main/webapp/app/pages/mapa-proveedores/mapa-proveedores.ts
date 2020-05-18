@@ -40,6 +40,7 @@ export class MapaProveedoresPage implements OnInit {
 
   public user: User = null;
 
+  public objGeo: any = {};
   constructor(
     private genericService: GenericService,
     private loadingService: LoadingService,
@@ -129,11 +130,23 @@ export class MapaProveedoresPage implements OnInit {
     );
   }
 
+  nacional() {
+    this.map.setZoom(5);
+  }
+
+  local() {
+    this.map.setZoom(15);
+    this.map.setCenter(new google.maps.LatLng(this.objGeo.latitude, this.objGeo.longitude));
+  }
+
   loadMap(position) {
     console.log('-------------------------');
     this.loadingService.hide();
     let latitude = position.coords.latitude;
     let longitude = position.coords.longitude;
+
+    this.objGeo.latitude = latitude;
+    this.objGeo.longitude = longitude;
     // create a new map by passing HTMLElement
     let mapEle: HTMLElement = document.getElementById('map_canvas');
 
@@ -143,18 +156,20 @@ export class MapaProveedoresPage implements OnInit {
     var nearest = leafletKnn(gj).nearest([latitude, longitude], 50, 5000); //punto de partida, estaciones máximas a encontrar, diámetro de busqueda en metros
 
     // create map
-    this.map = new google.maps.Map(mapEle, {
-      center: myLatLng,
-      zoom: 15
-    });
+    if (nearest.length > 0) {
+      this.map = new google.maps.Map(mapEle, {
+        center: myLatLng,
+        zoom: 15
+      });
 
-    this.muestraMapa = true;
-    google.maps.event.addListenerOnce(this.map, 'idle', () => {
-      nearest.forEach(item => {
-        this.proveedoresGeolocate.push(item.layer.feature.properties.proveedor);
-        let ll = { lat: Number(item.lon), lng: Number(item.lat) };
+      this.muestraMapa = true;
+      google.maps.event.addListenerOnce(this.map, 'idle', () => {
+        let primero: number = 0;
+        nearest.forEach(item => {
+          this.proveedoresGeolocate.push(item.layer.feature.properties.proveedor);
+          let ll = { lat: Number(item.lon), lng: Number(item.lat) };
 
-        let info: any = `
+          let info: any = `
         <div>
           <div style="    text-align: center;
           font-weight: 700;
@@ -170,31 +185,39 @@ export class MapaProveedoresPage implements OnInit {
           </div>
         </div>`;
 
-        let infowindow: any = new google.maps.InfoWindow({
-          content: info
+          let infowindow: any = new google.maps.InfoWindow({
+            content: info
+          });
+
+          let marker = new google.maps.Marker({
+            position: ll, //{ lat: -0.179041, lng: -78.499211 },
+            map: this.map,
+            title: item.layer.feature.properties.proveedor.proveedor.nombre,
+            id: `${item.layer.feature.properties.proveedor.id}`,
+            //draggable: true,
+            icon: environment.icons['proveedor'].icon
+          });
+
+          //this.map.setCenter(marker.position);
+          marker.setMap(this.map);
+
+          let componente: any = this;
+          marker.addListener('click', () => {
+            infowindow.open(this.map, marker);
+            componente.changeInfoCard(marker);
+          });
+          if (primero == 0) {
+            new google.maps.event.trigger(marker, 'click');
+          }
+          primero++;
         });
 
-        let marker = new google.maps.Marker({
-          position: ll, //{ lat: -0.179041, lng: -78.499211 },
-          map: this.map,
-          title: item.layer.feature.properties.proveedor.proveedor.nombre,
-          id: `${item.layer.feature.properties.proveedor.id}`,
-          //draggable: true,
-          icon: environment.icons['proveedor'].icon
-        });
-
-        //this.map.setCenter(marker.position);
-        marker.setMap(this.map);
-
-        let componente: any = this;
-        marker.addListener('click', () => {
-          infowindow.open(this.map, marker);
-          componente.changeInfoCard(marker);
-        });
+        mapEle.classList.add('show-map');
       });
-
-      mapEle.classList.add('show-map');
-    });
+    } else {
+      this.alertaService.warn('Lo sentimos, no hay proveedores cerca de tu ubicación');
+      //this.navCtrl.pop();
+    }
   }
 
   changeInfoCard(marker: any) {

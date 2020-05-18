@@ -52,6 +52,9 @@ export class HomePublicMainComponent implements OnDestroy, OnInit {
   public totalCarrito: any = 0;
 
   public color: any = '#3b64c0';
+
+  public subscribe: any = null;
+
   constructor(
     private loadingService: LoadingService,
     private genericService: HttpServiceGeneric,
@@ -337,6 +340,11 @@ export class HomePublicMainComponent implements OnDestroy, OnInit {
     );
   }
 
+  borraPalabra() {
+    this.dataFilter.nombre = '';
+    this.buscarPorFiltros();
+  }
+
   ordena(opc) {
     this.cargarProductosPorCategoria(opc);
   }
@@ -360,10 +368,15 @@ export class HomePublicMainComponent implements OnDestroy, OnInit {
     }
     console.log(params);
 
+    if (this.subscribe) {
+      this.subscribe.unsubscribe();
+      console.log('<--');
+    } else {
+      console.log('-->');
+    }
     this.productosBuscados = [];
-    this.genericService.sendGetParams(`${environment.proveedorProductos}/search`, params).subscribe(
+    this.subscribe = this.genericService.sendGetParams(`${environment.proveedorProductos}/search`, params).subscribe(
       (response: any) => {
-        console.log(response);
         this.productosBuscados = response;
         this.loadingService.hide();
       },
@@ -407,38 +420,50 @@ export class HomePublicMainComponent implements OnDestroy, OnInit {
   viewDetail(producto: any) {
     //consumir servicio de imagenes completas
     this.loadingService.show();
-    this.genericService.sendGetRequest(`${environment.proveedorProductos}/${producto.id}`).subscribe(
-      (response: any) => {
-        console.log(response);
+    this.loadingService.show();
+    //this.user.parametros.pantalla_proveedores = "N";
+    if (this.user && this.user.parametros.pantalla_proveedores == 'S') {
+      this.genericService.sendGetRequest(`${environment.proveedorProductos}/producto/${producto.id}`).subscribe(
+        (response: any) => {
+          //this.navCtrl.push(MapaProveedoresPage, { proveedores: response, producto });
+          this.navParamsService.push('/main/mapa-proveedores', { proveedores: response, producto });
+          this.loadingService.hide();
+        },
+        (error: HttpErrorResponse) => {
+          let err: any = error.error;
+          this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+        }
+      );
+    } else {
+      this.genericService.sendGetRequest(`${environment.proveedorProductos}/${producto.id}`).subscribe(
+        (response: any) => {
+          //ERROR SERVICIO NO ACTUALIZA CANTIDAD EN CARRITO
+          //let nav = this.app.getRootNav();
+          //let user: any = this.localStorageEncryptService.getFromLocalStorage("userSession");
+          if (this.user) {
+            let carritos = this.localStorageEncryptService.getFromLocalStorage(`${this.user.id_token}`);
 
-        //ERROR SERVICIO NO ACTUALIZA CANTIDAD EN CARRITO
-        //let nav = this.app.getRootNav();
-        //let user: any = this.localStorageEncryptService.getFromLocalStorage("userSession");
-        if (this.user) {
-          let carritos = this.localStorageEncryptService.getFromLocalStorage(`${this.user.id_token}`);
-          console.log(carritos);
+            if (carritos) {
+              let position: any = carritos.findIndex(carrito => {
+                return carrito.id == response.id;
+              });
 
-          if (carritos) {
-            let position: any = carritos.findIndex(carrito => {
-              return carrito.id == response.id;
-            });
-
-            if (position >= 0) {
-              response.cantidad = carritos[position].cantidad;
+              if (position >= 0) {
+                response.cantidad = carritos[position].cantidad;
+              }
             }
           }
+          //this.navCtrl.push(DetalleProductoPage, { producto: response });
+          this.navParamsService.push('main/detalle', { producto: response });
+          this.loadingService.hide();
+        },
+        (error: HttpErrorResponse) => {
+          this.loadingService.hide();
+          let err: any = error.error;
+          this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
         }
-        //this.navCtrl.push(DetalleProductoPage, { producto: response });
-
-        this.navParamsService.push('detalle-producto', { producto: response });
-        this.loadingService.hide();
-      },
-      (error: HttpErrorResponse) => {
-        this.loadingService.hide();
-        let err: any = error.error;
-        this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
-      }
-    );
+      );
+    }
     //
   }
 }

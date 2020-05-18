@@ -1,4 +1,4 @@
-<nav class="navbar navbar-dark navbar-expand-md bg-dark">
+<nav class="navbar navbar-dark navbar-expand-md bg-dark" style="background-color: #f07c1c !important">
     <a class="navbar-brand logo" routerLink="public-home" (click)="collapseNavbar()">
         <span class="logo-img"></span>
         <span jhiTranslate="global.title" class="navbar-title">Abastos</span> <span class="navbar-version">1.0.0</span>
@@ -358,7 +358,7 @@
 
 
 
-    <div style="background: #212121; 
+    <div class="colores" style=" 
     border: none;" id="navbarResponsiveBig" [ngSwitch]="isAuthenticated()" >
         <ul style="height:auto"  class="navbar-nav ml-auto">
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">

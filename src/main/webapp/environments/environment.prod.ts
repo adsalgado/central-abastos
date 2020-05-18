@@ -18,7 +18,7 @@ export const environment = {
   proveedores: `${pathPrincipal}proveedors`,
 
   proveedoresFull: `${pathPrincipal}proveedores`,
-
+  proveedor: `${pathPrincipal}proveedor`,
   proveedoresProducto: `${pathPrincipal}proveedores/producto/`,
 
   registro: `${pathPrincipal}register`,
@@ -38,6 +38,8 @@ export const environment = {
   pedidosProveedores: `${pathPrincipal}proveedor/pedido-proveedores`,
   pedidosTransportistas: `${pathPrincipal}transportista/pedido-proveedores`,
 
+  calificacionServicio: `${pathPrincipal}pedido-proveedores/calificacion-servicio`,
+
   usuarios: `${pathPrincipal}usuarios`,
 
   usuarioDocumentos: `${pathPrincipal}usuario-documentos`,
@@ -49,6 +51,9 @@ export const environment = {
   chatsProveedor: `${pathPrincipal}proveedor/chats/pedido-proveedor/`,
 
   cambioContraseña: `${pathPrincipal}account/change-password`,
+
+  carritoComprasProveedor: `${pathPrincipal}carrito-compras-proveedor`,
+
   reset: `${pathPrincipal}account/reset-password/init`,
   logout: null,
   icons: {
@@ -80,12 +85,9 @@ export const environment = {
     //activo: appTransportista
   },
 
-  stripe: {
-    keyPublic: 'pk_test_TNjRZggfGMHinhrlBVIP1P1B00d8WURtiI'
-    //keyPublic: 'pk_live_4f4ddGQitsEeJ0I1zg84xkRZ00mUNujYXd',
-
-    //keyPrivate: 'sk_live_fcKnhw5seaKkY2ERdjJcKBOC007a6LoXl0',
-    //keyPrivate: 'sk_test_BDQpRihwXwK00K7EN1aMifQc00CHosOopt',
+  st: {
+    keyPublic: 'U2FsdGVkX19CQc0Np+So9tyR3R9dAm7lOeyk2UQ+FoHcjsmxFAcZES1Hix101zBa1gljuF7xoHmJQVXb6oP6Mg=='
+    //keyPublic: 'U2FsdGVkX1/ADpxluaklCuGOBDdLHN6q44K8U8mHKBbCF95IBvllQPUxmSiAyj9hqImPuFlYzLS2MUFJU9ZOdg==',
   },
 
   firebase: {

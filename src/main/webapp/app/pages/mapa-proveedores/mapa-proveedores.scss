@@ -6,6 +6,25 @@
   color: #fff;
   font-weight: 500;
 }
+
+.nacionales {
+  padding: 5px;
+  button {
+    padding: 10px;
+    font-size: 15px;
+    background-color: #ffffff;
+    color: #f07c1c;
+    width: 49%;
+    border: 1px solid;
+    border-radius: 4px;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .nacionales {
+    width: 50%;
+  }
+}
 .contenedor-card {
   position: relative;
   .card {
