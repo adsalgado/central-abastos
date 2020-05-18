@@ -45,6 +45,7 @@ public class PushNotificationsService {
 		String firebaseResponse = restTemplate.postForObject(FIREBASE_API_URL, entity, String.class);
 
 		return CompletableFuture.completedFuture(firebaseResponse);
+		
 	}
 
 	public HttpEntity<String> createRequestNotification(String to, String notificationTitle, String notificationBody,

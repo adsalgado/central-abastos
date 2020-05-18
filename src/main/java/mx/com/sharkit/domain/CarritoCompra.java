@@ -41,7 +41,7 @@ public class CarritoCompra implements Serializable {
     @ManyToOne
     @JoinColumn(name = "cliente_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("carritoCompras")
-    private Cliente cliente;
+    private User cliente;
     
     @Column(name = "cliente_id")
     private Long clienteId;
@@ -89,16 +89,16 @@ public class CarritoCompra implements Serializable {
         this.precio = precio;
     }
 
-    public Cliente getCliente() {
+    public User getCliente() {
         return cliente;
     }
 
-    public CarritoCompra cliente(Cliente cliente) {
+    public CarritoCompra cliente(User cliente) {
         this.cliente = cliente;
         return this;
     }
 
-    public void setCliente(Cliente cliente) {
+    public void setCliente(User cliente) {
         this.cliente = cliente;
     }
     
@@ -152,12 +152,11 @@ public class CarritoCompra implements Serializable {
         return 31;
     }
 
-    @Override
-    public String toString() {
-        return "CarritoCompra{" +
-            "id=" + getId() +
-            ", cantidad=" + getCantidad() +
-            ", precio=" + getPrecio() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "CarritoCompra [id=" + id + ", cantidad=" + cantidad + ", precio=" + precio + ", fechaAlta=" + fechaAlta
+				+ ", cliente=" + cliente + ", clienteId=" + clienteId + ", productoProveedor=" + productoProveedor
+				+ ", productoProveedorId=" + productoProveedorId + "]";
+	}
+
 }

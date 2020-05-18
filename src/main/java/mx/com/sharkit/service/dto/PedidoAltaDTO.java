@@ -9,7 +9,9 @@ public class PedidoAltaDTO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
+	private boolean picking;
+
 	private String nombreContacto;
 
     private String telefonoContacto;
@@ -30,6 +32,13 @@ public class PedidoAltaDTO implements Serializable {
 		this.productos = productos;
 	}
 	
+	public boolean isPicking() {
+		return picking;
+	}
+
+	public void setPicking(boolean picking) {
+		this.picking = picking;
+	}
 
 	public Long getUsuarioId() {
 		return usuarioId;

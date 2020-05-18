@@ -1,10 +1,9 @@
 package mx.com.sharkit.service;
 
-import mx.com.sharkit.domain.CarritoCompra;
-import mx.com.sharkit.service.dto.CarritoCompraDTO;
-
 import java.util.List;
 import java.util.Optional;
+
+import mx.com.sharkit.service.dto.CarritoCompraDTO;
 
 /**
  * Service Interface for managing {@link mx.com.sharkit.domain.CarritoCompra}.

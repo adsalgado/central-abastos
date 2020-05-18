@@ -44,7 +44,7 @@ public class CarritoHistorico implements Serializable {
     @ManyToOne
     @JoinColumn(name = "cliente_id", insertable = false, updatable = false)
     @JsonIgnoreProperties("carritoHistoricos")
-    private Cliente cliente;
+    private User cliente;
     
     @Column(name = "cliente_id")
     private Long clienteId;
@@ -83,21 +83,16 @@ public class CarritoHistorico implements Serializable {
     public void setFechaAlta(LocalDateTime fechaAlta) {
         this.fechaAlta = fechaAlta;
     }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public CarritoHistorico cliente(Cliente cliente) {
-        this.cliente = cliente;
-        return this;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
     
-    public Long getClienteId() {
+    public User getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(User cliente) {
+		this.cliente = cliente;
+	}
+
+	public Long getClienteId() {
  		return clienteId;
  	}
 
@@ -122,12 +117,10 @@ public class CarritoHistorico implements Serializable {
         return 31;
     }
 
-    @Override
-    public String toString() {
-        return "CarritoHistorico{" +
-            "id=" + getId() +
-            ", nombre='" + getNombre() + "'" +
-            ", fechaAlta='" + getFechaAlta() + "'" +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "CarritoHistorico [id=" + id + ", nombre=" + nombre + ", fechaAlta=" + fechaAlta + ", cliente=" + cliente
+				+ ", clienteId=" + clienteId + "]";
+	}
+
 }

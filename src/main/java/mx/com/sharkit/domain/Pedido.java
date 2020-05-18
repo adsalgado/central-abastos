@@ -53,6 +53,9 @@ public class Pedido implements Serializable {
 
     @Column(name = "total", precision = 21, scale = 2)
     private BigDecimal total;
+    
+    @Column(name = "total_sin_comision", precision = 21, scale = 2)
+	private BigDecimal totalSinComision;
 
     @Column(name = "total_sin_iva", precision = 21, scale = 2)
     private BigDecimal totalSinIva;
@@ -62,6 +65,9 @@ public class Pedido implements Serializable {
 
     @Column(name = "comision_preparador", precision = 21, scale = 2)
     private BigDecimal comisionPreparador;
+    
+    @Column(name = "comision_stripe", precision = 21, scale = 2)
+    private BigDecimal comisionStripe;
 
     @Column(name = "fecha_pedido")
     private LocalDate fechaPedido;
@@ -197,6 +203,14 @@ public class Pedido implements Serializable {
 		this.comisionPreparador = comisionPreparador;
 	}
 
+	public BigDecimal getComisionStripe() {
+		return comisionStripe;
+	}
+
+	public void setComisionStripe(BigDecimal comisionStripe) {
+		this.comisionStripe = comisionStripe;
+	}
+
 	public LocalDate getFechaPedido() {
 		return fechaPedido;
 	}
@@ -326,6 +340,14 @@ public class Pedido implements Serializable {
 		this.receiptUrl = receiptUrl;
 	}
 
+	public BigDecimal getTotalSinComision() {
+		return totalSinComision;
+	}
+
+	public void setTotalSinComision(BigDecimal totalSinComision) {
+		this.totalSinComision = totalSinComision;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -345,16 +367,16 @@ public class Pedido implements Serializable {
 	@Override
 	public String toString() {
 		return "Pedido [id=" + id + ", folio=" + folio + ", estatus=" + estatus + ", estatusId=" + estatusId
-				+ ", cliente=" + cliente + ", clienteId=" + clienteId + ", total=" + total + ", totalSinIva="
-				+ totalSinIva + ", comisionTransportista=" + comisionTransportista + ", comisionPreparador="
-				+ comisionPreparador + ", fechaPedido=" + fechaPedido + ", fechaPreparacion=" + fechaPreparacion
-				+ ", fechaCobro=" + fechaCobro + ", fechaEntrega=" + fechaEntrega + ", nombreContacto=" + nombreContacto
-				+ ", telefonoContacto=" + telefonoContacto + ", correoContacto=" + correoContacto
-				+ ", direccionContacto=" + direccionContacto + ", direccionContactoId=" + direccionContactoId
-				+ ", historicoPedidos=" + historicoPedidos + ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta="
-				+ fechaAlta + ", statusPago=" + statusPago + ", balanceTransaction=" + balanceTransaction
-				+ ", chargeId=" + chargeId + ", receiptUrl=" + receiptUrl + "]";
+				+ ", cliente=" + cliente + ", clienteId=" + clienteId + ", total=" + total + ", totalSinComision="
+				+ totalSinComision + ", totalSinIva=" + totalSinIva + ", comisionTransportista=" + comisionTransportista
+				+ ", comisionPreparador=" + comisionPreparador + ", comisionStripe=" + comisionStripe + ", fechaPedido="
+				+ fechaPedido + ", fechaPreparacion=" + fechaPreparacion + ", fechaCobro=" + fechaCobro
+				+ ", fechaEntrega=" + fechaEntrega + ", nombreContacto=" + nombreContacto + ", telefonoContacto="
+				+ telefonoContacto + ", correoContacto=" + correoContacto + ", direccionContacto=" + direccionContacto
+				+ ", direccionContactoId=" + direccionContactoId + ", historicoPedidos=" + historicoPedidos
+				+ ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta=" + fechaAlta + ", statusPago=" + statusPago
+				+ ", balanceTransaction=" + balanceTransaction + ", chargeId=" + chargeId + ", receiptUrl=" + receiptUrl
+				+ "]";
 	}
-
 
 }

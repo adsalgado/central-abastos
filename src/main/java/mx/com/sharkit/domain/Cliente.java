@@ -1,8 +1,6 @@
 package mx.com.sharkit.domain;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -65,12 +62,6 @@ public class Cliente implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private User usuarioModificacion;
-
-    @OneToMany(mappedBy = "cliente")
-    private Set<CarritoCompra> carritoCompras = new HashSet<>();
-
-    @OneToMany(mappedBy = "cliente")
-    private Set<CarritoHistorico> carritoHistoricos = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties("clientes")
@@ -191,56 +182,6 @@ public class Cliente implements Serializable {
 
     public void setUsuarioModificacion(User user) {
         this.usuarioModificacion = user;
-    }
-
-    public Set<CarritoCompra> getCarritoCompras() {
-        return carritoCompras;
-    }
-
-    public Cliente carritoCompras(Set<CarritoCompra> carritoCompras) {
-        this.carritoCompras = carritoCompras;
-        return this;
-    }
-
-    public Cliente addCarritoCompra(CarritoCompra carritoCompra) {
-        this.carritoCompras.add(carritoCompra);
-        carritoCompra.setCliente(this);
-        return this;
-    }
-
-    public Cliente removeCarritoCompra(CarritoCompra carritoCompra) {
-        this.carritoCompras.remove(carritoCompra);
-        carritoCompra.setCliente(null);
-        return this;
-    }
-
-    public void setCarritoCompras(Set<CarritoCompra> carritoCompras) {
-        this.carritoCompras = carritoCompras;
-    }
-
-    public Set<CarritoHistorico> getCarritoHistoricos() {
-        return carritoHistoricos;
-    }
-
-    public Cliente carritoHistoricos(Set<CarritoHistorico> carritoHistoricos) {
-        this.carritoHistoricos = carritoHistoricos;
-        return this;
-    }
-
-    public Cliente addCarritoHistorico(CarritoHistorico carritoHistorico) {
-        this.carritoHistoricos.add(carritoHistorico);
-        carritoHistorico.setCliente(this);
-        return this;
-    }
-
-    public Cliente removeCarritoHistorico(CarritoHistorico carritoHistorico) {
-        this.carritoHistoricos.remove(carritoHistorico);
-        carritoHistorico.setCliente(null);
-        return this;
-    }
-
-    public void setCarritoHistoricos(Set<CarritoHistorico> carritoHistoricos) {
-        this.carritoHistoricos = carritoHistoricos;
     }
 
     public Estatus getEstatus() {

@@ -37,8 +37,8 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://localhost:3306/abastos?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
-    password: 23dejulio
+    username: asalgado
+    password: asalgado
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -124,3 +124,7 @@ stripe:
     key: pk_test_TNjRZggfGMHinhrlBVIP1P1B00d8WURtiI
   secret:
     key: sk_test_BDQpRihwXwK00K7EN1aMifQc00CHosOopt
+
+api:
+  key:
+    google: AIzaSyDpg-WwghYJCwSq1Q8nM_5ZW5IY5tLNFmQ

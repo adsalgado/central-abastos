@@ -75,6 +75,8 @@ public class PedidoProveedorDTO implements Serializable {
     private Integer calificacionServicio;
     
     private String comentarios;
+    
+	private BigDecimal distanciaEntregaKm;
 
 	public Long getId() {
 		return id;
@@ -292,6 +294,14 @@ public class PedidoProveedorDTO implements Serializable {
 		this.comentarios = comentarios;
 	}
 
+	public BigDecimal getDistanciaEntregaKm() {
+		return distanciaEntregaKm;
+	}
+
+	public void setDistanciaEntregaKm(BigDecimal distanciaEntregaKm) {
+		this.distanciaEntregaKm = distanciaEntregaKm;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -319,12 +329,13 @@ public class PedidoProveedorDTO implements Serializable {
 				+ proveedor + ", proveedorId=" + proveedorId + ", estatus=" + estatus + ", estatusId=" + estatusId
 				+ ", transportistaId=" + transportistaId + ", recolectorId=" + recolectorId + ", total=" + total
 				+ ", totalSinIva=" + totalSinIva + ", comisionTransportista=" + comisionTransportista
-				+ ", comisionPreparador=" + comisionPreparador + ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta="
-				+ fechaAlta + ", usuarioModificacionId=" + usuarioModificacionId + ", fechaModificacion="
-				+ fechaModificacion + ", pedidoDetalles=" + pedidoDetalles + ", fechaPreparacion=" + fechaPreparacion
-				+ ", fechaEnvio=" + fechaEnvio + ", fechaEntrega=" + fechaEntrega + ", personaEntrega=" + personaEntrega
-				+ ", chatProveedorid=" + chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + ", token="
-				+ token + ", calificacionServicio=" + calificacionServicio + ", comentarios=" + comentarios + "]";
+				+ ", comisionPreparador=" + comisionPreparador + ", distanciaEntregaKm=" + distanciaEntregaKm
+				+ ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta=" + fechaAlta + ", usuarioModificacionId="
+				+ usuarioModificacionId + ", fechaModificacion=" + fechaModificacion + ", pedidoDetalles="
+				+ pedidoDetalles + ", fechaPreparacion=" + fechaPreparacion + ", fechaEnvio=" + fechaEnvio
+				+ ", fechaEntrega=" + fechaEntrega + ", personaEntrega=" + personaEntrega + ", chatProveedorid="
+				+ chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + ", token=" + token
+				+ ", calificacionServicio=" + calificacionServicio + ", comentarios=" + comentarios + "]";
 	}
 
 }

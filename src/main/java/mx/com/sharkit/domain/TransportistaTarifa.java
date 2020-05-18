@@ -35,6 +35,10 @@ public class TransportistaTarifa implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("transportistaTarifas")
     private Transportista transportista;
+    
+    @Size(max = 45)
+    @Column(name = "tiempo_entrega", length = 45)
+    private String tiempoEntrega;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -96,9 +100,16 @@ public class TransportistaTarifa implements Serializable {
     public void setTransportista(Transportista transportista) {
         this.transportista = transportista;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    
+    public String getTiempoEntrega() {
+		return tiempoEntrega;
+	}
 
-    @Override
+	public void setTiempoEntrega(String tiempoEntrega) {
+		this.tiempoEntrega = tiempoEntrega;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -114,13 +125,10 @@ public class TransportistaTarifa implements Serializable {
         return 31;
     }
 
-    @Override
-    public String toString() {
-        return "TransportistaTarifa{" +
-            "id=" + getId() +
-            ", rangoMinimo=" + getRangoMinimo() +
-            ", rangoMaximo=" + getRangoMaximo() +
-            ", precio=" + getPrecio() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "TransportistaTarifa [id=" + id + ", rangoMinimo=" + rangoMinimo + ", rangoMaximo=" + rangoMaximo
+				+ ", precio=" + precio + ", transportista=" + transportista + ", tiempoEntrega=" + tiempoEntrega + "]";
+	}
+
 }

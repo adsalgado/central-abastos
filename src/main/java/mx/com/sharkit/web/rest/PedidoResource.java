@@ -11,10 +11,12 @@ import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,13 +25,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import mx.com.sharkit.domain.Estatus;
 import mx.com.sharkit.domain.Proveedor;
 import mx.com.sharkit.domain.Transportista;
 import mx.com.sharkit.domain.User;
@@ -37,6 +39,7 @@ import mx.com.sharkit.pushnotif.service.EnumPantallas;
 import mx.com.sharkit.pushnotif.service.PushNotificationsService;
 import mx.com.sharkit.repository.ProveedorRepository;
 import mx.com.sharkit.repository.TransportistaRepository;
+import mx.com.sharkit.service.CarritoCompraService;
 import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.StripeService;
@@ -76,6 +79,9 @@ public class PedidoResource {
 	private final TransportistaRepository transportistaRepository;
 
 	private final PushNotificationsService pushNotificationsService;
+
+	@Autowired
+	private CarritoCompraService carritoCompraService;
 
 	public PedidoResource(PedidoService pedidoService, UserService userService,
 			PedidoProveedorService pedidoProveedorService, StripeService stripeService,
@@ -209,13 +215,23 @@ public class PedidoResource {
 		Charge charge = null;
 		try {
 			charge = stripeService.charge(chargeRequest);
-			pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
-			//Envío de notificación push con Firebase
-			sendPushNotificationPedidoPagado(pedido);
+//			pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
+//			//Envío de notificación push con Firebase
+//			sendPushNotificationPedidoPagado(pedido);
 			
 		} catch (StripeException e) {
 			log.error("Error Stripe: {}", e);
-			throw new BadRequestAlertException("Error al procesar el pago.", ENTITY_NAME, "errorStripe");
+//			throw new BadRequestAlertException("Error al procesar el pago.", ENTITY_NAME, "errorStripe");
+		}
+
+		if (charge == null) {
+			charge = new Charge();
+		}
+		pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
+		if (pedido.getEstatusId() == Estatus.PEDIDO_PAGADO) {
+			//Envío de notificación push con Firebase
+			sendPushNotificationPedidoPagado(pedido);
+			carritoCompraService.deleteByClienteId(clienteId);
 		}
 
 		return ResponseEntity.ok().body(pedido);
@@ -374,6 +390,7 @@ public class PedidoResource {
 		return lstPedidos;
 	}
 	
+	@Async
 	private void sendPushNotificationPedidoPagado(PedidoDTO pedido) {
 
 		List<PedidoProveedorDTO> lstPprov = pedidoProveedorService.findByPedidoId(pedido.getId());
@@ -402,16 +419,16 @@ public class PedidoResource {
 					String firebaseResponse = pushNotification.get();
 					log.debug("firebaseResponse: {}", firebaseResponse);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					log.debug("InterruptedException: {}", e);
 				} catch (ExecutionException e) {
-					e.printStackTrace();
+					log.debug("ExecutionException: {}", e);
+				} catch (Exception e) {
+					log.debug("Exception: {}", e);
 				}
 
 			} catch (JSONException e) {
 				log.debug("JSONException e: {}", e);
-			} catch (HttpClientErrorException e) {
-				log.debug("HttpClientErrorException e: {}", e);
-			}
+			} 
 
 		}
 

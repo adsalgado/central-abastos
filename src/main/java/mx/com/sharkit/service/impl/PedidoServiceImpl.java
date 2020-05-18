@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +22,16 @@ import mx.com.sharkit.domain.Estatus;
 import mx.com.sharkit.domain.Pedido;
 import mx.com.sharkit.domain.PedidoDetalle;
 import mx.com.sharkit.domain.PedidoProveedor;
+import mx.com.sharkit.domain.User;
 import mx.com.sharkit.repository.PedidoDetalleRepository;
 import mx.com.sharkit.repository.PedidoProveedorRepository;
 import mx.com.sharkit.repository.PedidoRepository;
+import mx.com.sharkit.repository.UserRepository;
 import mx.com.sharkit.service.DireccionService;
+import mx.com.sharkit.service.GoogleService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.ProductoProveedorService;
+import mx.com.sharkit.service.TransportistaTarifaService;
 import mx.com.sharkit.service.dto.DireccionDTO;
 import mx.com.sharkit.service.dto.PedidoAltaDTO;
 import mx.com.sharkit.service.dto.PedidoDTO;
@@ -67,6 +72,15 @@ public class PedidoServiceImpl implements PedidoService {
 	private final PedidoDetalleRepository pedidoDetalleRepository;
 
 	private final DireccionService direccionService;
+
+	@Autowired
+	private GoogleService googleService;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private TransportistaTarifaService transportistaTarifaService;
 
 	public PedidoServiceImpl(PedidoRepository pedidoRepository, PedidoMapper pedidoMapper,
 			ProductoProveedorService productoProveedorService, PedidoProveedorRepository pedidoProveedorRepository,
@@ -136,11 +150,16 @@ public class PedidoServiceImpl implements PedidoService {
 	@Override
 	public PedidoDTO generaNuevoPedido(PedidoAltaDTO pedidoAltaDTO) throws Exception {
 
-		Map<Long, PedidoProveedorDTO> mapProveedores = new HashMap<>();
+		Map<Long, PedidoProveedorDTO> mapPprov = new HashMap<>();
+		Map<Long, ProveedorDTO> mapProveedores = new HashMap<>();
 		Map<Long, BigDecimal> sumaProveedor = new HashMap<>();
 		Map<Long, BigDecimal> sumaSinIvaProveedor = new HashMap<>();
 		BigDecimal total = BigDecimal.ZERO;
+		BigDecimal totalProductos = BigDecimal.ZERO;
+		BigDecimal comisionTransportista = BigDecimal.ZERO;
+		BigDecimal comisionStripe = BigDecimal.ZERO;
 		BigDecimal totalSinIva = BigDecimal.ZERO;
+		BigDecimal totalSinComision = BigDecimal.ZERO;
 
 		LocalDateTime fechaAlta = LocalDateTime.now();
 
@@ -158,6 +177,7 @@ public class PedidoServiceImpl implements PedidoService {
 		pedidoDTO.setTelefonoContacto(pedidoAltaDTO.getTelefonoContacto());
 		pedidoDTO.setCorreoContacto(pedidoAltaDTO.getCorreoContacto());
 
+		// Separando los productos solicitados por proveedor
 		for (PedidoDetalleAltaDTO prod : pedidoAltaDTO.getProductos()) {
 
 			Optional<ProductoProveedorDTO> prodProvDTO = productoProveedorService
@@ -167,7 +187,7 @@ public class PedidoServiceImpl implements PedidoService {
 				ProductoProveedorDTO prodProdDTO = prodProvDTO.get();
 				ProveedorDTO proveedorDTO = prodProdDTO.getProveedor();
 
-				if (!mapProveedores.containsKey(proveedorDTO.getId())) { // Ya se dio de alta el proveedor
+				if (!mapPprov.containsKey(proveedorDTO.getId())) { // Ya se dio de alta el proveedor
 					PedidoProveedorDTO pedidoProveedorDTO = new PedidoProveedorDTO();
 					pedidoProveedorDTO.setEstatusId(Estatus.PEDIDO_SOLICITADO);
 					pedidoProveedorDTO.setTotal(BigDecimal.ZERO);
@@ -180,13 +200,14 @@ public class PedidoServiceImpl implements PedidoService {
 					pedidoProveedorDTO.setTransportistaId(proveedorDTO.getTransportistaId());
 
 					pedidoDTO.getPedidoProveedores().add(pedidoProveedorDTO);
-					mapProveedores.put(proveedorDTO.getId(), pedidoProveedorDTO);
+					mapPprov.put(proveedorDTO.getId(), pedidoProveedorDTO);
+					mapProveedores.put(proveedorDTO.getId(), proveedorDTO);
 					sumaProveedor.put(proveedorDTO.getId(), BigDecimal.ZERO);
 					sumaSinIvaProveedor.put(proveedorDTO.getId(), BigDecimal.ZERO);
 
 				}
 
-				PedidoProveedorDTO pedidoProveedor = mapProveedores.get(proveedorDTO.getId());
+				PedidoProveedorDTO pedidoProveedor = mapPprov.get(proveedorDTO.getId());
 
 				PedidoDetalleDTO pedidoDetalleDTO = new PedidoDetalleDTO();
 				pedidoDetalleDTO.setCantidad(prod.getCantidad());
@@ -204,7 +225,8 @@ public class PedidoServiceImpl implements PedidoService {
 				sumaProveedor.put(proveedorDTO.getId(), totalProveedor);
 				sumaSinIvaProveedor.put(proveedorDTO.getId(), totalSinIvaProveedor);
 
-				total = total.add(pedidoDetalleDTO.getTotalSinIva());
+				totalSinComision = totalSinComision.add(pedidoDetalleDTO.getTotal());
+				totalProductos = totalProductos.add(pedidoDetalleDTO.getTotal());
 				totalSinIva = totalSinIva.add(pedidoDetalleDTO.getTotalSinIva());
 
 				pedidoProveedor.getPedidoDetalles().add(pedidoDetalleDTO);
@@ -230,46 +252,101 @@ public class PedidoServiceImpl implements PedidoService {
 		UserDTO user = new UserDTO();
 		user.setId(pedidoDTO.getClienteId());
 		pedidoDTO.setCliente(user);
-		pedidoDTO.setTotal(total);
-		pedidoDTO.setTotalSinIva(totalSinIva);
 
+		// Guardando el pedido
 		Pedido pedidoEntity = pedidoMapper.toEntity(pedidoDTO);
 		pedidoEntity = pedidoRepository.save(pedidoEntity);
-		pedidoEntity.setFolio("P" + StringUtils.leftPad(pedidoEntity.getId().toString(), 9, "0"));
 
 		PedidoDTO pedido = pedidoMapper.toDto(pedidoEntity);
 
 		Long pedidoId = pedido.getId();
-		pedidoDTO.getPedidoProveedores().forEach(pedProv -> {
+		for (PedidoProveedorDTO pedProv : pedidoDTO.getPedidoProveedores()) {
+
 			pedProv.setPedidoId(pedidoId);
 			pedProv.setTotal(sumaProveedor.get(pedProv.getProveedorId()));
 			pedProv.setTotalSinIva(sumaSinIvaProveedor.get(pedProv.getProveedorId()));
-			
+
+			// Generar token para la entrega
 			String token = RandomUtil.generateToken(SIZE_TOKEN_PEDIDO);
 			log.debug("Token: {}", token);
 			pedProv.setToken(token);
 
+			// Si es picking no se calcula comisión de transporte
+			// El usuario recoge el pedido en dirección de proveedor
+			if (!pedidoAltaDTO.isPicking()) {
+				// Recuperando el cliente del pedido, para la dirección de envío
+				User userPedido = userRepository.findById(pedidoAltaDTO.getUsuarioId()).orElse(null);
+
+				// Calculo de distancia en kilometros y comisión de transportista
+				try {
+					ProveedorDTO proveedorDTO = mapProveedores.get(pedProv.getProveedorId());
+
+					log.debug("proveedorDTO. {}", proveedorDTO);
+
+					String direccionProveedor = String.format("%s,%s", proveedorDTO.getDireccion().getLatitud(),
+							proveedorDTO.getDireccion().getLongitud());
+					log.debug("direccionProveedor. {}", direccionProveedor);
+
+					String direccionUsuario = "";
+					if (userPedido != null) {
+						direccionUsuario = String.format("%s,%s", pedidoAltaDTO.getDireccionContacto().getLatitud(),
+								pedidoAltaDTO.getDireccionContacto().getLongitud());
+					}
+					log.debug("direccionUsuario. {}", direccionUsuario);
+
+					Long distanciaKm = googleService.getDistanciaKilometros(direccionProveedor, direccionUsuario);
+					log.debug("distanciaKm. {}", distanciaKm);
+
+					if (distanciaKm != null) {
+						BigDecimal tarifaTranspore = transportistaTarifaService.calculaTarifaTransportista(
+								proveedorDTO.getTransportistaId(), new BigDecimal(distanciaKm));
+						log.debug("tarifaTranspore. {}", tarifaTranspore);
+						pedProv.setComisionTransportista(tarifaTranspore);
+						comisionTransportista = comisionTransportista.add(tarifaTranspore);
+					}
+
+				} catch (Exception e) {
+					log.error("Ocurrió un error al calcular la comisión del transporte. {}", e);
+				}
+
+			}
+
 			PedidoProveedor pedidoProveedor = pedidoProveedorMapper.toEntity(pedProv);
+			log.debug("pedidoProveedor to save: {}", pedidoProveedor);
 			pedidoProveedor = pedidoProveedorRepository.save(pedidoProveedor);
 			pedidoProveedor.setFolio("PV" + StringUtils.leftPad(pedidoProveedor.getId().toString(), 10, "0"));
-			
+
 			PedidoProveedorDTO pedProvSaved = pedidoProveedorMapper.toDto(pedidoProveedor);
 			pedido.getPedidoProveedores().add(pedProvSaved);
 
 			pedProv.getPedidoDetalles().forEach(pedDet -> {
 				pedDet.setPedidoProveedorId(pedProvSaved.getId());
-				
+
 				PedidoDetalle pedidoDetalle = pedidoDetalleMapper.toEntity(pedDet);
-		        pedidoDetalle = pedidoDetalleRepository.save(pedidoDetalle);
-		        pedidoDetalle.setFolio("PR" + StringUtils.leftPad(pedidoDetalle.getId().toString(), 10, "0"));
-				   
+				log.debug("pedidoDetalle to save: {}", pedidoDetalle);
+				pedidoDetalle = pedidoDetalleRepository.save(pedidoDetalle);
+				pedidoDetalle.setFolio("PR" + StringUtils.leftPad(pedidoDetalle.getId().toString(), 10, "0"));
+
 				PedidoDetalleDTO pedidoDetalleSaved = pedidoDetalleMapper.toDto(pedidoDetalle);
 				pedProvSaved.getPedidoDetalles().add(pedidoDetalleSaved);
 			});
 
-		});
+		}
 
+		pedidoEntity.setFolio("P" + StringUtils.leftPad(pedidoEntity.getId().toString(), 9, "0"));
+		
+		totalSinComision = totalProductos.add(comisionTransportista);
+		comisionStripe = totalSinComision.multiply(new BigDecimal("0.036")).add(new BigDecimal("3"));
+		total = totalSinComision.add(comisionStripe);
+		
+		
+		pedidoEntity.setTotalSinIva(totalSinComision);
+		pedidoEntity.setTotalSinComision(totalSinComision);
+		pedidoEntity.setComisionStripe(comisionStripe);
+		pedidoEntity.setTotal(total);
+		
 		return pedido;
+
 	}
 
 	/**
@@ -286,11 +363,11 @@ public class PedidoServiceImpl implements PedidoService {
 	}
 
 	/**
-     * Get all the pedidos by proveedorId.
-     *
-     * @param proveedorId
-     * @return the list of entities.
-     */
+	 * Get all the pedidos by proveedorId.
+	 *
+	 * @param proveedorId
+	 * @return the list of entities.
+	 */
 	@Override
 	public List<PedidoDTO> findByProveedorId(Long proveedorId) {
 		log.debug("Request to get all Pedidos by proveedorId: {}", proveedorId);
@@ -315,13 +392,13 @@ public class PedidoServiceImpl implements PedidoService {
 				pp.setEstatusId(estatus);
 				pp.setUsuarioModificacionId(usuarioEstatus);
 				pp.setFechaModificacion(now);
-				
+
 				pedidoDetalleRepository.findByPedidoProveedorId(pp.getId()).forEach(pd -> {
 					pd.setEstatusId(estatus);
 				});
 			});
 		}
-				
+
 		return pedidoMapper.toDto(pedido);
 	}
 
@@ -334,7 +411,7 @@ public class PedidoServiceImpl implements PedidoService {
 			pedido.setBalanceTransaction(charge.getBalanceTransaction());
 			pedido.setChargeId(charge.getId());
 			pedido.setReceiptUrl(charge.getReceiptUrl());
-			
+
 			pedidoDTO = cambiaEstatusPedidoAndPedidoProveedores(pedidoId, Estatus.PEDIDO_PAGADO, usuarioEstatus);
 		}
 		return pedidoDTO;

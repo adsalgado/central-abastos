@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarritoComprasProveedorDTO implements Serializable {
+public class CarritoHistoricoProveedorDTO implements Serializable {
 
 	/**
 	 * 
@@ -18,7 +18,7 @@ public class CarritoComprasProveedorDTO implements Serializable {
 	private BigDecimal comisionTransporte;
 	private String tiempoEntrega;
 	
-	private List<CarritoCompraDTO> listCarrito = new ArrayList<>();
+	private List<CarritoHistoricoDetalleDTO> listCarrito = new ArrayList<>();
 
 	public BigDecimal getTotal() {
 		return total;
@@ -36,11 +36,11 @@ public class CarritoComprasProveedorDTO implements Serializable {
 		this.proveedor = proveedor;
 	}
 
-	public List<CarritoCompraDTO> getListCarrito() {
+	public List<CarritoHistoricoDetalleDTO> getListCarrito() {
 		return listCarrito;
 	}
 
-	public void setListCarrito(List<CarritoCompraDTO> listCarrito) {
+	public void setListCarrito(List<CarritoHistoricoDetalleDTO> listCarrito) {
 		this.listCarrito = listCarrito;
 	}
 
