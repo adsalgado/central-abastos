@@ -15,6 +15,8 @@ import { auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, tra
 import { JhiLoginModalComponent } from './shared/login/login.component';
 import { PasswordResetFinishComponent } from './account/password-reset/finish/password-reset-finish.component';
 import { DetalleProductoPage } from './pages/detalle-producto/detalle-producto';
+import { ComparaPreciosProveedorPage } from './pages/compara-precios-proveedor/compara-precios-proveedor';
+import { ArticuloProveedoresPage } from './pages/articulo-proveedores/articulo-proveedores';
 
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const ADMIN_ROUTES = [auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, ...userMgmtRoute, metricsRoute];
@@ -34,7 +36,8 @@ const routes: Routes = [
       { path: 'categoria', component: CategoriaPage },
       { path: 'detalle', component: DetalleProductoPage },
       { path: 'mapa-proveedores', component: MapaProveedoresPage },
-
+      { path: 'comparativa-proveedores', component: ComparaPreciosProveedorPage },
+      { path: 'articulo-proveedor', component: ArticuloProveedoresPage },
       {
         path: 'admin',
         loadChildren: () => import('./admin/admin.module').then(m => m.AbastosAdminModule)

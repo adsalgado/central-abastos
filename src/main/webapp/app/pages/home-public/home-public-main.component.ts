@@ -1,3 +1,4 @@
+import { Estatus } from './../../shared/model/estatus.model';
 import { NavParamsService } from './../../services/nav-params.service';
 import { AlertService } from './../../services/alert.service';
 import { LoadingService } from './../../services/loading-service';
@@ -420,20 +421,68 @@ export class HomePublicMainComponent implements OnDestroy, OnInit {
   viewDetail(producto: any) {
     //consumir servicio de imagenes completas
     this.loadingService.show();
-    this.loadingService.show();
+    let productoNew: any = {
+      producto: {
+        nombre: 'Proveedores'
+      }
+    };
     //this.user.parametros.pantalla_proveedores = "N";
     if (this.user && this.user.parametros.pantalla_proveedores == 'S') {
-      this.genericService.sendGetRequest(`${environment.proveedorProductos}/producto/${producto.id}`).subscribe(
+      let unique = this.productosBuscados.filter((valorActual, indiceActual, arreglo) => {
+        //Podríamos omitir el return y hacerlo en una línea, pero se vería menos legible
+        return arreglo.findIndex(valorDelArreglo => valorDelArreglo.proveedorId === valorActual.proveedorId) === indiceActual;
+      });
+      let proveedoresGroup: any[] = [];
+      unique.forEach(prov => {
+        prov.productos = [];
+        this.productosBuscados.forEach(element => {
+          if (element.proveedorId == prov.proveedorId) {
+            prov.productos.push(element);
+          }
+        });
+        proveedoresGroup.push(prov);
+      });
+
+      proveedoresGroup.forEach(element => {
+        //console.log(element);
+        let pros: any = [];
+        element.productos.forEach(element2 => {
+          //console.log(element2);
+          pros.push({
+            estatus: element2.estatus,
+            estatusId: element2.estatusId,
+            fechaAlta: element2.fechaAlta,
+            fechaModificacion: element2.fechaModificacion,
+            id: element2.id,
+            imagenes: element2.imagenes,
+            precio: element2.precio,
+            precioSinIva: element2.precioSinIva,
+            producto: element2.producto,
+            productoId: element2.productoId,
+            proveedor: element2.proveedor,
+            proveedorId: element2.proveedorId,
+            usuarioAltaId: element2.usuarioAltaId,
+            usuarioModificacionId: element2.usuarioModificacionId
+          });
+        });
+        //console.log("............................");
+        element.productos = pros;
+      });
+
+      console.log(proveedoresGroup);
+      this.loadingService.hide();
+      this.navParamsService.push('/main/mapa-proveedores', { proveedores: proveedoresGroup, producto: productoNew, slideProve: true });
+
+      /* this.genericService.sendGetRequest(`${environment.proveedorProductos}/producto/${producto.id}`).subscribe(
         (response: any) => {
           //this.navCtrl.push(MapaProveedoresPage, { proveedores: response, producto });
-          this.navParamsService.push('/main/mapa-proveedores', { proveedores: response, producto });
-          this.loadingService.hide();
+          
         },
         (error: HttpErrorResponse) => {
           let err: any = error.error;
           this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
         }
-      );
+      ); */
     } else {
       this.genericService.sendGetRequest(`${environment.proveedorProductos}/${producto.id}`).subscribe(
         (response: any) => {

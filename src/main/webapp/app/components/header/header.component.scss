@@ -43,3 +43,20 @@
     }
   }
 }
+
+.badge2 {
+  position: absolute;
+  top: -8px;
+  right: 4px;
+  padding: 0px;
+  background-color: #fbffff;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 53%;
+  font-weight: 600;
+}
+@media only screen and (max-width: 470px) {
+  .badge2 {
+    right: -13px;
+  }
+}

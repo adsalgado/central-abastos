@@ -1,16 +1,69 @@
+<div class="nacionales" *ngIf="proveedorActivo">
+  <button (click)="nacional()">Nacional</button>
+  <button (click)="local()">Local</button>
+</div>
+<div class="mapp">
+  <div id="map_canvas" class="mapita-google">
 
-  <div class="nacionales" *ngIf="proveedorActivo">
-    <button (click)="nacional()">Nacional</button>
-    <button (click)="local()">Local</button>
   </div>
-  <div class="mapp">
-    <div id="map_canvas" class="mapita-google">
+  <button *ngIf="proveedorActivo" class="boton-mapa" [ngStyle]="{'background-color': genericService.getColorHex()}"
+    (click)="comparativa()">Comparar precios</button>
+</div>
 
-    </div>
-    <button *ngIf="proveedorActivo" class="boton-mapa" [ngStyle]="{'background-color': genericService.getColorHex()}" (click)="comparativa()">Comparar precios</button>
-  </div>
+<div class="contenedor-card" style="background-color: black;" *ngIf="proveedorActivo" [ngStyle]="{'background-color': genericService.getColorHex()}">
+  <ngx-slick-carousel class="carousel" id="slick_slider"
+  #slickModal="slick-carousel" [config]="slideConfig">
+    
+      <div ngxSlickItem class="slide" *ngFor="let p of proveedorActivo.productos; let i=index">
+        <div  id="card-{{i}}" class="card animated lightSpeedIn" >
+          <!-- <div class="tacha">
+                          <div class="mini-tacha">
+                              <ion-icon ios="ios-cart-outline" md="ios-cart-outline" style="color: #3b64bf;" *ngIf="!p.carrito" (click)="agregarToCarrito(p)"></ion-icon>
+                              <ion-icon ios="ios-cart" md="ios-cart" *ngIf="p.carrito" style="color: #3b64bf;" (click)="productoService.deleteFavorito(p)"></ion-icon>
+                          </div>
+                        </div> -->
+          <div class="container-card" (click)="viewDetail(p)">
+    
+            <img src="{{env.getImagenIndividual}}{{p.producto.adjuntoId}}" />
+          </div>
+          <div class="container-text" (click)="viewDetail(p)">{{p.producto.nombre}}</div>
+          <div class="description" (click)="viewDetail(p)">{{p.producto.descripcion}}</div>
+          <div class="precio" (click)="viewDetail(p)">{{p.precio | currency:'MXN'}}</div>
+    
+          <!-- <div class="contenedor-carrito" [ngStyle]="{'text-align': !p.cantidad || p.cantidad <= 0 ? 'end' : ''}">
+              <div class="menos" *ngIf="p.cantidad > 0" (click)="decrementar(p)">
+                <div [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">-</div>
+              </div>
+              <div class="cantidad" *ngIf="p.cantidad > 0">
+                <div [ngStyle]="{'color': genericService.getColorHex()}">{{p.cantidad}}</div>
+              </div>
+              <div class="mas" (click)="incrementa(p)">
+                <div [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">+</div>
+              </div>
+            </div> -->
+        </div>
+        <div class="informa">
+          <div class="nombre">{{proveedorActivo.proveedor.nombre}}</div>
+      
+          <div class="ofrece">A tu servicio: </div>
+          <div class="nombre">{{proveedorActivo.proveedor.empresa.nombre}}</div>
+      
+          <div class="ofrece">Estamos ubicados en</div>
+          <div class="nombre">{{proveedorActivo.proveedor.direccion.direccion}}</div>
+          <div class="nombre" *ngIf="proveedorActivo.proveedor.direccion.colonia">col.
+            {{proveedorActivo.proveedor.direccion.colonia}}</div>
+          <div class="nombre">{{proveedorActivo.proveedor.direccion.codigoPostal}}</div>
+        </div>
+      
+        <div class="todos" (click)="viewDetailAll(proveedorActivo)" style="width: auto;">Ver todos</div>
+        <div class="logo"><img src="../../../assets/imgs/logo.png" style="    width: 33px;"></div>
+      </div>
+    
+  </ngx-slick-carousel>
+  
 
-  <div class="contenedor-card" style="background-color: black;" *ngIf="proveedorActivo" [ngStyle]="{'background-color': genericService.getColorHex()}">
+
+  <div *ngIf="!slideProve">
     <div id="card-{{i}}" class="card animated lightSpeedIn">
       <!-- <div class="tacha">
                     <div class="mini-tacha">
@@ -18,13 +71,13 @@
                         <ion-icon ios="ios-cart" md="ios-cart" *ngIf="p.carrito" style="color: #3b64bf;" (click)="productoService.deleteFavorito(p)"></ion-icon>
                     </div>
                   </div> -->
-      <div class="container-card" style="">
+      <div class="container-card" (click)="viewDetail(proveedorActivo)">
 
         <img src="{{env.getImagenIndividual}}{{proveedorActivo.producto.adjuntoId}}" />
       </div>
-      <div class="container-text">{{proveedorActivo.producto.nombre}}</div>
-      <div class="description">{{proveedorActivo.producto.descripcion}}</div>
-      <div class="precio">{{proveedorActivo.precio | currency}}</div>
+      <div class="container-text" (click)="viewDetail(proveedorActivo)">{{proveedorActivo.producto.nombre}}</div>
+      <div class="description" (click)="viewDetail(proveedorActivo)">{{proveedorActivo.producto.descripcion}}</div>
+      <div class="precio" (click)="viewDetail(proveedorActivo)">{{proveedorActivo.precio | currency:'MXN'}}</div>
 
       <!-- <div class="contenedor-carrito" [ngStyle]="{'text-align': !p.cantidad || p.cantidad <= 0 ? 'end' : ''}">
         <div class="menos" *ngIf="p.cantidad > 0" (click)="decrementar(p)">
@@ -52,8 +105,11 @@
     </div>
 
     <div class="todos" (click)="viewDetailAll(proveedorActivo)">Ver todos</div>
-    <div class="logo"><img src="../../../assets/imgs/logo.png" style="    width: 33px;"></div>
+    <div class="logo"><img src="../../../assets/imgs/logo.png"  style="    width: 33px;"></div>
   </div>
+
+
+</div>
 
 <div class="footer-detalle" *ngIf="proveedorActivo" style="box-shadow: none;">
   <div class="cont-e">

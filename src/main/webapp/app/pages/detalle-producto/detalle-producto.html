@@ -21,7 +21,7 @@
 </div>
 
 <div class="descripcion" [ngStyle]="{'color': color}" style="margin-top: 20px;">
-  {{producto.precio | currency}} MXN
+  $ {{producto.precio | currency:'MXN'}}
 </div>
 
 <div class="space-desc">

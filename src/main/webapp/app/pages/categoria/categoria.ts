@@ -75,7 +75,7 @@ export class CategoriaPage implements OnDestroy {
       this.genericService.sendGetRequest(`${environment.proveedorProductos}/producto/${producto.id}`).subscribe(
         (response: any) => {
           //this.navCtrl.push(MapaProveedoresPage, { proveedores: response, producto });
-          this.navParams.push('/main/mapa-proveedores', { proveedores: response, producto });
+          this.navParams.push('/main/mapa-proveedores', { proveedores: response, producto, slideProve: false });
           this.loadingService.hide();
         },
         (error: HttpErrorResponse) => {

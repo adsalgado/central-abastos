@@ -1,0 +1,83 @@
+<div>
+  <div *ngIf="proveedoresGeolocate && proveedoresGeolocate?.length>0 && !multiple" class="ordenamiento" [ngStyle]="{'background-color': genericService.getColorHex()}">
+    <div class="texto-ordena">
+      Ordenar por precio
+    </div>
+    <div class="botones">
+        <button  style="width: 48%;" (click)="up()"
+        [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
+        <i class="material-icons">trending_up</i>
+        </button>
+    </div>
+    <div class="botones">
+        <button  style="width: 48%;" (click)="down()"
+        [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
+        <i class="material-icons">trending_down</i>
+        </button>
+    </div>
+  </div>
+
+  <div class="spinner-carrito" *ngIf="!proveedoresGeolocate || proveedoresGeolocate.length <= 0">
+    <app-spinner></app-spinner>
+  </div>
+
+
+
+  <div *ngIf="proveedoresGeolocate && proveedoresGeolocate.length > 0 && !multiple">
+    <div id="card-{{i}}" class="card animated lightSpeedIn" *ngFor="let p of proveedoresGeolocate; let i = index"
+      (click)="viewDetail(p)">
+      <!-- <div class="tacha">
+                      <div class="mini-tacha">
+                          <ion-icon ios="ios-cart-outline" md="ios-cart-outline" style="color: #3b64bf;" *ngIf="!p.carrito" (click)="agregarToCarrito(p)"></ion-icon>
+                          <ion-icon ios="ios-cart" md="ios-cart" *ngIf="p.carrito" style="color: #3b64bf;" (click)="productoService.deleteFavorito(p)"></ion-icon>
+                      </div>
+                    </div> -->
+      <div class="container-card">
+
+        <img src="{{env.getImagenIndividual}}{{p.producto.adjuntoId}}" />
+      </div>
+      <div class="container-text">{{p.producto.nombre}}</div>
+      <div class="description">{{p.producto.descripcion}}</div>
+      <div class="precio">{{p.producto.precio | currency:'MXN'}}</div>
+
+      <div style="text-align: center;
+      font-weight: 600;">Proveedor:</div>
+      <div style="text-align: center;text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;">{{p.proveedor.nombre}},
+        {{p.proveedor.empresa.nombre}}</div>
+    </div>
+  </div>
+
+  <div *ngIf="proveedoresGeolocate && proveedoresGeolocate.length > 0 && multiple">
+    <div *ngFor="let pr of proveedoresGeolocate; let i = index">
+      <div class="name-pro" [ngStyle]="{'color': genericService.getColorHex()}">{{pr.proveedor.nombre}}</div>
+
+      <div class="scrolling-wrapper" style="text-align: center;">
+        <div id="card-{{i}}" class="card animated lightSpeedIn" *ngFor="let p of pr.productos; let i = index" (click)="viewDetail(p)">
+          <!-- <div class="tacha">
+                              <div class="mini-tacha">
+                                  <ion-icon ios="ios-cart-outline" md="ios-cart-outline" style="color: #3b64bf;" *ngIf="!p.carrito" (click)="agregarToCarrito(p)"></ion-icon>
+                                  <ion-icon ios="ios-cart" md="ios-cart" *ngIf="p.carrito" style="color: #3b64bf;" (click)="productoService.deleteFavorito(p)"></ion-icon>
+                              </div>
+                            </div> -->
+          <div class="container-card">
+
+            <img src="{{env.getImagenIndividual}}{{p.producto.adjuntoId}}" />
+          </div>
+          <div class="container-text">{{p.producto.nombre}}</div>
+          <div class="description">{{p.producto.descripcion}}</div>
+          <div class="precio">{{p.producto.precio | currency:'MXN'}}</div>
+
+          <div style="text-align: center;
+              font-weight: 600;">Proveedor:</div>
+          <div style="text-align: center;text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;">{{p.proveedor.nombre}},
+            {{p.proveedor.empresa.nombre}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

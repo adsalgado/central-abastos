@@ -3,11 +3,11 @@
         <span class="logo-img"></span>
         <span jhiTranslate="global.title" class="navbar-title">Abastos</span> <span class="navbar-version">1.0.0</span>
     </a>
-    <a style="background: #212121; 
+    <a style="background: #f07c1c; 
     border: none;" class="navbar-toggler d-lg-none" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
         <fa-icon icon="bars"></fa-icon>
     </a>
-    <div style="background: #212121; 
+    <div style="background: #f07c1c; 
     border: none;"*ngIf="habilitado"  id="navbarResponsive" [ngSwitch]="isAuthenticated()" >
         <ul style="height:auto"  class="navbar-nav ml-auto">
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">

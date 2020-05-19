@@ -5,7 +5,7 @@
 
   <div *ngIf="articulos && articulos?.length>0" class="ordenamiento" style="background-color: #f07c1c;">
     <div class="texto-ordena">
-      Ordernar por precio
+      Ordenar por precio
     </div>
     <div class="botones">
         <button  style="width: 48%;" (click)="up()"
@@ -40,7 +40,7 @@
         </div>
         <div class="container-text">{{p.producto.nombre}}</div>
         <div class="description">{{p.producto.descripcion}}</div>
-        <div class="precio">{{p.precio | currency}}</div>
+        <div class="precio">{{p.precio | currency:'MXN'}}</div>
 
         <!-- <div class="contenedor-carrito" [ngStyle]="{'text-align': !p.cantidad || p.cantidad <= 0 ? 'end' : ''}">
                       <div class="menos" *ngIf="p.cantidad > 0" (click)="decrementar(p)">

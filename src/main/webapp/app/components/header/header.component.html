@@ -1,4 +1,24 @@
+<div style="text-align: end;
+position: absolute;
+top: 0px;
+width: 100%;
+padding: 9px;
+background-color: #f07c1c40;
+color: #000;z-index: 999999;">
+    <button style="width: 5%;
+    background-color: #f0f8ff00;
+    border: none;position: relative;" (click)="a()" [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
+        <i class="material-icons">notification_important</i>
+        <div class="badge2" *ngIf="totalCarrito > 0">{{totalCarrito}}</div>
+    </button>
+    
+    <button style="width: 5%;
+    background-color: #f0f8ff00;
+    border: none;" (click)="b()" [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
+        <i class="material-icons">more_vert</i>
+    </button>
+</div>
 <div class="sidebar" data-color="danger" data-background-color="white" data-image="../../../assets/img/sidebar-1.jpg">
     <app-sidebar></app-sidebar>
-    <div class="sidebar-background" style="background-image: url(assets/img/sidebar-4.jpg)"></div>
+    <div class="sidebar-background" style="background-image: url(../../../assets/img/sidebar-4.jpg)"></div>
 </div>

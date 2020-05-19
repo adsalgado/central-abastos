@@ -41,6 +41,31 @@ export class MapaProveedoresPage implements OnInit {
   public user: User = null;
 
   public objGeo: any = {};
+
+  public slideProve: boolean = false;
+
+  public slides: any = [
+    { img: 'http://placehold.it/350x150/000000' },
+    { img: 'http://placehold.it/350x150/111111' },
+    { img: 'http://placehold.it/350x150/333333' },
+    { img: 'http://placehold.it/350x150/666666' }
+  ];
+
+  public dynamicDots: any = `dots${Math.floor(Math.random() + 999999)}`;
+  public leftArrowsSlider: any = `left-arrw-${Math.floor(Math.random() + 999999)}`;
+  public rightArrowsSlider: any = `right-arrw-${Math.floor(Math.random() + 999999)}`;
+
+  public slideConfig: any = {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    //autoplay: true,
+    dots: true,
+    appendDots: '.dots-horizontal',
+    dotsClass: 'dots-custom',
+    prevArrow: '.buttonBack',
+    nextArrow: '.buttonForward',
+    pauseOnDotsHover: true
+  };
   constructor(
     private genericService: GenericService,
     private loadingService: LoadingService,
@@ -50,10 +75,11 @@ export class MapaProveedoresPage implements OnInit {
   ) {
     this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
     this.proveedoresTotal = this.navCtrl.get('proveedores');
+    console.log(this.proveedoresTotal);
 
     this.producto = this.navCtrl.get('producto');
     console.log(this.proveedoresTotal);
-
+    this.slideProve = this.navCtrl.get('slideProve');
     this.geo = [];
     this.proveedoresTotal.forEach(proveedorT => {
       //this.proveedores.push(proveedor);
@@ -68,6 +94,30 @@ export class MapaProveedoresPage implements OnInit {
         }
       });
     });
+  }
+
+  addSlide() {
+    this.slides.push({ img: 'http://placehold.it/350x150/777777' });
+  }
+
+  removeSlide() {
+    this.slides.length = this.slides.length - 1;
+  }
+
+  slickInit(e) {
+    console.log('slick initialized');
+  }
+
+  breakpoint(e) {
+    console.log('breakpoint');
+  }
+
+  afterChange(e) {
+    console.log('afterChange');
+  }
+
+  beforeChange(e) {
+    console.log('beforeChange');
   }
 
   ngOnInit() {
@@ -217,6 +267,7 @@ export class MapaProveedoresPage implements OnInit {
     } else {
       this.alertaService.warn('Lo sentimos, no hay proveedores cerca de tu ubicación');
       //this.navCtrl.pop();
+      this.navCtrl.push('main/categoria');
     }
   }
 
@@ -229,7 +280,13 @@ export class MapaProveedoresPage implements OnInit {
   }
 
   comparativa() {
-    //this.navCtrl.push(ComparaPreciosProveedorPage, { proveedoresGeolocate: this.proveedoresGeolocate });
+    console.log(this.proveedoresGeolocate);
+
+    if (this.slideProve) {
+      this.navCtrl.push('main/comparativa-proveedores', { proveedoresGeolocate: this.proveedoresGeolocate, multiple: true });
+    } else {
+      this.navCtrl.push('main/comparativa-proveedores', { proveedoresGeolocate: this.proveedoresGeolocate, multiple: false });
+    }
   }
 
   viewDetailAll(proveedor: any) {
@@ -239,6 +296,24 @@ export class MapaProveedoresPage implements OnInit {
       (response: any) => {
         this.loadingService.hide();
         //this.navCtrl.push(ArticuloProveedoresPage, { productos: response, proveedor });
+        this.navCtrl.push('main/articulo-proveedor', { productos: response, proveedor: proveedor });
+      },
+      (error: HttpErrorResponse) => {
+        this.loadingService.hide();
+        let err: any = error.error;
+        this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+      }
+    );
+    //
+  }
+
+  viewDetail(producto: any) {
+    //consumir servicio de imagenes completas
+    this.loadingService.show();
+    this.genericService.sendGetRequest(`${environment.proveedorProductos}/${producto.productoId}`).subscribe(
+      (response: any) => {
+        this.navCtrl.push('main/detalle', { producto: response });
+        this.loadingService.hide();
       },
       (error: HttpErrorResponse) => {
         this.loadingService.hide();
