@@ -1,0 +1,452 @@
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.name-pro {
+  padding: 10px;
+  font-size: 15px;
+  color: #f07c1c;
+  text-decoration: underline;
+}
+.card {
+  display: inline-block;
+  position: relative;
+  padding: 6px;
+  box-shadow: 0px 1px 3px #bdbdbd;
+  margin: 10px;
+  border-radius: 6px;
+  width: 43%;
+  @media only screen and (max-width: 768px) and (min-width: 747px) {
+    width: 47%;
+  }
+  .tacha {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: flex-end;
+    /* position: absolute;
+          height: 33px;
+          z-index: 99; */
+    .mini-tacha {
+      position: absolute;
+      right: 1px;
+      top: 4px;
+      font-size: 1.5em;
+      //background-color: rgba(1, 1, 1, 0.4);
+      padding-left: 4px;
+      padding-right: 4px;
+      border-radius: 50%;
+      height: 30px;
+      width: 30px;
+      color: #fff;
+      ion-icon {
+        margin-top: -1px;
+        //margin-left: 4.8px;
+        font-size: 1.5em;
+      }
+    }
+  }
+  .container-card {
+    width: 100%;
+    height: 110px;
+    //border: 1px solid #d8d8d8;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    img {
+      height: 110px;
+      //width: 100%;
+    }
+  }
+  .container-text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+  }
+  .description {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .precio {
+    font-size: 11px;
+  }
+
+  .contenedor-carrito {
+    width: 100%;
+    margin-top: 6px;
+    .menos {
+      display: inline-block;
+      width: 32%;
+      text-align: center;
+      div {
+        width: 40%;
+        margin: auto;
+        border: 1px solid #3b64bf;
+        border-radius: 16px;
+        color: #3b64bf;
+      }
+    }
+    .cantidad {
+      display: inline-block;
+      width: 28%;
+      text-align: center;
+      div {
+        color: #3b64bf;
+      }
+    }
+    .mas {
+      display: inline-block;
+      width: 33%;
+      text-align: center;
+      div {
+        width: 40%;
+        margin: auto;
+        border: 1px solid #3b64bf;
+        border-radius: 16px;
+        color: #3b64bf;
+      }
+    }
+  }
+}
+
+.seleccionado {
+  background-color: #d0d0d0;
+  border-radius: 4px;
+}
+.totales {
+  padding: 10px;
+  font-size: 15px;
+  font-weight: 400;
+  font-family: sans-serif;
+  .tot {
+    margin-bottom: 8px;
+  }
+  .borde-total {
+    border-bottom: 1px solid #b5b5b5;
+    padding-top: 7px;
+    margin-bottom: 7px;
+    width: 80%;
+  }
+}
+
+.form-row {
+  input {
+    padding: 7px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: inline-block;
+    width: 49%;
+    vertical-align: middle;
+    margin-bottom: 5px;
+  }
+
+  ion-datetime {
+    padding: 7px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: inline-block;
+    width: 49%;
+    vertical-align: middle;
+    margin-bottom: 5px;
+    button {
+      position: relative;
+      display: none;
+    }
+  }
+}
+
+.item-list-card {
+  ion-avatar {
+    display: inline-block;
+    width: 15%;
+  }
+
+  .datos-tarjetas {
+    display: inline-block;
+    width: 80%;
+    .name {
+      font-size: 20px;
+    }
+    .number {
+      font-size: 10px;
+      color: #908e8e;
+    }
+  }
+}
+
+.footer-button-class {
+  text-align: center;
+  button {
+    width: 48%;
+    padding: 16px;
+    font-size: 14px;
+    background-color: #3b64bf;
+    color: #fff;
+  }
+}
+
+/* The Modal (background) */
+.modal {
+  display: none;
+  position: absolute;
+  z-index: 99;
+  padding-top: 30%;
+  border-radius: 3px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* The Modal (background) */
+.modal2 {
+  display: none;
+  position: absolute;
+  z-index: 99;
+  padding-top: 30%;
+  border-radius: 3px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* The Modal (background) */
+.modal3 {
+  display: none;
+  position: absolute;
+  z-index: 99;
+  padding-top: 30%;
+  border-radius: 3px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.4);
+
+  .modal-content {
+    .resumen {
+      text-align: center;
+      padding: 8px;
+      font-size: 18px;
+    }
+    .resumen-proveedor {
+      .separador {
+        border-bottom: 1px solid #dedede;
+        padding-bottom: 8px;
+        .proveedor {
+          width: 100%;
+          .nombre {
+            display: inline-block;
+            font-size: 15px;
+            width: 49%;
+          }
+          .precio {
+            display: inline-block;
+            font-size: 15px;
+            width: 49%;
+            font-weight: 600;
+          }
+
+          .costo-envio {
+            display: inline-block;
+            font-size: 15px;
+            width: 49%;
+          }
+          .precio-envio {
+            display: inline-block;
+            font-size: 15px;
+            width: 49%;
+            font-weight: 600;
+          }
+
+          .costo-subtotal {
+            display: inline-block;
+            font-size: 15px;
+            width: 49%;
+          }
+          .precio-subtotal {
+            display: inline-block;
+            font-size: 15px;
+            width: 49%;
+            font-weight: 600;
+          }
+        }
+      }
+      .total-pagar {
+        padding: 8px;
+        text-align: center;
+        font-size: 17px;
+      }
+      .iva {
+        font-size: 10px;
+      }
+
+      ion-item {
+        ion-checkbox {
+        }
+        .item-inner {
+          .input-wrapper {
+            ion-label {
+              font-size: 12px;
+              margin: 0px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 5px;
+  border: 1px solid #888;
+  width: 80%;
+  border-radius: 5px;
+  position: relative;
+
+  .tacha {
+    position: absolute;
+    padding: 3px;
+    font-size: 25px;
+    top: 0;
+    right: 4px;
+    color: #3b64c1;
+  }
+
+  .direc {
+    display: inline-block;
+    width: 9%;
+    vertical-align: sub;
+  }
+
+  .formulario {
+    form {
+      margin-top: 25px;
+      .contenedor-input {
+        width: 100%;
+        display: inline-block;
+        input {
+          padding: 7px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          margin-bottom: 10px;
+          width: 100%;
+          display: inline-block;
+        }
+
+        ion-select {
+          max-width: 100%;
+          display: inline-block;
+          width: 100%;
+          border: 1px solid #c3bdbd !important;
+          padding: 8px !important;
+          border-radius: 4px !important;
+          width: 100%;
+          display: inline-block;
+          position: relative;
+
+          .select-text {
+            color: #716b6b;
+          }
+          .select-icon {
+            position: relative;
+            width: 100%;
+            height: 0px;
+            .select-icon-inner {
+              right: 5px;
+              top: -8px;
+              left: auto;
+              margin-top: -2px;
+              position: absolute;
+              width: 0;
+              height: 0;
+              border-top: 5px solid;
+              border-right: 5px solid transparent;
+              border-left: 5px solid transparent;
+              color: #999;
+              pointer-events: none;
+            }
+          }
+          button {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0);
+          }
+        }
+        span {
+          color: #656565;
+          font-size: 15px;
+          display: inline-block;
+          width: 42%;
+        }
+      }
+    }
+  }
+
+  .selecciona {
+    padding: 11px;
+    text-align: center;
+    color: #3b64c1;
+    font-size: 16px;
+  }
+
+  .ingresa {
+    padding: 11px;
+    text-align: center;
+    color: #3b64c1;
+    font-size: 16px;
+  }
+
+  ion-list {
+    margin: 0px;
+    border: none;
+    height: 150px;
+    overflow-y: scroll;
+    ion-item {
+      border: none;
+      border-top: none !important;
+      border-bottom: 1px solid #e6e6e6 !important;
+    }
+  }
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}

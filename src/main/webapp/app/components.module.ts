@@ -38,6 +38,8 @@ import { DetalleProductoPage } from './pages/detalle-producto/detalle-producto';
 import { MapaProveedoresPage } from './pages/mapa-proveedores/mapa-proveedores';
 import { ComparaPreciosProveedorPage } from './pages/compara-precios-proveedor/compara-precios-proveedor';
 import { ArticuloProveedoresPage } from './pages/articulo-proveedores/articulo-proveedores';
+import { CarritoComprasPage } from './pages/carrito-compras/carrito-compras';
+
 //import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 
 @NgModule({
@@ -68,7 +70,8 @@ import { ArticuloProveedoresPage } from './pages/articulo-proveedores/articulo-p
     DetalleProductoPage,
     MapaProveedoresPage,
     ComparaPreciosProveedorPage,
-    ArticuloProveedoresPage
+    ArticuloProveedoresPage,
+    CarritoComprasPage
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,
@@ -109,7 +112,8 @@ import { ArticuloProveedoresPage } from './pages/articulo-proveedores/articulo-p
     DetalleProductoPage,
     MapaProveedoresPage,
     ComparaPreciosProveedorPage,
-    ArticuloProveedoresPage
+    ArticuloProveedoresPage,
+    CarritoComprasPage
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,

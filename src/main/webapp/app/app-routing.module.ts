@@ -17,6 +17,7 @@ import { PasswordResetFinishComponent } from './account/password-reset/finish/pa
 import { DetalleProductoPage } from './pages/detalle-producto/detalle-producto';
 import { ComparaPreciosProveedorPage } from './pages/compara-precios-proveedor/compara-precios-proveedor';
 import { ArticuloProveedoresPage } from './pages/articulo-proveedores/articulo-proveedores';
+import { CarritoComprasPage } from './pages/carrito-compras/carrito-compras';
 
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const ADMIN_ROUTES = [auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, ...userMgmtRoute, metricsRoute];
@@ -38,6 +39,7 @@ const routes: Routes = [
       { path: 'mapa-proveedores', component: MapaProveedoresPage },
       { path: 'comparativa-proveedores', component: ComparaPreciosProveedorPage },
       { path: 'articulo-proveedor', component: ArticuloProveedoresPage },
+      { path: 'carrito-compras', component: CarritoComprasPage },
       {
         path: 'admin',
         loadChildren: () => import('./admin/admin.module').then(m => m.AbastosAdminModule)
