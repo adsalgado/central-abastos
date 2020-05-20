@@ -16,6 +16,9 @@ public class ProductoDTO implements Serializable {
 
 	private Long id;
 
+	@Size(max = 45)
+	private String sku;
+
 	@NotNull
 	@Size(max = 256)
 	private String nombre;
@@ -64,6 +67,14 @@ public class ProductoDTO implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getSku() {
+		return sku;
+	}
+
+	public void setSku(String sku) {
+		this.sku = sku;
 	}
 
 	public String getNombre() {
@@ -225,11 +236,14 @@ public class ProductoDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ProductoDTO [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", caracteristicas="
-				+ caracteristicas + ", precioSinIva=" + precioSinIva + ", precio=" + precio + ", fechaAlta=" + fechaAlta
-				+ ", fechaModificacion=" + fechaModificacion + ", adjuntoId=" + adjuntoId + ", usuarioAltaId="
-				+ usuarioAltaId + ", usuarioModificacionId=" + usuarioModificacionId + ", tipoArticuloId="
-				+ tipoArticuloId + ", estatusId=" + estatusId + ", unidadMedidaId=" + unidadMedidaId + "]";
+		return "ProductoDTO [id=" + id + ", sku=" + sku + ", nombre=" + nombre + ", descripcion=" + descripcion
+				+ ", caracteristicas=" + caracteristicas + ", precioSinIva=" + precioSinIva + ", precio=" + precio
+				+ ", fechaAlta=" + fechaAlta + ", fechaModificacion=" + fechaModificacion + ", adjuntoId=" + adjuntoId
+				+ ", usuarioAltaId=" + usuarioAltaId + ", usuarioModificacionId=" + usuarioModificacionId
+				+ ", tipoArticuloId=" + tipoArticuloId + ", estatusId=" + estatusId + ", unidadMedidaId="
+				+ unidadMedidaId + ", tipoArticulo=" + tipoArticulo + ", estatus=" + estatus + ", unidadMedida="
+				+ unidadMedida + ", imagenes=" + imagenes + "]";
 	}
+
 
 }

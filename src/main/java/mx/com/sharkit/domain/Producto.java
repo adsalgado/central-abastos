@@ -29,6 +29,10 @@ public class Producto implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+	@Size(max = 45)
+    @Column(name = "sku", length = 45, nullable = false)
+	private String sku;
+
     @NotNull
     @Size(max = 256)
     @Column(name = "nombre", length = 256, nullable = false)
@@ -113,7 +117,15 @@ public class Producto implements Serializable {
         this.id = id;
     }
 
-    public Long getAdjuntoId() {
+    public String getSku() {
+		return sku;
+	}
+
+	public void setSku(String sku) {
+		this.sku = sku;
+	}
+
+	public Long getAdjuntoId() {
 		return adjuntoId;
 	}
 
@@ -348,17 +360,16 @@ public class Producto implements Serializable {
         return 31;
     }
 
-    @Override
-    public String toString() {
-        return "Producto{" +
-            "id=" + getId() +
-            ", nombre='" + getNombre() + "'" +
-            ", descripcion='" + getDescripcion() + "'" +
-            ", caracteristicas='" + getCaracteristicas() + "'" +
-            ", precioSinIva=" + getPrecioSinIva() +
-            ", precio=" + getPrecio() +
-            ", fechaAlta='" + getFechaAlta() + "'" +
-            ", fechaModificacion='" + getFechaModificacion() + "'" +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "Producto [id=" + id + ", sku=" + sku + ", nombre=" + nombre + ", descripcion=" + descripcion
+				+ ", caracteristicas=" + caracteristicas + ", precioSinIva=" + precioSinIva + ", precio=" + precio
+				+ ", fechaAlta=" + fechaAlta + ", fechaModificacion=" + fechaModificacion + ", adjunto=" + adjunto
+				+ ", adjuntoId=" + adjuntoId + ", usuarioAlta=" + usuarioAlta + ", usuarioAltaId=" + usuarioAltaId
+				+ ", usuarioModificacion=" + usuarioModificacion + ", usuarioModificacionId=" + usuarioModificacionId
+				+ ", tipoArticulo=" + tipoArticulo + ", tipoArticuloId=" + tipoArticuloId + ", estatus=" + estatus
+				+ ", estatusId=" + estatusId + ", unidadMedida=" + unidadMedida + ", unidadMedidaId=" + unidadMedidaId
+				+ "]";
+	}
+
 }
