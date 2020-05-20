@@ -1,0 +1,57 @@
+{
+  "templateId": 2,
+  "templateName": "PRODUCTO",
+  "dbSchemaName": "",
+  "dbTableName": "",
+  "validator": "org.prabu.spring.excel.objectbinding.validator.ProductoCargaValidator",
+  "columnTemplates": [
+    {
+      "id": 1,
+      "pos": 0,
+      "templateName": "SKU",
+      "dbColumnName": "SKU",
+      "beanColumnName": "sku",
+      "type": "VARCHAR"
+    },
+    {
+      "id": 2,
+      "pos": 1,
+      "templateName": "Nombre",
+      "dbColumnName": "NOMBRE",
+      "beanColumnName": "nombre",
+      "type": "VARCHAR"
+    },
+    {
+      "id": 3,
+      "pos": 2,
+      "templateName": "Descripcion",
+      "dbColumnName": "DESCRIPCION",
+      "beanColumnName": "descripcion",
+      "type": "VARCHAR"
+    },
+    {
+      "id": 4,
+      "pos": 3,
+      "templateName": "Precio",
+      "dbColumnName": "PRECIO",
+      "beanColumnName": "precio",
+      "type": "DECIMAL"
+    },
+    {
+      "id": 5,
+      "pos": 4,
+      "templateName": "Tipo articulo",
+      "dbColumnName": "TIPO_ARTICULO",
+      "beanColumnName": "tipoArticuloId",
+      "type": "DECIMAL"
+    },
+    {
+      "id": 6,
+      "pos": 5,
+      "templateName": "Unidad medida",
+      "dbColumnName": "UNIDAD_MEDIDA",
+      "beanColumnName": "unidadMedidaId",
+      "type": "DECIMAL"
+    }
+  ]
+}
