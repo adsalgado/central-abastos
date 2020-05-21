@@ -1,7 +1,6 @@
 package mx.com.sharkit.excel.objectbinding.domain;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -25,6 +24,8 @@ public class ProductoCargaDTO extends Base {
 	private Long tipoArticuloId;
 
 	private Long unidadMedidaId;
+
+	private BigDecimal inventario;
 
 	public String getSku() {
 		return sku;
@@ -74,10 +75,20 @@ public class ProductoCargaDTO extends Base {
 		this.unidadMedidaId = unidadMedidaId;
 	}
 
+	public BigDecimal getInventario() {
+		return inventario;
+	}
+
+	public void setInventario(BigDecimal inventario) {
+		this.inventario = inventario;
+	}
+
 	@Override
 	public String toString() {
 		return "ProductoCargaDTO [sku=" + sku + ", nombre=" + nombre + ", descripcion=" + descripcion + ", precio="
-				+ precio + ", tipoArticuloId=" + tipoArticuloId + ", unidadMedidaId=" + unidadMedidaId + "]";
+				+ precio + ", tipoArticuloId=" + tipoArticuloId + ", unidadMedidaId=" + unidadMedidaId + ", inventario="
+				+ inventario + "]";
 	}
+
 
 }

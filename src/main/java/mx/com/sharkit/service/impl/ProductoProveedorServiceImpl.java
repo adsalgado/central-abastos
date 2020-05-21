@@ -1,5 +1,6 @@
 package mx.com.sharkit.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -12,18 +13,27 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.sharkit.domain.Estatus;
+import mx.com.sharkit.domain.Inventario;
+import mx.com.sharkit.domain.Producto;
 import mx.com.sharkit.domain.ProductoProveedor;
+import mx.com.sharkit.excel.objectbinding.domain.ProductoCargaDTO;
+import mx.com.sharkit.repository.InventarioRepository;
 import mx.com.sharkit.repository.ProductoImagenRepository;
 import mx.com.sharkit.repository.ProductoProveedorRepository;
+import mx.com.sharkit.repository.ProductoRepository;
 import mx.com.sharkit.service.ProductoProveedorService;
 import mx.com.sharkit.service.dto.AdjuntoDTO;
 import mx.com.sharkit.service.dto.ProductoImagenDTO;
 import mx.com.sharkit.service.dto.ProductoProveedorDTO;
+import mx.com.sharkit.service.dto.ProveedorDTO;
 import mx.com.sharkit.service.mapper.ProductoImagenMapper;
 import mx.com.sharkit.service.mapper.ProductoProveedorMapper;
+import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 
 /**
  * Service Implementation for managing {@link ProductoProveedor}.
@@ -38,15 +48,20 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 	private final ProductoProveedorRepository productoProveedorRepository;
 
 	private final ProductoProveedorMapper productoProveedorMapper;
-	
+
 	private final ProductoImagenMapper productoImagenMapper;
 
 	private final ProductoImagenRepository productoImagenRepository;
 
+	@Autowired
+	private ProductoRepository productoRepository;
+
+	@Autowired
+	private InventarioRepository inventarioRepository;
 
 	public ProductoProveedorServiceImpl(ProductoProveedorRepository productoProveedorRepository,
-			ProductoProveedorMapper productoProveedorMapper,
-			ProductoImagenRepository productoImagenRepository, ProductoImagenMapper productoImagenMapper) {
+			ProductoProveedorMapper productoProveedorMapper, ProductoImagenRepository productoImagenRepository,
+			ProductoImagenMapper productoImagenMapper) {
 		this.productoProveedorRepository = productoProveedorRepository;
 		this.productoProveedorMapper = productoProveedorMapper;
 		this.productoImagenRepository = productoImagenRepository;
@@ -90,11 +105,13 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 	@Transactional(readOnly = true)
 	public Optional<ProductoProveedorDTO> findOne(Long id) {
 		log.debug("Request to get ProductoProveedor : {}", id);
-		Optional<ProductoProveedorDTO> optDTO = productoProveedorRepository.findById(id).map(productoProveedorMapper::toDto);
+		Optional<ProductoProveedorDTO> optDTO = productoProveedorRepository.findById(id)
+				.map(productoProveedorMapper::toDto);
 		ProductoProveedorDTO productoDTO = optDTO.isPresent() ? optDTO.get() : null;
 		if (productoDTO != null) {
-			List<AdjuntoDTO> adjuntos = productoImagenRepository.findByProductoProveedorIdOrderByIdAsc(productoDTO.getId())
-					.stream().map(productoImagenMapper::toDto).map(ProductoImagenDTO::getAdjunto)
+			List<AdjuntoDTO> adjuntos = productoImagenRepository
+					.findByProductoProveedorIdOrderByIdAsc(productoDTO.getId()).stream()
+					.map(productoImagenMapper::toDto).map(ProductoImagenDTO::getAdjunto)
 					.collect(Collectors.toCollection(LinkedList::new));
 			productoDTO.setImagenes(adjuntos);
 		}
@@ -125,22 +142,22 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 		params.keySet().forEach(key -> {
 			switch (key) {
 			case "proveedorId":
-				criteria.add(Restrictions.eq("proveedorId", Long.parseLong((String)params.get(key))));
+				criteria.add(Restrictions.eq("proveedorId", Long.parseLong((String) params.get(key))));
 				break;
 			case "categoriaId":
-				criteria.add(Restrictions.eq("categoria.id", Long.parseLong((String)params.get(key))));
+				criteria.add(Restrictions.eq("categoria.id", Long.parseLong((String) params.get(key))));
 				break;
 			case "seccionId":
-				criteria.add(Restrictions.eq("seccion.id", Long.parseLong((String)params.get(key))));
+				criteria.add(Restrictions.eq("seccion.id", Long.parseLong((String) params.get(key))));
 				break;
 			case "tipoArticuloId":
-				criteria.add(Restrictions.eq("producto.tipoArticuloId", Long.parseLong((String)params.get(key))));
+				criteria.add(Restrictions.eq("producto.tipoArticuloId", Long.parseLong((String) params.get(key))));
 				break;
 			case "nombre":
-				criteria.add(Restrictions.ilike("producto.nombre", (String)params.get(key), MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("producto.nombre", (String) params.get(key), MatchMode.ANYWHERE));
 				break;
 			case "productoId":
-				criteria.add(Restrictions.eq("productoId", Long.parseLong((String)params.get(key))));
+				criteria.add(Restrictions.eq("productoId", Long.parseLong((String) params.get(key))));
 				break;
 			default:
 				break;
@@ -149,6 +166,75 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 		});
 		return this.findByCriteria(criteria).stream().map(productoProveedorMapper::toDto)
 				.collect(Collectors.toCollection(LinkedList::new));
+
+	}
+
+	@Override
+	public void cargaMasivaProductosProveedor(List<ProductoCargaDTO> productosCarga, ProveedorDTO proveedor)
+			throws Exception {
+		
+		LocalDateTime now = LocalDateTime.now();
+		productosCarga.forEach(prodCarga -> {
+
+			if (prodCarga.getErrors() != null && prodCarga.getErrors().hasErrors()) {
+				return;
+			}
+
+			Producto producto = null;
+			ProductoProveedor productoProveedor = null;
+			Inventario inventario = null;
+
+			if (!StringUtils.isAllBlank(prodCarga.getSku())) {
+				producto = productoRepository.findOneBySku(prodCarga.getSku()).orElse(null);
+			}
+
+			if (producto != null && !StringUtils.isAllBlank(prodCarga.getNombre())) {
+				producto = productoRepository.findOneBySku(prodCarga.getSku()).orElse(null);
+			}
+
+			if (producto == null) {
+				producto = new Producto();
+				producto.setSku(prodCarga.getSku());
+				producto.setNombre(prodCarga.getNombre());
+				producto.setDescripcion(prodCarga.getDescripcion());
+				producto.setPrecio(prodCarga.getPrecio());
+				producto.setPrecioSinIva(prodCarga.getPrecio());
+				producto.setTipoArticuloId(prodCarga.getTipoArticuloId());
+				producto.setUnidadMedidaId(prodCarga.getUnidadMedidaId());
+				producto.setEstatusId(Estatus.ACTIVO);
+				producto.setFechaAlta(now);
+				producto.setUsuarioAltaId(proveedor.getUsuarioId());
+
+				producto = productoRepository.save(producto);
+			} else {
+				productoProveedor = productoProveedorRepository
+						.findOneByProveedorIdAndProductoId(proveedor.getId(), producto.getId()).orElse(null);
+			}
+
+			if (productoProveedor == null) {
+				productoProveedor = new ProductoProveedor();
+				productoProveedor.setProveedorId(proveedor.getId());
+				productoProveedor.setProductoId(producto.getId());
+				productoProveedor.setPrecio(producto.getPrecio());
+				productoProveedor.setPrecioSinIva(producto.getPrecioSinIva());
+				productoProveedor.setEstatusId(Estatus.ACTIVO);
+				productoProveedor.setFechaAlta(now);
+				productoProveedor.setUsuarioAltaId(proveedor.getId());
+
+				productoProveedor = productoProveedorRepository.save(productoProveedor);
+			}
+
+			inventario = inventarioRepository.findOneByProductoProveedorId(productoProveedor.getId()).orElse(null);
+			if (inventario == null) {
+				inventario = new Inventario();
+				inventario.setProductoProveedorId(productoProveedor.getId());
+				inventario.setTotal(prodCarga.getInventario());
+				inventario = inventarioRepository.save(inventario);
+			} else {
+				inventario.setTotal(prodCarga.getInventario());
+			}
+
+		});
 
 	}
 }

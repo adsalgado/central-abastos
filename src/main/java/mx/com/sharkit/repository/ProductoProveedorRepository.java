@@ -1,10 +1,11 @@
 package mx.com.sharkit.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import mx.com.sharkit.customdao.IBaseRepositorio;
-import mx.com.sharkit.domain.Producto;
 import mx.com.sharkit.domain.ProductoProveedor;
 
 /**
@@ -14,5 +15,7 @@ import mx.com.sharkit.domain.ProductoProveedor;
 @Repository
 public interface ProductoProveedorRepository  extends IBaseRepositorio<ProductoProveedor, Long>, JpaSpecificationExecutor<ProductoProveedor> {
 
+	Optional<ProductoProveedor> findOneByProveedorIdAndProductoId(Long proveedorId, Long productoId);
+	
 }
 

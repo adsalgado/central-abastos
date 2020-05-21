@@ -7,7 +7,9 @@ import java.util.Optional;
 import org.hibernate.criterion.Order;
 
 import mx.com.sharkit.domain.ProductoProveedor;
+import mx.com.sharkit.excel.objectbinding.domain.ProductoCargaDTO;
 import mx.com.sharkit.service.dto.ProductoProveedorDTO;
+import mx.com.sharkit.service.dto.ProveedorDTO;
 
 /**
  * Service Interface for managing {@link mx.com.sharkit.domain.ProductoProveedor}.
@@ -46,4 +48,7 @@ public interface ProductoProveedorService extends BaseService<ProductoProveedor,
     void delete(Long id);
     
     List<ProductoProveedorDTO> searchProductos(Map<String, Object> params, Integer page, Integer pagesize, Order order);
+    
+    void cargaMasivaProductosProveedor(List<ProductoCargaDTO> productosCarga, ProveedorDTO proveedor) throws Exception;
+    
 }

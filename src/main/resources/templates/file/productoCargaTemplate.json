@@ -52,6 +52,14 @@
       "dbColumnName": "UNIDAD_MEDIDA",
       "beanColumnName": "unidadMedidaId",
       "type": "DECIMAL"
+    },
+    {
+      "id": 7,
+      "pos": 6,
+      "templateName": "Inventario",
+      "dbColumnName": "INVENTARIO",
+      "beanColumnName": "inventario",
+      "type": "DECIMAL"
     }
   ]
 }

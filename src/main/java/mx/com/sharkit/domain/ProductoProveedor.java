@@ -1,7 +1,7 @@
 package mx.com.sharkit.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,10 +37,10 @@ public class ProductoProveedor implements Serializable {
     private BigDecimal precio;
 
     @Column(name = "fecha_alta")
-    private Instant fechaAlta;
+    private LocalDateTime fechaAlta;
 
     @Column(name = "fecha_modificacion")
-    private Instant fechaModificacion;
+    private LocalDateTime fechaModificacion;
 
     @Column(name = "usuario_alta_id")
     private Long usuarioAltaId;
@@ -96,19 +96,19 @@ public class ProductoProveedor implements Serializable {
 		this.precio = precio;
 	}
 
-	public Instant getFechaAlta() {
+	public LocalDateTime getFechaAlta() {
 		return fechaAlta;
 	}
 
-	public void setFechaAlta(Instant fechaAlta) {
+	public void setFechaAlta(LocalDateTime fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
 
-	public Instant getFechaModificacion() {
+	public LocalDateTime getFechaModificacion() {
 		return fechaModificacion;
 	}
 
-	public void setFechaModificacion(Instant fechaModificacion) {
+	public void setFechaModificacion(LocalDateTime fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
 

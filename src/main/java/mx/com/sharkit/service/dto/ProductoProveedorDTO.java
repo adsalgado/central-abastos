@@ -2,13 +2,10 @@ package mx.com.sharkit.service.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
-
-import mx.com.sharkit.domain.Estatus;
-import mx.com.sharkit.domain.Proveedor;
 
 public class ProductoProveedorDTO implements Serializable {
 
@@ -25,9 +22,9 @@ public class ProductoProveedorDTO implements Serializable {
 	@NotNull
 	private BigDecimal precio;
 
-	private Instant fechaAlta;
+	private LocalDateTime fechaAlta;
 
-	private Instant fechaModificacion;
+	private LocalDateTime fechaModificacion;
 
 	private Long usuarioAltaId;
 
@@ -71,19 +68,19 @@ public class ProductoProveedorDTO implements Serializable {
 		this.precio = precio;
 	}
 
-	public Instant getFechaAlta() {
+	public LocalDateTime getFechaAlta() {
 		return fechaAlta;
 	}
 
-	public void setFechaAlta(Instant fechaAlta) {
+	public void setFechaAlta(LocalDateTime fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
 
-	public Instant getFechaModificacion() {
+	public LocalDateTime getFechaModificacion() {
 		return fechaModificacion;
 	}
 
-	public void setFechaModificacion(Instant fechaModificacion) {
+	public void setFechaModificacion(LocalDateTime fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
 
