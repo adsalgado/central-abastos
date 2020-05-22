@@ -46,6 +46,25 @@ export class GenericService {
     return this.http.get(webservice_URL, params);
   }
 
+  imgProblema() {
+    let color: any = this.localStorageEncryptService.getFromLocalStorage('theme');
+    let armado: string = '../../../content/imgs/problemas/problema';
+    let retornar: any =
+      color == '#3b64c0'
+        ? `${armado}2.png`
+        : color == '#be3b3b'
+        ? `${armado}3.png`
+        : color == '#3bb8be'
+        ? `${armado}4.png`
+        : color == '#292929'
+        ? `${armado}6.png`
+        : color == '#F07C1B'
+        ? `${armado}1.png`
+        : `${armado}5.png`;
+
+    return retornar;
+  }
+
   /**Método que hace peticiones tipo GET  con parámetros*/
   sendGetParams(webservice_URL: string, params: any) {
     //return this.http.get(webservice_URL, params).timeout(TIME_OUT);

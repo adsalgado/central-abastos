@@ -68,14 +68,14 @@ background-position: center center;height: 103px;position: relative;">
     <ul class="nav" style="margin-top:0px">
         <li routerLinkActive="active" *ngFor="let menuItem of menu" class="{{menuItem.class}} nav-item"
         style="padding:0px">
-            <div class="nav-link" [routerLink]="[menuItem.route]" style="padding-top: 10px;padding-bottom: 10px;
+            <div class="nav-link" (click)="goTo(menuItem)" style="padding-top: 10px;padding-bottom: 10px;
             border-bottom: 1px solid #ddd;">
                 <img src="{{menuItem.iconName}}" alt="" style="display: inline-block;
                 width: 10%;
                 vertical-align: sub;">
                 <p style="display: inline-block;
                 width: 88%;
-                font-size: 20px;">{{menuItem.displayName}}</p>
+                font-size: 18px;">{{menuItem.displayName}}</p>
             </div>
         </li>
     </ul>

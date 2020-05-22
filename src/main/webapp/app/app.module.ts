@@ -31,7 +31,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment.prod';
-
+import { QRCodeModule } from 'angularx-qrcode';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 @NgModule({
   imports: [
     NgbModule,
@@ -53,7 +54,6 @@ import { environment } from '../environments/environment.prod';
 
   exports: [
     NgbModule
-
     //NgbActiveModal
   ]
 })

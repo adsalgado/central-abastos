@@ -53,6 +53,10 @@ export class AppComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   private iniSlickJs() {
+    const htmlScriptElement0 = document.createElement('script');
+    htmlScriptElement0.src = '../content/qrcode/qrcode.min.js';
+    this.elementRef.nativeElement.appendChild(htmlScriptElement0);
+
     const htmlScriptElement = document.createElement('script');
     htmlScriptElement.src = 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js';
     this.elementRef.nativeElement.appendChild(htmlScriptElement);

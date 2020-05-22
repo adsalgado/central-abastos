@@ -1,0 +1,14 @@
+<div>
+  <div *ngIf="chats && chats?.length > 0">
+    <div class="item-list-card" *ngFor="let c of chats" (click)="verChat(c)" style="border-bottom: 1px solid #ddd;">
+      <div slot="start">
+        <img src="../../../content/imgs/chat/call.png" alt="">
+      </div>
+      <div class="datos-tarjetas" style="vertical-align: top;">
+        <div class="name" style="font-size:14px">Pedido</div>
+        <div class="name" style="font-size:14px"><strong>{{c.folio}}</strong></div>
+      </div>
+
+    </div>
+  </div>
+</div>

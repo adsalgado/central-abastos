@@ -10,7 +10,7 @@
     <div *ngIf="cards && cards?.length > 0">
       <div class="item-list-card" *ngFor="let card of cards" [ngClass]="{'seleccionado':card.selected}" (click)="seleccionar(card)">
         <div>
-          <img src="assets/imgs/tarjetas/bank.png" alt="">
+          <img src="../../../content/imgs/tarjetas/bank.png" alt="">
         </div>
         <div class="datos-tarjetas">
           <div class="name">{{card.alias}}</div>
@@ -26,10 +26,10 @@
 
 
 
-    <div class="form-row">
+    <div class="form-row" style="    padding: 10px;">
       <input type="number" placeholder="N. Tarjeta" id="tarj" [(ngModel)]="dataCard.tarj" style="width: 100%">
 
-      <input type="date" class="dt" text-left pickerFormat="MM/YY" cancelText="Cancelar" doneText="Aceptar" #fechaNac
+      <input type="month" class="dt" text-left pickerFormat="MM/YY" cancelText="Cancelar" doneText="Aceptar" #fechaNac
         placeholder="04/24" min="2016" max="2050" id="dtime" [(ngModel)]="dataCard.dtime"></input>
 
       <input type="number" placeholder="CVC" id="cvc" [(ngModel)]="dataCard.cvc">
@@ -65,14 +65,15 @@
             type="{{dato.type}}" [(ngModel)]="dato.value" maxlength="{{dato.length}}" [attr.disabled]="dato.disabled ? '' : null"
             *ngIf="dato.type != 'date' && dato.type != 'checkbox' && dato.type != 'select'" [ngStyle]="{'width': dato.name == 'Dirección' ? '88%' : '100%'}">
 
-          <div class="direc" *ngIf="dato.name == 'Dirección'" (click)="getMapa()"><img src="assets/imgs/direcciones/home-run.png"
+          <div class="direc" *ngIf="dato.name == 'Dirección'" (click)="getMapa()"><img style="width: 33px;
+            vertical-align: sub;" src="../../../content/imgs/direcciones/home-run.png"
               alt=""></div>
 
           <input type="date" class="dt" [(ngModel)]="dato.value" formControlName="{{dato.formName}}" text-left pickerFormat="DD/MM/YYYY"
-            cancelText="Cancelar" doneText="Aceptar" #fechaNac (ionChange)="ejecutaValidator()" *ngIf="dato.type == 'date'"
+            cancelText="Cancelar" doneText="Aceptar" #fechaNac (change)="ejecutaValidator()" *ngIf="dato.type == 'date'"
             placeholder="01/12/2020"></input>
 
-          <select *ngIf="dato.type == 'select'" [(ngModel)]="dato.value"
+          <select class="dt" *ngIf="dato.type == 'select'" [(ngModel)]="dato.value"
              (change)="ejecutaValidator(true,$event)"
             formControlName="{{dato.formName}}">
             <option *ngFor="let op of dato.opts" [value]="op.id">
@@ -89,8 +90,7 @@
 
     <button block large style="padding: 10px;
           height: auto;
-          contain: none;
-          margin-top: 15px;font-size: 14px;"
+          contain: none;font-size: 14px;"
       [disabled]="btnHabilitado" [ngStyle]="{'background-color': genericService.getColorHex()}" (click)="precompra()">Aceptar</button>
   </div>
 </div>
@@ -114,24 +114,24 @@
       <div *ngFor="let p of pagoActual.pedidoProveedores" class="separador">
         <div class="proveedor">
           <div class="nombre">{{p.proveedor?.nombre}}</div>
-          <div class="precio">{{p.total | currency}}</div>
+          <div class="precio">$ {{p.total | currency:'MXN'}}</div>
 
           <div class="costo-envio">Costo de envío</div>
-          <div class="precio-envio">{{p.comisionTransportista | currency}}</div>
+          <div class="precio-envio">$ {{p.comisionTransportista | currency:'MXN'}}</div>
 
           <div class="costo-subtotal">Subtotal</div>
-          <div class="precio-subtotal">{{p.total + p.comisionTransportista | currency}}</div>
+          <div class="precio-subtotal">$ {{p.total + p.comisionTransportista | currency:'MXN'}}</div>
         </div>
 
 
       </div>
 
-      <div class="total-pagar">Total a pagar: <strong>{{pagoActual.total | currency}}</strong></div>
+      <div class="total-pagar">Total a pagar: <strong>$ {{pagoActual.total | currency:'MXN'}}</strong></div>
       <div class="iva">*Costos incluyen iva.</div>
 
       <div>
         <label>Acepto términos y condiciones</label>
-        <input type="checkbox" color="{{genericService.getColor()}}" [(ngModel)]="check"></input>
+        <input type="checkbox"  [(ngModel)]="check"></input>
       </div>
     </div>
 
@@ -150,7 +150,7 @@
   </div>
 </div>
 
-<div padding class="">
+<div class="">
 
   <!-- <div *ngIf="productosCarrito && productosCarrito?.length>0" class="ordenamiento" [ngStyle]="{'background-color': genericService.getColorHex()}">
         <div class="texto-ordena">
@@ -194,7 +194,7 @@
           </div>
           <div class="container-text" (click)="viewDetail(p)">{{p.productoProveedor.producto.nombre}}</div>
           <div class="description" (click)="viewDetail(p)">{{p.productoProveedor.producto.descripcion}}</div>
-          <div class="precio" (click)="viewDetail(p)">{{p.precio | currency}}</div>
+          <div class="precio" (click)="viewDetail(p)">{{p.precio | currency:'MXN'}}</div>
 
           <div class="contenedor-carrito" [ngStyle]="{'text-align': !p.cantidad || p.cantidad <= 0 ? 'end' : ''}">
             <div class="menos" *ngIf="p.cantidad > 0" (click)="decrementar(p)">
@@ -221,10 +221,11 @@
         </div>
     </div>
     <div *ngIf="totales && totales.listCarritoProveedores?.length <= 0">
-      <div><img style="    border-radius: 4px;
-        box-shadow: 0px 0px 4px 0px #a0a0a0;" src="assets/imgs/lista-carrito/carritoComprado.png"
+      <div><img style="    width: 100%;border-radius: 4px;
+        box-shadow: 0px 0px 4px 0px #a0a0a0;" src="../../../content/imgs/lista-carrito/carritoComprado.png"
           alt=""></div>
-      <div>Sin articulos en carrito, agrega algunos y aparecerán en esta sección</div>
+      <div style="font-size: 22px;
+      text-align: center;">Sin articulos en carrito, agrega algunos y aparecerán en esta sección</div>
     </div>
     <div *ngIf="totales && totales.listCarritoProveedores?.length > 0" class="totales" style="margin-bottom: 50px;">
       <div class="tot">Total por productos: <strong>{{totales.totalProductos}}</strong></div>

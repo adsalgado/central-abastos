@@ -1,0 +1,20 @@
+<div style="padding:20px">
+
+    <div class="titlee" [ngStyle]="{'border-color' : genericService.getColorHex()}">Pedido: <strong>{{pedido.folio}}</strong></div>
+    <div class="titlee" [ngStyle]="{'border-color' : genericService.getColorHex()}">Proveedor: <strong>{{pedido.proveedor.nombre}}</strong></div>
+    <div class="titlee" [ngStyle]="{'border-color' : genericService.getColorHex()}" style="margin-bottom: 40px">Código:
+        <strong>{{pedido.token}}</strong></div>
+
+    <div class="miqr">
+        <!-- <qrcode ></qrcode>
+  -->
+        <div id="qrcode"></div>
+    </div>
+
+    <div style="    margin-top: 20px;
+    font-size: 17px;
+    text-align: center;">Muestra este código QR a la persona
+        que entrega el pedido</div>
+
+
+</div>

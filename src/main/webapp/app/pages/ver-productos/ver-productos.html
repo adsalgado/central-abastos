@@ -1,0 +1,37 @@
+<div *ngIf="pedidos && pedidos?.pedidoProveedores.length > 0">
+  <div class="item-list-card" *ngFor="let p of pedidos.pedidoProveedores[0].pedidoDetalles">
+    <div class="round" style="vertical-align:middle">
+      <input type="checkbox" id="checkbox-{{p.productoProveedor.producto.nombre}}" [(ngModel)]="p.activado" />
+      <label for="checkbox-{{p.productoProveedor.producto.nombre}}"></label>
+    </div>
+    <div class="datos-tarjetas" style="vertical-align:middle">
+      <div class="name" style="font-size: 15px;">Producto <strong>{{p.productoProveedor.producto.nombre}}</strong></div>
+
+      <div class="number" style="font-size: 13px;">Cantidad <strong>{{p.cantidad}}</strong></div>
+      <div class="number" style="font-size: 13px;">Costo <strong>{{p.total | currency}}</strong></div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="totals" [ngStyle]="{'background-color': genericService.getColorHex()}">
+
+  <div>Envio</div>
+  <div>=</div>
+  <div><strong>{{pedidos.pedidoProveedores[0].comisionTransportista | currency}}</strong></div>
+
+  <div>Costo</div>
+  <div>=</div>
+  <div><strong>{{pedidos.pedidoProveedores[0].comisionTransportista + pedidos.total | currency}}</strong></div>
+
+  <div>Total</div>
+  <div>=</div>
+  <div><strong>{{pedidos.total | currency}}</strong></div>
+</div>
+<div class="footer-button-class">
+  <button (tap)="solicitar()" [ngStyle]="{'background-color': genericService.getColorHex()}" *ngIf="env.perfil.activo == 2">Solicitar
+    cambio</button>
+  <button (tap)="confirmar()" [ngStyle]="{'background-color': genericService.getColorHex(),'width': env.perfil.activo == 3 ? '100%' : ''}">{{env.perfil.activo
+    == 2 ? 'Confirmar pedido' : 'Enviar pedido'}}</button>
+</div>

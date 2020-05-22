@@ -1,0 +1,48 @@
+<div>
+  <div class="contenedor-chat">
+    <div class="cont-msj">
+      <div class="msj" style="margin-bottom: 10px;" [ngClass]="{'msj' : user.username == c.usuarioEmisorLogin, 'msj-r' : user.username != c.usuarioEmisorLogin}"
+        *ngFor="let c of chat.chatDetalles">
+        <div class="{{user.username == c.usuarioEmisorLogin ? genericService.getColorClassChat() : 'm'}}" [ngStyle]="{'background-color': user.username == c.usuarioEmisorLogin ? genericService.getColorHex(): ''}">
+          <div>{{c.mensaje}}</div>
+          <div style="font-size:9px">{{c.fecha}}</div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="uno">
+      <span>
+        <div class="dos">
+          <span class="span1"></span>
+          <span class="span2"></span>
+          <div class="tres">
+              <div class="cuatro">
+                  <div class="cinco">
+                      <div class="seis">
+                        <span>
+                          <span>Hola</span>
+                        </span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </span>
+    </div> -->
+  </div>
+
+
+</div>
+<div class="footer-chat">
+  <div>
+    <!-- <button class="emoji" ion-button clear icon-only (click)="toggled = !toggled" [(emojiPickerIf)]="toggled" [emojiPickerDirection]="'top'"
+      (emojiPickerSelect)="handleSelection($event)">
+      <ion-icon name="ios-happy-outline"></ion-icon>
+    </button> -->
+    <input type="text" style="width:89%" placeholder="Escribe un mensaje aquí" [(ngModel)]="mensaje">
+    <div>
+      <button (click)="sendMessage()">
+        <i class="material-icons">send</i>
+      </button>
+    </div>
+  </div>
+</div>
