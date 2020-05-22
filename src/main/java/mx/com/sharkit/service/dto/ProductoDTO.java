@@ -3,11 +3,14 @@ package mx.com.sharkit.service.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * A DTO for the {@link mx.com.sharkit.domain.Producto} entity.
@@ -23,11 +26,9 @@ public class ProductoDTO implements Serializable {
 	@Size(max = 256)
 	private String nombre;
 
-	@NotNull
 	@Size(max = 512)
 	private String descripcion;
 
-	@NotNull
 	@Size(max = 512)
 	private String caracteristicas;
 
@@ -37,9 +38,10 @@ public class ProductoDTO implements Serializable {
 	@NotNull
 	private BigDecimal precio;
 
-	private Instant fechaAlta;
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", locale = "es_MX")
+	private LocalDateTime fechaAlta;
 
-	private Instant fechaModificacion;
+	private LocalDateTime fechaModificacion;
 
 	private Long adjuntoId;
 
@@ -117,19 +119,19 @@ public class ProductoDTO implements Serializable {
 		this.precio = precio;
 	}
 
-	public Instant getFechaAlta() {
+	public LocalDateTime getFechaAlta() {
 		return fechaAlta;
 	}
 
-	public void setFechaAlta(Instant fechaAlta) {
+	public void setFechaAlta(LocalDateTime fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
 
-	public Instant getFechaModificacion() {
+	public LocalDateTime getFechaModificacion() {
 		return fechaModificacion;
 	}
 
-	public void setFechaModificacion(Instant fechaModificacion) {
+	public void setFechaModificacion(LocalDateTime fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
 
@@ -244,6 +246,5 @@ public class ProductoDTO implements Serializable {
 				+ unidadMedidaId + ", tipoArticulo=" + tipoArticulo + ", estatus=" + estatus + ", unidadMedida="
 				+ unidadMedida + ", imagenes=" + imagenes + "]";
 	}
-
 
 }

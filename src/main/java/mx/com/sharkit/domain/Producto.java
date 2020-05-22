@@ -1,7 +1,7 @@
 package mx.com.sharkit.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,12 +38,10 @@ public class Producto implements Serializable {
     @Column(name = "nombre", length = 256, nullable = false)
     private String nombre;
 
-    @NotNull
     @Size(max = 512)
     @Column(name = "descripcion", length = 512, nullable = false)
     private String descripcion;
 
-    @NotNull
     @Size(max = 512)
     @Column(name = "caracteristicas", length = 512, nullable = false)
     private String caracteristicas;
@@ -57,10 +55,10 @@ public class Producto implements Serializable {
     private BigDecimal precio;
 
     @Column(name = "fecha_alta")
-    private Instant fechaAlta;
+    private LocalDateTime fechaAlta;
 
     @Column(name = "fecha_modificacion")
-    private Instant fechaModificacion;
+    private LocalDateTime fechaModificacion;
 
     @ManyToOne
     @JoinColumn(name = "adjunto_id", insertable = false, updatable = false)
@@ -238,29 +236,29 @@ public class Producto implements Serializable {
         this.precio = precio;
     }
 
-    public Instant getFechaAlta() {
+    public LocalDateTime getFechaAlta() {
         return fechaAlta;
     }
 
-    public Producto fechaAlta(Instant fechaAlta) {
+    public Producto fechaAlta(LocalDateTime fechaAlta) {
         this.fechaAlta = fechaAlta;
         return this;
     }
 
-    public void setFechaAlta(Instant fechaAlta) {
+    public void setFechaAlta(LocalDateTime fechaAlta) {
         this.fechaAlta = fechaAlta;
     }
 
-    public Instant getFechaModificacion() {
+    public LocalDateTime getFechaModificacion() {
         return fechaModificacion;
     }
 
-    public Producto fechaModificacion(Instant fechaModificacion) {
+    public Producto fechaModificacion(LocalDateTime fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
         return this;
     }
 
-    public void setFechaModificacion(Instant fechaModificacion) {
+    public void setFechaModificacion(LocalDateTime fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
     }
 

@@ -29,6 +29,12 @@
                     </span>
                 </a>
                 <ul style="height:auto"  class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+                    <li *jhiHasAnyAuthority="'ROLE_PROVEEDOR'">
+                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/producto-proveedor" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.productoProveedor">Productos Proveedor</span>
+                        </a>
+                    </li>
                     <li>
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/producto" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
@@ -41,6 +47,14 @@
                             <span jhiTranslate="global.menu.entities.unidadMedida">Unidad Medida</span>
                         </a>
                     </li>
+
+                    <li>
+                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/producto-proveedor" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.productoProveedor">Productos Proveedor</span>
+                        </a>
+                    </li>
+
                     <li>
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/tipo-articulo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>

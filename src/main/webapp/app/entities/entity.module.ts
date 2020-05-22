@@ -5,6 +5,10 @@ import { RouterModule } from '@angular/router';
   imports: [
     RouterModule.forChild([
       {
+        path: 'producto-proveedor',
+        loadChildren: () => import('./producto-proveedor/producto-proveedor.module').then(m => m.AbastosProductoProveedorModule)
+      },
+      {
         path: 'producto',
         loadChildren: () => import('./producto/producto.module').then(m => m.AbastosProductoModule)
       },
