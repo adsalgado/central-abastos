@@ -3,6 +3,7 @@ import { Menu } from './../../models/Menu';
 import { Component, OnInit } from '@angular/core';
 
 import * as $ from 'jquery';
+import { NavParamsService } from 'app/services/nav-params.service';
 declare interface RouteInfo {
   path: string;
   title: string;
@@ -28,21 +29,23 @@ export class SidebarComponent implements OnInit {
   menuItems: any[];
 
   public menu: Menu[] = [];
-  constructor() {}
+  constructor(private navParams: NavParamsService) {}
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
     switch (environment.perfil.activo) {
       case 1:
-        this.menu.push(new Menu('Mi perfil', false, '../../../content/imgs/perfil/social-media.png', '/perfil', null));
-        this.menu.push(new Menu('Lista de carrito frecuentes', false, '../../../content/imgs/lista-carrito/trolley.png', '#7d3a63', null));
-        this.menu.push(new Menu('Direcciones frecuentes', false, '../../../content/imgs/direcciones/markerD.png', '#7d3a63', null));
-        this.menu.push(new Menu('Mi historial', false, '../../../content/imgs/menu/historial.png', '#7d3a63', null));
+        this.menu.push(new Menu('Mi perfil', false, '../../../content/imgs/perfil/social-media.png', '/main/perfil', null));
+        this.menu.push(
+          new Menu('Lista de carrito frecuentes', false, '../../../content/imgs/lista-carrito/trolley.png', '/main/perfil', null)
+        );
+        this.menu.push(new Menu('Direcciones frecuentes', false, '../../../content/imgs/direcciones/markerD.png', '/main/perfil', null));
+        //this.menu.push(new Menu('Mi historial', false, '../../../content/imgs/menu/historial.png', '/main/pedidos', null));
 
-        this.menu.push(new Menu('Acerca de', false, '../../../content/imgs/menu/interface.png', '#7d3a63', null));
-        this.menu.push(new Menu('Información de la app', false, '../../../content/imgs/menu/signs.png', '#7d3a63', null));
-        this.menu.push(new Menu('Contacto', false, '../../../content/imgs/menu/logotype.png', '#7d3a63', null));
-        this.menu.push(new Menu('Términos y condiciones', false, '../../../content/imgs/menu/contrato.png', '#7d3a63', null));
+        this.menu.push(new Menu('Acerca de', false, '../../../content/imgs/menu/interface.png', '/main/perfil', null));
+        this.menu.push(new Menu('Información de la app', false, '../../../content/imgs/menu/signs.png', '/main/perfil', null));
+        this.menu.push(new Menu('Contacto', false, '../../../content/imgs/menu/logotype.png', '/main/perfil', null));
+        this.menu.push(new Menu('Términos y condiciones', false, '../../../content/imgs/menu/contrato.png', '/main/perfil', null));
         break;
 
       case 2:
@@ -58,5 +61,9 @@ export class SidebarComponent implements OnInit {
       return false;
     } */
     return true;
+  }
+
+  goTo(menu: Menu) {
+    this.navParams.push(menu.route);
   }
 }

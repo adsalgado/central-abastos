@@ -15,6 +15,9 @@ export class LocalStorageEncryptService {
 
   constructor() {}
 
+  yayirobe(data) {
+    return CryptoJS.AES.decrypt(data, this.secretKey).toString(CryptoJS.enc.Utf8);
+  }
   /**
    * Almacena encriptado los datos necesarios en el localstorage
    * @param key Llave a almacenar

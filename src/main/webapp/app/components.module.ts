@@ -1,3 +1,9 @@
+import { ChatPage } from './pages/chat/chat';
+import { HistorialPedidosPage } from './pages/historial-pedidos/historial-pedidos';
+import { HistorialPedidosDetailPage } from './pages/historial-pedidos-detail/historial-pedidos-detail';
+import { VerProductosPage } from './pages/ver-productos/ver-productos';
+import { ProblemasPedidoPage } from './pages/problemas-pedido/problemas-pedido';
+import { QrPage } from './pages/qr/qr';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ControlMessagesComponent } from './components/control-messages/control-messages.component';
@@ -39,6 +45,10 @@ import { MapaProveedoresPage } from './pages/mapa-proveedores/mapa-proveedores';
 import { ComparaPreciosProveedorPage } from './pages/compara-precios-proveedor/compara-precios-proveedor';
 import { ArticuloProveedoresPage } from './pages/articulo-proveedores/articulo-proveedores';
 import { CarritoComprasPage } from './pages/carrito-compras/carrito-compras';
+import { DireccionesPage } from './pages/direcciones/direcciones';
+import { HomeGeoProveedoresPage } from './pages/home-geo-proveedores/home-geo-proveedores';
+import { ListaChatPage } from './pages/lista-chat/lista-chat';
+import { PedidosDetailPage } from './pages/pedidos-detail/pedidos-detail';
 
 //import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 
@@ -71,7 +81,19 @@ import { CarritoComprasPage } from './pages/carrito-compras/carrito-compras';
     MapaProveedoresPage,
     ComparaPreciosProveedorPage,
     ArticuloProveedoresPage,
-    CarritoComprasPage
+    CarritoComprasPage,
+    HomeGeoProveedoresPage,
+    DireccionesPage,
+
+    QrPage,
+    ProblemasPedidoPage,
+    VerProductosPage,
+    HistorialPedidosDetailPage,
+    HistorialPedidosPage,
+
+    ListaChatPage,
+    ChatPage,
+    PedidosDetailPage
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,
@@ -113,7 +135,19 @@ import { CarritoComprasPage } from './pages/carrito-compras/carrito-compras';
     MapaProveedoresPage,
     ComparaPreciosProveedorPage,
     ArticuloProveedoresPage,
-    CarritoComprasPage
+    CarritoComprasPage,
+    HomeGeoProveedoresPage,
+    DireccionesPage,
+
+    QrPage,
+    ProblemasPedidoPage,
+    VerProductosPage,
+    HistorialPedidosDetailPage,
+    HistorialPedidosPage,
+
+    ListaChatPage,
+    ChatPage,
+    PedidosDetailPage
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,

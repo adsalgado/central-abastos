@@ -1,13 +1,36 @@
 <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
-    
+
     <div class="container-fluid" style="justify-content: end;">
-       
-        <button mat-raised-button class="navbar-toggler" type="button" (click)="sidebarToggle()"
-        style="display:block !important;padding: 10px;">
+
+        <button mat-raised-button class="navbar-toggler" type="button" (click)="sidebarToggle()" style="display:block !important;padding: 10px;">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
+        </button>
+
+        <button style="width: 5%;
+    background-color: #f0f8ff00;
+    border: none;    position: absolute;
+    right: 16px;" (click)="a()"
+            [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
+            <i class="material-icons">notification_important</i>
+            <div class="badge2" style="position: absolute;
+            top: -8px;
+            right: 4px;
+            padding: 0px;
+            background-color: #fbffff;
+            padding-left: 6px;
+            padding-right: 6px;
+            border-radius: 53%;
+            font-weight: 600;" *ngIf="totalCarrito > 0">{{totalCarrito}}</div>
+        </button>
+
+        <button style="width: 5%;
+    background-color: #f0f8ff00;
+    border: none;position: absolute;
+    right: 50px;" (click)="b()" [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
+            <i class="material-icons">more_vert</i>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
             <!-- <form class="navbar-form">

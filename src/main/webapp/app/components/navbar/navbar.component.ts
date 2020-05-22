@@ -1,7 +1,14 @@
+import { environment } from './../../../environments/environment.prod';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { GenericService } from 'app/services/generic.service';
+import { JhiEventManager } from 'ng-jhipster';
+import { LocalStorageEncryptService } from 'app/services/local-storage-encrypt-service';
+import { NavParamsService } from 'app/services/nav-params.service';
+import { AlertService } from 'app/services/alert.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,9 +21,66 @@ export class NavbarComponentMain implements OnInit {
   private toggleButton: any;
   private sidebarVisible: boolean;
 
-  constructor(location: Location, private element: ElementRef, private router: Router) {
+  public totalCarrito: any = 0;
+
+  public user: any = null;
+
+  public miEvents: any = {};
+  constructor(
+    location: Location,
+    private element: ElementRef,
+    private router: Router,
+    private genericService: GenericService,
+    private events: JhiEventManager,
+    private localStorageEncryptService: LocalStorageEncryptService,
+    private navParams: NavParamsService,
+    private alertaService: AlertService
+  ) {
     this.location = location;
     this.sidebarVisible = false;
+    this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
+  }
+
+  ngOnDestroy() {
+    this.events.destroy(this.miEvents.uno);
+    this.events.destroy(this.miEvents.dos);
+    this.events.destroy(this.miEvents.tres);
+  }
+
+  getTotalCarrito(fromLogin: boolean = false) {
+    this.genericService.sendGetRequest(environment.carritoCompras).subscribe(
+      (response: any) => {
+        this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, response);
+        this.totalCarrito = response.length;
+        console.log(this.totalCarrito);
+      },
+      (error: HttpErrorResponse) => {}
+    );
+  }
+
+  a() {
+    //if (this.genericService.getTotalCarrito() > 0) {
+
+    //nav.pop();
+    this.cargarProductosCarrito();
+
+    //}
+  }
+
+  cargarProductosCarrito() {
+    this.genericService.sendGetRequest(environment.carritoCompras).subscribe(
+      (response: any) => {
+        this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, response);
+        this.navParams.push('main/carrito-compras');
+      },
+      (error: HttpErrorResponse) => {
+        this.alertaService.warn('Agrega artículos al carrito');
+      }
+    );
+  }
+
+  b() {
+    console.log('b');
   }
 
   ngOnInit() {
@@ -31,6 +95,36 @@ export class NavbarComponentMain implements OnInit {
         this.mobile_menu_visible = 0;
       }
     });
+
+    this.miEvents.uno = this.events.subscribe('totalCarrito', data => {
+      try {
+        if (data) {
+          this.totalCarrito = this.getTotalCarrito(data.fromLogin);
+        } else {
+          this.totalCarrito = this.getTotalCarrito();
+        }
+      } catch (error) {}
+    });
+
+    this.miEvents.dos = this.events.subscribe('totalCarrito2', data => {
+      try {
+        if (data) {
+          this.totalCarrito = this.getTotalCarrito(data.fromLogin);
+        } else {
+          this.totalCarrito = this.getTotalCarrito();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    });
+
+    this.miEvents.tres = this.events.subscribe('updateProductos', data => {
+      this.getTotalCarrito();
+    });
+
+    if (this.user) {
+      this.getTotalCarrito();
+    }
   }
 
   sidebarOpen() {

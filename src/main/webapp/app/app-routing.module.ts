@@ -1,3 +1,8 @@
+import { ChatPage } from './pages/chat/chat';
+import { ProblemasPedidoPage } from './pages/problemas-pedido/problemas-pedido';
+import { QrPage } from './pages/qr/qr';
+import { HistorialPedidosDetailPage } from './pages/historial-pedidos-detail/historial-pedidos-detail';
+import { HistorialPedidosPage } from './pages/historial-pedidos/historial-pedidos';
 import { MapaProveedoresPage } from './pages/mapa-proveedores/mapa-proveedores';
 import { CategoriaPage } from './pages/categoria/categoria';
 import { ProductoComponent } from 'app/entities/producto/producto.component';
@@ -18,6 +23,11 @@ import { DetalleProductoPage } from './pages/detalle-producto/detalle-producto';
 import { ComparaPreciosProveedorPage } from './pages/compara-precios-proveedor/compara-precios-proveedor';
 import { ArticuloProveedoresPage } from './pages/articulo-proveedores/articulo-proveedores';
 import { CarritoComprasPage } from './pages/carrito-compras/carrito-compras';
+import { DireccionesPage } from './pages/direcciones/direcciones';
+import { HomeGeoProveedoresPage } from './pages/home-geo-proveedores/home-geo-proveedores';
+import { VerProductosPage } from './pages/ver-productos/ver-productos';
+import { ListaChatPage } from './pages/lista-chat/lista-chat';
+import { PedidosDetailPage } from './pages/pedidos-detail/pedidos-detail';
 
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const ADMIN_ROUTES = [auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, ...userMgmtRoute, metricsRoute];
@@ -40,6 +50,17 @@ const routes: Routes = [
       { path: 'comparativa-proveedores', component: ComparaPreciosProveedorPage },
       { path: 'articulo-proveedor', component: ArticuloProveedoresPage },
       { path: 'carrito-compras', component: CarritoComprasPage },
+      { path: 'direcciones', component: DireccionesPage },
+      { path: 'proveedores-geo', component: HomeGeoProveedoresPage },
+      { path: 'pedidos', component: HistorialPedidosPage },
+      { path: 'detalle-pedido', component: HistorialPedidosDetailPage },
+      { path: 'detalle-pedido-gral', component: PedidosDetailPage },
+      { path: 'qr', component: QrPage },
+      { path: 'problemas-pedido', component: ProblemasPedidoPage },
+      { path: 'productos', component: VerProductosPage },
+
+      { path: 'lista-chat', component: ListaChatPage },
+      { path: 'chat', component: ChatPage },
       {
         path: 'admin',
         loadChildren: () => import('./admin/admin.module').then(m => m.AbastosAdminModule)

@@ -1,0 +1,22 @@
+.item-list-card {
+  ion-avatar {
+    display: inline-block;
+    width: 15%;
+  }
+
+  .datos-tarjetas {
+    display: inline-block;
+    width: 80%;
+    .name {
+      font-size: 20px;
+    }
+    .number {
+      font-size: 10px;
+      color: #908e8e;
+    }
+  }
+}
+
+.fab-cards {
+  bottom: 63px !important;
+}

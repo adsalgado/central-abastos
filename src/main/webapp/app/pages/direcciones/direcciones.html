@@ -1,0 +1,49 @@
+
+<div [ngStyle]="{'padding': !fromPop ? '16px' : '0px'}">
+  <div class="spinner-carrito" *ngIf="!render">
+    <app-spinner></app-spinner>
+  </div>
+  <div *ngIf="fromPop" style="padding: 10px;
+  text-align: center;
+  color: #fff;" [ngStyle]="{'background-color': genericService.getColorHex()}">
+    Selecciona una dirección frecuente
+  </div>
+
+  <div *ngIf="!fromPop">
+    <div #item *ngFor="let card of listaDirecciones">
+      <div class="item-list-card" (click)="view(card)">
+        <div>
+          <img src="../../../content/imgs/direcciones/maps-and-flags.png" alt="">
+        </div>
+        <div class="datos-tarjetas">
+          <div class="name">{{card.alias}}</div>
+          <div class="number">{{card.direccion.direccion}}</div>
+        </div>
+      </div>
+
+      <div>
+        <button  (click)="borrar(card)" color="danger">
+          <!-- <ion-icon name="ios-trash-outline"></ion-icon> -->
+          Borrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="fromPop">
+    <div class="item-list-card" (click)="select(card)" *ngFor="let card of listaDirecciones">
+      <div>
+        <img src="../../../content/imgs/direcciones/maps-and-flags.png" alt="">
+      </div>
+      <div class="datos-tarjetas">
+        <div class="name">{{card.alias}}</div>
+        <div class="number">{{card.direccion.direccion}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="fab-cards animated swing" *ngIf="!fromPop">
+  <button (click)="nuevaLista()" [ngStyle]="{'background-color': genericService.getColorHex()}">
+    <!-- <ion-icon name="add"></ion-icon> -->
+  </button>
+</div>

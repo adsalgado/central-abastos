@@ -79,7 +79,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RequestInterceptorService } from './interceptors/request-interceptor.service';
 import { AuthService } from './services/auth.service';
 import { MessagingService } from './services/firebase.service';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   providers: [
@@ -190,6 +191,7 @@ import { AsyncPipe } from '@angular/common';
     ActivateService,
     AuthService,
     GenericService,
+    CurrencyPipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RequestInterceptorService,
@@ -217,7 +219,8 @@ import { AsyncPipe } from '@angular/common';
     }, */
     NgbActiveModal,
     MessagingService,
-    AsyncPipe
+    AsyncPipe,
+    QRCodeModule
   ]
 })
 export class ProvidersModule {}

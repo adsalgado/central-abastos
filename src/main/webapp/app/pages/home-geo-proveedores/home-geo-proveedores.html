@@ -1,0 +1,42 @@
+
+
+<div>
+
+  <div class="spinner-carrito" *ngIf="!muestraMapa" style="    text-align: -webkit-center;
+  padding: 44%;">
+    <app-spinner></app-spinner>
+  </div>
+
+  <div id="locationField" class="buscador" [ngStyle]="{'display': !muestraMapa ? 'none' : 'block'}">
+    <input id="autocomplete" placeholder="Buscar" type="text"  (focus)="geolocate()"
+    />
+
+    <div *ngIf="!fromModal">
+      <img src="../../../content/imgs/direcciones/home-run.png" alt="" style="width: 33px;
+      vertical-align: super;">
+    </div>
+
+    <div *ngIf="fromModal" (click)="selectFrecuente()">
+      <img src="../../../content/imgs/direcciones/home-run.png" alt="" style="width: 33px;
+      vertical-align: super;">
+    </div>
+  </div>
+
+  <div id="map_canvas" class="mapita-google" [ngStyle]="{'height': !muestraMapa ? '100px' : '500px'}"></div>
+
+  <div id="map" style="height: 50%;" *ngIf="1==2"></div>
+
+  <div class="card-proveedor">
+
+  </div>
+</div>
+
+<div class="footer-button-class" *ngIf="muestraMapa && !fromModal">
+  <button style="width:100%" (tap)="addToList()" [ngStyle]="{'background-color': genericService.getColorHex()}">{{!direccion
+    ? 'Agregar' : 'Actualizar'}} dirección</button>
+</div>
+<div class="footer-button-class" *ngIf="muestraMapa && fromModal">
+  <button style="width:49%" (tap)="addToList()" [ngStyle]="{'background-color': genericService.getColorHex()}">Guardar
+    y aceptar</button>
+  <button style="width:49%" (tap)="backData()" [ngStyle]="{'background-color': genericService.getColorHex()}">Aceptar</button>
+</div>
