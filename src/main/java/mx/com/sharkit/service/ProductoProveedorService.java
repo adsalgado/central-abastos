@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.hibernate.criterion.Order;
 
 import mx.com.sharkit.domain.ProductoProveedor;
@@ -50,5 +52,11 @@ public interface ProductoProveedorService extends BaseService<ProductoProveedor,
     List<ProductoProveedorDTO> searchProductos(Map<String, Object> params, Integer page, Integer pagesize, Order order);
     
     void cargaMasivaProductosProveedor(List<ProductoCargaDTO> productosCarga, ProveedorDTO proveedor) throws Exception;
+    
+    List<ProductoProveedorDTO> findByProveedorId(Long proveedorId);
+
+	ProductoProveedorDTO saveProductoProveedor(@Valid ProductoProveedorDTO productoProveedorDTO);
+
+	ProductoProveedorDTO updateProductoProveedor(@Valid ProductoProveedorDTO productoProveedorDTO);
     
 }

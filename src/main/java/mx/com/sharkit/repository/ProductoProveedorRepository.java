@@ -1,5 +1,6 @@
 package mx.com.sharkit.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -16,6 +17,8 @@ import mx.com.sharkit.domain.ProductoProveedor;
 public interface ProductoProveedorRepository  extends IBaseRepositorio<ProductoProveedor, Long>, JpaSpecificationExecutor<ProductoProveedor> {
 
 	Optional<ProductoProveedor> findOneByProveedorIdAndProductoId(Long proveedorId, Long productoId);
-	
+
+	List<ProductoProveedor> findByProveedorId(Long proveedorId);
+
 }
 

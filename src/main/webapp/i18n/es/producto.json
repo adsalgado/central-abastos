@@ -16,6 +16,7 @@
       "detail": {
         "title": "Producto"
       },
+      "sku": "SKU",
       "nombre": "Nombre",
       "descripcion": "Descripcion",
       "caracteristicas": "Caracteristicas",
