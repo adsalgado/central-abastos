@@ -34,7 +34,7 @@ export const productoProveedorRoute: Routes = [
     component: ProductoProveedorComponent,
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'websocketsApp.productoProveedor.home.title'
+      pageTitle: 'abastosApp.productoProveedor.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -46,7 +46,7 @@ export const productoProveedorRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'websocketsApp.productoProveedor.home.title'
+      pageTitle: 'abastosApp.productoProveedor.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -58,7 +58,7 @@ export const productoProveedorRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'websocketsApp.productoProveedor.home.title'
+      pageTitle: 'abastosApp.productoProveedor.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -70,7 +70,7 @@ export const productoProveedorRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'websocketsApp.productoProveedor.home.title'
+      pageTitle: 'abastosApp.productoProveedor.home.title'
     },
     canActivate: [UserRouteAccessService]
   }
@@ -85,9 +85,9 @@ export const productoProveedorPopupRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'websocketsApp.productoProveedor.home.title'
+      pageTitle: 'abastosApp.productoProveedor.home.title'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    canActivate: [UserRouteAccessService]
+    //outlet: 'popup'
   }
 ];

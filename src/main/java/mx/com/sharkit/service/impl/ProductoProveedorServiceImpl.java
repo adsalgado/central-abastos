@@ -1,5 +1,6 @@
 package mx.com.sharkit.service.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -250,16 +251,84 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 	@Override
 	public ProductoProveedorDTO saveProductoProveedor(@Valid ProductoProveedorDTO productoProveedorDTO) {
 		log.debug("Request to save ProductoProveedor : {}", productoProveedorDTO);
-		ProductoProveedor productoProveedor = productoProveedorMapper.toEntity(productoProveedorDTO);
-		productoProveedor = productoProveedorRepository.save(productoProveedor);
+
+		Producto producto = null;
+		ProductoProveedor productoProveedor = null;
+		Inventario inventario = null;
+
+		LocalDateTime now = LocalDateTime.now();
+
+		if (!StringUtils.isAllBlank(productoProveedorDTO.getProducto().getSku())) {
+			producto = productoRepository.findOneBySku(productoProveedorDTO.getProducto().getSku()).orElse(null);
+		}
+
+		if (producto != null && !StringUtils.isAllBlank(productoProveedorDTO.getProducto().getNombre())) {
+			producto = productoRepository.findOneBySku(productoProveedorDTO.getProducto().getSku()).orElse(null);
+		}
+
+		if (producto == null) {
+			producto = new Producto();
+			producto.setSku(productoProveedorDTO.getProducto().getSku());
+			producto.setNombre(productoProveedorDTO.getProducto().getNombre());
+			producto.setDescripcion(productoProveedorDTO.getProducto().getDescripcion());
+			producto.setPrecio(productoProveedorDTO.getPrecio());
+			producto.setPrecioSinIva(productoProveedorDTO.getPrecio());
+			producto.setTipoArticuloId(productoProveedorDTO.getProducto().getTipoArticuloId());
+			producto.setUnidadMedidaId(productoProveedorDTO.getProducto().getUnidadMedidaId());
+			producto.setEstatusId(Estatus.ACTIVO);
+			producto.setFechaAlta(now);
+			producto.setUsuarioAltaId(productoProveedorDTO.getProveedorId());
+
+			producto = productoRepository.save(producto);
+		} else {
+			productoProveedor = productoProveedorRepository
+					.findOneByProveedorIdAndProductoId(productoProveedorDTO.getProveedorId(), producto.getId())
+					.orElse(null);
+		}
+
+		if (productoProveedor == null) {
+			productoProveedor = new ProductoProveedor();
+			productoProveedor.setProveedorId(productoProveedorDTO.getProveedorId());
+			productoProveedor.setProductoId(producto.getId());
+			productoProveedor.setPrecio(producto.getPrecio());
+			productoProveedor.setPrecioSinIva(producto.getPrecioSinIva());
+			productoProveedor.setEstatusId(Estatus.ACTIVO);
+			productoProveedor.setFechaAlta(now);
+			productoProveedor.setUsuarioAltaId(productoProveedorDTO.getProveedorId());
+
+			productoProveedor = productoProveedorRepository.save(productoProveedor);
+		}
+
+		inventario = inventarioRepository.findOneByProductoProveedorId(productoProveedor.getId()).orElse(null);
+		if (inventario == null) {
+			inventario = new Inventario();
+			inventario.setProductoProveedorId(productoProveedor.getId());
+			inventario.setTotal(BigDecimal.ZERO);
+			inventario = inventarioRepository.save(inventario);
+		}
+
 		return productoProveedorMapper.toDto(productoProveedor);
 	}
 
 	@Override
 	public ProductoProveedorDTO updateProductoProveedor(@Valid ProductoProveedorDTO productoProveedorDTO) {
 		log.debug("Request to update ProductoProveedor : {}", productoProveedorDTO);
-		ProductoProveedor productoProveedor = productoProveedorMapper.toEntity(productoProveedorDTO);
-		productoProveedor = productoProveedorRepository.save(productoProveedor);
+
+		ProductoProveedor productoProveedor = productoProveedorRepository.findById(productoProveedorDTO.getId())
+				.orElse(null);
+		if (productoProveedor != null) {
+			Producto producto = productoProveedor.getProducto();
+			producto.setSku(productoProveedorDTO.getProducto().getSku());
+			producto.setNombre(productoProveedorDTO.getProducto().getNombre());
+			producto.setDescripcion(productoProveedorDTO.getProducto().getDescripcion());
+			producto.setCaracteristicas(productoProveedorDTO.getProducto().getCaracteristicas());
+			producto.setUnidadMedidaId(productoProveedorDTO.getProducto().getUnidadMedidaId());
+			producto.setTipoArticuloId(productoProveedorDTO.getProducto().getTipoArticuloId());
+			
+			productoProveedor.setPrecio(productoProveedorDTO.getPrecio());
+			productoProveedor.setPrecioSinIva(productoProveedorDTO.getPrecio());
+		}
+
 		return productoProveedorMapper.toDto(productoProveedor);
 	}
 }

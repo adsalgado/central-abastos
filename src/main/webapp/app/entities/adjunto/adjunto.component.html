@@ -27,7 +27,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let adjunto of adjuntos ;trackBy: trackId">
-                <td><a [routerLink]="['/adjunto', adjunto.id, 'view' ]">{{adjunto.id}}</a></td>
+                <td><a [routerLink]="['/main/entities/adjunto', adjunto.id, 'view' ]">{{adjunto.id}}</a></td>
                 <td>{{adjunto.contentType}}</td>
                 <td>{{adjunto.size}}</td>
                 <td>{{adjunto.fileName}}</td>

@@ -185,8 +185,9 @@ public class ProductoProveedorDTO implements Serializable {
 	public String toString() {
 		return "ProductoProveedorDTO [id=" + id + ", precioSinIva=" + precioSinIva + ", precio=" + precio
 				+ ", fechaAlta=" + fechaAlta + ", fechaModificacion=" + fechaModificacion + ", usuarioAltaId="
-				+ usuarioAltaId + ", usuarioModificacionId=" + usuarioModificacionId + ", productoId=" + productoId
-				+ ", proveedorId=" + proveedorId + ", estatusId=" + estatusId + "]";
+				+ usuarioAltaId + ", usuarioModificacionId=" + usuarioModificacionId + ", producto=" + producto
+				+ ", productoId=" + productoId + ", proveedor=" + proveedor + ", proveedorId=" + proveedorId
+				+ ", estatus=" + estatus + ", estatusId=" + estatusId + ", imagenes=" + imagenes + "]";
 	}
 
 }

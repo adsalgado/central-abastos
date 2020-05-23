@@ -1,7 +1,7 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="abastosApp.productoProveedor.home.title">Producto Proveedors</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-producto-proveedor" [routerLink]="['/producto-proveedor/new']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-producto-proveedor" [routerLink]="['/main/entities/producto-proveedor/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span  jhiTranslate="abastosApp.productoProveedor.home.createLabel">
             Create a new Producto Proveedor
@@ -17,13 +17,14 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span >SKU</span></th>
-            <th><span >Producto</span></th>
-            <th><span jhiTranslate="abastosApp.productoProveedor.estatus">Estatus</span></th>
-            <th><span jhiTranslate="abastosApp.productoProveedor.precio">Precio</span></th>
-            <th><span jhiTranslate="abastosApp.productoProveedor.fechaAlta">Fecha Alta</span></th>
-            <th></th>
+                <th><span jhiTranslate="global.field.id">ID</span></th>
+                <th><span >SKU</span></th>
+                <th><span >Producto</span></th>
+                <th><span jhiTranslate="abastosApp.productoProveedor.estatus">Estatus</span></th>
+                <th><span jhiTranslate="abastosApp.productoProveedor.precio">Precio</span></th>
+                <th><span jhiTranslate="abastosApp.productoProveedor.fechaAlta">Fecha Alta</span></th>
+                <th><span >Imagen</span></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -34,6 +35,11 @@
                 <td>{{productoProveedor.estatus?.nombre}}</td>
                 <td>{{productoProveedor.precio}}</td>
                 <td>{{productoProveedor.fechaAlta | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="productoProveedor.producto.adjuntoId">
+                        <a [routerLink]="['/main/entities/adjunto', productoProveedor.producto.adjuntoId , 'view' ]" >{{productoProveedor.producto?.adjuntoId}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
@@ -49,7 +55,7 @@
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/main/entities/producto-proveedor', { outlets: { popup: productoProveedor.id + '/delete'} }]"
+                                [routerLink]="['/main/entities/producto-proveedor', productoProveedor.id, 'delete']"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
