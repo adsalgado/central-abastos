@@ -2,8 +2,9 @@ package mx.com.sharkit.excel.objectbinding.handler;
 
 import java.io.IOException;
 
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -15,8 +16,11 @@ public class FileUploadTemplateHandler {
 
 	FileTemplate userfileTemplate;
 	FileTemplate productoCargaTemplate;
+	
+	private ResourceLoader resourceLoader;
 
 	public FileUploadTemplateHandler() {
+		resourceLoader = new DefaultResourceLoader();
 		initUserFileTemplate();
 		initProductoCargaTemplate();
 	}
@@ -26,7 +30,8 @@ public class FileUploadTemplateHandler {
 
 		try {
 
-			Resource resource = new ClassPathResource("templates/file/productoCargaTemplate.json");
+			Resource resource = resourceLoader.getResource("classpath:templates/file/productoCargaTemplate.json");
+//			Resource resource = new ClassPathResource("templates/file/productoCargaTemplate.json");
 			System.out.println(resource.getFile());
 			// read from file, convert it to class
 			productoCargaTemplate = mapper.readValue(resource.getInputStream(), FileTemplate.class);
@@ -55,7 +60,9 @@ public class FileUploadTemplateHandler {
 
 		try {
 
-			Resource resource = new ClassPathResource("templates/file/fileTemplate.json");
+			Resource resource = resourceLoader.getResource("classpath:templates/file/fileTemplate.json");
+
+//			Resource resource = new ClassPathResource("templates/file/fileTemplate.json");
 			System.out.println(resource.getFile());
 			// read from file, convert it to class
 			userfileTemplate = mapper.readValue(resource.getInputStream(), FileTemplate.class);

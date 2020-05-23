@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -172,7 +174,7 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 	@Override
 	public void cargaMasivaProductosProveedor(List<ProductoCargaDTO> productosCarga, ProveedorDTO proveedor)
 			throws Exception {
-		
+
 		LocalDateTime now = LocalDateTime.now();
 		productosCarga.forEach(prodCarga -> {
 
@@ -236,5 +238,28 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 
 		});
 
+	}
+
+	@Override
+	public List<ProductoProveedorDTO> findByProveedorId(Long proveedorId) {
+		log.debug("Request to get all ProductoProveedors by proveedorId: {}", proveedorId);
+		return productoProveedorRepository.findByProveedorId(proveedorId).stream().map(productoProveedorMapper::toDto)
+				.collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public ProductoProveedorDTO saveProductoProveedor(@Valid ProductoProveedorDTO productoProveedorDTO) {
+		log.debug("Request to save ProductoProveedor : {}", productoProveedorDTO);
+		ProductoProveedor productoProveedor = productoProveedorMapper.toEntity(productoProveedorDTO);
+		productoProveedor = productoProveedorRepository.save(productoProveedor);
+		return productoProveedorMapper.toDto(productoProveedor);
+	}
+
+	@Override
+	public ProductoProveedorDTO updateProductoProveedor(@Valid ProductoProveedorDTO productoProveedorDTO) {
+		log.debug("Request to update ProductoProveedor : {}", productoProveedorDTO);
+		ProductoProveedor productoProveedor = productoProveedorMapper.toEntity(productoProveedorDTO);
+		productoProveedor = productoProveedorRepository.save(productoProveedor);
+		return productoProveedorMapper.toDto(productoProveedor);
 	}
 }

@@ -1,4 +1,7 @@
 import { Moment } from 'moment';
+import { IProducto } from './producto.model';
+import { IProveedor } from './proveedor.model';
+import { IEstatus } from './estatus.model';
 
 export interface IProductoProveedor {
   id?: number;
@@ -9,6 +12,9 @@ export interface IProductoProveedor {
   proveedorId?: number;
   productoId?: number;
   estatusId?: number;
+  producto?: IProducto;
+  proveedor?: IProveedor;
+  estatus?: IEstatus;
 }
 
 export class ProductoProveedor implements IProductoProveedor {
@@ -20,6 +26,9 @@ export class ProductoProveedor implements IProductoProveedor {
     public fechaModificacion?: Moment,
     public proveedorId?: number,
     public productoId?: number,
-    public estatusId?: number
+    public estatusId?: number,
+    public producto?: IProducto,
+    public proveedor?: IProveedor,
+    public estatus?: IEstatus
   ) {}
 }

@@ -5,9 +5,11 @@ import { ICarritoHistoricoDetalle } from 'app/shared/model/carrito-historico-det
 import { IPedidoDetalle } from 'app/shared/model/pedido-detalle.model';
 import { IInventario } from 'app/shared/model/inventario.model';
 import { IProductoImagen } from 'app/shared/model/producto-imagen.model';
+import { IAdjunto } from './adjunto.model';
 
 export interface IProducto {
   id?: number;
+  sku?: string;
   nombre?: string;
   descripcion?: string;
   caracteristicas?: string;
@@ -31,11 +33,13 @@ export interface IProducto {
   estatusId?: number;
   unidadMedidaId?: number;
   empresaId?: number;
+  adjunto?: IAdjunto;
 }
 
 export class Producto implements IProducto {
   constructor(
     public id?: number,
+    public sku?: string,
     public nombre?: string,
     public descripcion?: string,
     public caracteristicas?: string,
@@ -58,6 +62,7 @@ export class Producto implements IProducto {
     public seccionId?: number,
     public estatusId?: number,
     public unidadMedidaId?: number,
-    public empresaId?: number
+    public empresaId?: number,
+    public adjunto?: IAdjunto
   ) {}
 }
