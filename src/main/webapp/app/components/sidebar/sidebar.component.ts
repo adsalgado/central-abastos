@@ -37,10 +37,10 @@ export class SidebarComponent implements OnInit {
       case 1:
         this.menu.push(new Menu('Mi perfil', false, '../../../content/imgs/perfil/social-media.png', '/main/perfil', null));
         this.menu.push(
-          new Menu('Lista de carrito frecuentes', false, '../../../content/imgs/lista-carrito/trolley.png', '/main/perfil', null)
+          new Menu('Lista de carrito frecuentes', false, '../../../content/imgs/lista-carrito/trolley.png', '/main/lista-carrito', null)
         );
         this.menu.push(new Menu('Direcciones frecuentes', false, '../../../content/imgs/direcciones/markerD.png', '/main/perfil', null));
-        //this.menu.push(new Menu('Mi historial', false, '../../../content/imgs/menu/historial.png', '/main/pedidos', null));
+        this.menu.push(new Menu('Mi historial', false, '../../../content/imgs/menu/historial.png', '/main/pedidos', null));
 
         this.menu.push(new Menu('Acerca de', false, '../../../content/imgs/menu/interface.png', '/main/perfil', null));
         this.menu.push(new Menu('Información de la app', false, '../../../content/imgs/menu/signs.png', '/main/perfil', null));

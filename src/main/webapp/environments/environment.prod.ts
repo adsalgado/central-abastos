@@ -39,7 +39,7 @@ export const environment = {
   pedidosTransportistas: `${pathPrincipal}transportista/pedido-proveedores`,
 
   calificacionServicio: `${pathPrincipal}pedido-proveedores/calificacion-servicio`,
-
+  carritoHistoricosProveedor: `${pathPrincipal}carrito-historicos-proveedores`,
   usuarios: `${pathPrincipal}usuarios`,
 
   usuarioDocumentos: `${pathPrincipal}usuario-documentos`,

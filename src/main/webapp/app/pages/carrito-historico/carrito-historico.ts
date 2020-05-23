@@ -1,43 +1,45 @@
 import { JhiEventManager } from 'ng-jhipster';
-import { NavParamsService } from './../../services/nav-params.service';
+import swal, { SweetAlertOptions } from 'sweetalert2';
 import { GenericService } from './../../services/generic.service';
 import { Component, OnDestroy } from '@angular/core';
-import { User } from '../../models/User';
-import { environment } from '../../../environments/environment.prod';
-import { HttpErrorResponse } from '@angular/common/http';
+import { IonicPage, NavController, NavParams, Events, AlertController, ModalController } from 'ionic-angular';
 import { DetalleProductoPage } from '../detalle-producto/detalle-producto';
+import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../../environments/environment.prod';
+import { User } from '../../models/User';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ValidationService } from '../../services/validation.service';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
-import { LocalStorageEncryptService } from 'app/services/local-storage-encrypt-service';
+import { HomeGeoProveedoresPage } from '../home-geo-proveedores/home-geo-proveedores';
 import { AlertService } from 'app/services/alert.service';
 import { LoadingService } from 'app/services/loading-service';
-declare var Stripe;
-import swal, { SweetAlertOptions } from 'sweetalert2';
+import { LocalStorageEncryptService } from 'app/services/local-storage-encrypt-service';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { HomeGeoProveedoresPage } from '../home-geo-proveedores/home-geo-proveedores';
+import { NavParamsService } from 'app/services/nav-params.service';
+declare var Stripe;
+
 @Component({
-  selector: 'page-carrito-compras',
-  templateUrl: 'carrito-compras.html',
-  styleUrls: ['./carrito-compras.scss']
+  selector: 'page-carrito-historico',
+  templateUrl: 'carrito-historico.html',
+  styleUrls: ['./carrito-historico.scss']
 })
-export class CarritoComprasPage implements OnDestroy {
+export class CarritoHistoricoPage implements OnDestroy {
   public selectOptions: any = {
     cssClass: 'action-sheet-class'
   };
-  public user: User = null;
 
-  public productosCarrito: any = [];
-  public productosCarritoReplica: any = [];
+  public user: User = null;
 
   public env: any = environment;
 
-  public first: boolean = true;
-  public stripe;
+  public listaCarrito: any = null;
+
+  public productosCarrito: any = [];
+  public listaCarritoReplica: any = [];
+  public enCompra: boolean = false;
+  public stripe = null; //Stripe(JSON.parse(this.localStorageEncryptService.yayirobe(environment.st.keyPublic)));
   //public stripe = Stripe('pk_live_4f4ddGQitsEeJ0I1zg84xkRZ00mUNujYXd');
   public card: any;
-
-  public recarga: boolean = false;
 
   public cards: any = null;
 
@@ -76,12 +78,26 @@ export class CarritoComprasPage implements OnDestroy {
       formName: 'email',
       value: null,
       disabled: false
+    },
+    {
+      name: 'Dirección',
+      required: true,
+      length: 200,
+      type: 'text',
+      formName: 'direc',
+      value: null,
+      disabled: true
+    },
+    {
+      name: 'Código postal',
+      required: false,
+      length: 6,
+      type: 'text',
+      formName: 'cp',
+      value: null,
+      disabled: true
     }
   ];
-
-  public enCompra: boolean = false;
-
-  public objetoRegistroOriginal: any[] = [];
 
   public formGroup: FormGroup = null;
 
@@ -96,20 +112,21 @@ export class CarritoComprasPage implements OnDestroy {
   public agrupado: any[] = [];
 
   public totales: any = null;
+
+  public first: boolean = true;
+
   constructor(
-    public navParams: NavParamsService,
-    private localStorageEncryptService: LocalStorageEncryptService,
-    private events: JhiEventManager,
-    //private productoService: ProductoService,
+    public navCtrl: NavParamsService,
     private genericService: GenericService,
     private alertaService: AlertService,
     private loadingService: LoadingService,
-    public formBuilder: FormBuilder,
+    private localStorageEncryptService: LocalStorageEncryptService,
+    private events: JhiEventManager,
     private currencyPipe: CurrencyPipe,
-    public modalController: NgbModal
+    public formBuilder: FormBuilder,
+    private modalController: NgbModal
   ) {
     this.user = this.localStorageEncryptService.getFromLocalStorage(`userSession`);
-    console.log(this.user);
     try {
       this.stripe = Stripe(JSON.parse(this.localStorageEncryptService.yayirobe(environment.st.keyPublic)));
     } catch (error) {
@@ -119,25 +136,21 @@ export class CarritoComprasPage implements OnDestroy {
       //this.navParams.push("main/public-home");
     }
     if (this.user) {
-      this.productosCarrito = this.localStorageEncryptService.getFromLocalStorage(`${this.user.id_token}`);
-      this.productosCarritoReplica = this.productosCarrito;
-      this.objetoRegistro.forEach(element => {
-        this.objetoRegistroOriginal.push(element);
-      });
-      console.log(this.objetoRegistroOriginal);
+      this.listaCarrito = navCtrl.get('lista');
 
-      this.recarga = navParams.get('recarga');
-      console.log(this.recarga);
+      console.log(this.listaCarrito);
+
+      this.listaCarritoReplica = this.listaCarrito;
+      this.productosCarrito = this.localStorageEncryptService.getFromLocalStorage(`${this.user.id_token}`);
 
       this.getCards();
-
       this.agruparTotales();
     }
   }
 
   agruparTotales() {
     this.agrupado = [];
-    let unique = this.productosCarrito.filter((valorActual, indiceActual, arreglo) => {
+    let unique = this.listaCarrito.carritoHistoricoDetalles.filter((valorActual, indiceActual, arreglo) => {
       //Podríamos omitir el return y hacerlo en una línea, pero se vería menos legible
       return (
         arreglo.findIndex(
@@ -148,14 +161,13 @@ export class CarritoComprasPage implements OnDestroy {
 
     unique.forEach(prov => {
       prov.carritoAgrupado = [];
-      this.productosCarrito.forEach(element => {
+      this.listaCarrito.carritoHistoricoDetalles.forEach(element => {
         if (element.productoProveedor.proveedorId == prov.productoProveedor.proveedorId) {
           prov.carritoAgrupado.push(element);
         }
       });
       this.agrupado.push(prov);
     });
-
     console.log(this.agrupado);
     this.getTotales();
   }
@@ -191,7 +203,7 @@ export class CarritoComprasPage implements OnDestroy {
       }
     ];
 
-    if (this.totales.listCarritoProveedores.length > 1) {
+    if (this.totales.listHistoricoProveedores.length > 1) {
       this.objetoRegistro.push({
         name: 'Dirección',
         required: true,
@@ -251,9 +263,7 @@ export class CarritoComprasPage implements OnDestroy {
   }
 
   getTotales() {
-    //debugger;
-
-    this.genericService.sendGetRequest(environment.carritoComprasProveedor).subscribe(
+    this.genericService.sendGetRequest(`${environment.carritoHistoricosProveedor}/${this.listaCarrito.id}`).subscribe(
       (response: any) => {
         console.log(response);
         this.totales = response;
@@ -262,7 +272,7 @@ export class CarritoComprasPage implements OnDestroy {
             delete element.totalAgrupado;
           }
         });
-        this.totales.listCarritoProveedores.forEach(item => {
+        this.totales.listHistoricoProveedores.forEach(item => {
           this.agrupado.forEach(element => {
             if (!element.totalAgrupado && item.proveedor.id == element.productoProveedor.proveedor.id) {
               element.totalAgrupado = {
@@ -275,63 +285,12 @@ export class CarritoComprasPage implements OnDestroy {
           });
         });
 
-        console.log(this.agrupado);
-
         this.armaObjRegistro();
       },
       (error: HttpErrorResponse) => {
-        //this.alertaService.warnAlertGeneric("Agrega artículos al carrito");
+        this.alertaService.warn('Agrega artículos al carrito');
       }
     );
-  }
-
-  ngOnDestroy() {
-    //this.events.publish('carritoTab');
-  }
-
-  ionViewDidLoad() {
-    if (this.recarga) {
-      let claseTabs: any = document.getElementsByClassName('tabbar');
-      if (claseTabs[0]) {
-        //claseTabs[0].style.display = "none";
-      }
-      //this.verCarrito();
-    }
-
-    this.events.subscribe('carritoTab', data => {
-      this.verCarrito();
-    });
-    this.events.subscribe('carritoTab2', data => {
-      this.verCarrito();
-    });
-  }
-
-  verCarrito() {
-    //nav.pop();
-    this.cargarProductosCarrito();
-  }
-
-  cargarProductosCarrito() {
-    this.genericService.sendGetRequest(environment.carritoCompras).subscribe(
-      (response: any) => {
-        this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, response);
-        this.productosCarrito = this.localStorageEncryptService.getFromLocalStorage(`${this.user.id_token}`);
-        this.productosCarritoReplica = this.productosCarrito;
-        this.agruparTotales();
-      },
-      (error: HttpErrorResponse) => {}
-    );
-  }
-
-  seleccionar(card: any) {
-    if (!card.selected) {
-      this.cards.forEach(element => {
-        element.selected = false;
-      });
-      card.selected = true;
-    } else {
-      card.selected = false;
-    }
   }
 
   getCards() {
@@ -353,83 +312,6 @@ export class CarritoComprasPage implements OnDestroy {
     );
   }
 
-  setupStripe() {
-    let position: any = this.cards.findIndex(carrito => {
-      return carrito.selected;
-    });
-    let c: any = {
-      number: '4242424242424242',
-      cvc: '123',
-      exp_month: 12,
-      exp_year: 2025
-    };
-
-    let bandera: boolean = false;
-    if (this.cards[position]) {
-      let item: any = this.cards[position];
-      let fechaFormat: any = item.fechaCaducidad.split('-');
-      item.expMont = fechaFormat[1];
-      item.expYear = fechaFormat[0];
-
-      c.number = item.numeroTarjeta;
-      c.cvc = item.numeroSeguridad;
-      c.exp_month = item.expMont;
-      c.exp_year = item.expYear;
-    } else if (this.dataCard.dtime.length == 0 || this.dataCard.tarj.length == 0 || this.dataCard.cvc.length == 0) {
-      bandera = true;
-    } else {
-      c.number = this.dataCard.tarj;
-      c.cvc = this.dataCard.cvc;
-
-      let fechaFormat: any = this.dataCard.dtime.split('-');
-      let expMont = fechaFormat[1];
-      let expYear = fechaFormat[0];
-
-      c.exp_month = expMont;
-      c.exp_year = expYear;
-    }
-    if (!bandera) {
-      Stripe.setPublishableKey(JSON.parse(this.localStorageEncryptService.yayirobe(environment.st.keyPublic)));
-      this.loadingService.show();
-      let clase: any = this;
-      Stripe.card.createToken(c, (status, response) => {
-        if (response.error) {
-          // Problem!
-          clase.loadingService.hide();
-          clase.alertaService.error('Lo sentimos! No es posible efectuar el cobro, verifica que la información de tu tarjeta es correcta');
-        } else {
-          // Token was created!
-
-          // Get the token ID:
-          console.log(response);
-
-          //clase.loadingService.hide();
-          var token = response.id;
-          let body: any = {
-            pedidoId: clase.pagoActual.id,
-            token: token
-          };
-          let service: any = clase.genericService.sendPutRequest(`${environment.pedidos}/pago`, body);
-
-          service.subscribe(
-            (response: any) => {
-              clase.loadingService.hide();
-              clase.alertaService.info('El pago se ha efectuado con éxito');
-              clase.cerrar();
-            },
-            (error: HttpErrorResponse) => {
-              clase.loadingService.hide();
-              clase.alertaService.error('Ocurrió un error al procesar tu pago, intenta nuevamente');
-            }
-          );
-        }
-      });
-      this.loadingService.hide();
-    } else {
-      this.alertaService.warn('Llena todos los campos de tarjeta o selecciona alguna que hayas ingresado anteriormente');
-    }
-  }
-
   cerrar() {
     let modal: any = document.getElementById('myModal');
     modal.style.display = 'none';
@@ -445,97 +327,20 @@ export class CarritoComprasPage implements OnDestroy {
     ///Aqui ejecutar el limpiado de carrito
     this.enCompra = false;
 
-    this.navParams.push('main/public-home');
+    this.navCtrl.push('main/public-home');
     //this.events.publish('carritoTab');
   }
 
-  deleteFavorito(producto) {
-    let nuevoArrarCarrito: any[] = [];
-    let productoDelete: any = null;
-    this.productosCarrito.forEach(element => {
-      if (producto.id != element.id) {
-        nuevoArrarCarrito.push(element);
-      } else {
-        productoDelete = element;
-      }
-    });
-    this.productosCarrito = nuevoArrarCarrito;
-    this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, this.productosCarrito);
+  ionViewDidLoad() {
+    console.log('---------------------.');
 
-    //Llamar a events
-    this.events.broadcast({ name: 'updateProductos', content: productoDelete });
-    //{ name: 'abastosApp.httpError', content: err }
-    if (this.productosCarrito.length <= 0) {
-      this.navParams.push('main/public-home');
-    }
+    let claseTabs: any = document.getElementsByClassName('tabbar');
+    console.log(claseTabs);
+
+    claseTabs[0].style.display = 'none';
   }
 
-  incrementa(p: any) {
-    //debugger;
-    let bandera: boolean = false;
-    if (p.cantidad) {
-      p.cantidad++;
-    } else if (p.cantidad == 0) {
-      p.cantidad = 1;
-      bandera = true;
-    } else {
-      p.cantidad = 1;
-      bandera = true;
-    }
-    console.log(p.cantidad);
-
-    this.agregarToCarritoBack(bandera, p);
-  }
-
-  agregarToCarrito(producto: any) {
-    //debugger;
-    let productosStorage: any = this.localStorageEncryptService.getFromLocalStorage(`${this.user.id_token}`);
-    let productos: any = [];
-    productos.push(producto);
-    if (productosStorage) {
-      productosStorage.forEach(element => {
-        productos.push(element);
-      });
-    }
-    producto.carrito = true;
-    try {
-      this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, productos);
-    } catch (error) {
-      producto.carrito = false;
-    }
-  }
-
-  agregarToCarritoBack(bandera: boolean, producto: any) {
-    //debugger;
-    let body: any = {
-      precio: producto.precio,
-      productoProveedorId: producto.productoProveedor.id
-    };
-    let service: any = this.genericService.sendPostRequest(environment.carritoCompras, body);
-
-    if (producto.cantidad > 1) {
-      body.cantidad = producto.cantidad;
-      service = this.genericService.sendPutRequest(environment.carritoCompras, body);
-    }
-
-    service.subscribe(
-      (response: any) => {
-        if (bandera) {
-          this.agregarToCarrito(producto);
-          this.verificarCarritoModificarCantidad(producto);
-        } else {
-          this.verificarCarritoModificarCantidad(producto);
-        }
-      },
-      (error: HttpErrorResponse) => {
-        if (producto.cantidad == 1) {
-          producto.cantidad = 1;
-        } else {
-          producto.cantidad--;
-        }
-      }
-    );
-  }
+  ngOnDestroy() {}
 
   viewDetail(producto: any) {
     //consumir servicio de imagenes completas
@@ -558,7 +363,7 @@ export class CarritoComprasPage implements OnDestroy {
             }
           }
         }
-        this.navParams.push('main/detalle', { producto: response, fromCarritos: true });
+        this.navCtrl.push('main/detalle', { producto: response, fromCarritos: true });
         this.loadingService.hide();
       },
       (error: HttpErrorResponse) => {
@@ -567,29 +372,32 @@ export class CarritoComprasPage implements OnDestroy {
         this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
       }
     );
-
     //
   }
 
   decrementar(p: any) {
     p.cantidad--;
-    this.borrarToCarritoBack(p);
+    if (p.cantidad == 0) {
+      p.cantidad = 1;
+    } else {
+      this.borrarToCarritoBack(p);
+    }
   }
 
   borrarToCarritoBack(producto: any) {
     let body: any = {
       precio: producto.precio,
-      productoProveedorId: producto.productoProveedor.id
+      id: producto.id
     };
     body.cantidad = producto.cantidad;
 
-    this.genericService.sendPutRequest(environment.carritoCompras, body).subscribe(
+    this.genericService.sendPutRequest(environment.carritoHistoricoDetalle, body).subscribe(
       (response1: any) => {
         if (producto.cantidad == 0) {
-          this.genericService.sendDelete(`${environment.carritoCompras}/${producto.id}`).subscribe(
+          this.genericService.sendDelete(`${environment.carritoHistoricoDetalle}/${producto.id}`).subscribe(
             (response2: any) => {
               if (producto.cantidad == 0) {
-                this.events.broadcast({ name: 'totalCarrito' });
+                this.events.broadcast('totalCarrito');
                 this.deleteFavoritoService(producto);
                 //this.productosCarrito = this.localStorageEncryptService.getFromLocalStorage(`${this.user.id_token}`);
               }
@@ -622,19 +430,19 @@ export class CarritoComprasPage implements OnDestroy {
         producto.carrito = false;
       }
     });
+
     this.productosCarrito = nuevoArrarCarrito;
     this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, this.productosCarrito);
 
     //Llamar a events
-    this.events.broadcast({ name: 'updateProductos', content: productoDelete });
-
+    //this.events.broadcast('updateProductos', { productoDelete });
+    this.events.broadcast({ name: 'updateProductos', content: { productoDelete } });
     if (this.productosCarrito.length <= 0) {
-      this.navParams.push('main/public-home');
+      this.navCtrl.push('main/public-home');
     }
   }
 
   verificarCarritoModificarCantidad(element: any) {
-    //debugger;
     let productosStorage: any = this.localStorageEncryptService.getFromLocalStorage(`${this.user.id_token}`);
     if (productosStorage) {
       productosStorage.forEach(item => {
@@ -643,12 +451,70 @@ export class CarritoComprasPage implements OnDestroy {
         }
       });
     }
-    console.log(productosStorage);
-
     this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, productosStorage);
     this.getTotales();
-    //this.agruparTotales();
-    //this.events.publish("carritoTab");
+  }
+
+  incrementa(p: any) {
+    let bandera: boolean = false;
+    if (p.cantidad) {
+      p.cantidad++;
+    } else if (p.cantidad == 0) {
+      p.cantidad = 1;
+      bandera = true;
+    } else {
+      p.cantidad = 1;
+      bandera = true;
+    }
+    this.agregarToCarritoBack(bandera, p);
+  }
+
+  agregarToCarrito(producto: any) {
+    let productosStorage: any = this.localStorageEncryptService.getFromLocalStorage(`${this.user.id_token}`);
+    let productos: any = [];
+    productos.push(producto);
+    if (productosStorage) {
+      productosStorage.forEach(element => {
+        productos.push(element);
+      });
+    }
+    producto.carrito = true;
+    try {
+      this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, productos);
+    } catch (error) {
+      producto.carrito = false;
+    }
+  }
+
+  agregarToCarritoBack(bandera: boolean, producto: any) {
+    let body: any = {
+      precio: producto.precio,
+      id: producto.id
+    };
+    let service: any = this.genericService.sendPostRequest(environment.carritoHistoricoDetalle, body);
+
+    if (producto.cantidad > 1) {
+      body.cantidad = producto.cantidad;
+      service = this.genericService.sendPutRequest(environment.carritoHistoricoDetalle, body);
+    }
+
+    service.subscribe(
+      (response: any) => {
+        if (bandera) {
+          this.agregarToCarrito(producto);
+          this.verificarCarritoModificarCantidad(producto);
+        } else {
+          this.verificarCarritoModificarCantidad(producto);
+        }
+      },
+      (error: HttpErrorResponse) => {
+        if (producto.cantidad == 1) {
+          producto.cantidad = 1;
+        } else {
+          producto.cantidad--;
+        }
+      }
+    );
   }
 
   infoContact() {
@@ -690,9 +556,7 @@ export class CarritoComprasPage implements OnDestroy {
 
     this.formGroup = this.formBuilder.group(putObj);
     //
-    if (modal) {
-      modal.style.display = 'block';
-    }
+    modal.style.display = 'block';
   }
 
   closeInfoContact(aun: boolean = true) {
@@ -836,24 +700,6 @@ export class CarritoComprasPage implements OnDestroy {
       },
       reason => {}
     );
-    /* modal.present();
-    modal.onDidDismiss(data => {
-      if (data) {
-        if (data != null) {
-          this.data = data.data;
-          if (this.objetoRegistro[3].value == true || this.objetoRegistro[3].value == false) {
-            this.objetoRegistro[4].value = this.data.direccion;
-            this.objetoRegistro[5].value = this.data.codigoPostal;
-          } else {
-            this.objetoRegistro[3].value = this.data.direccion;
-            this.objetoRegistro[4].value = this.data.codigoPostal;
-          }
-          setTimeout(() => {
-            this.ejecutaValidator();
-          }, 500);
-        }
-      }
-    }); */
   }
 
   precompra() {
@@ -950,71 +796,93 @@ export class CarritoComprasPage implements OnDestroy {
       });
   }
 
-  addToList() {
-    let inputs: any = [
-      {
-        name: 'nombre',
-        placeholder: 'Nombre de mi lista',
-        type: 'text',
-        id: 'i-1-name'
-      }
-    ];
-
-    let data: any = {
-      title: 'Mi lista frecuente',
-      message: `Ingresa el nombre de tu lista frecuente, ésta aparecerá en tu menú de listas de carrito frecuentes </br>
-        <div><input id="id-texto" class="input-lista"/></div>`,
-      inputs: inputs
+  setupStripe() {
+    let position: any = this.cards.findIndex(carrito => {
+      return carrito.selected;
+    });
+    let c: any = {
+      number: '4242424242424242',
+      cvc: '123',
+      exp_month: 12,
+      exp_year: 2025
     };
 
-    swal
-      .fire({
-        title: data.title,
-        html: data.message,
-        type: 'info',
-        showCancelButton: true,
-        //confirmButtonColor: '#3085d6',
-        //cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Agregar'
-      })
-      .then(result => {
-        if (result.value) {
-          let id: any = document.getElementById('id-texto');
-          let body: any = {
-            nombre: id.value
-          };
-          let service: any = this.genericService.sendPostRequest(environment.carritoHistorico, body);
+    let bandera: boolean = false;
+    if (this.cards[position]) {
+      let item: any = this.cards[position];
+      let fechaFormat: any = item.fechaCaducidad.split('-');
+      item.expMont = fechaFormat[1];
+      item.expYear = fechaFormat[0];
 
-          this.loadingService.show();
+      c.number = item.numeroTarjeta;
+      c.cvc = item.numeroSeguridad;
+      c.exp_month = item.expMont;
+      c.exp_year = item.expYear;
+    } else if (this.dataCard.dtime.length == 0 || this.dataCard.tarj.length == 0 || this.dataCard.cvc.length == 0) {
+      bandera = true;
+    } else {
+      c.number = this.dataCard.tarj;
+      c.cvc = this.dataCard.cvc;
+
+      let fechaFormat: any = this.dataCard.dtime.split('-');
+      let expMont = fechaFormat[1];
+      let expYear = fechaFormat[0];
+
+      c.exp_month = expMont;
+      c.exp_year = expYear;
+    }
+    if (!bandera) {
+      Stripe.setPublishableKey(JSON.parse(this.localStorageEncryptService.yayirobe(environment.st.keyPublic)));
+      this.loadingService.show();
+      let clase: any = this;
+      Stripe.card.createToken(c, (status, response) => {
+        if (response.error) {
+          // Problem!
+          clase.loadingService.hide();
+          clase.alertaService.error('Lo sentimos! No es posible efectuar el cobro, verifica que la información de tu tarjeta es correcta');
+        } else {
+          // Token was created!
+
+          // Get the token ID:
+          console.log(response);
+
+          //clase.loadingService.hide();
+          var token = response.id;
+          let body: any = {
+            pedidoId: clase.pagoActual.id,
+            token: token
+          };
+          let service: any = clase.genericService.sendPutRequest(`${environment.pedidos}/pago`, body);
+
           service.subscribe(
             (response: any) => {
-              this.alertaService.info('Lista frecuente agregada con éxito');
-              this.loadingService.hide();
-              return true;
+              clase.loadingService.hide();
+              clase.alertaService.info('El pago se ha efectuado con éxito');
+              clase.cerrar();
             },
             (error: HttpErrorResponse) => {
-              this.loadingService.hide();
-              this.alertaService.errorAlertGeneric('No se ha podido agregar tu lista frecuente, intenta nuevamente');
-              return true;
+              clase.loadingService.hide();
+              clase.alertaService.error('Ocurrió un error al procesar tu pago, intenta nuevamente');
             }
           );
         }
       });
+      this.loadingService.hide();
+    } else {
+      this.alertaService.warn('Llena todos los campos de tarjeta o selecciona alguna que hayas ingresado anteriormente');
+    }
   }
 
   up() {
-    console.log(this.productosCarrito);
-    console.log(this.productosCarritoReplica);
-    this.productosCarrito = this.productosCarritoReplica;
-    this.productosCarrito.sort((mayor, menor) => {
+    this.listaCarrito = this.listaCarritoReplica;
+    this.listaCarrito.carritoHistoricoDetalles.sort((mayor, menor) => {
       return mayor.precio - menor.precio;
     });
   }
 
   down() {
-    this.productosCarrito = this.productosCarritoReplica;
-    this.productosCarrito.sort((mayor, menor) => {
+    this.listaCarrito = this.listaCarritoReplica;
+    this.listaCarrito.carritoHistoricoDetalles.sort((mayor, menor) => {
       return menor.precio - mayor.precio;
     });
   }

@@ -49,6 +49,9 @@ import { DireccionesPage } from './pages/direcciones/direcciones';
 import { HomeGeoProveedoresPage } from './pages/home-geo-proveedores/home-geo-proveedores';
 import { ListaChatPage } from './pages/lista-chat/lista-chat';
 import { PedidosDetailPage } from './pages/pedidos-detail/pedidos-detail';
+import { PerfilPage } from './pages/perfil/perfil';
+import { ListaCarritoComprasPage } from './pages/lista-carrito-compras/lista-carrito-compras';
+import { CarritoHistoricoPage } from './pages/carrito-historico/carrito-historico';
 
 //import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 
@@ -93,7 +96,11 @@ import { PedidosDetailPage } from './pages/pedidos-detail/pedidos-detail';
 
     ListaChatPage,
     ChatPage,
-    PedidosDetailPage
+    PedidosDetailPage,
+
+    PerfilPage,
+    ListaCarritoComprasPage,
+    CarritoHistoricoPage
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,
@@ -147,7 +154,11 @@ import { PedidosDetailPage } from './pages/pedidos-detail/pedidos-detail';
 
     ListaChatPage,
     ChatPage,
-    PedidosDetailPage
+    PedidosDetailPage,
+
+    PerfilPage,
+    ListaCarritoComprasPage,
+    CarritoHistoricoPage
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,

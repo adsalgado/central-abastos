@@ -1,0 +1,27 @@
+<div style="padding:20px">
+  <div class="spinner-carrito" *ngIf="renderSlide">
+    <app-spinner></app-spinner>
+  </div>
+
+  <mat-list *ngIf="!fromPop">
+    <mat-list-item *ngFor="let card of listas" style="    margin-bottom: 55px;" (click)="view(card)">
+      <div>
+        <img style="width:33px" src="../../../content/imgs/lista-carrito/shopping-cart.png" alt="">
+      </div>
+      <div class="datos-tarjetas">
+        <div class="name">{{card.nombre}}</div>
+        <div class="number">{{card.fecha}}</div>
+      </div>
+      <div style="width:59%;display:inline-block;text-align: -webkit-right;">
+
+
+        <button class="botoni" (click)="borrar(card)" color="danger" style="background-color: #FF5722;
+        border: 1px solid #9c2906;">
+          <i class="material-icons">close</i>
+          Borrar
+        </button>
+      </div>
+    </mat-list-item>
+  </mat-list>
+
+</div>

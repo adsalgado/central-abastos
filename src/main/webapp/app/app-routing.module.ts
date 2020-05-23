@@ -1,3 +1,4 @@
+import { ListaCarritoComprasPage } from './pages/lista-carrito-compras/lista-carrito-compras';
 import { ChatPage } from './pages/chat/chat';
 import { ProblemasPedidoPage } from './pages/problemas-pedido/problemas-pedido';
 import { QrPage } from './pages/qr/qr';
@@ -28,6 +29,8 @@ import { HomeGeoProveedoresPage } from './pages/home-geo-proveedores/home-geo-pr
 import { VerProductosPage } from './pages/ver-productos/ver-productos';
 import { ListaChatPage } from './pages/lista-chat/lista-chat';
 import { PedidosDetailPage } from './pages/pedidos-detail/pedidos-detail';
+import { PerfilPage } from './pages/perfil/perfil';
+import { CarritoHistoricoPage } from './pages/carrito-historico/carrito-historico';
 
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const ADMIN_ROUTES = [auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, ...userMgmtRoute, metricsRoute];
@@ -58,9 +61,12 @@ const routes: Routes = [
       { path: 'qr', component: QrPage },
       { path: 'problemas-pedido', component: ProblemasPedidoPage },
       { path: 'productos', component: VerProductosPage },
-
+      { path: 'perfil', component: PerfilPage },
       { path: 'lista-chat', component: ListaChatPage },
       { path: 'chat', component: ChatPage },
+
+      { path: 'lista-carrito', component: ListaCarritoComprasPage },
+      { path: 'carrito-historico', component: CarritoHistoricoPage },
       {
         path: 'admin',
         loadChildren: () => import('./admin/admin.module').then(m => m.AbastosAdminModule)

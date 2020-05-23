@@ -1,0 +1,247 @@
+<div id="myModal" class="modal">
+
+  <div class="modal-content animated lightSpeedIn">
+
+    <div class="tacha" (click)="cerrar()" [ngStyle]="{'color': genericService.getColorHex()}">
+      <i class="material-icons">close</i>
+    </div>
+    <div class="selecciona" [ngStyle]="{'color': genericService.getColorHex()}" *ngIf="cards && cards?.length > 0">Selecciona
+      tu tarjeta</div>
+    <div *ngIf="cards && cards?.length > 0">
+      <div class="item-list-card" *ngFor="let card of cards" [ngClass]="{'seleccionado':card.selected}" (click)="seleccionar(card)">
+        <div>
+          <img src="../../../content/imgs/tarjetas/bank.png" alt="">
+        </div>
+        <div class="datos-tarjetas">
+          <div class="name">{{card.alias}}</div>
+          <div class="number">{{card.numeroTarjeta}}</div>
+        </div>
+
+      </div>
+    </div>
+    <div class="ingresa" [ngStyle]="{'color': genericService.getColorHex()}" *ngIf="cards && cards?.length > 0">Ó
+      ingresa una para hacer el pago</div>
+    <div class="ingresa" [ngStyle]="{'color': genericService.getColorHex()}" *ngIf="!cards || cards?.length <= 0">Ingresa
+      una tarjeta para hacer el pago</div>
+
+
+
+    <div class="form-row" style="    padding: 10px;">
+      <input type="number" placeholder="N. Tarjeta" id="tarj" [(ngModel)]="dataCard.tarj" style="width: 100%">
+
+      <input type="month" class="dt" text-left pickerFormat="MM/YY" cancelText="Cancelar" doneText="Aceptar" #fechaNac
+        placeholder="04/24" min="2016" max="2050" id="dtime" [(ngModel)]="dataCard.dtime"></input>
+
+      <input type="number" placeholder="CVC" id="cvc" [(ngModel)]="dataCard.cvc">
+
+    </div>
+    <button block large style="padding: 10px;
+        height: auto;
+        contain: none;
+        margin-top: 15px;font-size: 14px;"
+      [ngStyle]="{'background-color': genericService.getColorHex()}" (click)="confirmar()">Pagar</button>
+  </div>
+</div>
+
+<div id="myModal2" class="modal2">
+
+  <div class="modal-content animated lightSpeedIn">
+
+    <div style="top: 3px;" class="tacha" (click)="closeInfoContact()" [ngStyle]="{'color': genericService.getColorHex()}">
+      <i class="material-icons">close</i>
+    </div>
+
+    <div style="width: 90%;
+      padding: 7px;
+      color: #fff;
+      border-radius: 4px;" [ngStyle]="{'background-color': genericService.getColorHex()}">Llena
+      la información de contacto</div>
+    <div class="formulario" *ngIf="formGroup">
+      <form [formGroup]="formGroup">
+        <div *ngFor="let dato of objetoRegistro;let i = index" class="contenedor-input">
+          <!-- <span>{{dato.name}}</span> -->
+
+          <input class="inp" placeholder="{{dato.name}}" (keyup)="ejecutaValidator()" formControlName="{{dato.formName}}"
+            type="{{dato.type}}" [(ngModel)]="dato.value" maxlength="{{dato.length}}" [attr.disabled]="dato.disabled ? '' : null"
+            *ngIf="dato.type != 'date' && dato.type != 'checkbox' && dato.type != 'select'" [ngStyle]="{'width': dato.name == 'Dirección' ? '88%' : '100%'}">
+
+          <div class="direc" *ngIf="dato.name == 'Dirección'" (click)="getMapa()"><img style="width: 33px;
+            vertical-align: sub;" src="../../../content/imgs/direcciones/home-run.png"
+              alt=""></div>
+
+          <input type="date" class="dt" [(ngModel)]="dato.value" formControlName="{{dato.formName}}" text-left pickerFormat="DD/MM/YYYY"
+            cancelText="Cancelar" doneText="Aceptar" #fechaNac (change)="ejecutaValidator()" *ngIf="dato.type == 'date'"
+            placeholder="01/12/2020"></input>
+
+          <select class="dt" *ngIf="dato.type == 'select'" [(ngModel)]="dato.value"
+             (change)="ejecutaValidator(true,$event)"
+            formControlName="{{dato.formName}}">
+            <option *ngFor="let op of dato.opts" [value]="op.id">
+              {{op.value}}
+            </option>
+          </select>
+
+          <app-control-messages [control]="formGroup.controls[dato.formName]" [clase]="'validators2'">
+          </app-control-messages>
+        </div>
+      </form>
+
+    </div>
+
+    <button block large style="padding: 10px;
+          height: auto;
+          contain: none;font-size: 14px;"
+      [disabled]="btnHabilitado" [ngStyle]="{'background-color': genericService.getColorHex()}" (click)="precompra()">Aceptar</button>
+  </div>
+</div>
+
+<div id="myModal3" class="modal3">
+
+  <div class="modal-content animated lightSpeedIn">
+
+    <div class="tacha" (click)="cerrarModal3()" [ngStyle]="{'color': genericService.getColorHex()}">
+      <i class="material-icons">close</i>
+    </div>
+    <div style="width: 90%;
+    padding: 7px;
+    color: #fff;
+    border-radius: 4px;" [ngStyle]="{'background-color': genericService.getColorHex()}">Información
+      de pago</div>
+
+    <div class="resumen">Resumen de la compra</div>
+
+    <div class="resumen-proveedor" *ngIf="pagoActual">
+      <div *ngFor="let p of pagoActual.pedidoProveedores" class="separador">
+        <div class="proveedor">
+          <div class="nombre">{{p.proveedor?.nombre}}</div>
+          <div class="precio">$ {{p.total | currency:'MXN'}}</div>
+
+          <div class="costo-envio">Costo de envío</div>
+          <div class="precio-envio">$ {{p.comisionTransportista | currency:'MXN'}}</div>
+
+          <div class="costo-subtotal">Subtotal</div>
+          <div class="precio-subtotal">$ {{p.total + p.comisionTransportista | currency:'MXN'}}</div>
+        </div>
+
+
+      </div>
+
+      <div class="total-pagar">Total a pagar: <strong>$ {{pagoActual.total | currency:'MXN'}}</strong></div>
+      <div class="iva">*Costos incluyen iva.</div>
+
+      <div>
+        <label>Acepto términos y condiciones</label>
+        <input type="checkbox"  [(ngModel)]="check"></input>
+      </div>
+    </div>
+
+    <div style="width:100%">
+      <button block large style="padding: 10px;
+        height: auto;
+        contain: none;
+        margin-top: 15px;font-size: 14px;display: inline-block; width: 49%"
+        [ngStyle]="{'background-color': genericService.getColorHex()}" (click)="cerrarModal3()">Cancelar</button>
+      <button block large style="padding: 10px;
+          height: auto;
+          contain: none;
+          margin-top: 15px;font-size: 14px;display: inline-block; width: 49%"
+        [ngStyle]="{'background-color': genericService.getColorHex()}" (click)="comprar()">Realizar pago</button>
+    </div>
+  </div>
+</div>
+
+
+<div style="padding:20px">
+  
+  <!--<div>
+    <div id="card-{{i}}" class="card animated lightSpeedIn" *ngFor="let p of listaCarrito.carritoHistoricoDetalles; let i = index">
+     
+      <div class="container-card" (click)="viewDetail(p)">
+
+        <img src="{{env.getImagenIndividual}}{{p.productoProveedor.producto.adjuntoId}}" />
+      </div>
+      <div class="container-text" (click)="viewDetail(p)">{{p.productoProveedor.producto.nombre}}</div>
+      <div class="description" (click)="viewDetail(p)">{{p.productoProveedor.producto.descripcion}}</div>
+      <div class="precio" (click)="viewDetail(p)">{{p.precio | currency}}</div>
+
+      <div class="contenedor-carrito" [ngStyle]="{'text-align': !p.cantidad || p.cantidad <= 0 ? 'end' : ''}">
+        <div class="menos" *ngIf="p.cantidad > 0" (click)="decrementar(p)">
+          <div [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">-</div>
+        </div>
+        <div class="cantidad" *ngIf="p.cantidad > 0">
+          <div [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">{{p.cantidad}}</div>
+        </div>
+        <div class="mas" (click)="incrementa(p)">
+          <div [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">+</div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <div>
+
+
+
+    <div *ngFor="let proveedor of agrupado">
+      <div class="name-pro" [ngStyle]="{'color': genericService.getColorHex()}" style="color: rgb(240, 124, 27);
+      font-weight: 600;
+      font-size: 17px;
+      text-align: center;">{{proveedor.productoProveedor.proveedor.nombre}}</div>
+
+      <div class="scrolling-wrapper">
+        <div id="card-{{i}}" class="card animated lightSpeedIn" *ngFor="let p of proveedor.carritoAgrupado; let i = index">
+          <!-- <div class="tacha">
+                              <div class="mini-tacha">
+                                  <ion-icon ios="ios-cart-outline" md="ios-cart-outline" style="color: #3b64bf;" *ngIf="!p.carrito" (click)="agregarToCarrito(p)"></ion-icon>
+                                  <ion-icon ios="ios-cart" md="ios-cart" *ngIf="p.carrito" style="color: #3b64bf;" (click)="productoService.deleteFavorito(p)"></ion-icon>
+                              </div>
+                            </div> -->
+          <div class="container-card" (click)="viewDetail(p)">
+
+            <img src="{{env.getImagenIndividual}}{{p.productoProveedor.producto.adjuntoId}}" />
+          </div>
+          <div class="container-text" (click)="viewDetail(p)">{{p.productoProveedor.producto.nombre}}</div>
+          <div class="description" (click)="viewDetail(p)">{{p.productoProveedor.producto.descripcion}}</div>
+          <div class="precio" (click)="viewDetail(p)">{{p.precio | currency}}</div>
+
+          <div class="contenedor-carrito" [ngStyle]="{'text-align': !p.cantidad || p.cantidad <= 0 ? 'end' : ''}">
+            <div class="menos" *ngIf="p.cantidad > 0" (click)="decrementar(p)">
+              <div [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">-</div>
+            </div>
+            <div class="cantidad" *ngIf="p.cantidad > 0">
+              <div [ngStyle]="{'color': genericService.getColorHex()}">{{p.cantidad}}</div>
+            </div>
+            <div class="mas" (click)="incrementa(p)">
+              <div [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="name-pro" [ngStyle]="{'color': genericService.getColorHex()}">Información</div>
+      <div *ngIf="proveedor.totalAgrupado" class="totales" style="    border: 1px solid #b7b7b7;
+      border-style: dashed;">
+          <div class="tot">Total por productos: <strong>{{proveedor.totalAgrupado.totalProductos}}</strong></div>
+          <div class="tot">Comisión de transporte: <strong>{{proveedor.totalAgrupado.comisionTransporte}}</strong></div>
+          <div class="tot" *ngIf="proveedor.totalAgrupado.tiempoEntrega">Tiempo de entrega: <strong>{{proveedor.totalAgrupado.tiempoEntrega}}</strong></div>
+          <div class="tot">Total: <strong>{{proveedor.totalAgrupado.total}}</strong></div>
+    
+        </div>
+    </div>
+
+    <div *ngIf="totales && totales.listHistoricoProveedores?.length > 0" class="totales" style="margin-bottom: 50px;">
+      <div class="tot">Total por productos: <strong>{{totales.totalProductos}}</strong></div>
+      <div class="tot">Comisión de transporte: <strong>{{totales.totalComisionTransporte}}</strong></div>
+      <div class="tot">Comisión por costo: <strong>{{totales.comisionStripe}}</strong></div>
+      <div class="tot">Sin comisión por costo: <strong>{{totales.totalSinComisionStripe}}</strong></div>
+
+      <div class="borde-total"></div>
+
+      <div class="tot" style="font-size: 17px;">Total: <strong>{{totales.total}}</strong></div>
+    </div>
+  </div>
+</div>
+<div class="footer-button-class" *ngIf="!enCompra">
+  <button style="width:100%" (tap)="infoContact()" [ngStyle]="{'background-color': genericService.getColorHex()}">Realizar
+    pedido</button>
+  </div>
