@@ -1,11 +1,13 @@
 package mx.com.sharkit.web.proveedor.rest;
 
+import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -16,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,8 +44,10 @@ import mx.com.sharkit.excel.objectbinding.validator.ProductoCargaValidator;
 import mx.com.sharkit.service.ProductoProveedorService;
 import mx.com.sharkit.service.ProveedorService;
 import mx.com.sharkit.service.UserService;
+import mx.com.sharkit.service.dto.AdjuntoDTO;
 import mx.com.sharkit.service.dto.ProductoProveedorDTO;
 import mx.com.sharkit.service.dto.ProveedorDTO;
+import mx.com.sharkit.service.dto.SubastasResponseDTO;
 import mx.com.sharkit.service.mapper.ProveedorMapper;
 import mx.com.sharkit.web.rest.ProductoProveedorResource;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
@@ -208,7 +213,46 @@ public class InventarioProveedorResource {
 				.build();
 	}
 
-
+	@PostMapping(value = "/proveedor-productos/carga-masiva", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<SubastasResponseDTO> cargaMasivaProductos( @RequestBody AdjuntoDTO adjuntoDTO) {
+		
+		log.debug("REST carga masiva de productos, adjuntoDTO: {}", adjuntoDTO);
+		
+		Optional<User> user = userService.getUserWithAuthorities();
+		Long usuarioId = user.isPresent() ? user.get().getId() : 0L;
+		if (usuarioId == 0) {
+			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+		}
+		ProveedorDTO proveedor = proveedorService.findOneByusuarioId(usuarioId).orElse(null);
+		if (proveedor == null) {
+			throw new BadRequestAlertException("El usuario no es proveedor", ENTITY_NAME, "idnull");
+		}
+		
+		SubastasResponseDTO response = new SubastasResponseDTO();
+		try {
+			List<ProductoCargaDTO> productosCarga = convertXl(adjuntoDTO);
+			
+			List<String> errores = productosCarga.stream()
+					.filter(prodCarga -> (prodCarga.getErrors() != null && prodCarga.getErrors().hasErrors()))
+					.map(ProductoCargaDTO::getError)
+					.collect(Collectors.toList());
+			
+			if (errores == null || errores.isEmpty()) {
+				productoProveedorService.cargaMasivaProductosProveedor(productosCarga, proveedor);				
+			} else {
+				response.setError(true);
+				response.setMessageError("Errores en archivo");
+				response.setData(errores);
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+			}
+			
+		} catch (Exception e) {
+			log.error("Exception: {}", e);
+			throw new BadRequestAlertException("Ocurrió un error en la carga masiva.", ENTITY_NAME, "iderror");
+		}
+		
+		return ResponseEntity.ok().body(response);
+	}
 
 	@PostMapping(value = "/files/carga-productos", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Void> getJson(@RequestParam("name") String name,
@@ -248,6 +292,46 @@ public class InventarioProveedorResource {
 					workbook = new HSSFWorkbook(file.getInputStream());
 				} else if (file.getOriginalFilename().endsWith("xlsx")) {
 					workbook = new XSSFWorkbook(file.getInputStream());
+				} else {
+					return list;
+				}
+
+				ExcelFile excelFile = new ExcelFile(workbook.getSheetAt(0), true, 2000,
+						fileUploadTemplateHandler.getProductoCargaTemplate(), ProductoCargaDTO.class, productoCargaValidator);
+
+				log.info("Parallel Processing Start time ~~~~~~~~~~~~~~~");
+				list = excelUtilityParallelProcessor.readExcelInParallel(excelFile);
+
+				return list;
+
+			} catch (Exception e) {
+				throw e;
+			} finally {
+				try {
+					executorService.shutdown();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		} else {
+			throw new Exception("You failed to upload   because the file was empty.");
+		}
+	}
+
+	private <T extends Base> List<T> convertXl(AdjuntoDTO file) throws Exception {
+		List<T> list = null;
+		if (file != null && file.getFile() != null && file.getFileName() != null) {
+
+			ExecutorService executorService = Executors
+					.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 16);
+
+			try {
+				Workbook workbook;
+				if (file.getFileName().endsWith("xls")) {
+					workbook = new HSSFWorkbook(new ByteArrayInputStream(file.getFile()));
+				} else if (file.getFileName().endsWith("xlsx")) {
+					workbook = new XSSFWorkbook(new ByteArrayInputStream(file.getFile()));
 				} else {
 					return list;
 				}

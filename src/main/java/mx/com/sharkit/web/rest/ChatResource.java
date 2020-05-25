@@ -245,7 +245,7 @@ public class ChatResource {
 						title, msgChatDTO.getText(), title, EnumPantallas.CHAT.getView(), mapData);
 
 				log.debug("request: {}", request);
-				CompletableFuture<String> pushNotification = pushNotificationsService.send(request);
+				CompletableFuture<String> pushNotification = pushNotificationsService.send(request, userTo.getTipoUsuarioId());
 
 				CompletableFuture.allOf(pushNotification).join();
 

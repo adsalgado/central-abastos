@@ -12,6 +12,7 @@ import {
   ProductoProveedorUpdateComponent,
   ProductoProveedorDeletePopupComponent,
   ProductoProveedorDeleteDialogComponent,
+  ProductoProveedorCargaMasivaComponent,
   productoProveedorRoute,
   productoProveedorPopupRoute
 } from './';
@@ -25,13 +26,15 @@ const ENTITY_STATES = [...productoProveedorRoute, ...productoProveedorPopupRoute
     ProductoProveedorDetailComponent,
     ProductoProveedorUpdateComponent,
     ProductoProveedorDeleteDialogComponent,
-    ProductoProveedorDeletePopupComponent
+    ProductoProveedorDeletePopupComponent,
+    ProductoProveedorCargaMasivaComponent
   ],
   entryComponents: [
     ProductoProveedorComponent,
     ProductoProveedorUpdateComponent,
     ProductoProveedorDeleteDialogComponent,
-    ProductoProveedorDeletePopupComponent
+    ProductoProveedorDeletePopupComponent,
+    ProductoProveedorCargaMasivaComponent
   ],
   providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

@@ -1,0 +1,30 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-producto-proveedor-heading">Carga masiva de productos</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.adjunto.file"
+                        for="field_file">File</label>
+                    <div>
+                        <input type="file" id="file_file" (change)="setFileData($event, 'file', false)" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                            jhiTranslate="entity.action.addimage" />
+                    </div>
+                    <input type="hidden" class="form-control" name="file" id="field_file" formControlName="file" />
+                    <input type="hidden" class="form-control" name="fileContentType" id="field_fileContentType"
+                           formControlName="fileContentType" />
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span >Cancelar</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving"
+                    class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span >Procesar</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
