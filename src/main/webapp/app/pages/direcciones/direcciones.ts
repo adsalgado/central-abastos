@@ -108,7 +108,7 @@ export class DireccionesPage implements OnDestroy, OnInit {
   }
 
   select(direccion: any) {
-    this.viewCtrl.dismiss({ direccion });
+    // this.viewCtrl.dismiss({ direccion });
   }
 
   nuevaLista() {
