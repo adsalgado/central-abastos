@@ -1,4 +1,3 @@
-
 <div [ngStyle]="{'padding': !fromPop ? '16px' : '0px'}">
   <div class="spinner-carrito" *ngIf="!render">
     <app-spinner></app-spinner>
@@ -9,30 +8,34 @@
     Selecciona una dirección frecuente
   </div>
 
-  <div *ngIf="!fromPop">
-    <div #item *ngFor="let card of listaDirecciones">
-      <div class="item-list-card" (click)="view(card)">
-        <div>
-          <img src="../../../content/imgs/direcciones/maps-and-flags.png" alt="">
-        </div>
-        <div class="datos-tarjetas">
-          <div class="name">{{card.alias}}</div>
-          <div class="number">{{card.direccion.direccion}}</div>
-        </div>
+  <mat-list *ngIf="!fromPop">
+    <mat-list-item *ngFor="let card of listaDirecciones" style="    margin-bottom: 55px;">
+      <div (click)="view(card)">
+        <img style="width:33px" src="../../../content/imgs/direcciones/maps-and-flags.png" alt="">
       </div>
+      <div class="datos-tarjetas" (click)="view(card)">
+        <div class="name">{{card.alias}}</div>
+        <div class="number">{{card.direccion.direccion}}</div>
+      </div>
+      <div style="width:30%;display:inline-block;text-align: -webkit-right;">
 
-      <div>
-        <button  (click)="borrar(card)" color="danger">
+
+        <button class="botoni" (click)="borrar(card)" color="danger" style="background-color: #FF5722;
+              border: 1px solid #9c2906;width: 100%;">
+          <i class="material-icons" style="vertical-align: middle;">close</i>
           Borrar
         </button>
       </div>
-    </div>
-  </div>
+    </mat-list-item>
+  </mat-list>
 
   <div *ngIf="fromPop">
     <div class="item-list-card" (click)="select(card)" *ngFor="let card of listaDirecciones">
-      <div>
-        <img src="../../../content/imgs/direcciones/maps-and-flags.png" alt="">
+      <div style="width: 10%;
+      display: inline-block;
+      margin-left: 13px;">
+        <img src="../../../content/imgs/direcciones/maps-and-flags.png" style="width: 30px;
+        vertical-align: super;">
       </div>
       <div class="datos-tarjetas">
         <div class="name">{{card.alias}}</div>
@@ -41,8 +44,4 @@
     </div>
   </div>
 </div>
-<div class="fab-cards animated swing" *ngIf="!fromPop">
-  <button (click)="nuevaLista()" [ngStyle]="{'background-color': genericService.getColorHex()}">
-  
-  </button>
-</div>
+<fabi-button bottom right (click)="nuevaLista()" class="animated swing" *ngIf="!fromPop"></fabi-button>

@@ -9,8 +9,11 @@
       tu tarjeta</div>
     <div *ngIf="cards && cards?.length > 0">
       <div class="item-list-card" *ngFor="let card of cards" [ngClass]="{'seleccionado':card.selected}" (click)="seleccionar(card)">
-        <div>
-          <img src="../../../content/imgs/tarjetas/bank.png" alt="">
+        <div style="width: 10%;
+          display: inline-block;
+          margin-left: 13px;">
+          <img src="../../../content/imgs/tarjetas/bank.png" style="width: 30px;
+          vertical-align: super;">
         </div>
         <div class="datos-tarjetas">
           <div class="name">{{card.alias}}</div>
@@ -66,15 +69,14 @@
             *ngIf="dato.type != 'date' && dato.type != 'checkbox' && dato.type != 'select'" [ngStyle]="{'width': dato.name == 'Dirección' ? '88%' : '100%'}">
 
           <div class="direc" *ngIf="dato.name == 'Dirección'" (click)="getMapa()"><img style="width: 33px;
-            vertical-align: sub;" src="../../../content/imgs/direcciones/home-run.png"
-              alt=""></div>
+            vertical-align: sub;"
+              src="../../../content/imgs/direcciones/home-run.png" alt=""></div>
 
-          <input type="date" class="dt" [(ngModel)]="dato.value" formControlName="{{dato.formName}}" text-left pickerFormat="DD/MM/YYYY"
-            cancelText="Cancelar" doneText="Aceptar" #fechaNac (change)="ejecutaValidator()" *ngIf="dato.type == 'date'"
-            placeholder="01/12/2020"></input>
+          <input type="date" class="dt" [(ngModel)]="dato.value" formControlName="{{dato.formName}}" text-left
+            pickerFormat="DD/MM/YYYY" cancelText="Cancelar" doneText="Aceptar" #fechaNac (change)="ejecutaValidator()"
+            *ngIf="dato.type == 'date'" placeholder="01/12/2020"></input>
 
-          <select class="dt" *ngIf="dato.type == 'select'" [(ngModel)]="dato.value"
-             (change)="ejecutaValidator(true,$event)"
+          <select class="dt" *ngIf="dato.type == 'select'" [(ngModel)]="dato.value" (change)="ejecutaValidator(true,$event)"
             formControlName="{{dato.formName}}">
             <option *ngFor="let op of dato.opts" [value]="op.id">
               {{op.value}}
@@ -131,7 +133,7 @@
 
       <div>
         <label>Acepto términos y condiciones</label>
-        <input type="checkbox"  [(ngModel)]="check"></input>
+        <input type="checkbox" [(ngModel)]="check"></input>
       </div>
     </div>
 
@@ -152,7 +154,7 @@
 
 
 <div style="padding:20px">
-  
+
   <!--<div>
     <div id="card-{{i}}" class="card animated lightSpeedIn" *ngFor="let p of listaCarrito.carritoHistoricoDetalles; let i = index">
      
@@ -190,7 +192,7 @@
 
       <div class="scrolling-wrapper">
         <div id="card-{{i}}" class="card animated lightSpeedIn" *ngFor="let p of proveedor.carritoAgrupado; let i = index">
-          
+
           <div class="container-card" (click)="viewDetail(p)">
 
             <img src="{{env.getImagenIndividual}}{{p.productoProveedor.producto.adjuntoId}}" />
@@ -216,12 +218,12 @@
       <div class="name-pro" [ngStyle]="{'color': genericService.getColorHex()}">Información</div>
       <div *ngIf="proveedor.totalAgrupado" class="totales" style="    border: 1px solid #b7b7b7;
       border-style: dashed;">
-          <div class="tot">Total por productos: <strong>{{proveedor.totalAgrupado.totalProductos}}</strong></div>
-          <div class="tot">Comisión de transporte: <strong>{{proveedor.totalAgrupado.comisionTransporte}}</strong></div>
-          <div class="tot" *ngIf="proveedor.totalAgrupado.tiempoEntrega">Tiempo de entrega: <strong>{{proveedor.totalAgrupado.tiempoEntrega}}</strong></div>
-          <div class="tot">Total: <strong>{{proveedor.totalAgrupado.total}}</strong></div>
-    
-        </div>
+        <div class="tot">Total por productos: <strong>{{proveedor.totalAgrupado.totalProductos}}</strong></div>
+        <div class="tot">Comisión de transporte: <strong>{{proveedor.totalAgrupado.comisionTransporte}}</strong></div>
+        <div class="tot" *ngIf="proveedor.totalAgrupado.tiempoEntrega">Tiempo de entrega: <strong>{{proveedor.totalAgrupado.tiempoEntrega}}</strong></div>
+        <div class="tot">Total: <strong>{{proveedor.totalAgrupado.total}}</strong></div>
+
+      </div>
     </div>
 
     <div *ngIf="totales && totales.listHistoricoProveedores?.length > 0" class="totales" style="margin-bottom: 50px;">
@@ -239,4 +241,4 @@
 <div class="footer-button-class" *ngIf="!enCompra">
   <button style="width:100%" (tap)="infoContact()" [ngStyle]="{'background-color': genericService.getColorHex()}">Realizar
     pedido</button>
-  </div>
+</div>

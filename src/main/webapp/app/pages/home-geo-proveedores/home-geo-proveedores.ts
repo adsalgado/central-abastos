@@ -70,6 +70,8 @@ export class HomeGeoProveedoresPage implements OnDestroy, OnInit {
     this.fromModal = navParams.get('fromModal');
     this.fromRegister = navParams.get('fromRegister');
     if (this.direccion) {
+      console.log(this.direccion);
+
       this.edit = true;
       /*
               codigoPostal: "89670"
@@ -489,7 +491,7 @@ export class HomeGeoProveedoresPage implements OnDestroy, OnInit {
           if (!this.fromModal) {
             this.alertaService.info('Dirección agregada con éxito');
             //this.navCtrl.pop();
-            this.navParams.push('main/public-home');
+            this.navParams.push('main/direccion-frecuente');
           } else {
             this.activeModal.close({ data: this.data });
           }
@@ -507,7 +509,7 @@ export class HomeGeoProveedoresPage implements OnDestroy, OnInit {
           this.loadingService.hide();
           //this.events.publish("direction", { body, create: false });
           this.events.broadcast({ name: 'direction', content: { body, create: false } });
-          this.navParams.push('main/public-home');
+          this.navParams.push('main/direccion-frecuente');
         },
         (error: HttpErrorResponse) => {
           this.loadingService.hide();
@@ -612,7 +614,7 @@ export class HomeGeoProveedoresPage implements OnDestroy, OnInit {
         //confirmButtonColor: '#3085d6',
         //cancelButtonColor: '#d33',
         cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Agregar'
+        confirmButtonText: !this.edit ? 'Agregar' : 'Actualizar'
       })
       .then(result => {
         if (result.value) {

@@ -1,3 +1,4 @@
+import { LocalStorageEncryptService } from './../../services/local-storage-encrypt-service';
 import { JhiEventManager } from 'ng-jhipster';
 import { HomeGeoProveedoresPage } from './../home-geo-proveedores/home-geo-proveedores';
 
@@ -27,7 +28,8 @@ export class DireccionesPage implements OnDestroy, OnInit {
     private genericService: GenericService,
     private alertaService: AlertService,
     private loadingService: LoadingService,
-    private events: JhiEventManager
+    private events: JhiEventManager,
+    private localStorageEncryptService: LocalStorageEncryptService
   ) {
     this.fromPop = navCtrl.get('fromPop');
     this.cargarDireccionesLista();
@@ -104,14 +106,15 @@ export class DireccionesPage implements OnDestroy, OnInit {
   }
 
   view(direccion: any) {
-    this.navCtrl.push('main/proveedores-geo', { direccion });
+    this.navCtrl.push('main/proveedores-geo', { direccion: direccion });
   }
 
   select(direccion: any) {
-    this.viewCtrl.dismiss({ direccion });
+    //this.viewCtrl.dismiss({ direccion });
   }
 
   nuevaLista() {
+    this.localStorageEncryptService.clearProperty('direccion');
     this.navCtrl.push('main/proveedores-geo');
   }
 }

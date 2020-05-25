@@ -9,8 +9,11 @@
       tu tarjeta</div>
     <div *ngIf="cards && cards?.length > 0">
       <div class="item-list-card" *ngFor="let card of cards" [ngClass]="{'seleccionado':card.selected}" (click)="seleccionar(card)">
-        <div>
-          <img src="../../../content/imgs/tarjetas/bank.png" alt="">
+          <div style="width: 10%;
+          display: inline-block;
+          margin-left: 13px;"> 
+          <img src="../../../content/imgs/tarjetas/bank.png" style="width: 30px;
+          vertical-align: super;">
         </div>
         <div class="datos-tarjetas">
           <div class="name">{{card.alias}}</div>
