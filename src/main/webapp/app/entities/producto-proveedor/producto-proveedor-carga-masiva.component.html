@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-10">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-producto-proveedor-heading">Carga masiva de productos</h2>
             <div>
@@ -26,5 +26,28 @@
                 </button>
             </div>
         </form>
+        <br />
+        <div class="alert alert-warning" *ngIf="validationErrors?.length > 0">
+            <span>Existen errores en el archivo de carga.</span>
+        </div>   
+        <div class="table-responsive" *ngIf="validationErrors?.length > 0">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th><span >Fila</span></th>
+                    <th><span >Campo</span></th>
+                    <th><span >Error</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let error of validationErrors; trackBy: trackId">
+                    <td>{{error.row}}</td>
+                    <td>{{error.field}}</td>
+                    <td>{{error.errorMessage}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 </div>

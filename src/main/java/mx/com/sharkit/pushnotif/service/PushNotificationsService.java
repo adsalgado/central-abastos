@@ -24,8 +24,8 @@ public class PushNotificationsService {
 
 	private final Logger log = LoggerFactory.getLogger(PushNotificationsService.class);
 
-//	private static final String FIREBASE_SERVER_KEY_CLIENTE_ANDROID = "AAAAKsiEY9M:APA91bF7qUMreQg_e9awGaJ_hVT8OI55FEXLEp0U71UE2bvgJBs9pZpQVItNKa7kxMrF_09EmAnIxfzm-oR9eoZKueVfn5WC2j8ysVo7ZLq4D1lieIetwRMPfaHM-xWZSBBVlPArYYLl";
-	private static final String FIREBASE_SERVER_KEY_CLIENTE_ANDROID = "AIzaSyCA4iHXRLkp6uYcguXjdCyLkamJ6RgD9P4";
+	private static final String FIREBASE_SERVER_KEY_CLIENTE_ANDROID = "AAAAKsiEY9M:APA91bF7qUMreQg_e9awGaJ_hVT8OI55FEXLEp0U71UE2bvgJBs9pZpQVItNKa7kxMrF_09EmAnIxfzm-oR9eoZKueVfn5WC2j8ysVo7ZLq4D1lieIetwRMPfaHM-xWZSBBVlPArYYLl";
+//	private static final String FIREBASE_SERVER_KEY_CLIENTE_ANDROID = "AIzaSyCA4iHXRLkp6uYcguXjdCyLkamJ6RgD9P4";
 	private static final String FIREBASE_SERVER_KEY_CLIENTE_IOS = "AIzaSyBQc4pUXm9D7T6tt5X3_CMcex7Ws4rurB0";
 
 	private static final String FIREBASE_SERVER_KEY_PROVEEDOR_ANDROID = "AIzaSyDFhkAV8mw8GOqbHOKX5DRvri8RrMz6XkM";

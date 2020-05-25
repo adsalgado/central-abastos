@@ -3,24 +3,16 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import * as moment from 'moment';
-import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { JhiAlertService, JhiDataUtils } from 'ng-jhipster';
-import { IProductoProveedor, ProductoProveedor } from 'app/shared/model/producto-proveedor.model';
 import { ProductoProveedorService } from './producto-proveedor.service';
-import { IProveedor } from 'app/shared/model/proveedor.model';
 import { ProveedorService } from 'app/entities/proveedor';
-import { IProducto, Producto } from 'app/shared/model/producto.model';
 import { ProductoService } from 'app/entities/producto';
-import { IEstatus } from 'app/shared/model/estatus.model';
 import { EstatusService } from 'app/entities/estatus';
-import { ITipoArticulo } from 'app/shared/model/tipo-articulo.model';
-import { IUnidadMedida } from 'app/shared/model/unidad-medida.model';
 import { TipoArticuloService } from '../tipo-articulo';
 import { UnidadMedidaService } from '../unidad-medida';
 import { IAdjunto, Adjunto } from 'app/shared/model/adjunto.model';
 import { IAbastosResponse } from 'app/shared/model/abastos-response.model';
+import { IErrorValidacion } from 'app/shared/model/error-validacion';
 
 @Component({
   selector: 'jhi-producto-proveedor-carga-masiva',
@@ -29,6 +21,7 @@ import { IAbastosResponse } from 'app/shared/model/abastos-response.model';
 export class ProductoProveedorCargaMasivaComponent implements OnInit {
   isSaving: boolean;
   fileName: string;
+  validationErrors: IErrorValidacion[];
   editForm = this.fb.group({
     file: [],
     fileName: [],
@@ -55,7 +48,7 @@ export class ProductoProveedorCargaMasivaComponent implements OnInit {
     });*/
   }
 
-  updateForm(productoProveedor: IProductoProveedor) {
+  updateForm(adjunto: IAdjunto) {
     this.editForm.patchValue({
       /*file: adjunto.file*/
     });
@@ -90,10 +83,12 @@ export class ProductoProveedorCargaMasivaComponent implements OnInit {
     this.previousState();
   }
 
-  protected onSaveError(result: HttpResponse<IAbastosResponse>) {
+  protected onSaveError(result) {
     this.isSaving = false;
-    console.log('Existen errorres en el archivo de carga.');
-    console.log(result);
+    if (result.status === 400) {
+      this.validationErrors = result.error.data;
+      console.log(this.validationErrors);
+    }
     this.jhiAlertService.error('Existen errores en el archivo de carga.', null, null);
   }
 

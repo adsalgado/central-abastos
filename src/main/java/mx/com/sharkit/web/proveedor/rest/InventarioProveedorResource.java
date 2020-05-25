@@ -3,11 +3,11 @@ package mx.com.sharkit.web.proveedor.rest;
 import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import mx.com.sharkit.domain.User;
 import mx.com.sharkit.excel.objectbinding.domain.Base;
+import mx.com.sharkit.excel.objectbinding.domain.ErrorDTO;
 import mx.com.sharkit.excel.objectbinding.domain.ExcelFile;
 import mx.com.sharkit.excel.objectbinding.domain.ProductoCargaDTO;
 import mx.com.sharkit.excel.objectbinding.handler.FileUploadTemplateHandler;
@@ -51,6 +53,7 @@ import mx.com.sharkit.service.dto.SubastasResponseDTO;
 import mx.com.sharkit.service.mapper.ProveedorMapper;
 import mx.com.sharkit.web.rest.ProductoProveedorResource;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
+import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 
 /**
  * REST controller for managing {@link mx.com.sharkit.domain.ProductoProveedor}.
@@ -217,6 +220,9 @@ public class InventarioProveedorResource {
 	public ResponseEntity<SubastasResponseDTO> cargaMasivaProductos( @RequestBody AdjuntoDTO adjuntoDTO) {
 		
 		log.debug("REST carga masiva de productos, adjuntoDTO: {}", adjuntoDTO);
+		if (adjuntoDTO == null || adjuntoDTO.getFile() == null || StringUtils.isAllBlank(adjuntoDTO.getFileName()) ) {
+			throw new BadRequestAlertException("El archivo de carga es requerido", ENTITY_NAME, "idnull");
+		}
 		
 		Optional<User> user = userService.getUserWithAuthorities();
 		Long usuarioId = user.isPresent() ? user.get().getId() : 0L;
@@ -232,19 +238,33 @@ public class InventarioProveedorResource {
 		try {
 			List<ProductoCargaDTO> productosCarga = convertXl(adjuntoDTO);
 			
-			List<String> errores = productosCarga.stream()
-					.filter(prodCarga -> (prodCarga.getErrors() != null && prodCarga.getErrors().hasErrors()))
-					.map(ProductoCargaDTO::getError)
-					.collect(Collectors.toList());
-			
-			if (errores == null || errores.isEmpty()) {
-				productoProveedorService.cargaMasivaProductosProveedor(productosCarga, proveedor);				
+			if (productosCarga != null && !productosCarga.isEmpty()) {
+				List<ErrorDTO> errores = new ArrayList<>();
+				for (ProductoCargaDTO prodCarga : productosCarga) {
+					if (prodCarga.getErrors() != null && prodCarga.getErrors().hasErrors()) {
+						for (FieldError fe : prodCarga.getErrors().getFieldErrors()) {
+							ErrorDTO errorDTO = new ErrorDTO();
+							errorDTO.setRow(prodCarga.getRow());
+							errorDTO.setField(fe.getField());
+							errorDTO.setErrorMessage(fe.getDefaultMessage());
+							errores.add(errorDTO);
+						}
+					}
+				}
+							
+				if (errores == null || errores.isEmpty()) {
+					productoProveedorService.cargaMasivaProductosProveedor(productosCarga, proveedor);				
+				} else {
+					response.setError(true);
+					response.setMessageError("Errores en archivo");
+					response.setData(errores);
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+				}
+				
 			} else {
-				response.setError(true);
-				response.setMessageError("Errores en archivo");
-				response.setData(errores);
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+				throw new BadRequestAlertException("El archivo esta vacío.", ENTITY_NAME, "idnull");
 			}
+			
 			
 		} catch (Exception e) {
 			log.error("Exception: {}", e);
