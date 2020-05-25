@@ -10,22 +10,67 @@
                         readonly />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="abastosApp.productoProveedor.precioSinIva" for="field_precioSinIva">Precio Sin Iva</label>
-                    <input type="number" class="form-control" name="precioSinIva" id="field_precioSinIva"
-                           formControlName="precioSinIva"/>
-                    <div *ngIf="editForm.get('precioSinIva').invalid && (editForm.get('precioSinIva').dirty || editForm.get('precioSinIva').touched)">
+                    <label class="form-control-label" jhiTranslate="abastosApp.producto.sku" for="field_nombre">SKU</label>
+                    <input type="text" class="form-control" name="sku" id="field_sku"
+                           formControlName="sku"/>
+                    <div *ngIf="editForm.get('sku').invalid && (editForm.get('sku').dirty || editForm.get('sku').touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('precioSinIva').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('sku').errors.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                            [hidden]="!editForm.get('precioSinIva')?.errors?.number" jhiTranslate="entity.validation.number">
-                            This field should be a number.
+                               *ngIf="editForm.get('sku').errors.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 45 }">
+                        This field cannot be longer than 45 characters.
                         </small>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="abastosApp.productoProveedor.precio" for="field_precio">Precio</label>
+                    <label class="form-control-label" jhiTranslate="abastosApp.producto.nombre" for="field_nombre">Nombre</label>
+                    <input type="text" class="form-control" name="nombre" id="field_nombre"
+                           formControlName="nombre"/>
+                    <div *ngIf="editForm.get('nombre').invalid && (editForm.get('nombre').dirty || editForm.get('nombre').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('nombre').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('nombre').errors.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 256 }">
+                        This field cannot be longer than 256 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.producto.descripcion" for="field_descripcion">Descripcion</label>
+                    <input type="text" class="form-control" name="descripcion" id="field_descripcion"
+                           formControlName="descripcion"/>
+                    <div *ngIf="editForm.get('descripcion').invalid && (editForm.get('descripcion').dirty || editForm.get('descripcion').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('descripcion').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('descripcion').errors.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 512 }">
+                        This field cannot be longer than 512 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.producto.caracteristicas" for="field_caracteristicas">Caracteristicas</label>
+                    <input type="text" class="form-control" name="caracteristicas" id="field_caracteristicas"
+                           formControlName="caracteristicas"/>
+                    <div *ngIf="editForm.get('caracteristicas').invalid && (editForm.get('caracteristicas').dirty || editForm.get('caracteristicas').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('caracteristicas').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('caracteristicas').errors.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 512 }">
+                        This field cannot be longer than 512 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.producto.precio" for="field_precio">Precio</label>
                     <input type="number" class="form-control" name="precio" id="field_precio"
                            formControlName="precio"/>
                     <div *ngIf="editForm.get('precio').invalid && (editForm.get('precio').dirty || editForm.get('precio').touched)">
@@ -40,36 +85,24 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="abastosApp.productoProveedor.fechaAlta" for="field_fechaAlta">Fecha Alta</label>
-                    <div class="d-flex">
-                        <input id="field_fechaAlta" type="datetime-local" class="form-control" name="fechaAlta" formControlName="fechaAlta" placeholder="YYYY-MM-DD HH:mm"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="abastosApp.productoProveedor.fechaModificacion" for="field_fechaModificacion">Fecha Modificacion</label>
-                    <div class="d-flex">
-                        <input id="field_fechaModificacion" type="datetime-local" class="form-control" name="fechaModificacion" formControlName="fechaModificacion" placeholder="YYYY-MM-DD HH:mm"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="abastosApp.productoProveedor.proveedor" for="field_proveedor">Proveedor</label>
-                    <select class="form-control" id="field_proveedor" name="proveedor" formControlName="proveedorId">
+                    <label class="form-control-label" jhiTranslate="abastosApp.producto.tipoArticulo" for="field_tipoArticulo">Tipo Articulo</label>
+                    <select class="form-control" id="field_tipoArticulo" name="tipoArticulo" formControlName="tipoArticuloId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="proveedorOption.id" *ngFor="let proveedorOption of proveedors; trackBy: trackProveedorById">{{proveedorOption.id}}</option>
+                        <option [ngValue]="tipoArticuloOption.id" *ngFor="let tipoArticuloOption of tipoarticulos; trackBy: trackTipoArticuloById">{{tipoArticuloOption.nombre}}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="abastosApp.productoProveedor.producto" for="field_producto">Producto</label>
-                    <select class="form-control" id="field_producto" name="producto" formControlName="productoId">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="productoOption.id" *ngFor="let productoOption of productos; trackBy: trackProductoById">{{productoOption.id}}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="abastosApp.productoProveedor.estatus" for="field_estatus">Estatus</label>
+                    <label class="form-control-label" jhiTranslate="abastosApp.producto.estatus" for="field_estatus">Estatus</label>
                     <select class="form-control" id="field_estatus" name="estatus" formControlName="estatusId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="estatusOption.id" *ngFor="let estatusOption of estatuses; trackBy: trackEstatusById">{{estatusOption.id}}</option>
+                        <option [ngValue]="estatusOption.id" *ngFor="let estatusOption of estatuses; trackBy: trackEstatusById">{{estatusOption.nombre}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.producto.unidadMedida" for="field_unidadMedida">Unidad Medida</label>
+                    <select class="form-control" id="field_unidadMedida" name="unidadMedida" formControlName="unidadMedidaId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="unidadMedidaOption.id" *ngFor="let unidadMedidaOption of unidadmedidas; trackBy: trackUnidadMedidaById">{{unidadMedidaOption.nombre}}</option>
                     </select>
                 </div>
             </div>

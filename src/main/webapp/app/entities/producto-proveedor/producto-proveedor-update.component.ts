@@ -11,10 +11,14 @@ import { IProductoProveedor, ProductoProveedor } from 'app/shared/model/producto
 import { ProductoProveedorService } from './producto-proveedor.service';
 import { IProveedor } from 'app/shared/model/proveedor.model';
 import { ProveedorService } from 'app/entities/proveedor';
-import { IProducto } from 'app/shared/model/producto.model';
+import { IProducto, Producto } from 'app/shared/model/producto.model';
 import { ProductoService } from 'app/entities/producto';
 import { IEstatus } from 'app/shared/model/estatus.model';
 import { EstatusService } from 'app/entities/estatus';
+import { ITipoArticulo } from 'app/shared/model/tipo-articulo.model';
+import { IUnidadMedida } from 'app/shared/model/unidad-medida.model';
+import { TipoArticuloService } from '../tipo-articulo';
+import { UnidadMedidaService } from '../unidad-medida';
 
 @Component({
   selector: 'jhi-producto-proveedor-update',
@@ -29,16 +33,21 @@ export class ProductoProveedorUpdateComponent implements OnInit {
 
   estatuses: IEstatus[];
 
+  tipoarticulos: ITipoArticulo[];
+
+  unidadmedidas: IUnidadMedida[];
+
   editForm = this.fb.group({
     id: [],
-    precioSinIva: [null, [Validators.required]],
+    sku: [null, [Validators.maxLength(45)]],
+    nombre: [null, [Validators.required, Validators.maxLength(256)]],
+    descripcion: [null, [Validators.required, Validators.maxLength(512)]],
+    caracteristicas: [null, [Validators.maxLength(512)]],
     precio: [null, [Validators.required]],
-    fechaAlta: [],
-    fechaModificacion: [],
-    fechaOtra: [],
-    proveedorId: [],
-    productoId: [],
-    estatusId: []
+    adjuntoId: [],
+    tipoArticuloId: [],
+    estatusId: [],
+    unidadMedidaId: []
   });
 
   constructor(
@@ -47,6 +56,8 @@ export class ProductoProveedorUpdateComponent implements OnInit {
     protected proveedorService: ProveedorService,
     protected productoService: ProductoService,
     protected estatusService: EstatusService,
+    protected tipoArticuloService: TipoArticuloService,
+    protected unidadMedidaService: UnidadMedidaService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -63,13 +74,20 @@ export class ProductoProveedorUpdateComponent implements OnInit {
         map((response: HttpResponse<IProveedor[]>) => response.body)
       )
       .subscribe((res: IProveedor[]) => (this.proveedors = res), (res: HttpErrorResponse) => this.onError(res.message));
-    this.productoService
+    this.tipoArticuloService
       .query()
       .pipe(
-        filter((mayBeOk: HttpResponse<IProducto[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IProducto[]>) => response.body)
+        filter((mayBeOk: HttpResponse<ITipoArticulo[]>) => mayBeOk.ok),
+        map((response: HttpResponse<ITipoArticulo[]>) => response.body)
       )
-      .subscribe((res: IProducto[]) => (this.productos = res), (res: HttpErrorResponse) => this.onError(res.message));
+      .subscribe((res: ITipoArticulo[]) => (this.tipoarticulos = res), (res: HttpErrorResponse) => this.onError(res.message));
+    this.unidadMedidaService
+      .query()
+      .pipe(
+        filter((mayBeOk: HttpResponse<IUnidadMedida[]>) => mayBeOk.ok),
+        map((response: HttpResponse<IUnidadMedida[]>) => response.body)
+      )
+      .subscribe((res: IUnidadMedida[]) => (this.unidadmedidas = res), (res: HttpErrorResponse) => this.onError(res.message));
     this.estatusService
       .query()
       .pipe(
@@ -82,13 +100,15 @@ export class ProductoProveedorUpdateComponent implements OnInit {
   updateForm(productoProveedor: IProductoProveedor) {
     this.editForm.patchValue({
       id: productoProveedor.id,
-      precioSinIva: productoProveedor.precioSinIva,
+      sku: productoProveedor.producto.sku,
+      nombre: productoProveedor.producto.nombre,
+      descripcion: productoProveedor.producto.descripcion,
+      caracteristicas: productoProveedor.producto.caracteristicas,
       precio: productoProveedor.precio,
-      fechaAlta: productoProveedor.fechaAlta != null ? productoProveedor.fechaAlta.format(DATE_TIME_FORMAT) : null,
-      fechaModificacion: productoProveedor.fechaModificacion != null ? productoProveedor.fechaModificacion.format(DATE_TIME_FORMAT) : null,
-      proveedorId: productoProveedor.proveedorId,
-      productoId: productoProveedor.productoId,
-      estatusId: productoProveedor.estatusId
+      adjuntoId: productoProveedor.producto.adjuntoId,
+      tipoArticuloId: productoProveedor.producto.tipoArticuloId,
+      estatusId: productoProveedor.estatusId,
+      unidadMedidaId: productoProveedor.producto.unidadMedidaId
     });
   }
 
@@ -99,7 +119,8 @@ export class ProductoProveedorUpdateComponent implements OnInit {
   save() {
     this.isSaving = true;
     const productoProveedor = this.createFromForm();
-    if (productoProveedor.id !== undefined) {
+    console.log(productoProveedor);
+    if (productoProveedor.id !== undefined && productoProveedor.id !== null) {
       this.subscribeToSaveResponse(this.productoProveedorService.update(productoProveedor));
     } else {
       this.subscribeToSaveResponse(this.productoProveedorService.create(productoProveedor));
@@ -107,21 +128,24 @@ export class ProductoProveedorUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IProductoProveedor {
-    return {
-      ...new ProductoProveedor(),
-      id: this.editForm.get(['id']).value,
-      precioSinIva: this.editForm.get(['precioSinIva']).value,
-      precio: this.editForm.get(['precio']).value,
-      fechaAlta:
-        this.editForm.get(['fechaAlta']).value != null ? moment(this.editForm.get(['fechaAlta']).value, DATE_TIME_FORMAT) : undefined,
-      fechaModificacion:
-        this.editForm.get(['fechaModificacion']).value != null
-          ? moment(this.editForm.get(['fechaModificacion']).value, DATE_TIME_FORMAT)
-          : undefined,
-      proveedorId: this.editForm.get(['proveedorId']).value,
-      productoId: this.editForm.get(['productoId']).value,
-      estatusId: this.editForm.get(['estatusId']).value
-    };
+    let producto: IProducto;
+    producto = new Producto();
+    producto.sku = this.editForm.get(['sku']).value;
+    producto.nombre = this.editForm.get(['nombre']).value;
+    producto.descripcion = this.editForm.get(['descripcion']).value;
+    producto.caracteristicas = this.editForm.get(['caracteristicas']).value;
+    producto.tipoArticuloId = this.editForm.get(['tipoArticuloId']).value;
+    producto.unidadMedidaId = this.editForm.get(['unidadMedidaId']).value;
+
+    let productoProveedor: IProductoProveedor;
+    productoProveedor = new ProductoProveedor();
+    productoProveedor.id = this.editForm.get(['id']).value;
+    productoProveedor.precio = this.editForm.get(['precio']).value;
+    productoProveedor.precioSinIva = this.editForm.get(['precio']).value;
+    productoProveedor.estatusId = this.editForm.get(['estatusId']).value;
+    productoProveedor.producto = producto;
+
+    return productoProveedor;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProductoProveedor>>) {

@@ -21,9 +21,13 @@
                 <dd>
                     <div *ngIf="adjunto.file">
                         <a (click)="openFile(adjunto.fileContentType, adjunto.file)">
-                            <img [src]="'data:' + adjunto.fileContentType + ';base64,' + adjunto.file" style="max-width: 100%;" alt="adjunto image"/>
+                            <img [src]="'data:' + adjunto.fileContentType + ';base64,' + adjunto.file" style="max-height: 100px;" alt="adjunto image"/>
                         </a>
-                        {{adjunto.fileContentType}}, {{byteSize(adjunto.file)}}
+                        <div class="form-text text-danger clearfix">
+                            <span class="pull-left">
+                                {{adjunto.fileContentType}}, {{byteSize(adjunto.file)}}
+                            </span>
+                        </div>
                     </div>
                 </dd>
             </dl>
@@ -35,7 +39,7 @@
             </button>
 
             <button type="button"
-                    [routerLink]="['/adjunto', adjunto.id, 'edit']"
+                    [routerLink]="['/main/entities/adjunto', adjunto.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>

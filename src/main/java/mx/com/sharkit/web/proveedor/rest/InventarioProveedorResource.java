@@ -114,8 +114,9 @@ public class InventarioProveedorResource {
 		if (proveedor == null) {
 			throw new BadRequestAlertException("El usuario no es proveedor", ENTITY_NAME, "idnull");
 		}
-		productoProveedorDTO.setProveedorId(proveedor.getId());
-		ProductoProveedorDTO result = productoProveedorService.save(productoProveedorDTO);
+		productoProveedorDTO.setProveedorId(proveedor.getId());		
+		ProductoProveedorDTO result = productoProveedorService.saveProductoProveedor(productoProveedorDTO);
+
 		return ResponseEntity
 				.created(new URI("/api/proveedor-productos/" + result.getId())).headers(HeaderUtil
 						.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -140,7 +141,17 @@ public class InventarioProveedorResource {
 		if (productoProveedorDTO.getId() == null) {
 			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
 		}
-		ProductoProveedorDTO result = productoProveedorService.save(productoProveedorDTO);
+		Optional<User> user = userService.getUserWithAuthorities();
+		Long usuarioId = user.isPresent() ? user.get().getId() : 0L;
+		if (usuarioId == 0) {
+			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+		}
+		ProveedorDTO proveedor = proveedorService.findOneByusuarioId(usuarioId).orElse(null);
+		if (proveedor == null) {
+			throw new BadRequestAlertException("El usuario no es proveedor", ENTITY_NAME, "idnull");
+		}
+
+		ProductoProveedorDTO result = productoProveedorService.updateProductoProveedor(productoProveedorDTO);
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME,
 				productoProveedorDTO.getId().toString())).body(result);
 	}
