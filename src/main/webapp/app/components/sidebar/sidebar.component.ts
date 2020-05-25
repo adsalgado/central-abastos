@@ -39,13 +39,19 @@ export class SidebarComponent implements OnInit {
         this.menu.push(
           new Menu('Lista de carrito frecuentes', false, '../../../content/imgs/lista-carrito/trolley.png', '/main/lista-carrito', null)
         );
-        this.menu.push(new Menu('Direcciones frecuentes', false, '../../../content/imgs/direcciones/markerD.png', '/main/perfil', null));
+        this.menu.push(new Menu('Tarjetas', false, '../../../content/imgs/menu/card.png', '/main/tarjeta-frecuente', null));
+        this.menu.push(
+          new Menu('Direcciones frecuentes', false, '../../../content/imgs/direcciones/markerD.png', '/main/direccion-frecuente', null)
+        );
         this.menu.push(new Menu('Mi historial', false, '../../../content/imgs/menu/historial.png', '/main/pedidos', null));
+        this.menu.push(new Menu('Proveedores', false, '../../../content/imgs/menu/give.png', '/main/proveedores', null));
 
-        this.menu.push(new Menu('Acerca de', false, '../../../content/imgs/menu/interface.png', '/main/perfil', null));
-        this.menu.push(new Menu('Información de la app', false, '../../../content/imgs/menu/signs.png', '/main/perfil', null));
-        this.menu.push(new Menu('Contacto', false, '../../../content/imgs/menu/logotype.png', '/main/perfil', null));
-        this.menu.push(new Menu('Términos y condiciones', false, '../../../content/imgs/menu/contrato.png', '/main/perfil', null));
+        this.menu.push(new Menu('Acerca de', false, '../../../content/imgs/menu/interface.png', '/main/acercade', null));
+        this.menu.push(new Menu('Información de la app', false, '../../../content/imgs/menu/signs.png', '/main/informacion', null));
+        this.menu.push(new Menu('Contacto', false, '../../../content/imgs/menu/logotype.png', '/main/contacto', null));
+        this.menu.push(
+          new Menu('Términos y condiciones', false, '../../../content/imgs/menu/contrato.png', '/main/terminos-condiciones', null)
+        );
         break;
 
       case 2:

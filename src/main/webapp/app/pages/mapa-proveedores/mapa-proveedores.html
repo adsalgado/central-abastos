@@ -16,12 +16,7 @@
     
       <div ngxSlickItem class="slide" *ngFor="let p of proveedorActivo.productos; let i=index">
         <div  id="card-{{i}}" class="card animated lightSpeedIn" >
-          <!-- <div class="tacha">
-                          <div class="mini-tacha">
-                              <ion-icon ios="ios-cart-outline" md="ios-cart-outline" style="color: #3b64bf;" *ngIf="!p.carrito" (click)="agregarToCarrito(p)"></ion-icon>
-                              <ion-icon ios="ios-cart" md="ios-cart" *ngIf="p.carrito" style="color: #3b64bf;" (click)="productoService.deleteFavorito(p)"></ion-icon>
-                          </div>
-                        </div> -->
+          
           <div class="container-card" (click)="viewDetail(p)">
     
             <img src="{{env.getImagenIndividual}}{{p.producto.adjuntoId}}" />
@@ -65,12 +60,7 @@
 
   <div *ngIf="!slideProve">
     <div id="card-{{i}}" class="card animated lightSpeedIn">
-      <!-- <div class="tacha">
-                    <div class="mini-tacha">
-                        <ion-icon ios="ios-cart-outline" md="ios-cart-outline" style="color: #3b64bf;" *ngIf="!p.carrito" (click)="agregarToCarrito(p)"></ion-icon>
-                        <ion-icon ios="ios-cart" md="ios-cart" *ngIf="p.carrito" style="color: #3b64bf;" (click)="productoService.deleteFavorito(p)"></ion-icon>
-                    </div>
-                  </div> -->
+     
       <div class="container-card" (click)="viewDetail(proveedorActivo)">
 
         <img src="{{env.getImagenIndividual}}{{proveedorActivo.producto.adjuntoId}}" />

@@ -1,0 +1,29 @@
+<div style="padding:20px">
+  <div class="contenedori">
+    <div class="formulario" *ngIf="render">
+      <form [formGroup]="formGroup">
+        <div *ngFor="let dato of objetoRegistro;let i = index" class="contenedor-input">
+          <input class="inp" placeholder="{{dato.name}}" (keyup)="ejecutaValidator()" formControlName="{{dato.formName}}"
+            type="{{dato.type}}" [(ngModel)]="dato.value" maxlength="{{dato.length}}" *ngIf="dato.type != 'date' && dato.type != 'checkbox' && dato.type != 'select' && dato.formName != 'ccv'">
+
+          <input placeholder="{{dato.name}}" class="inp" (keyup)="ejecutaValidator()" formControlName="{{dato.formName}}"
+            type="{{dato.type}}" type="password" [(ngModel)]="dato.value" maxlength="{{dato.length}}" *ngIf="dato.type != 'date' && dato.type != 'checkbox' && dato.type != 'select' && dato.formName == 'ccv'">
+
+          <input *ngIf="dato.type == 'date'" formControlName="{{dato.formName}}" type="month" class="dt" text-left
+            pickerFormat="MM/YY" cancelText="Cancelar" doneText="Aceptar" #fechaNac placeholder="04/24" min="2016" max="2050"
+            id="dtime" [(ngModel)]="dato.value" (change)="ejecutaValidator()"></input>
+
+          <app-control-messages [control]="formGroup.controls[dato.formName]" [clase]="'validators2'">
+          </app-control-messages>
+        </div>
+        <div class="contenedor-boton">
+          <button [disabled]="btnHabilitado" (click)="guardar()" [ngStyle]="{'background-color': genericService.getColorHex()}">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+  <div class="footer-button-class">
+    <div style="text-align: end;"><img src="../../../content/imgs/tarjetas/visa.jpg" alt="" style="width:60%"></div>
+  </div>

@@ -24,63 +24,47 @@
   </section>
 
   <section class="botones" *ngIf="tipoUsuario == 1">
-    <!-- <button class="boton-terminar" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="terminarServicio()"><ion-icon name="md-done-all"></ion-icon>Terminar servicio</button> -->
-    <button class="boton-detalle" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verDetalle()">
-      <!-- <ion-icon name="ios-clipboard-outline"></ion-icon> -->
-      <i class="material-icons">date_range</i>Ver detalle
+   <button class="boton-detalle" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verDetalle()">
+     <i class="material-icons">date_range</i>Ver detalle
     </button>
-    <!-- <button class="boton-chat" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verChat()">
-      <ion-icon name="ios-chatbubbles-outline"></ion-icon>
-      Chat
-    </button> -->
     <button class="boton-recibo" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verRecibo()">
-      <!-- <ion-icon name="ios-document-outline"></ion-icon>Ver recibo -->
       <i class="material-icons">date_range</i>Ver recibo
     </button>
     <button class="boton-problemas" style="font-size: 10px;" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="problemasPedido()">
-      <!-- <ion-icon name="ios-flash-outline"></ion-icon>Problemas con pedido -->
       <i class="material-icons">date_range</i>Problemas con pedido
     </button>
   </section>
 
   <section class="botones" *ngIf="tipoUsuario == 2" style="    margin-top: 84%;">
     <button class="boton-terminar" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verProductos()">
-     <!--  <ion-icon name="md-done-all"></ion-icon>Ver productos -->
-      <i class="material-icons">date_range</i>Ver productos
+     <i class="material-icons">date_range</i>Ver productos
     </button>
     <button class="boton-chat" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verChat()">
-      <!-- <ion-icon name="ios-chatbubbles-outline"></ion-icon>
-      Chat -->
+     
       <i class="material-icons">date_range</i>Chat
     </button>
     <button class="boton-recibo" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="enviarPedido()"
       style="font-size: 11px;">
-      <!-- <ion-icon name="ios-send-outline"></ion-icon>Enviar a transportista -->
       <i class="material-icons">date_range</i>Enviar a transportista
     </button>
     <button class="boton-problemas2" style="font-size: 10px;" [ngStyle]="{'background-color' : genericService.getColorHex()}"
       (click)="problemasPedido()">
-      <!-- <ion-icon name="ios-flash-outline"></ion-icon>Problemas con pedido -->
       <i class="material-icons">date_range</i>Problemas con pedido
     </button>
   </section>
 
   <section class="botones" *ngIf="tipoUsuario == 3" style="    margin-top: 84%;">
     <button class="boton-terminar" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verProductos()">
-      <!-- <ion-icon name="md-done-all"></ion-icon>Ver productos -->
-      <i class="material-icons">date_range</i>Ver productos
+     <i class="material-icons">date_range</i>Ver productos
     </button>
     <button class="boton-chat" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verChat()">
-      <!-- <ion-icon name="ios-chatbubbles-outline"></ion-icon>
-      Chat -->
+     
       <i class="material-icons">date_range</i>Chat
     </button>
     <button class="boton-problemas2" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="presentActionSheet()">
-      <!-- <ion-icon name="ios-flash-outline"></ion-icon>Terminar pedido -->
       <i class="material-icons">date_range</i>Terminar pedido
     </button>
     <button class="boton-problemas2" style="font-size: 10px;" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="problemasPedido()">
-      <!-- <ion-icon name="ios-flash-outline"></ion-icon>Problemas con pedido -->
       <i class="material-icons">date_range</i>Problemas con pedido
     </button>
   </section>

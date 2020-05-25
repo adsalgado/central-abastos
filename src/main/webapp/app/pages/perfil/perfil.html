@@ -6,7 +6,7 @@
         <div class="imagen" *ngIf="userResponse">
           
           
-          <div *ngIf="!photo_url && !onlyPhoto && userResponse && !userResponse.adjuntoId">
+          <div id="uno1" *ngIf="!photo_url && !onlyPhoto && userResponse && !userResponse.adjuntoId">
             <label for="files" class="btn" style="background-color: #fff0;
             border-color: #fff0;
             box-shadow: none;
@@ -17,7 +17,7 @@
           </div>
           
 
-          <div *ngIf="photo_url && !onlyPhoto && !userResponse || !userResponse?.adjuntoId">
+          <div id="uno2" *ngIf="photo_url && !onlyPhoto">
             <label for="files" class="btn" style="background-color: #fff0;
             border-color: #fff0;
             box-shadow: none;
@@ -27,7 +27,7 @@
             <input id="files" style="visibility:hidden;" type="file" accept="image/x-png,image/jpeg,image/jpg" (change)="changeFile($event)">
           </div>
           
-          <div *ngIf="photo_url && onlyPhoto">
+          <div id="uno3" *ngIf="photo_url && onlyPhoto">
             <label for="files" class="btn" style="background-color: #fff0;
             border-color: #fff0;
             box-shadow: none;
@@ -37,7 +37,7 @@
             <input id="files" style="visibility:hidden;" type="file" accept="image/x-png,image/jpeg,image/jpg" (change)="changeFile($event)">
           </div>
           
-          <div *ngIf="!photo_url && !onlyPhoto && userResponse && userResponse?.adjuntoId">
+          <div id="uno4" *ngIf="!photo_url && !onlyPhoto && userResponse && userResponse?.adjuntoId">
             <label for="files" class="btn" style="background-color: #fff0;
             border-color: #fff0;
             box-shadow: none;

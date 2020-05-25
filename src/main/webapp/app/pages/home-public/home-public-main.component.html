@@ -2,11 +2,7 @@
   <label for="search"></label>
   <div class="input-image" (click)="close()" [style.background-image]="'url('+imgBusqueda+')'"></div>
   <input type="text" placeholder="Buscar" class="input-text" id="search" [(ngModel)]="dataFilter.nombre" (keyup)="buscarPorFiltros()">
-  <!-- <ion-icon name="close" style="    position: absolute;
-  right: 14px;
-  /* top: 0px; */
-  padding: 8px;
-  font-size: 19px;" (click)="borraPalabra()"></ion-icon> -->
+  
   <span class="material-icons" style="    position: absolute;
   right: 50px;
   /* top: 0px; */

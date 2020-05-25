@@ -152,23 +152,7 @@
 
 <div class="">
 
-  <!-- <div *ngIf="productosCarrito && productosCarrito?.length>0" class="ordenamiento" [ngStyle]="{'background-color': genericService.getColorHex()}">
-        <div class="texto-ordena">
-          Ordenar por precio
-        </div>
-        <div class="botones">
-            <button ion-button outline style="width: 48%;" (click)="up()"
-            [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
-              <ion-icon name="md-trending-up" class="botonFooter"></ion-icon>
-            </button>
-        </div>
-        <div class="botones">
-            <button ion-button outline style="width: 48%;" (click)="down()"
-            [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
-              <ion-icon name="md-trending-down" class="botonFooter"></ion-icon>
-            </button>
-        </div>
-      </div> -->
+ 
 
   <div>
 
@@ -182,12 +166,7 @@
 
       <div class="scrolling-wrapper">
         <div id="card-{{i}}" class="card" *ngFor="let p of proveedor.carritoAgrupado; let i = index">
-          <!-- <div class="tacha">
-                            <div class="mini-tacha">
-                                <ion-icon ios="ios-cart-outline" md="ios-cart-outline" style="color: #3b64bf;" *ngIf="!p.carrito" (click)="agregarToCarrito(p)"></ion-icon>
-                                <ion-icon ios="ios-cart" md="ios-cart" *ngIf="p.carrito" style="color: #3b64bf;" (click)="productoService.deleteFavorito(p)"></ion-icon>
-                            </div>
-                          </div> -->
+        
           <div class="container-card" (click)="viewDetail(p)">
 
             <img src="{{env.getImagenIndividual}}{{p.productoProveedor.producto.adjuntoId}}" />

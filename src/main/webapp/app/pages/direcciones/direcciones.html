@@ -23,7 +23,6 @@
 
       <div>
         <button  (click)="borrar(card)" color="danger">
-          <!-- <ion-icon name="ios-trash-outline"></ion-icon> -->
           Borrar
         </button>
       </div>
@@ -44,6 +43,6 @@
 </div>
 <div class="fab-cards animated swing" *ngIf="!fromPop">
   <button (click)="nuevaLista()" [ngStyle]="{'background-color': genericService.getColorHex()}">
-    <!-- <ion-icon name="add"></ion-icon> -->
+  
   </button>
 </div>

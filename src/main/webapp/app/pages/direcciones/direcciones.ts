@@ -1,37 +1,38 @@
+import { JhiEventManager } from 'ng-jhipster';
 import { HomeGeoProveedoresPage } from './../home-geo-proveedores/home-geo-proveedores';
 
 import { GenericService } from './../../services/generic.service';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, ViewController } from 'ionic-angular';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
 import { AlertService } from 'app/services/alert.service';
 import { LoadingService } from 'app/services/loading-service';
+import { NavParamsService } from 'app/services/nav-params.service';
 
 @Component({
   selector: 'page-direcciones',
   templateUrl: 'direcciones.html',
   styleUrls: ['./direcciones.scss']
 })
-export class DireccionesPage {
+export class DireccionesPage implements OnDestroy, OnInit {
   public listaDirecciones: any = [];
 
   public render: boolean = false;
   public fromPop: boolean = false;
 
+  public dataEvents: any = {};
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
+    public navCtrl: NavParamsService,
     private genericService: GenericService,
     private alertaService: AlertService,
     private loadingService: LoadingService,
-    private events: Events,
-    private viewCtrl: ViewController
+    private events: JhiEventManager
   ) {
-    this.fromPop = navParams.get('fromPop');
+    this.fromPop = navCtrl.get('fromPop');
     this.cargarDireccionesLista();
 
-    this.events.subscribe('direction', data => {
+    this.dataEvents.uno = this.events.subscribe('direction', data => {
       if (!data.create) {
         let position = this.listaDirecciones.findIndex(img => {
           return img.id == data.body.id;
@@ -49,12 +50,19 @@ export class DireccionesPage {
       //this.cards = this.localStorageEncryptService.getFromLocalStorage(`${this.user.id_token}-cards`);
     });
 
-    this.events.subscribe('actualizarTarjetas', data => {
+    this.dataEvents.dos = this.events.subscribe('actualizarTarjetas', data => {
       this.cargarDireccionesLista(data.fromLogin);
     });
   }
 
   ionViewDidLoad() {}
+
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.events.destroy(this.dataEvents.uno);
+    this.events.destroy(this.dataEvents.dos);
+  }
 
   cargarDireccionesLista(fromLogin: boolean = false) {
     this.genericService.sendGetRequest(environment.direcciones).subscribe(
@@ -96,7 +104,7 @@ export class DireccionesPage {
   }
 
   view(direccion: any) {
-    this.navCtrl.push(HomeGeoProveedoresPage, { direccion });
+    this.navCtrl.push('main/proveedores-geo', { direccion });
   }
 
   select(direccion: any) {
@@ -104,6 +112,6 @@ export class DireccionesPage {
   }
 
   nuevaLista() {
-    this.navCtrl.push(HomeGeoProveedoresPage);
+    this.navCtrl.push('main/proveedores-geo');
   }
 }

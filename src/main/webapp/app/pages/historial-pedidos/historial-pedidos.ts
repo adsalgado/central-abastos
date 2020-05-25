@@ -62,6 +62,8 @@ export class HistorialPedidosPage implements OnInit, OnDestroy {
         this.pedidos = response;
         if (this.pedidos.length <= 0) {
           this.pedidos = null;
+          this.alertaService.warn('Aún no cuentas con historial de pedidos');
+          this.navParams.push('main/public-home');
         }
         this.pedidosReplica = this.pedidos;
       },

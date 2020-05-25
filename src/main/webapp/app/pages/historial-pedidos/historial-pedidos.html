@@ -5,32 +5,26 @@
 <div class="filtros" [ngStyle]="{'background-color' : genericService.getColorHex()}" *ngIf="pedidos && pedidos?.length > 0">
   <button (click)="ordenPor(1)" *ngIf="!botones.boton1">
     <div style="font-size: 9px;">Fecha solicitud</div>
-    <!-- <ion-icon name="ios-calendar-outline"></ion-icon> -->
     <i class="material-icons">more_vert</i>
   </button>
   <button (click)="ordenPor(4)" *ngIf="botones.boton1">
     <div style="font-size: 9px;">Fecha solicitud</div>
-    <!-- <ion-icon name="ios-calendar"></ion-icon> -->
     <i class="material-icons">more_vert</i>
   </button>
   <button (click)="ordenPor(2)" *ngIf="!botones.boton2">
     <div style="font-size: 9px;">Fecha entrega</div>
-    <!-- <ion-icon name="ios-list-box-outline"></ion-icon> -->
     <i class="material-icons">more_vert</i>
   </button>
   <button (click)="ordenPor(5)" *ngIf="botones.boton2">
     <div style="font-size: 9px;">Fecha entrega</div>
-   <!--  <ion-icon name="ios-list-box"></ion-icon> -->
    <i class="material-icons">date_range</i>
   </button>
   <button (click)="ordenPor(3)" *ngIf="!botones.boton3">
     <div style="font-size: 9px;">Estatus</div>
-    <!-- <ion-icon name="ios-checkbox-outline"></ion-icon> -->
     <i class="material-icons">date_range</i>
   </button>
   <button (click)="ordenPor(6)" *ngIf="botones.boton3">
     <div style="font-size: 9px;">Estatus</div>
-    <!-- <ion-icon cla></ion-icon> -->
     <i class="material-icons">date_range</i>
   </button>
 </div>

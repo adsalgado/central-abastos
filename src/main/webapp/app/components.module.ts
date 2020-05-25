@@ -1,3 +1,4 @@
+import { Left } from './directives/left';
 import { ChatPage } from './pages/chat/chat';
 import { HistorialPedidosPage } from './pages/historial-pedidos/historial-pedidos';
 import { HistorialPedidosDetailPage } from './pages/historial-pedidos-detail/historial-pedidos-detail';
@@ -52,6 +53,18 @@ import { PedidosDetailPage } from './pages/pedidos-detail/pedidos-detail';
 import { PerfilPage } from './pages/perfil/perfil';
 import { ListaCarritoComprasPage } from './pages/lista-carrito-compras/lista-carrito-compras';
 import { CarritoHistoricoPage } from './pages/carrito-historico/carrito-historico';
+import { ProveedorPage } from './pages/proveedores/recuperar-password';
+import { AcercaDePage } from './pages/acerca-de/acerca-de';
+import { InfoPage } from './pages/info/info';
+import { ContactPage } from './pages/contact/contact';
+import { TerminosCondicionesPage } from './pages/terminos-condiciones/terminos-condiciones';
+import { Bottom } from './directives/bottom';
+import { Right } from './directives/right';
+import { Top } from './directives/top';
+import { FabButton } from 'ionic-angular';
+import { DetalleTarjetaPage } from './pages/detalle-tarjeta/detalle-tarjeta';
+import { TarjetasFrecuentesPage } from './pages/tarjetas-frecuentes/tarjetas-frecuentes';
+import { FabComponent } from './components/fab-button/fab.component';
 
 //import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 
@@ -100,7 +113,22 @@ import { CarritoHistoricoPage } from './pages/carrito-historico/carrito-historic
 
     PerfilPage,
     ListaCarritoComprasPage,
-    CarritoHistoricoPage
+    CarritoHistoricoPage,
+    ProveedorPage,
+
+    AcercaDePage,
+    InfoPage,
+    ContactPage,
+    TerminosCondicionesPage,
+
+    Bottom,
+    Left,
+    Right,
+    Top,
+    FabComponent,
+
+    DetalleTarjetaPage,
+    TarjetasFrecuentesPage
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,
@@ -158,7 +186,21 @@ import { CarritoHistoricoPage } from './pages/carrito-historico/carrito-historic
 
     PerfilPage,
     ListaCarritoComprasPage,
-    CarritoHistoricoPage
+    CarritoHistoricoPage,
+    ProveedorPage,
+    AcercaDePage,
+    InfoPage,
+    ContactPage,
+    TerminosCondicionesPage,
+
+    Bottom,
+    Left,
+    Right,
+    Top,
+    FabComponent,
+
+    DetalleTarjetaPage,
+    TarjetasFrecuentesPage
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,

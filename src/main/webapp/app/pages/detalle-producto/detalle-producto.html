@@ -1,15 +1,5 @@
 <div class="slider-io animated bounceInLeft" >
-  <!-- <ion-slides autoplay="5000" zoom="true" loop="true" #slides2 loop="false">
-    <ion-slide *ngFor="let photo of producto.photos; let i=index" (click)="imagesLoaded(i)">
-      <div>
-        <img src="{{photo.img}}" alt="">
-        <div class="div-foto">
-          <ion-icon ios="ios-images-outline" md="ios-images-outline"></ion-icon>
-          <p>{{i+1}}/{{producto.photos.length}}</p>
-        </div>
-      </div>
-    </ion-slide>
-  </ion-slides> -->
+  
 
   <div class="w3-content w3-display-container dividor">
       <img class="mySlides" id="id-{{i}}" src="{{photo.img}}" (click)="imagesLoaded(i)" [ngStyle]="{'display': photo.view ? 'block' : 'none'}" style="width:100%" *ngFor="let photo of producto.photos; let i=index">

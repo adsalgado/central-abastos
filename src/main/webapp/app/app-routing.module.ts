@@ -31,6 +31,13 @@ import { ListaChatPage } from './pages/lista-chat/lista-chat';
 import { PedidosDetailPage } from './pages/pedidos-detail/pedidos-detail';
 import { PerfilPage } from './pages/perfil/perfil';
 import { CarritoHistoricoPage } from './pages/carrito-historico/carrito-historico';
+import { ProveedorPage } from './pages/proveedores/recuperar-password';
+import { AcercaDePage } from './pages/acerca-de/acerca-de';
+import { InfoPage } from './pages/info/info';
+import { ContactPage } from './pages/contact/contact';
+import { TerminosCondicionesPage } from './pages/terminos-condiciones/terminos-condiciones';
+import { TarjetasFrecuentesPage } from './pages/tarjetas-frecuentes/tarjetas-frecuentes';
+import { DetalleTarjetaPage } from './pages/detalle-tarjeta/detalle-tarjeta';
 
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const ADMIN_ROUTES = [auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, ...userMgmtRoute, metricsRoute];
@@ -67,6 +74,18 @@ const routes: Routes = [
 
       { path: 'lista-carrito', component: ListaCarritoComprasPage },
       { path: 'carrito-historico', component: CarritoHistoricoPage },
+
+      { path: 'proveedores', component: ProveedorPage },
+      { path: 'acercade', component: AcercaDePage },
+      { path: 'informacion', component: InfoPage },
+      { path: 'contacto', component: ContactPage },
+      { path: 'terminos-condiciones', component: TerminosCondicionesPage },
+
+      { path: 'detalle-tarjeta', component: DetalleTarjetaPage },
+      { path: 'tarjeta-frecuente', component: TarjetasFrecuentesPage },
+
+      { path: 'direccion-frecuente', component: DireccionesPage },
+
       {
         path: 'admin',
         loadChildren: () => import('./admin/admin.module').then(m => m.AbastosAdminModule)

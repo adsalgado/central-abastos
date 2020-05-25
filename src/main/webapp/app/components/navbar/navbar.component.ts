@@ -70,6 +70,7 @@ export class NavbarComponentMain implements OnInit {
   cargarProductosCarrito() {
     this.genericService.sendGetRequest(environment.carritoCompras).subscribe(
       (response: any) => {
+        this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
         this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, response);
         this.navParams.push('main/carrito-compras');
       },

@@ -26,12 +26,7 @@
   <div *ngIf="proveedoresGeolocate && proveedoresGeolocate.length > 0 && !multiple">
     <div id="card-{{i}}" class="card animated lightSpeedIn" *ngFor="let p of proveedoresGeolocate; let i = index"
       (click)="viewDetail(p)">
-      <!-- <div class="tacha">
-                      <div class="mini-tacha">
-                          <ion-icon ios="ios-cart-outline" md="ios-cart-outline" style="color: #3b64bf;" *ngIf="!p.carrito" (click)="agregarToCarrito(p)"></ion-icon>
-                          <ion-icon ios="ios-cart" md="ios-cart" *ngIf="p.carrito" style="color: #3b64bf;" (click)="productoService.deleteFavorito(p)"></ion-icon>
-                      </div>
-                    </div> -->
+      
       <div class="container-card">
 
         <img src="{{env.getImagenIndividual}}{{p.producto.adjuntoId}}" />
@@ -55,12 +50,7 @@
 
       <div class="scrolling-wrapper" style="text-align: center;">
         <div id="card-{{i}}" class="card animated lightSpeedIn" *ngFor="let p of pr.productos; let i = index" (click)="viewDetail(p)">
-          <!-- <div class="tacha">
-                              <div class="mini-tacha">
-                                  <ion-icon ios="ios-cart-outline" md="ios-cart-outline" style="color: #3b64bf;" *ngIf="!p.carrito" (click)="agregarToCarrito(p)"></ion-icon>
-                                  <ion-icon ios="ios-cart" md="ios-cart" *ngIf="p.carrito" style="color: #3b64bf;" (click)="productoService.deleteFavorito(p)"></ion-icon>
-                              </div>
-                            </div> -->
+          
           <div class="container-card">
 
             <img src="{{env.getImagenIndividual}}{{p.producto.adjuntoId}}" />

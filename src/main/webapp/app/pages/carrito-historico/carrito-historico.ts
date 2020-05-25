@@ -518,6 +518,10 @@ export class CarritoHistoricoPage implements OnDestroy {
   }
 
   infoContact() {
+    console.log('scroll top');
+
+    window.scrollTo(0, 0);
+    window.scrollTo(0, document.body.scrollHeight - document.body.scrollHeight);
     let modal: any = document.getElementById('myModal2');
     //
     this.enCompra = true;
@@ -556,6 +560,7 @@ export class CarritoHistoricoPage implements OnDestroy {
 
     this.formGroup = this.formBuilder.group(putObj);
     //
+    window.scrollTo(0, 0);
     modal.style.display = 'block';
   }
 
