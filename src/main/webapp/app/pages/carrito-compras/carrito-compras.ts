@@ -812,16 +812,22 @@ export class CarritoComprasPage implements OnDestroy {
     modal.result.then(
       result => {
         let data = result;
+        console.log(data);
 
         if (data) {
           if (data != null) {
             this.data = data.data;
+            console.log(this.objetoRegistro);
+
             if (
-              this.objetoRegistro[3].value == true ||
-              this.objetoRegistro[3].value == false ||
               this.objetoRegistro[3].value == 'true' ||
-              this.objetoRegistro[3].value == 'false'
+              this.objetoRegistro[3].value == true ||
+              this.objetoRegistro[3].value == 'false' ||
+              this.objetoRegistro[3].value == false
             ) {
+              console.log('********************************');
+              console.log(this.data);
+
               this.objetoRegistro[4].value = this.data.direccion;
               this.objetoRegistro[5].value = this.data.codigoPostal;
             } else {

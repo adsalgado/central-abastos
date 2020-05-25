@@ -3,13 +3,14 @@ import { JhiEventManager } from 'ng-jhipster';
 import { HomeGeoProveedoresPage } from './../home-geo-proveedores/home-geo-proveedores';
 
 import { GenericService } from './../../services/generic.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, ViewController } from 'ionic-angular';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
 import { AlertService } from 'app/services/alert.service';
 import { LoadingService } from 'app/services/loading-service';
 import { NavParamsService } from 'app/services/nav-params.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'page-direcciones',
@@ -23,15 +24,18 @@ export class DireccionesPage implements OnDestroy, OnInit {
   public fromPop: boolean = false;
 
   public dataEvents: any = {};
+
   constructor(
     public navCtrl: NavParamsService,
     private genericService: GenericService,
     private alertaService: AlertService,
     private loadingService: LoadingService,
     private events: JhiEventManager,
-    private localStorageEncryptService: LocalStorageEncryptService
+    private localStorageEncryptService: LocalStorageEncryptService,
+    public activeModal: NgbActiveModal
   ) {
     this.fromPop = navCtrl.get('fromPop');
+
     this.cargarDireccionesLista();
 
     this.dataEvents.uno = this.events.subscribe('direction', data => {
@@ -110,7 +114,10 @@ export class DireccionesPage implements OnDestroy, OnInit {
   }
 
   select(direccion: any) {
-    //this.viewCtrl.dismiss({ direccion });
+    console.log('-------');
+    console.log(direccion);
+
+    this.activeModal.close({ direccion: direccion });
   }
 
   nuevaLista() {

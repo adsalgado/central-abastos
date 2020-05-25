@@ -34,6 +34,7 @@ import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import mx.com.sharkit.domain.Estatus;
 import mx.com.sharkit.domain.Proveedor;
+import mx.com.sharkit.domain.TipoUsuario;
 import mx.com.sharkit.domain.Transportista;
 import mx.com.sharkit.domain.User;
 import mx.com.sharkit.pushnotif.service.EnumPantallas;
@@ -326,7 +327,8 @@ public class PedidoProveedorResource {
 							mapData);
 
 					log.debug("requestCliente: {}", requestCliente);
-					CompletableFuture<String> pushNotificationCliente = pushNotificationsService.send(requestCliente);
+					CompletableFuture<String> pushNotificationCliente = pushNotificationsService.send(requestCliente,
+							TipoUsuario.CLIENTE);
 					CompletableFuture.allOf(pushNotificationCliente).join();
 
 					try {
@@ -342,7 +344,7 @@ public class PedidoProveedorResource {
 					}
 				} catch (JSONException e) {
 					log.debug("JSONException e: {}", e);
-				} 
+				}
 
 			}
 
@@ -380,7 +382,8 @@ public class PedidoProveedorResource {
 							EnumPantallas.PEDIDO_CONFIRMADO_CLIENTE.getView(), mapData);
 
 					log.debug("requestCliente: {}", requestCliente);
-					CompletableFuture<String> pushNotificationCliente = pushNotificationsService.send(requestCliente);
+					CompletableFuture<String> pushNotificationCliente = pushNotificationsService.send(requestCliente,
+							TipoUsuario.CLIENTE);
 					CompletableFuture.allOf(pushNotificationCliente).join();
 
 					HttpEntity<String> requestTransportista = pushNotificationsService.createRequestNotification(
@@ -389,7 +392,7 @@ public class PedidoProveedorResource {
 
 					log.debug("request: {}", requestTransportista);
 					CompletableFuture<String> pushNotificationTransportista = pushNotificationsService
-							.send(requestCliente);
+							.send(requestTransportista, TipoUsuario.TRANSPORTISTA);
 					CompletableFuture.allOf(pushNotificationTransportista).join();
 
 					try {
@@ -406,7 +409,7 @@ public class PedidoProveedorResource {
 					} catch (Exception e) {
 						log.debug("Exception: {}", e);
 					}
-					
+
 				} catch (JSONException e) {
 					log.debug("JSONException e: {}", e);
 				} catch (HttpClientErrorException e) {
@@ -467,7 +470,7 @@ public class PedidoProveedorResource {
 
 					log.debug("requestProveedor: {}", requestProveedor);
 					CompletableFuture<String> pushNotificationProveedor = pushNotificationsService
-							.send(requestProveedor);
+							.send(requestProveedor, TipoUsuario.PROVEEDOR);
 					CompletableFuture.allOf(pushNotificationProveedor).join();
 
 					HttpEntity<String> requestTransportista = pushNotificationsService.createRequestNotification(
@@ -476,7 +479,7 @@ public class PedidoProveedorResource {
 
 					log.debug("request: {}", requestTransportista);
 					CompletableFuture<String> pushNotificationTransportista = pushNotificationsService
-							.send(requestTransportista);
+							.send(requestTransportista, TipoUsuario.TRANSPORTISTA);
 					CompletableFuture.allOf(pushNotificationTransportista).join();
 
 					try {
@@ -493,7 +496,7 @@ public class PedidoProveedorResource {
 					} catch (Exception e) {
 						log.debug("Exception: {}", e);
 					}
-					
+
 				} catch (JSONException e) {
 					log.debug("JSONException e: {}", e);
 				} catch (HttpClientErrorException e) {

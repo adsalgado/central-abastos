@@ -3,18 +3,15 @@ package mx.com.sharkit.excel.objectbinding.domain;
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 
 @XmlRootElement
-@XmlSeeAlso(User.class)
 public class Base implements Serializable {
 
 	/**

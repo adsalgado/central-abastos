@@ -11,6 +11,7 @@ import { ProductoProveedorDetailComponent } from './producto-proveedor-detail.co
 import { ProductoProveedorUpdateComponent } from './producto-proveedor-update.component';
 import { ProductoProveedorDeletePopupComponent } from './producto-proveedor-delete-dialog.component';
 import { IProductoProveedor } from 'app/shared/model/producto-proveedor.model';
+import { ProductoProveedorCargaMasivaComponent } from './producto-proveedor-carga-masiva.component';
 
 @Injectable({ providedIn: 'root' })
 export class ProductoProveedorResolve implements Resolve<IProductoProveedor> {
@@ -65,6 +66,18 @@ export const productoProveedorRoute: Routes = [
   {
     path: ':id/edit',
     component: ProductoProveedorUpdateComponent,
+    resolve: {
+      productoProveedor: ProductoProveedorResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'abastosApp.productoProveedor.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'carga-masiva',
+    component: ProductoProveedorCargaMasivaComponent,
     resolve: {
       productoProveedor: ProductoProveedorResolve
     },

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import mx.com.sharkit.domain.TipoUsuario;
 import mx.com.sharkit.pushnotif.service.PushNotificationsService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.dto.PedidoDTO;
@@ -80,7 +81,7 @@ public class PushNotificationController {
 		try {
 			HttpEntity<String> request = new HttpEntity<>(body.toString());
 
-			CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request);
+			CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request, TipoUsuario.CLIENTE);
 			CompletableFuture.allOf(pushNotification).join();
 
 			String firebaseResponse = pushNotification.get();

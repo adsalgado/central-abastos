@@ -8,6 +8,8 @@ import { map } from 'rxjs/operators';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { IProductoProveedor } from 'app/shared/model/producto-proveedor.model';
+import { IAdjunto } from 'app/shared/model/adjunto.model';
+import { IAbastosResponse } from 'app/shared/model/abastos-response.model';
 
 type EntityResponseType = HttpResponse<IProductoProveedor>;
 type EntityArrayResponseType = HttpResponse<IProductoProveedor[]>;
@@ -47,6 +49,10 @@ export class ProductoProveedorService {
 
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  cargaMasiva(adjunto: IAdjunto): Observable<HttpResponse<IAbastosResponse>> {
+    return this.http.post<IAbastosResponse>(`${this.resourceUrl}/carga-masiva`, adjunto, { observe: 'response' });
   }
 
   protected convertDateFromClient(productoProveedor: IProductoProveedor): IProductoProveedor {

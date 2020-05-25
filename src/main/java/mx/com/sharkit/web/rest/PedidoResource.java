@@ -33,6 +33,7 @@ import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import mx.com.sharkit.domain.Estatus;
 import mx.com.sharkit.domain.Proveedor;
+import mx.com.sharkit.domain.TipoUsuario;
 import mx.com.sharkit.domain.Transportista;
 import mx.com.sharkit.domain.User;
 import mx.com.sharkit.pushnotif.service.EnumPantallas;
@@ -411,7 +412,7 @@ public class PedidoResource {
 						EnumPantallas.SOLICITUD_PEDIDO.getView(), mapData);
 
 				log.debug("request: {}", request);
-				CompletableFuture<String> pushNotification = pushNotificationsService.send(request);
+				CompletableFuture<String> pushNotification = pushNotificationsService.send(request, TipoUsuario.PROVEEDOR);
 
 				CompletableFuture.allOf(pushNotification).join();
 

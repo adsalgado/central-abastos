@@ -123,11 +123,12 @@ export class HomeGeoProveedoresPage implements OnDestroy, OnInit {
     };
     let modal: any = this.modalController.open(DireccionesPage, ngbModalOptions);
 
-    modal.componentInstance.fromModal = true;
+    modal.componentInstance.fromPop = true;
 
     modal.result.then(
       result => {
         let data = result;
+        console.log(result);
 
         if (data) {
           if (data != null) {
@@ -137,6 +138,9 @@ export class HomeGeoProveedoresPage implements OnDestroy, OnInit {
               latitud: "22.9221196"
               longitud: "-98.0690771"
               */
+
+            console.log(data.direccion);
+
             this.data.codigoPostal = data.direccion.direccion.codigoPostal;
             this.data.direccion = data.direccion.direccion.direccion;
             this.data.latitud = data.direccion.direccion.latitud;

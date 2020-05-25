@@ -686,10 +686,10 @@ export class CarritoHistoricoPage implements OnDestroy {
           if (data != null) {
             this.data = data.data;
             if (
-              this.objetoRegistro[3].value == true ||
-              this.objetoRegistro[3].value == false ||
               this.objetoRegistro[3].value == 'true' ||
-              this.objetoRegistro[3].value == 'false'
+              this.objetoRegistro[3].value == true ||
+              this.objetoRegistro[3].value == 'false' ||
+              this.objetoRegistro[3].value == false
             ) {
               this.objetoRegistro[4].value = this.data.direccion;
               this.objetoRegistro[5].value = this.data.codigoPostal;
