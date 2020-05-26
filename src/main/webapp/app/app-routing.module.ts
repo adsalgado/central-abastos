@@ -38,6 +38,7 @@ import { ContactPage } from './pages/contact/contact';
 import { TerminosCondicionesPage } from './pages/terminos-condiciones/terminos-condiciones';
 import { TarjetasFrecuentesPage } from './pages/tarjetas-frecuentes/tarjetas-frecuentes';
 import { DetalleTarjetaPage } from './pages/detalle-tarjeta/detalle-tarjeta';
+import { RegistroPage } from './pages/registro/registro';
 
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const ADMIN_ROUTES = [auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, ...userMgmtRoute, metricsRoute];
@@ -85,6 +86,8 @@ const routes: Routes = [
       { path: 'tarjeta-frecuente', component: TarjetasFrecuentesPage },
 
       { path: 'direccion-frecuente', component: DireccionesPage },
+
+      { path: 'registro', component: RegistroPage },
 
       {
         path: 'admin',
