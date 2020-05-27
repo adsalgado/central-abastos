@@ -66,6 +66,7 @@ import { DetalleTarjetaPage } from './pages/detalle-tarjeta/detalle-tarjeta';
 import { TarjetasFrecuentesPage } from './pages/tarjetas-frecuentes/tarjetas-frecuentes';
 import { FabComponent } from './components/fab-button/fab.component';
 import { RegistroPage } from './pages/registro/registro';
+import { DocumentosPage } from './pages-proveedor/documentos/documentos';
 
 //import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 
@@ -130,7 +131,9 @@ import { RegistroPage } from './pages/registro/registro';
 
     DetalleTarjetaPage,
     TarjetasFrecuentesPage,
-    RegistroPage
+    RegistroPage,
+
+    DocumentosPage
 
     // UserMgmtComponent,
     /*AuditsComponent,
@@ -205,7 +208,9 @@ import { RegistroPage } from './pages/registro/registro';
     DetalleTarjetaPage,
     TarjetasFrecuentesPage,
 
-    RegistroPage
+    RegistroPage,
+
+    DocumentosPage
 
     // UserMgmtComponent,
     /*AuditsComponent,

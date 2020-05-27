@@ -1,0 +1,52 @@
+<div>
+
+  <div *ngIf="documentos && documentos?.length > 0">
+    <div #item *ngFor="let d of documentos">
+      <div class="item-list-card" style="border-bottom: 1px solid #ddd;">
+        <div slot="start">
+
+          <div id="uno1" *ngIf="!d.image">
+            <label for="files_{{d.documentoId}}" class="btn" style="background-color: #fff0;
+            border-color: #fff0;
+            box-shadow: none;
+            padding: 0px;">
+              <img style="width: 66px;" src="../../../content/imgs/perfil/social-media.png" alt="">
+            </label>
+            <input id="files_{{d.documentoId}}" style="visibility:hidden;" type="file" accept="image/x-png,image/jpeg,image/jpg"
+              (change)="changeFile($event, d)">
+          </div>
+
+          <div id="uno2" *ngIf="d.image">
+            <label for="files_{{d.documentoId}}" class="btn" style="background-color: #fff0;
+              border-color: #fff0;
+              box-shadow: none;
+              padding: 0px;">
+              <img style="width: 66px;" src="{{d.image}}" alt="">
+            </label>
+            <input id="files_{{d.documentoId}}" style="visibility:hidden;" type="file" accept="image/x-png,image/jpeg,image/jpg"
+              (change)="changeFile($event, d)">
+          </div>
+
+
+        </div>
+        <div class="datos-tarjetas" style="vertical-align: top;">
+          <div class="name" style="font-size:14px">Documento</div>
+          <div class="name" style="font-size:14px"><strong>{{d.nombre}}</strong></div>
+        </div>
+
+      </div>
+      <div side="right">
+        <button (click)="actualizar(card)" color="primary">
+    <!--      <ion-icon name="ios-create-outline"></ion-icon>  -->
+          <i class="material-icons">close</i>
+          Editar
+        </button>
+        <button (click)="borrar(card)" color="danger">
+          <i class="material-icons">close</i>
+          Borrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

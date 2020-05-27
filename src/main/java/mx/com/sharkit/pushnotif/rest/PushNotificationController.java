@@ -42,7 +42,7 @@ public class PushNotificationController {
 
 		JSONObject body = new JSONObject();
 //		body.put("to", "/topics/" + TOPIC);
-		body.put("to", "dOgIdRRpI9Q:APA91bGOYe9H7uZPdOgTRWm06-OOuAUIvePu5ayr0sELXDAkRQlmM8e3vjMQz-6LKjcYvC3ARBEj4VOo7VD-9DWu3ydFnfMp9PfZHBccDUgX1KY-oUgHbpVxm5fyMDLGFtE_fptE7QAy");
+		body.put("to", "dt9o0fgwH_c:APA91bFyuMZb0aGXj4iAwEoqozZA4ffjWt2SRInNqln3GFLC9_9ygKQiVVIOJNFnh8Jvpi9O-3dj7UBBxWGtOgz6rj9wT4FMuGIG_VpwlppIS6ufPIizxcPatM6Y1G89T-GQ637VktR9");
 //		body.put("to", null);
 		body.put("priority", "high");
 		
@@ -81,7 +81,7 @@ public class PushNotificationController {
 		try {
 			HttpEntity<String> request = new HttpEntity<>(body.toString());
 
-			CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request, TipoUsuario.CLIENTE);
+			CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request, TipoUsuario.PROVEEDOR);
 			CompletableFuture.allOf(pushNotification).join();
 
 			String firebaseResponse = pushNotification.get();
