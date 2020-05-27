@@ -60,6 +60,8 @@ public class ProductoDTO implements Serializable {
 	private EstatusDTO estatus;
 
 	private UnidadMedidaDTO unidadMedida;
+	
+	private AdjuntoDTO adjunto;
 
 	private List<AdjuntoDTO> imagenes;
 
@@ -205,6 +207,14 @@ public class ProductoDTO implements Serializable {
 
 	public void setUnidadMedida(UnidadMedidaDTO unidadMedida) {
 		this.unidadMedida = unidadMedida;
+	}
+
+	public AdjuntoDTO getAdjunto() {
+		return adjunto;
+	}
+
+	public void setAdjunto(AdjuntoDTO adjunto) {
+		this.adjunto = adjunto;
 	}
 
 	public List<AdjuntoDTO> getImagenes() {

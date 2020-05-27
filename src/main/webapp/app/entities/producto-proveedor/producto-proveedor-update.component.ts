@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
-import { JhiAlertService } from 'ng-jhipster';
+import { JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 import { IProductoProveedor, ProductoProveedor } from 'app/shared/model/producto-proveedor.model';
 import { ProductoProveedorService } from './producto-proveedor.service';
 import { IProveedor } from 'app/shared/model/proveedor.model';
@@ -19,6 +19,7 @@ import { ITipoArticulo } from 'app/shared/model/tipo-articulo.model';
 import { IUnidadMedida } from 'app/shared/model/unidad-medida.model';
 import { TipoArticuloService } from '../tipo-articulo';
 import { UnidadMedidaService } from '../unidad-medida';
+import { IAdjunto, Adjunto } from 'app/shared/model/adjunto.model';
 
 @Component({
   selector: 'jhi-producto-proveedor-update',
@@ -47,10 +48,13 @@ export class ProductoProveedorUpdateComponent implements OnInit {
     adjuntoId: [],
     tipoArticuloId: [],
     estatusId: [],
-    unidadMedidaId: []
+    unidadMedidaId: [],
+    file: [],
+    fileContentType: []
   });
 
   constructor(
+    protected dataUtils: JhiDataUtils,
     protected jhiAlertService: JhiAlertService,
     protected productoProveedorService: ProductoProveedorService,
     protected proveedorService: ProveedorService,
@@ -58,6 +62,7 @@ export class ProductoProveedorUpdateComponent implements OnInit {
     protected estatusService: EstatusService,
     protected tipoArticuloService: TipoArticuloService,
     protected unidadMedidaService: UnidadMedidaService,
+    protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -98,6 +103,9 @@ export class ProductoProveedorUpdateComponent implements OnInit {
   }
 
   updateForm(productoProveedor: IProductoProveedor) {
+    if (!productoProveedor.producto) {
+      productoProveedor.producto = new Producto();
+    }
     this.editForm.patchValue({
       id: productoProveedor.id,
       sku: productoProveedor.producto.sku,
@@ -137,6 +145,15 @@ export class ProductoProveedorUpdateComponent implements OnInit {
     producto.tipoArticuloId = this.editForm.get(['tipoArticuloId']).value;
     producto.unidadMedidaId = this.editForm.get(['unidadMedidaId']).value;
 
+    if (this.editForm.get(['file'])) {
+      let adjunto: IAdjunto;
+      adjunto = new Adjunto();
+      adjunto.file = this.editForm.get(['file']).value;
+      adjunto.contentType = this.editForm.get(['fileContentType']).value;
+      adjunto.fileContentType = this.editForm.get(['fileContentType']).value;
+      producto.adjunto = adjunto;
+    }
+
     let productoProveedor: IProductoProveedor;
     productoProveedor = new ProductoProveedor();
     productoProveedor.id = this.editForm.get(['id']).value;
@@ -146,6 +163,45 @@ export class ProductoProveedorUpdateComponent implements OnInit {
     productoProveedor.producto = producto;
 
     return productoProveedor;
+  }
+
+  setFileData(event, field: string, isImage) {
+    console.log('en file data.');
+    return new Promise((resolve, reject) => {
+      if (event && event.target && event.target.files && event.target.files[0]) {
+        const file = event.target.files[0];
+        if (isImage && !/^image\//.test(file.type)) {
+          reject(`File was expected to be an image but was found to be ${file.type}`);
+        } else {
+          const filedContentType: string = field + 'ContentType';
+          this.dataUtils.toBase64(file, base64Data => {
+            this.editForm.patchValue({
+              [field]: base64Data,
+              [filedContentType]: file.type
+            });
+          });
+        }
+      } else {
+        reject(`Base64 data was not set as file could not be extracted from passed parameter: ${event}`);
+      }
+    }).then(
+      () => console.log('blob added'), // sucess
+      this.onError
+    );
+  }
+
+  clearInputImage(field: string, fieldContentType: string, idInput: string) {
+    this.editForm.patchValue({
+      [field]: null,
+      [fieldContentType]: null
+    });
+    if (this.elementRef && idInput && this.elementRef.nativeElement.querySelector('#' + idInput)) {
+      this.elementRef.nativeElement.querySelector('#' + idInput).value = null;
+    }
+  }
+
+  byteSize(field) {
+    return this.dataUtils.byteSize(field);
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProductoProveedor>>) {

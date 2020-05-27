@@ -20,11 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.sharkit.domain.Adjunto;
 import mx.com.sharkit.domain.Estatus;
 import mx.com.sharkit.domain.Inventario;
 import mx.com.sharkit.domain.Producto;
 import mx.com.sharkit.domain.ProductoProveedor;
 import mx.com.sharkit.excel.objectbinding.domain.ProductoCargaDTO;
+import mx.com.sharkit.repository.AdjuntoRepository;
 import mx.com.sharkit.repository.InventarioRepository;
 import mx.com.sharkit.repository.ProductoImagenRepository;
 import mx.com.sharkit.repository.ProductoProveedorRepository;
@@ -61,6 +63,9 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 
 	@Autowired
 	private InventarioRepository inventarioRepository;
+
+	@Autowired
+	private AdjuntoRepository adjuntoRepository;
 
 	public ProductoProveedorServiceImpl(ProductoProveedorRepository productoProveedorRepository,
 			ProductoProveedorMapper productoProveedorMapper, ProductoImagenRepository productoImagenRepository,
@@ -284,6 +289,17 @@ public class ProductoProveedorServiceImpl extends BaseServiceImpl<ProductoProvee
 			productoProveedor = productoProveedorRepository
 					.findOneByProveedorIdAndProductoId(productoProveedorDTO.getProveedorId(), producto.getId())
 					.orElse(null);
+		}
+		
+		if (productoProveedorDTO.getProducto().getAdjunto() != null) {
+			Adjunto adjunto = new Adjunto();
+			adjunto.setFileName(productoProveedorDTO.getProducto().getAdjunto().getFileName());
+			adjunto.setFile(productoProveedorDTO.getProducto().getAdjunto().getFile());
+			adjunto.setContentType(productoProveedorDTO.getProducto().getAdjunto().getContentType());
+			adjunto.setFileContentType(productoProveedorDTO.getProducto().getAdjunto().getFileContentType());
+			adjunto.setSize(productoProveedorDTO.getProducto().getAdjunto().getSize());
+			adjuntoRepository.save(adjunto);
+			producto.setAdjuntoId(adjunto.getId());
 		}
 
 		if (productoProveedor == null) {
