@@ -1,20 +1,21 @@
 package mx.com.sharkit.service.impl;
 
-import mx.com.sharkit.service.EstatusService;
-import mx.com.sharkit.domain.Estatus;
-import mx.com.sharkit.repository.EstatusRepository;
-import mx.com.sharkit.service.dto.EstatusDTO;
-import mx.com.sharkit.service.mapper.EstatusMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import mx.com.sharkit.domain.Estatus;
+import mx.com.sharkit.domain.enumeration.TipoEstatus;
+import mx.com.sharkit.repository.EstatusRepository;
+import mx.com.sharkit.service.EstatusService;
+import mx.com.sharkit.service.dto.EstatusDTO;
+import mx.com.sharkit.service.mapper.EstatusMapper;
 
 /**
  * Service Implementation for managing {@link Estatus}.
@@ -87,4 +88,12 @@ public class EstatusServiceImpl implements EstatusService {
         log.debug("Request to delete Estatus : {}", id);
         estatusRepository.deleteById(id);
     }
+
+	@Override
+	public List<EstatusDTO> findAllByTipoEstatus(TipoEstatus tipoEstatus) {
+        log.debug("Request to get all Estatuses");
+        return estatusRepository.findByTipoEstatus(tipoEstatus).stream()
+            .map(estatusMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+	}
 }

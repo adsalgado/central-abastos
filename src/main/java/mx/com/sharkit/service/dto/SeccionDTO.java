@@ -37,9 +37,12 @@ public class SeccionDTO implements Serializable {
 
     private Long usuarioModificacionId;
 
-
     private Long empresaId;
 
+    private Long adjuntoId;
+
+    private AdjuntoDTO adjunto;
+    
     public Long getId() {
         return id;
     }
@@ -120,6 +123,22 @@ public class SeccionDTO implements Serializable {
 		this.usuarioModificacionId = usuarioModificacionId;
 	}
 
+	public Long getAdjuntoId() {
+		return adjuntoId;
+	}
+
+	public void setAdjuntoId(Long adjuntoId) {
+		this.adjuntoId = adjuntoId;
+	}
+
+	public AdjuntoDTO getAdjunto() {
+		return adjunto;
+	}
+
+	public void setAdjunto(AdjuntoDTO adjunto) {
+		this.adjunto = adjunto;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -141,12 +160,12 @@ public class SeccionDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "SeccionDTO{" +
-            "id=" + getId() +
-            ", nombre='" + getNombre() + "'" +
-            ", empresa=" + getEmpresaId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "SeccionDTO [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", icono=" + icono
+				+ ", fechaAlta=" + fechaAlta + ", fechaModificacion=" + fechaModificacion + ", empresa=" + empresa
+				+ ", usuarioAltaId=" + usuarioAltaId + ", usuarioModificacionId=" + usuarioModificacionId
+				+ ", empresaId=" + empresaId + ", adjuntoId=" + adjuntoId + ", adjunto=" + adjunto + "]";
+	}
+
 }
