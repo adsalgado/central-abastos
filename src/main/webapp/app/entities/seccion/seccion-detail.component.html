@@ -5,14 +5,22 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="abastosApp.seccion.nombre">Nombre</span></dt>
+                <dt><span >Nombre</span></dt>
                 <dd>
                     <span>{{seccion.nombre}}</span>
                 </dd>
-                <dt><span jhiTranslate="abastosApp.seccion.empresa">Empresa</span></dt>
+                <dt><span >Descripción</span></dt>
                 <dd>
-                    <div *ngIf="seccion.empresaId">
-                        <a [routerLink]="['/empresa', seccion.empresaId, 'view']">{{seccion.empresaId}}</a>
+                    <span>{{seccion.descripcion}}</span>
+                </dd>
+                <dt><span>Empresa</span></dt>
+                <dd>
+                    <span>{{seccion.empresa.nombre}}</span>
+                </dd>
+                <dt><span>Imagen</span></dt>
+                <dd>
+                    <div class="container-card" *ngIf="seccion.adjuntoId">
+                        <img style="width: 55px;" src="{{env.getImagenIndividual}}{{seccion.adjuntoId}}" />
                     </div>
                 </dd>
             </dl>

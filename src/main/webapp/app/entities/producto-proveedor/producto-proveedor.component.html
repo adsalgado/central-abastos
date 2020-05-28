@@ -44,8 +44,8 @@
                 <td>{{productoProveedor.precio}}</td>
                 <td>{{productoProveedor.fechaAlta | date:'medium'}}</td>
                 <td>
-                    <div *ngIf="productoProveedor.producto.adjuntoId">
-                        <a [routerLink]="['/main/entities/adjunto', productoProveedor.producto.adjuntoId , 'view' ]" >{{productoProveedor.producto?.adjuntoId}}</a>
+                    <div class="container-card" *ngIf="productoProveedor.producto.adjuntoId">
+                        <img style="width: 33px;" src="{{env.getImagenIndividual}}{{productoProveedor.producto.adjuntoId}}" />
                     </div>
                 </td>
                 <td class="text-right">

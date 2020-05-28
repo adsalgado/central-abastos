@@ -7,6 +7,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { IProductoProveedor } from 'app/shared/model/producto-proveedor.model';
 import { AccountService } from 'app/core';
 import { ProductoProveedorService } from './producto-proveedor.service';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'jhi-producto-proveedor',
@@ -16,6 +17,7 @@ export class ProductoProveedorComponent implements OnInit, OnDestroy {
   productoProveedors: IProductoProveedor[];
   currentAccount: any;
   eventSubscriber: Subscription;
+  public env: any = environment;
 
   constructor(
     protected productoProveedorService: ProductoProveedorService,

@@ -20,6 +20,7 @@ import { IUnidadMedida } from 'app/shared/model/unidad-medida.model';
 import { TipoArticuloService } from '../tipo-articulo';
 import { UnidadMedidaService } from '../unidad-medida';
 import { IAdjunto, Adjunto } from 'app/shared/model/adjunto.model';
+import { AdjuntoService } from '../adjunto/adjunto.service';
 
 @Component({
   selector: 'jhi-producto-proveedor-update',
@@ -27,16 +28,13 @@ import { IAdjunto, Adjunto } from 'app/shared/model/adjunto.model';
 })
 export class ProductoProveedorUpdateComponent implements OnInit {
   isSaving: boolean;
-
   proveedors: IProveedor[];
-
   productos: IProducto[];
-
   estatuses: IEstatus[];
-
   tipoarticulos: ITipoArticulo[];
-
   unidadmedidas: IUnidadMedida[];
+  actualizarAdjunto: boolean;
+  tipoEstatus: string = 'ESTATUS_PRODUCTO';
 
   editForm = this.fb.group({
     id: [],
@@ -45,11 +43,12 @@ export class ProductoProveedorUpdateComponent implements OnInit {
     descripcion: [null, [Validators.required, Validators.maxLength(512)]],
     caracteristicas: [null, [Validators.maxLength(512)]],
     precio: [null, [Validators.required]],
-    adjuntoId: [],
     tipoArticuloId: [],
     estatusId: [],
     unidadMedidaId: [],
+    adjuntoId: [],
     file: [],
+    fileName: [],
     fileContentType: []
   });
 
@@ -62,6 +61,7 @@ export class ProductoProveedorUpdateComponent implements OnInit {
     protected estatusService: EstatusService,
     protected tipoArticuloService: TipoArticuloService,
     protected unidadMedidaService: UnidadMedidaService,
+    protected adjuntoService: AdjuntoService,
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
@@ -69,8 +69,20 @@ export class ProductoProveedorUpdateComponent implements OnInit {
 
   ngOnInit() {
     this.isSaving = false;
+    this.actualizarAdjunto = false;
     this.activatedRoute.data.subscribe(({ productoProveedor }) => {
-      this.updateForm(productoProveedor);
+      console.log(productoProveedor);
+      if (productoProveedor.producto.adjuntoId) {
+        this.adjuntoService.find(productoProveedor.producto.adjuntoId).subscribe(
+          (res: HttpResponse<IAdjunto>) => {
+            productoProveedor.producto.adjunto = res.body;
+            this.updateForm(productoProveedor);
+          },
+          (error: HttpErrorResponse) => console.log(error)
+        );
+      } else {
+        this.updateForm(productoProveedor);
+      }
     });
     this.proveedorService
       .query()
@@ -94,7 +106,7 @@ export class ProductoProveedorUpdateComponent implements OnInit {
       )
       .subscribe((res: IUnidadMedida[]) => (this.unidadmedidas = res), (res: HttpErrorResponse) => this.onError(res.message));
     this.estatusService
-      .query()
+      .findByTipoEstatus(this.tipoEstatus)
       .pipe(
         filter((mayBeOk: HttpResponse<IEstatus[]>) => mayBeOk.ok),
         map((response: HttpResponse<IEstatus[]>) => response.body)
@@ -118,6 +130,13 @@ export class ProductoProveedorUpdateComponent implements OnInit {
       estatusId: productoProveedor.estatusId,
       unidadMedidaId: productoProveedor.producto.unidadMedidaId
     });
+    if (productoProveedor.producto.adjunto) {
+      this.editForm.patchValue({
+        file: productoProveedor.producto.adjunto.file,
+        fileContentType: productoProveedor.producto.adjunto.fileContentType,
+        fileName: productoProveedor.producto.adjunto.fileName
+      });
+    }
   }
 
   previousState() {
@@ -127,7 +146,6 @@ export class ProductoProveedorUpdateComponent implements OnInit {
   save() {
     this.isSaving = true;
     const productoProveedor = this.createFromForm();
-    console.log(productoProveedor);
     if (productoProveedor.id !== undefined && productoProveedor.id !== null) {
       this.subscribeToSaveResponse(this.productoProveedorService.update(productoProveedor));
     } else {
@@ -136,37 +154,39 @@ export class ProductoProveedorUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IProductoProveedor {
-    let producto: IProducto;
-    producto = new Producto();
-    producto.sku = this.editForm.get(['sku']).value;
-    producto.nombre = this.editForm.get(['nombre']).value;
-    producto.descripcion = this.editForm.get(['descripcion']).value;
-    producto.caracteristicas = this.editForm.get(['caracteristicas']).value;
-    producto.tipoArticuloId = this.editForm.get(['tipoArticuloId']).value;
-    producto.unidadMedidaId = this.editForm.get(['unidadMedidaId']).value;
+    let producto = {
+      ...new Producto(),
+      sku: this.editForm.get(['sku']).value,
+      nombre: this.editForm.get(['nombre']).value,
+      descripcion: this.editForm.get(['descripcion']).value,
+      caracteristicas: this.editForm.get(['caracteristicas']).value,
+      tipoArticuloId: this.editForm.get(['tipoArticuloId']).value,
+      unidadMedidaId: this.editForm.get(['unidadMedidaId']).value
+    };
 
-    if (this.editForm.get(['file'])) {
-      let adjunto: IAdjunto;
-      adjunto = new Adjunto();
+    if (this.actualizarAdjunto && this.editForm.get(['file'])) {
+      let adjunto = new Adjunto();
+      adjunto.id = this.editForm.get(['adjuntoId']).value;
       adjunto.file = this.editForm.get(['file']).value;
       adjunto.contentType = this.editForm.get(['fileContentType']).value;
       adjunto.fileContentType = this.editForm.get(['fileContentType']).value;
+      adjunto.fileName = this.editForm.get(['fileName']).value;
       producto.adjunto = adjunto;
     }
 
-    let productoProveedor: IProductoProveedor;
-    productoProveedor = new ProductoProveedor();
-    productoProveedor.id = this.editForm.get(['id']).value;
-    productoProveedor.precio = this.editForm.get(['precio']).value;
-    productoProveedor.precioSinIva = this.editForm.get(['precio']).value;
-    productoProveedor.estatusId = this.editForm.get(['estatusId']).value;
-    productoProveedor.producto = producto;
-
+    let productoProveedor = {
+      ...new ProductoProveedor(),
+      id: this.editForm.get(['id']).value,
+      precio: this.editForm.get(['precio']).value,
+      precioSinIva: this.editForm.get(['precio']).value,
+      estatusId: this.editForm.get(['estatusId']).value,
+      producto: producto
+    };
+    console.log(productoProveedor);
     return productoProveedor;
   }
 
   setFileData(event, field: string, isImage) {
-    console.log('en file data.');
     return new Promise((resolve, reject) => {
       if (event && event.target && event.target.files && event.target.files[0]) {
         const file = event.target.files[0];
@@ -174,10 +194,13 @@ export class ProductoProveedorUpdateComponent implements OnInit {
           reject(`File was expected to be an image but was found to be ${file.type}`);
         } else {
           const filedContentType: string = field + 'ContentType';
+          const filedName: string = field + 'Name';
           this.dataUtils.toBase64(file, base64Data => {
+            this.actualizarAdjunto = true;
             this.editForm.patchValue({
               [field]: base64Data,
-              [filedContentType]: file.type
+              [filedContentType]: file.type,
+              [filedName]: file.name
             });
           });
         }
