@@ -18,8 +18,10 @@
             <thead>
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="abastosApp.categoria.nombre">Nombre</span></th>
-            <th><span jhiTranslate="abastosApp.categoria.empresa">Empresa</span></th>
+            <th><span >Nombre</span></th>
+            <th><span >Descripción</span></th>
+            <th><span >Sección</span></th>
+            <th><span >Imagen</span></th>
             <th></th>
             </tr>
             </thead>
@@ -27,9 +29,11 @@
             <tr *ngFor="let categoria of categorias ;trackBy: trackId">
                 <td><a [routerLink]="['/categoria', categoria.id, 'view' ]">{{categoria.id}}</a></td>
                 <td>{{categoria.nombre}}</td>
+                <td>{{categoria.descripcion}}</td>
+                <td>{{categoria.seccion?.nombre}}</td>
                 <td>
-                    <div *ngIf="categoria.empresaId">
-                        <a [routerLink]="['/empresa', categoria.empresaId , 'view' ]" >{{categoria.empresaId}}</a>
+                    <div class="container-card" *ngIf="categoria.adjuntoId">
+                        <img style="width: 33px;" src="{{env.getImagenIndividual}}{{categoria.adjuntoId}}" />
                     </div>
                 </td>
                 <td class="text-right">

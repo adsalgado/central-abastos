@@ -7,6 +7,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { ICategoria } from 'app/shared/model/categoria.model';
 import { AccountService } from 'app/core';
 import { CategoriaService } from './categoria.service';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'jhi-categoria',
@@ -16,6 +17,7 @@ export class CategoriaComponent implements OnInit, OnDestroy {
   categorias: ICategoria[];
   currentAccount: any;
   eventSubscriber: Subscription;
+  public env: any = environment;
 
   constructor(
     protected categoriaService: CategoriaService,
