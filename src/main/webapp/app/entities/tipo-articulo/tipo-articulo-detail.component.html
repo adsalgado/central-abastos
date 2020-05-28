@@ -5,9 +5,23 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="abastosApp.tipoArticulo.nombre">Nombre</span></dt>
+                <dt><span >Nombre</span></dt>
                 <dd>
                     <span>{{tipoArticulo.nombre}}</span>
+                </dd>
+                <dt><span >Descripción</span></dt>
+                <dd>
+                    <span>{{tipoArticulo.descripcion}}</span>
+                </dd>
+                <dt><span >Categoria</span></dt>
+                <dd>
+                    <span>{{tipoArticulo.categoria.nombre}}</span>
+                </dd>
+                <dt><span>Imagen</span></dt>
+                <dd>
+                    <div class="container-card" *ngIf="tipoArticulo.adjuntoId">
+                        <img style="width: 55px;" src="{{env.getImagenIndividual}}{{tipoArticulo.adjuntoId}}" />
+                    </div>
                 </dd>
             </dl>
 
@@ -18,7 +32,7 @@
             </button>
 
             <button type="button"
-                    [routerLink]="['/tipo-articulo', tipoArticulo.id, 'edit']"
+                    [routerLink]="['/main/entities/tipo-articulo', tipoArticulo.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>

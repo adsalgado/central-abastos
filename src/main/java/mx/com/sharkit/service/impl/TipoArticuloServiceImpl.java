@@ -1,13 +1,15 @@
 package mx.com.sharkit.service.impl;
 
 import mx.com.sharkit.service.TipoArticuloService;
+import mx.com.sharkit.domain.Adjunto;
 import mx.com.sharkit.domain.TipoArticulo;
+import mx.com.sharkit.repository.AdjuntoRepository;
 import mx.com.sharkit.repository.TipoArticuloRepository;
 import mx.com.sharkit.service.dto.TipoArticuloDTO;
 import mx.com.sharkit.service.mapper.TipoArticuloMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,9 @@ public class TipoArticuloServiceImpl implements TipoArticuloService {
 
 	private final TipoArticuloMapper tipoArticuloMapper;
 
+	@Autowired
+	private AdjuntoRepository adjuntoRepository;
+
 	public TipoArticuloServiceImpl(TipoArticuloRepository tipoArticuloRepository,
 			TipoArticuloMapper tipoArticuloMapper) {
 		this.tipoArticuloRepository = tipoArticuloRepository;
@@ -46,6 +51,32 @@ public class TipoArticuloServiceImpl implements TipoArticuloService {
 		log.debug("Request to save TipoArticulo : {}", tipoArticuloDTO);
 		TipoArticulo tipoArticulo = tipoArticuloMapper.toEntity(tipoArticuloDTO);
 		tipoArticulo = tipoArticuloRepository.save(tipoArticulo);
+		if (tipoArticuloDTO.getAdjunto() != null) {
+			Adjunto adjunto = null;
+			if (tipoArticuloDTO.getAdjunto().getId() != null) {
+				adjunto = adjuntoRepository.findById(tipoArticuloDTO.getAdjunto().getId()).orElse(null);
+				if (adjunto != null) {
+					adjunto.setFileName(tipoArticuloDTO.getAdjunto().getFileName());
+					adjunto.setFile(tipoArticuloDTO.getAdjunto().getFile());
+					adjunto.setContentType(tipoArticuloDTO.getAdjunto().getContentType());
+					adjunto.setFileContentType(tipoArticuloDTO.getAdjunto().getFileContentType());
+					adjunto.setSize(tipoArticuloDTO.getAdjunto().getSize());
+				}
+			}
+
+			if (adjunto == null) {
+				adjunto = new Adjunto();
+				adjunto.setFileName(tipoArticuloDTO.getAdjunto().getFileName());
+				adjunto.setFile(tipoArticuloDTO.getAdjunto().getFile());
+				adjunto.setContentType(tipoArticuloDTO.getAdjunto().getContentType());
+				adjunto.setFileContentType(tipoArticuloDTO.getAdjunto().getFileContentType());
+				adjunto.setSize(tipoArticuloDTO.getAdjunto().getSize());
+				adjuntoRepository.save(adjunto);
+			}
+
+			tipoArticulo.setAdjuntoId(adjunto.getId());
+		}
+
 		return tipoArticuloMapper.toDto(tipoArticulo);
 	}
 

@@ -7,6 +7,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { ITipoArticulo } from 'app/shared/model/tipo-articulo.model';
 import { AccountService } from 'app/core';
 import { TipoArticuloService } from './tipo-articulo.service';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'jhi-tipo-articulo',
@@ -16,6 +17,7 @@ export class TipoArticuloComponent implements OnInit, OnDestroy {
   tipoArticulos: ITipoArticulo[];
   currentAccount: any;
   eventSubscriber: Subscription;
+  public env: any = environment;
 
   constructor(
     protected tipoArticuloService: TipoArticuloService,

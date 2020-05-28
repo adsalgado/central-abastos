@@ -38,6 +38,7 @@ public class TipoArticuloDTO implements Serializable {
     
     private Long adjuntoId;
 
+    private AdjuntoDTO adjunto;
 
     public Long getId() {
         return id;
@@ -117,6 +118,14 @@ public class TipoArticuloDTO implements Serializable {
 
 	public void setAdjuntoId(Long adjuntoId) {
 		this.adjuntoId = adjuntoId;
+	}
+
+	public AdjuntoDTO getAdjunto() {
+		return adjunto;
+	}
+
+	public void setAdjunto(AdjuntoDTO adjunto) {
+		this.adjunto = adjunto;
 	}
 
 	@Override

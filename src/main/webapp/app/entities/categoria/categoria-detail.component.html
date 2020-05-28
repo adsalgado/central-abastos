@@ -9,10 +9,18 @@
                 <dd>
                     <span>{{categoria.nombre}}</span>
                 </dd>
-                <dt><span jhiTranslate="abastosApp.categoria.empresa">Empresa</span></dt>
+                <dt><span >Descripción</span></dt>
                 <dd>
-                    <div *ngIf="categoria.empresaId">
-                        <a [routerLink]="['/empresa', categoria.empresaId, 'view']">{{categoria.empresaId}}</a>
+                    <span>{{categoria.descripcion}}</span>
+                </dd>
+                <dt><span >Sección</span></dt>
+                <dd>
+                    <span>{{categoria.seccion.nombre}}</span>
+                </dd>
+                <dt><span>Imagen</span></dt>
+                <dd>
+                    <div class="container-card" *ngIf="categoria.adjuntoId">
+                        <img style="width: 55px;" src="{{env.getImagenIndividual}}{{categoria.adjuntoId}}" />
                     </div>
                 </dd>
             </dl>
@@ -24,7 +32,7 @@
             </button>
 
             <button type="button"
-                    [routerLink]="['/categoria', categoria.id, 'edit']"
+                    [routerLink]="['/main/entities/categoria', categoria.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>

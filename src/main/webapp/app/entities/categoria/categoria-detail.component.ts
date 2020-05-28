@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../environments/environment.prod';
 
 import { ICategoria } from 'app/shared/model/categoria.model';
 
@@ -9,6 +10,7 @@ import { ICategoria } from 'app/shared/model/categoria.model';
 })
 export class CategoriaDetailComponent implements OnInit {
   categoria: ICategoria;
+  public env: any = environment;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
