@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment.prod';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from 'app/services/alert.service';
 import { LoadingService } from 'app/services/loading-service';
+import { NavParamsService } from 'app/services/nav-params.service';
 
 @Component({
   selector: 'page-lista-chat',
@@ -17,8 +18,7 @@ export class ListaChatPage {
   public pedido: any = null;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
+    public navParams: NavParamsService,
     private genericService: GenericService,
     private alertaService: AlertService,
     private loadingService: LoadingService,
@@ -40,7 +40,7 @@ export class ListaChatPage {
     this.genericService.sendGetRequest(`${environment.chats}/${chat.chatProveedorid}`).subscribe(
       (response: any) => {
         this.loadingService.hide();
-        this.navCtrl.push('chat', { chat: response, pedido: this.pedido });
+        this.navParams.push('chat', { chat: response, pedido: this.pedido });
       },
       (error: HttpErrorResponse) => {
         this.loadingService.hide();

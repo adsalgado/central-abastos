@@ -62,4 +62,10 @@ export class NavParamsService {
       return null;
     }
   }
+
+  public deletePropertie(propiedad: string) {
+    if (this.params) {
+      delete this.params[propiedad];
+    }
+  }
 }

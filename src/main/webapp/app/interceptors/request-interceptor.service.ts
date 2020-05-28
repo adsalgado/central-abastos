@@ -55,7 +55,8 @@ export class RequestInterceptorService implements HttpInterceptor {
             error.error.title == 'El cliente es requerido'
           ) {
             //this.events.publish("startSession");
-            this.eventManager.broadcast({ name: 'startSession', content: {} });
+
+            this.eventManager.broadcast({ name: 'startSession', content: { a: 1 } });
             return Observable.throw(error);
           } else {
             return next.handle(request);

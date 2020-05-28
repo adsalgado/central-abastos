@@ -397,7 +397,8 @@ export class CarritoHistoricoPage implements OnDestroy {
           this.genericService.sendDelete(`${environment.carritoHistoricoDetalle}/${producto.id}`).subscribe(
             (response2: any) => {
               if (producto.cantidad == 0) {
-                this.events.broadcast('totalCarrito');
+                //this.events.broadcast('totalCarrito');
+                this.events.broadcast({ name: 'totalCarrito', content: {} });
                 this.deleteFavoritoService(producto);
                 //this.productosCarrito = this.localStorageEncryptService.getFromLocalStorage(`${this.user.id_token}`);
               }
@@ -668,6 +669,17 @@ export class CarritoHistoricoPage implements OnDestroy {
     }
   }
 
+  seleccionar(card: any) {
+    if (!card.selected) {
+      this.cards.forEach(element => {
+        element.selected = false;
+      });
+      card.selected = true;
+    } else {
+      card.selected = false;
+    }
+  }
+
   getMapa() {
     let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
@@ -744,10 +756,12 @@ export class CarritoHistoricoPage implements OnDestroy {
       body.picking = false;
     }
 
-    this.productosCarrito.forEach(item => {
-      body.productos.push({
-        cantidad: item.cantidad,
-        productoProveedorId: item.productoProveedorId
+    this.agrupado.forEach(item => {
+      item.carritoAgrupado.forEach(element => {
+        body.productos.push({
+          cantidad: element.cantidad,
+          productoProveedorId: element.productoProveedorId
+        });
       });
     });
 

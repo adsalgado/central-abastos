@@ -1,9 +1,11 @@
+import { JhiEventManager } from 'ng-jhipster';
 import { environment } from '../../../environments/environment.prod';
 import { Menu } from './../../models/Menu';
 import { Component, OnInit } from '@angular/core';
 
 import * as $ from 'jquery';
 import { NavParamsService } from 'app/services/nav-params.service';
+import { LocalStorageEncryptService } from 'app/services/local-storage-encrypt-service';
 declare interface RouteInfo {
   path: string;
   title: string;
@@ -29,39 +31,64 @@ export class SidebarComponent implements OnInit {
   menuItems: any[];
 
   public menu: Menu[] = [];
-  constructor(private navParams: NavParamsService) {}
+  public evento: any = null;
+
+  constructor(
+    private navParams: NavParamsService,
+    private localStorageEncryptService: LocalStorageEncryptService,
+    private eventManager: JhiEventManager
+  ) {}
 
   ngOnInit() {
+    let user = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    if (user) {
+      this.menu = [];
+      this.armaMenu(user);
+    }
+
+    this.evento = this.eventManager.subscribe('armaMenu', response => {
+      let user = this.localStorageEncryptService.getFromLocalStorage('userSession');
+      if (user) {
+        this.menu = [];
+        this.armaMenu(user);
+      }
+    });
+  }
+
+  armaMenu(user: any) {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
-    switch (environment.perfil.activo) {
-      case 1:
-        this.menu.push(new Menu('Mi perfil', false, '../../../content/imgs/perfil/social-media.png', '/main/perfil', null));
-        this.menu.push(
-          new Menu('Lista de carrito frecuentes', false, '../../../content/imgs/lista-carrito/trolley.png', '/main/lista-carrito', null)
-        );
-        this.menu.push(new Menu('Tarjetas', false, '../../../content/imgs/menu/card.png', '/main/tarjeta-frecuente', null));
-        this.menu.push(
-          new Menu('Direcciones frecuentes', false, '../../../content/imgs/direcciones/markerD.png', '/main/direccion-frecuente', null)
-        );
-        this.menu.push(new Menu('Mi historial', false, '../../../content/imgs/menu/historial.png', '/main/pedidos', null));
-        this.menu.push(new Menu('Proveedores', false, '../../../content/imgs/menu/give.png', '/main/proveedores', null));
+    if (user.tipo_usuario > 1) {
+      switch (environment.perfil.activo) {
+        case 1:
+          this.menu.push(new Menu('Mi perfil', false, '../../../content/imgs/perfil/social-media.png', '/main/perfil', null));
+          this.menu.push(
+            new Menu('Lista de carrito frecuentes', false, '../../../content/imgs/lista-carrito/trolley.png', '/main/lista-carrito', null)
+          );
+          this.menu.push(new Menu('Tarjetas', false, '../../../content/imgs/menu/card.png', '/main/tarjeta-frecuente', null));
+          this.menu.push(
+            new Menu('Direcciones frecuentes', false, '../../../content/imgs/direcciones/markerD.png', '/main/direccion-frecuente', null)
+          );
+          this.menu.push(new Menu('Mi historial', false, '../../../content/imgs/menu/historial.png', '/main/pedidos', null));
+          this.menu.push(new Menu('Proveedores', false, '../../../content/imgs/menu/give.png', '/main/proveedores', null));
 
-        this.menu.push(new Menu('Acerca de', false, '../../../content/imgs/menu/interface.png', '/main/acercade', null));
-        this.menu.push(new Menu('Información de la app', false, '../../../content/imgs/menu/signs.png', '/main/informacion', null));
-        this.menu.push(new Menu('Contacto', false, '../../../content/imgs/menu/logotype.png', '/main/contacto', null));
-        this.menu.push(
-          new Menu('Términos y condiciones', false, '../../../content/imgs/menu/contrato.png', '/main/terminos-condiciones', null)
-        );
-        break;
+          this.menu.push(new Menu('Acerca de', false, '../../../content/imgs/menu/interface.png', '/main/acercade', null));
+          this.menu.push(new Menu('Información de la app', false, '../../../content/imgs/menu/signs.png', '/main/informacion', null));
+          this.menu.push(new Menu('Contacto', false, '../../../content/imgs/menu/logotype.png', '/main/contacto', null));
+          this.menu.push(
+            new Menu('Términos y condiciones', false, '../../../content/imgs/menu/contrato.png', '/main/terminos-condiciones', null)
+          );
+          break;
 
-      case 2:
-        this.menu.push(new Menu('Acerca de', false, '../../../content/imgs/menu/interface.png', '#7d3a63', null));
-        this.menu.push(new Menu('Información de la app', false, '../../../content/imgs/menu/signs.png', '#7d3a63', null));
-        this.menu.push(new Menu('Contacto', false, '../../../content/imgs/menu/logotype.png', '#7d3a63', null));
-        this.menu.push(new Menu('Términos y condiciones', false, '../../../content/imgs/menu/contrato.png', '#7d3a63', null));
-        break;
+        case 2:
+          this.menu.push(new Menu('Acerca de', false, '../../../content/imgs/menu/interface.png', '#7d3a63', null));
+          this.menu.push(new Menu('Información de la app', false, '../../../content/imgs/menu/signs.png', '#7d3a63', null));
+          this.menu.push(new Menu('Contacto', false, '../../../content/imgs/menu/logotype.png', '#7d3a63', null));
+          this.menu.push(new Menu('Términos y condiciones', false, '../../../content/imgs/menu/contrato.png', '#7d3a63', null));
+          break;
+      }
     }
   }
+
   isMobileMenu() {
     /* if ($(window).width() > 991) {
       return false;

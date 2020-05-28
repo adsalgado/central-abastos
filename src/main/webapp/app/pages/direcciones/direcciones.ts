@@ -121,7 +121,7 @@ export class DireccionesPage implements OnDestroy, OnInit {
   }
 
   nuevaLista() {
-    this.localStorageEncryptService.clearProperty('direccion');
+    this.navCtrl.deletePropertie('direccion');
     this.navCtrl.push('main/proveedores-geo');
   }
 }

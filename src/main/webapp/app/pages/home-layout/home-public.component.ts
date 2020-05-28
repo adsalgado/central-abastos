@@ -11,6 +11,7 @@ import { LocalStorageEncryptService } from '../../services/local-storage-encrypt
 import { Menu } from 'app/models/Menu';
 import { NavParamsService } from 'app/services/nav-params.service';
 import { HttpServiceGeneric } from 'app/services/http.generic.service';
+import { GenericService } from 'app/services/generic.service';
 
 @Component({
   selector: 'app-home-public',
@@ -28,7 +29,8 @@ export class HomePublicComponent implements OnInit {
     private localStorageEncryptService: LocalStorageEncryptService,
     private httpService: HttpServiceGeneric,
     public location: Location,
-    private router: Router
+    private router: Router,
+    private genericService: GenericService
   ) {
     console.log('...........');
 

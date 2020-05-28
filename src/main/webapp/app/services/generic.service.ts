@@ -138,6 +138,12 @@ export class GenericService {
     return color ? color : '#f07c1c';
   }
 
+  getColorClassChat() {
+    let color: any = this.localStorageEncryptService.getFromLocalStorage('theme');
+
+    return color ? color : 'm6';
+  }
+
   getColorClass() {
     let color: any = this.localStorageEncryptService.getFromLocalStorage('theme');
     let retornar: any =
@@ -188,6 +194,26 @@ export class GenericService {
   }
 
   getUser() {
-    return this.localStorageEncryptService.getFromLocalStorage('userSession');
+    let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    //console.log(user);
+    return user;
+  }
+
+  getTypeUser() {
+    let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    //console.log(user);
+    let retorno: boolean = false;
+    if (user) {
+      if (user.tipo_usuario) {
+        retorno = true;
+      } else {
+        retorno = false;
+      }
+    } else {
+      retorno = false;
+    }
+    //console.log(retorno);
+
+    return retorno;
   }
 }

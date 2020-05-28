@@ -1,3 +1,4 @@
+import { LocalStorageEncryptService } from './services/local-storage-encrypt-service';
 import { AlertService } from './services/alert.service';
 import { JhiEventManager } from 'ng-jhipster';
 import { Component, OnDestroy, OnInit, ElementRef, AfterViewInit } from '@angular/core';
@@ -6,6 +7,7 @@ import { LoginModalService } from './core';
 import swal, { SweetAlertOptions } from 'sweetalert2';
 import { LoadingService } from './services/loading-service';
 import { MessagingService } from './services/firebase.service';
+import { NavParamsService } from './services/nav-params.service';
 
 @Component({
   selector: 'app-root',
@@ -22,10 +24,14 @@ export class AppComponent implements OnDestroy, OnInit, AfterViewInit {
     private alertService: AlertService,
     private loadingService: LoadingService,
     private messagingService: MessagingService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private navParams: NavParamsService,
+    private localStorageEncryptService: LocalStorageEncryptService
   ) {
     console.log('app ejecutandose');
     this.eventoLogin = this.eventManager.subscribe('startSession', response => {
+      console.log(response);
+
       console.log('logica login');
       this.loadingService.hide();
       swal
@@ -36,13 +42,17 @@ export class AppComponent implements OnDestroy, OnInit, AfterViewInit {
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Aceptar',
+          allowOutsideClick: false
         })
         .then(result => {
           console.log(result);
 
           if (result.value) {
             this.modalRef = this.loginModalService.open();
+          } else {
+            this.navParams.push('main/public-home');
+            this.localStorageEncryptService.clearProperty('userSession');
           }
         });
     });

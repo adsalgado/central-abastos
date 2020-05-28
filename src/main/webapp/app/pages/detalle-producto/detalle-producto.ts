@@ -383,6 +383,7 @@ export class DetalleProductoPage implements OnDestroy, OnInit {
       }
     }
     this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, productosStorage);
-    this.eventManager.broadcast('totalCarrito');
+    //this.eventManager.broadcast('totalCarrito');
+    this.eventManager.broadcast({ name: 'totalCarrito', content: {} });
   }
 }

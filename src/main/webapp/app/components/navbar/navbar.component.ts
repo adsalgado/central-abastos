@@ -42,9 +42,9 @@ export class NavbarComponentMain implements OnInit {
   }
 
   ngOnDestroy() {
-    this.events.destroy(this.miEvents.uno);
-    this.events.destroy(this.miEvents.dos);
-    this.events.destroy(this.miEvents.tres);
+    //this.events.destroy(this.miEvents.uno);
+    //this.events.destroy(this.miEvents.dos);
+    //this.events.destroy(this.miEvents.tres);
   }
 
   getTotalCarrito(fromLogin: boolean = false) {
@@ -99,8 +99,10 @@ export class NavbarComponentMain implements OnInit {
 
     this.miEvents.uno = this.events.subscribe('totalCarrito', data => {
       try {
+        console.log('-------------------->');
+
         if (data) {
-          this.totalCarrito = this.getTotalCarrito(data.fromLogin);
+          this.totalCarrito = this.getTotalCarrito(data.content.fromLogin);
         } else {
           this.totalCarrito = this.getTotalCarrito();
         }
@@ -109,8 +111,9 @@ export class NavbarComponentMain implements OnInit {
 
     this.miEvents.dos = this.events.subscribe('totalCarrito2', data => {
       try {
+        console.log('<--------------------');
         if (data) {
-          this.totalCarrito = this.getTotalCarrito(data.fromLogin);
+          this.totalCarrito = this.getTotalCarrito(data.content.fromLogin);
         } else {
           this.totalCarrito = this.getTotalCarrito();
         }

@@ -129,6 +129,7 @@ import { FabComponent } from './components/fab-button/fab.component';
 
     DetalleTarjetaPage,
     TarjetasFrecuentesPage
+
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,

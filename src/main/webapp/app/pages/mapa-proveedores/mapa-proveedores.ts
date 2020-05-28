@@ -1,3 +1,4 @@
+import { JhiEventManager } from 'ng-jhipster';
 import { User } from './../../models/User';
 import { Component, OnInit } from '@angular/core';
 import { GenericService } from '../../services/generic.service';
@@ -56,7 +57,7 @@ export class MapaProveedoresPage implements OnInit {
   public rightArrowsSlider: any = `right-arrw-${Math.floor(Math.random() + 999999)}`;
 
   public slideConfig: any = {
-    slidesToShow: 1,
+    slidesToShow: 2,
     slidesToScroll: 1,
     //autoplay: true,
     dots: true,
@@ -71,7 +72,8 @@ export class MapaProveedoresPage implements OnInit {
     private loadingService: LoadingService,
     private alertaService: AlertService,
     private navCtrl: NavParamsService,
-    private localStorageEncryptService: LocalStorageEncryptService
+    private localStorageEncryptService: LocalStorageEncryptService,
+    private eventManager: JhiEventManager
   ) {
     this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
     this.proveedoresTotal = this.navCtrl.get('proveedores');
@@ -203,7 +205,7 @@ export class MapaProveedoresPage implements OnInit {
     let myLatLng = { lat: latitude, lng: longitude };
 
     var gj = leaflet.geoJson(this.geo);
-    var nearest = leafletKnn(gj).nearest([latitude, longitude], 50, 5000); //punto de partida, estaciones máximas a encontrar, diámetro de busqueda en metros
+    var nearest = leafletKnn(gj).nearest([latitude, longitude], 50, 100000); //punto de partida, estaciones máximas a encontrar, diámetro de busqueda en metros
 
     // create map
     if (nearest.length > 0) {
@@ -338,6 +340,11 @@ export class MapaProveedoresPage implements OnInit {
           body.cantidad = 1;
           this.loadingService.hide();
           this.alertaService.success('Tu articulo se agregó al carrito con éxito');
+          /* this.eventManager.broadcast('totalCarrito');
+          this.eventManager.broadcast('totalCarrito2');
+ */
+          this.eventManager.broadcast({ name: 'totalCarrito', content: {} });
+          this.eventManager.broadcast({ name: 'totalCarrito2', content: {} });
           //this.events.publish("totalCarrito2");
           //this.verificarCarritoModificarCantidad(producto);
         },

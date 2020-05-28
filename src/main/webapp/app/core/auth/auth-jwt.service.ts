@@ -1,3 +1,4 @@
+import { JhiEventManager } from 'ng-jhipster';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -13,7 +14,8 @@ export class AuthServerProvider {
     private http: HttpClient,
     private $localStorage: LocalStorageService,
     private $sessionStorage: SessionStorageService,
-    private localStorageEncryptService: LocalStorageEncryptService
+    private localStorageEncryptService: LocalStorageEncryptService,
+    private events: JhiEventManager
   ) {}
 
   getToken() {
@@ -33,6 +35,9 @@ export class AuthServerProvider {
     function authenticateSuccess(resp) {
       //console.log(resp.body);
       component.localStorageEncryptService.setToLocalStorage('userSession', resp.body);
+      component.events.broadcast({ name: 'armaMenu', content: {} });
+
+      //this.events.broadcast({ name: 'updateProductos', content: productoDelete });
       const bearerToken = resp.headers.get('Authorization');
       if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
         const jwt = bearerToken.slice(7, bearerToken.length);

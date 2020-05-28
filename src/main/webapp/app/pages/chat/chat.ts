@@ -1,3 +1,4 @@
+import { JhiEventManager } from 'ng-jhipster';
 import { GenericService } from './../../services/generic.service';
 import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, Content } from 'ionic-angular';
@@ -5,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
 import { LocalStorageEncryptService } from 'app/services/local-storage-encrypt-service';
 import { AlertService } from 'app/services/alert.service';
+import { NavParamsService } from 'app/services/nav-params.service';
 
 @Component({
   selector: 'page-chat',
@@ -29,11 +31,14 @@ export class ChatPage implements OnDestroy {
 
   public intervalo: any = null;
 
+  public dataEvents: any = {};
+
+  public subscription: any = null;
+
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
+    private navParams: NavParamsService,
     private localStorageEncryptService: LocalStorageEncryptService,
-    private events: Events,
+    private events: JhiEventManager,
     private genericService: GenericService,
     private alertaService: AlertService
   ) {
@@ -45,7 +50,7 @@ export class ChatPage implements OnDestroy {
     if (this.localStorageEncryptService.getFromLocalStorage('theme')) {
       this.color = this.localStorageEncryptService.getFromLocalStorage('theme');
     }
-    this.events.subscribe('changeColor', data => {
+    this.dataEvents.uno = this.events.subscribe('changeColor', data => {
       try {
         if (this.localStorageEncryptService.getFromLocalStorage('theme')) {
           this.color = this.localStorageEncryptService.getFromLocalStorage('theme');
@@ -53,7 +58,7 @@ export class ChatPage implements OnDestroy {
       } catch (error) {}
     });
 
-    this.events.subscribe('updateChat', data => {
+    this.dataEvents.dos = this.events.subscribe('updateChat', data => {
       try {
         this.verChat();
       } catch (error) {}
@@ -61,9 +66,9 @@ export class ChatPage implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('updateChat');
-    let claseTabs: any = document.getElementsByClassName('tabbar');
-    claseTabs[0].style.display = 'flex';
+    this.events.destroy(this.dataEvents.dos);
+    this.events.destroy(this.dataEvents.uno);
+
     clearInterval(this.intervalo);
     this.intervalo = null;
   }
@@ -84,7 +89,10 @@ export class ChatPage implements OnDestroy {
   verChat() {
     switch (environment.perfil.activo) {
       case 1:
-        this.genericService.sendGetRequest(`${environment.chats}/${this.chat.id}`).subscribe(
+        if (this.subscription) {
+          this.subscription.unsubscribe();
+        }
+        this.subscription = this.genericService.sendGetRequest(`${environment.chats}/${this.chat.id}`).subscribe(
           (response: any) => {
             if (this.chat.chatDetalles.length < response.chatDetalles) {
               window.scrollTo(0, document.body.scrollHeight);
@@ -99,32 +107,42 @@ export class ChatPage implements OnDestroy {
         break;
 
       case 2:
-        this.genericService.sendGetRequest(`${environment.chatsProveedor}${this.pedido.pedidoProveedores[0].id}/tipoChat/1`).subscribe(
-          (response: any) => {
-            if (this.chat.chatDetalles.length < response.chatDetalles) {
-              window.scrollTo(0, document.body.scrollHeight);
+        if (this.subscription) {
+          this.subscription.unsubscribe();
+        }
+        this.subscription = this.genericService
+          .sendGetRequest(`${environment.chatsProveedor}${this.pedido.pedidoProveedores[0].id}/tipoChat/1`)
+          .subscribe(
+            (response: any) => {
+              if (this.chat.chatDetalles.length < response.chatDetalles) {
+                window.scrollTo(0, document.body.scrollHeight);
+              }
+              this.chat = response;
+            },
+            (error: HttpErrorResponse) => {
+              let err: any = error.error;
+              //this.alertaService.errorAlertGeneric(err.message ? err.message : "Ocurrió un error en el servicio, intenta nuevamente");
             }
-            this.chat = response;
-          },
-          (error: HttpErrorResponse) => {
-            let err: any = error.error;
-            //this.alertaService.errorAlertGeneric(err.message ? err.message : "Ocurrió un error en el servicio, intenta nuevamente");
-          }
-        );
+          );
         break;
       case 3:
-        this.genericService.sendGetRequest(`${environment.chatsProveedor}${this.pedido.pedidoProveedores[0].id}/tipoChat/2`).subscribe(
-          (response: any) => {
-            if (this.chat.chatDetalles.length < response.chatDetalles) {
-              window.scrollTo(0, document.body.scrollHeight);
+        if (this.subscription) {
+          this.subscription.unsubscribe();
+        }
+        this.subscription = this.genericService
+          .sendGetRequest(`${environment.chatsProveedor}${this.pedido.pedidoProveedores[0].id}/tipoChat/2`)
+          .subscribe(
+            (response: any) => {
+              if (this.chat.chatDetalles.length < response.chatDetalles) {
+                window.scrollTo(0, document.body.scrollHeight);
+              }
+              this.chat = response;
+            },
+            (error: HttpErrorResponse) => {
+              let err: any = error.error;
+              //this.alertaService.errorAlertGeneric(err.message ? err.message : "Ocurrió un error en el servicio, intenta nuevamente");
             }
-            this.chat = response;
-          },
-          (error: HttpErrorResponse) => {
-            let err: any = error.error;
-            //this.alertaService.errorAlertGeneric(err.message ? err.message : "Ocurrió un error en el servicio, intenta nuevamente");
-          }
-        );
+          );
         break;
     }
   }
@@ -148,7 +166,10 @@ export class ChatPage implements OnDestroy {
       body.to = `${this.pedido.cliente.login}`;
     }
 
-    this.genericService.sendPostRequest(`${environment.chats}/messages`, body).subscribe(
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    this.subscription = this.genericService.sendPostRequest(`${environment.chats}/messages`, body).subscribe(
       (response: any) => {
         this.chat.chatDetalles.push(response);
         window.scrollTo(0, document.body.scrollHeight);
