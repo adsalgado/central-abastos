@@ -29,209 +29,71 @@
                     </span>
                 </a>
                 <ul style="height:auto"  class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/producto" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                    <li *jhiHasAnyAuthority="'ROLE_PROVEEDOR'">
+                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/producto-proveedor" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.producto">Producto</span>
+                            <span jhiTranslate="global.menu.entities.productoProveedor">Productos proveedor</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/promocion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span >Promociones</span>
+                        </a>
+                    </li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/unidad-medida" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.unidadMedida">Unidad Medida</span>
                         </a>
                     </li>
 
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/tipo-articulo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.tipoArticulo">Tipo Articulo</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/categoria" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.categoria">Categoria</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/seccion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.seccion">Seccion</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/estatus" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.estatus">Estatus</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/adjunto" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.adjunto">Adjunto</span>
-                        </a>
-                    </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/proveedor" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.proveedor">Proveedor</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/oferta-proveedor" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.ofertaProveedor">Oferta Proveedor</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/tipo-oferta" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.tipoOferta">Tipo Oferta</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/cliente" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.cliente">Cliente</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/tarjeta" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.tarjeta">Tarjeta</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/direccion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.direccion">Direccion</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/carrito-compra" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.carritoCompra">Carrito Compra</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/carrito-historico" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.carritoHistorico">Carrito Historico</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/carrito-historico-detalle" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.carritoHistoricoDetalle">Carrito Historico Detalle</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/pedido" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.pedido">Pedido</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/pedido-detalle" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.pedidoDetalle">Pedido Detalle</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/historico-pedido" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.historicoPedido">Historico Pedido</span>
-                        </a>
-                    </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/transportista" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.transportista">Transportista</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/transportista-tarifa" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.transportistaTarifa">Transportista Tarifa</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/recolector" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.recolector">Recolector</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/recolector-tarifa" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.recolectorTarifa">Recolector Tarifa</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/chat" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.chat">Chat</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/inventario" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.inventario">Inventario</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/inventario-historico" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.inventarioHistorico">Inventario Historico</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/notificacion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.notificacion">Notificacion</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/pagos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.pagos">Pagos</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/queja" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.queja">Queja</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/producto-imagen" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.productoImagen">Producto Imagen</span>
-                        </a>
-                    </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/parametros-aplicacion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.parametrosAplicacion">Parametros Aplicacion</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/empresa" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.empresa">Empresa</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/usuario-imagen" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.usuarioImagen">Usuario Imagen</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/chat-private" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.chatPrivate">Chat Private</span>
                         </a>
                     </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
@@ -387,208 +249,64 @@
                             <span jhiTranslate="global.menu.entities.productoProveedor">Productos proveedor</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/promocion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span >Promociones</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/unidad-medida" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.unidadMedida">Unidad Medida</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/tipo-articulo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.tipoArticulo">Tipo Articulo</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/categoria" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.categoria">Categoria</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/seccion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.seccion">Seccion</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/estatus" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.estatus">Estatus</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/adjunto" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.adjunto">Adjunto</span>
-                        </a>
-                    </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/proveedor" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.proveedor">Proveedor</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/oferta-proveedor" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.ofertaProveedor">Oferta Proveedor</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/tipo-oferta" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.tipoOferta">Tipo Oferta</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/cliente" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.cliente">Cliente</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/tarjeta" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.tarjeta">Tarjeta</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/direccion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.direccion">Direccion</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/carrito-compra" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.carritoCompra">Carrito Compra</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/carrito-historico" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.carritoHistorico">Carrito Historico</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/carrito-historico-detalle" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.carritoHistoricoDetalle">Carrito Historico Detalle</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/pedido" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.pedido">Pedido</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/pedido-detalle" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.pedidoDetalle">Pedido Detalle</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/historico-pedido" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.historicoPedido">Historico Pedido</span>
-                        </a>
-                    </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/transportista" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.transportista">Transportista</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/transportista-tarifa" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.transportistaTarifa">Transportista Tarifa</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/recolector" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.recolector">Recolector</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/recolector-tarifa" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.recolectorTarifa">Recolector Tarifa</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/chat" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.chat">Chat</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/inventario" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.inventario">Inventario</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/inventario-historico" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.inventarioHistorico">Inventario Historico</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/notificacion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.notificacion">Notificacion</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/pagos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.pagos">Pagos</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/queja" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.queja">Queja</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/producto-imagen" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.productoImagen">Producto Imagen</span>
-                        </a>
-                    </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/parametros-aplicacion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.parametrosAplicacion">Parametros Aplicacion</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" style="color:#fff"  routerLink="entities/empresa" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.empresa">Empresa</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/usuario-imagen" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.usuarioImagen">Usuario Imagen</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" style="color:#fff"  routerLink="entities/chat-private" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.chatPrivate">Chat Private</span>
                         </a>
                     </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
