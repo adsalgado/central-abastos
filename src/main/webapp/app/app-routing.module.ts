@@ -26,7 +26,6 @@ import { ArticuloProveedoresPage } from './pages/articulo-proveedores/articulo-p
 import { CarritoComprasPage } from './pages/carrito-compras/carrito-compras';
 import { DireccionesPage } from './pages/direcciones/direcciones';
 import { HomeGeoProveedoresPage } from './pages/home-geo-proveedores/home-geo-proveedores';
-import { VerProductosPage } from './pages/ver-productos/ver-productos';
 import { ListaChatPage } from './pages/lista-chat/lista-chat';
 import { PedidosDetailPage } from './pages/pedidos-detail/pedidos-detail';
 import { PerfilPage } from './pages/perfil/perfil';
@@ -41,6 +40,7 @@ import { DetalleTarjetaPage } from './pages/detalle-tarjeta/detalle-tarjeta';
 import { RegistroPage } from './pages/registro/registro';
 import { DocumentosPage } from './pages-proveedor/documentos/documentos';
 import { HomeProveedorPage } from './pages-proveedor/home-proveedor/home-proveedor';
+import { VerProductosPage } from './pages-proveedor/ver-productos/ver-productos';
 
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const ADMIN_ROUTES = [auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, ...userMgmtRoute, metricsRoute];
@@ -94,6 +94,8 @@ const routes: Routes = [
       { path: 'documentos-proveedor', component: DocumentosPage },
 
       { path: 'pedidos-proveedor', component: HomeProveedorPage },
+
+      { path: 'checklist-proveedor', component: VerProductosPage },
       {
         path: 'admin',
         loadChildren: () => import('./admin/admin.module').then(m => m.AbastosAdminModule)

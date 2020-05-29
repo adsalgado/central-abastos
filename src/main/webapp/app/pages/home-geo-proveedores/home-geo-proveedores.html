@@ -32,11 +32,11 @@
 </div>
 
 <div class="footer-button-class" *ngIf="muestraMapa && !fromModal">
-  <button style="width:100%" (tap)="addToList()" [ngStyle]="{'background-color': genericService.getColorHex()}">{{!direccion
+  <button style="width:100%" (click)="addToList()" [ngStyle]="{'background-color': genericService.getColorHex()}">{{!direccion
     ? 'Agregar' : 'Actualizar'}} dirección</button>
 </div>
 <div class="footer-button-class" *ngIf="muestraMapa && fromModal">
-  <button style="width:49%" (tap)="addToList()" [ngStyle]="{'background-color': genericService.getColorHex()}">Guardar
+  <button style="width:49%" (click)="addToList()" [ngStyle]="{'background-color': genericService.getColorHex()}">Guardar
     y aceptar</button>
-  <button style="width:49%" (tap)="backData()" [ngStyle]="{'background-color': genericService.getColorHex()}">Aceptar</button>
+  <button style="width:49%" (click)="backData()" [ngStyle]="{'background-color': genericService.getColorHex()}">Aceptar</button>
 </div>

@@ -224,7 +224,7 @@
 </div>
 
 <div class="footer-button-class" *ngIf="totales && totales.listCarritoProveedores?.length > 0 && !recarga && !enCompra">
-  <button (tap)="addToList()" [ngStyle]="{'background-color': genericService.getColorHex()}">Agregar a una lista</button>
-  <button (tap)="infoContact()" [ngStyle]="{'background-color': genericService.getColorHex()}">Realizar
+  <button (click)="addToList()" [ngStyle]="{'background-color': genericService.getColorHex()}">Agregar a una lista</button>
+  <button (click)="infoContact()" [ngStyle]="{'background-color': genericService.getColorHex()}">Realizar
     pedido</button>
   </div>

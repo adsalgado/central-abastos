@@ -30,8 +30,8 @@
   <div><strong>{{pedidos.total | currency}}</strong></div>
 </div>
 <div class="footer-button-class">
-  <button (tap)="solicitar()" [ngStyle]="{'background-color': genericService.getColorHex()}" *ngIf="env.perfil.activo == 2">Solicitar
+  <button (click)="solicitar()" [ngStyle]="{'background-color': genericService.getColorHex()}" *ngIf="env.perfil.activo == 2">Solicitar
     cambio</button>
-  <button (tap)="confirmar()" [ngStyle]="{'background-color': genericService.getColorHex(),'width': env.perfil.activo == 3 ? '100%' : ''}">{{env.perfil.activo
+  <button (click)="confirmar()" [ngStyle]="{'background-color': genericService.getColorHex(),'width': env.perfil.activo == 3 ? '100%' : ''}">{{env.perfil.activo
     == 2 ? 'Confirmar pedido' : 'Enviar pedido'}}</button>
 </div>

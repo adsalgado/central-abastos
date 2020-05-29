@@ -1,0 +1,47 @@
+<div>
+
+  <mat-list *ngIf="pedidos && pedidos?.pedidoProveedores.length > 0">
+    <mat-list-item *ngFor="let p of pedidos.pedidoProveedores[0].pedidoDetalles" style="    margin-bottom: 55px;">
+      <div class="round" style="vertical-align:middle">
+        <input type="checkbox" id="checkbox-{{p.productoProveedor.producto.nombre}}" [(ngModel)]="p.activado" />
+        <label for="checkbox-{{p.productoProveedor.producto.nombre}}"></label>
+      </div>
+      <div class="datos-tarjetas" style="vertical-align:middle">
+        <div class="name" style="font-size: 15px;">Producto <strong>{{p.productoProveedor.producto.nombre}}</strong></div>
+
+        <div class="number" style="font-size: 13px;">Cantidad <strong>{{p.cantidad}}</strong></div>
+        <div class="number" style="font-size: 13px;">Costo <strong>{{p.total | currency}}</strong></div>
+
+      </div>
+    </mat-list-item>
+  </mat-list>
+
+  <div class="totals" [ngStyle]="{'background-color': genericService.getColorHex()}">
+
+    <div>Envio</div>
+    <div>=</div>
+    <div><strong>{{pedidos.pedidoProveedores[0].comisionTransportista | currency}}</strong></div>
+
+    <div>Costo</div>
+    <div>=</div>
+    <div><strong>{{pedidos.pedidoProveedores[0].comisionTransportista + pedidos.total | currency}}</strong></div>
+
+    <div>Total</div>
+    <div>=</div>
+    <div><strong>{{pedidos.total | currency}}</strong></div>
+  </div>
+</div>
+<div class="footer-button-class" style="    margin-top: 20px;">
+  <button (click)="solicitar()" style="background-color: rgb(240, 124, 28);
+  padding: 15px;
+  border: none;
+  border: 1px solid #a94d01;
+  border-radius: 4px;color: #fff;" *ngIf="tipoUsuario == 3">Solicitar
+    cambio</button>
+  <button (click)="confirmar()" style="background-color: rgb(240, 124, 28);
+  padding: 15px;
+  border: none;
+  border: 1px solid #a94d01;
+  border-radius: 4px;color: #fff;">{{env.perfil.activo
+    == 2 ? 'Confirmar pedido' : 'Enviar pedido'}}</button>
+</div>

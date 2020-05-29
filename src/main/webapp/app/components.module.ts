@@ -2,7 +2,6 @@ import { Left } from './directives/left';
 import { ChatPage } from './pages/chat/chat';
 import { HistorialPedidosPage } from './pages/historial-pedidos/historial-pedidos';
 import { HistorialPedidosDetailPage } from './pages/historial-pedidos-detail/historial-pedidos-detail';
-import { VerProductosPage } from './pages/ver-productos/ver-productos';
 import { ProblemasPedidoPage } from './pages/problemas-pedido/problemas-pedido';
 import { QrPage } from './pages/qr/qr';
 import { NgModule } from '@angular/core';
@@ -68,6 +67,7 @@ import { FabComponent } from './components/fab-button/fab.component';
 import { RegistroPage } from './pages/registro/registro';
 import { DocumentosPage } from './pages-proveedor/documentos/documentos';
 import { HomeProveedorPage } from './pages-proveedor/home-proveedor/home-proveedor';
+import { VerProductosPage } from './pages-proveedor/ver-productos/ver-productos';
 
 //import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 

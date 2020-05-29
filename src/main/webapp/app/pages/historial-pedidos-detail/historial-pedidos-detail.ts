@@ -101,7 +101,7 @@ export class HistorialPedidosDetailPage implements OnInit {
   }
 
   verProductos() {
-    this.navCtrl.push('main/productos', { pedidos: this.pedido });
+    this.navCtrl.push('main/checklist-proveedor', { pedidos: this.pedido });
   }
 
   terminarServicio() {
