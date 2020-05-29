@@ -1,19 +1,21 @@
 import { Moment } from 'moment';
+import { IAdjunto } from './adjunto.model';
+import { IProductoProveedor } from './producto-proveedor.model';
 
 export interface IProductoImagen {
   id?: number;
-  fechaAlta?: Moment;
-  usuarioAltaId?: number;
-  productoId?: number;
+  productoProveedorId?: number;
+  productoProveedor?: IProductoProveedor;
   adjuntoId?: number;
+  adjunto?: IAdjunto;
 }
 
 export class ProductoImagen implements IProductoImagen {
   constructor(
     public id?: number,
-    public fechaAlta?: Moment,
-    public usuarioAltaId?: number,
-    public productoId?: number,
-    public adjuntoId?: number
+    public productoProveedorId?: number,
+    public productoProveedor?: IProductoProveedor,
+    public adjuntoId?: number,
+    public adjunto?: IAdjunto
   ) {}
 }

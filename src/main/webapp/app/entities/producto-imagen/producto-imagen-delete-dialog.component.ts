@@ -41,21 +41,29 @@ export class ProductoImagenDeleteDialogComponent {
 })
 export class ProductoImagenDeletePopupComponent implements OnInit, OnDestroy {
   protected ngbModalRef: NgbModalRef;
+  productoProveedorId: number;
 
   constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
   ngOnInit() {
+    let sId = this.activatedRoute.snapshot.paramMap.get('productoProveedorId');
+    if (!isNaN(Number(sId))) {
+      this.productoProveedorId = Number(sId);
+    } else {
+      console.log('Not a Number');
+    }
+
     this.activatedRoute.data.subscribe(({ productoImagen }) => {
       setTimeout(() => {
         this.ngbModalRef = this.modalService.open(ProductoImagenDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
         this.ngbModalRef.componentInstance.productoImagen = productoImagen;
         this.ngbModalRef.result.then(
           result => {
-            this.router.navigate(['/main/entities/producto-imagen']);
+            this.router.navigate(['/main/entities/producto-imagen/producto-proveedor', this.productoProveedorId]);
             this.ngbModalRef = null;
           },
           reason => {
-            this.router.navigate(['/main/entities/producto-imagen']);
+            this.router.navigate(['/main/entities/producto-imagen/producto-proveedor', this.productoProveedorId]);
             this.ngbModalRef = null;
           }
         );

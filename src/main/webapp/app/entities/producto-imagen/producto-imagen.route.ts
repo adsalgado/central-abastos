@@ -30,7 +30,7 @@ export class ProductoImagenResolve implements Resolve<IProductoImagen> {
 
 export const productoImagenRoute: Routes = [
   {
-    path: '',
+    path: 'producto-proveedor/:productoProveedorId',
     component: ProductoImagenComponent,
     data: {
       authorities: ['ROLE_USER'],
@@ -39,7 +39,7 @@ export const productoImagenRoute: Routes = [
     canActivate: [UserRouteAccessService]
   },
   {
-    path: ':id/view',
+    path: 'producto-proveedor/:productoProveedorId/:id/view',
     component: ProductoImagenDetailComponent,
     resolve: {
       productoImagen: ProductoImagenResolve
@@ -51,7 +51,7 @@ export const productoImagenRoute: Routes = [
     canActivate: [UserRouteAccessService]
   },
   {
-    path: 'new',
+    path: 'producto-proveedor/:productoProveedorId/new',
     component: ProductoImagenUpdateComponent,
     resolve: {
       productoImagen: ProductoImagenResolve
@@ -63,7 +63,7 @@ export const productoImagenRoute: Routes = [
     canActivate: [UserRouteAccessService]
   },
   {
-    path: ':id/edit',
+    path: 'producto-proveedor/:productoProveedorId/:id/edit',
     component: ProductoImagenUpdateComponent,
     resolve: {
       productoImagen: ProductoImagenResolve
@@ -78,7 +78,7 @@ export const productoImagenRoute: Routes = [
 
 export const productoImagenPopupRoute: Routes = [
   {
-    path: ':id/delete',
+    path: 'producto-proveedor/:productoProveedorId/:id/delete',
     component: ProductoImagenDeletePopupComponent,
     resolve: {
       productoImagen: ProductoImagenResolve

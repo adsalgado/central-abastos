@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -6,13 +6,13 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
-import { JhiAlertService } from 'ng-jhipster';
+import { JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 import { IProductoImagen, ProductoImagen } from 'app/shared/model/producto-imagen.model';
 import { ProductoImagenService } from './producto-imagen.service';
 import { IUser, UserService } from 'app/core';
 import { IProducto } from 'app/shared/model/producto.model';
 import { ProductoService } from 'app/entities/producto';
-import { IAdjunto } from 'app/shared/model/adjunto.model';
+import { IAdjunto, Adjunto } from 'app/shared/model/adjunto.model';
 import { AdjuntoService } from 'app/entities/adjunto';
 
 @Component({
@@ -21,67 +21,62 @@ import { AdjuntoService } from 'app/entities/adjunto';
 })
 export class ProductoImagenUpdateComponent implements OnInit {
   isSaving: boolean;
-
   users: IUser[];
-
-  productos: IProducto[];
-
-  adjuntos: IAdjunto[];
+  actualizarAdjunto: boolean;
+  productoProveedorId: number;
+  productoImagen: IProductoImagen;
 
   editForm = this.fb.group({
     id: [],
-    fechaAlta: [],
-    usuarioAltaId: [],
-    productoId: [],
-    adjuntoId: []
+    producto: [],
+    productoProveedorId: [],
+    adjuntoId: [],
+    file: [],
+    fileName: [],
+    fileContentType: []
   });
 
   constructor(
+    protected dataUtils: JhiDataUtils,
     protected jhiAlertService: JhiAlertService,
     protected productoImagenService: ProductoImagenService,
     protected userService: UserService,
     protected productoService: ProductoService,
     protected adjuntoService: AdjuntoService,
     protected activatedRoute: ActivatedRoute,
+    protected elementRef: ElementRef,
     private fb: FormBuilder
   ) {}
 
   ngOnInit() {
+    let sId = this.activatedRoute.snapshot.paramMap.get('productoProveedorId');
+    if (!isNaN(Number(sId))) {
+      this.productoProveedorId = Number(sId);
+    } else {
+      console.log('Not a Number');
+    }
+    this.actualizarAdjunto = false;
     this.isSaving = false;
     this.activatedRoute.data.subscribe(({ productoImagen }) => {
+      this.productoImagen = productoImagen;
       this.updateForm(productoImagen);
     });
-    this.userService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IUser[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IUser[]>) => response.body)
-      )
-      .subscribe((res: IUser[]) => (this.users = res), (res: HttpErrorResponse) => this.onError(res.message));
-    this.productoService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IProducto[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IProducto[]>) => response.body)
-      )
-      .subscribe((res: IProducto[]) => (this.productos = res), (res: HttpErrorResponse) => this.onError(res.message));
-    this.adjuntoService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IAdjunto[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IAdjunto[]>) => response.body)
-      )
-      .subscribe((res: IAdjunto[]) => (this.adjuntos = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
   updateForm(productoImagen: IProductoImagen) {
     this.editForm.patchValue({
       id: productoImagen.id,
-      fechaAlta: productoImagen.fechaAlta != null ? productoImagen.fechaAlta.format(DATE_TIME_FORMAT) : null,
-      usuarioAltaId: productoImagen.usuarioAltaId,
-      productoId: productoImagen.productoId,
+      producto: this.productoProveedorId,
+      productoProveedorId: this.productoProveedorId,
       adjuntoId: productoImagen.adjuntoId
     });
+    if (productoImagen.adjunto) {
+      this.editForm.patchValue({
+        file: productoImagen.adjunto.file,
+        fileContentType: productoImagen.adjunto.fileContentType,
+        fileName: productoImagen.adjunto.fileName
+      });
+    }
   }
 
   previousState() {
@@ -99,15 +94,65 @@ export class ProductoImagenUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IProductoImagen {
-    return {
+    let productoImagen = {
       ...new ProductoImagen(),
       id: this.editForm.get(['id']).value,
-      fechaAlta:
-        this.editForm.get(['fechaAlta']).value != null ? moment(this.editForm.get(['fechaAlta']).value, DATE_TIME_FORMAT) : undefined,
-      usuarioAltaId: this.editForm.get(['usuarioAltaId']).value,
-      productoId: this.editForm.get(['productoId']).value,
+      productoProveedorId: this.editForm.get(['productoProveedorId']).value,
       adjuntoId: this.editForm.get(['adjuntoId']).value
     };
+
+    if (this.actualizarAdjunto && this.editForm.get(['file'])) {
+      let adjunto = new Adjunto();
+      adjunto.id = this.editForm.get(['adjuntoId']).value;
+      adjunto.file = this.editForm.get(['file']).value;
+      adjunto.contentType = this.editForm.get(['fileContentType']).value;
+      adjunto.fileContentType = this.editForm.get(['fileContentType']).value;
+      adjunto.fileName = this.editForm.get(['fileName']).value;
+      productoImagen.adjunto = adjunto;
+    }
+
+    return productoImagen;
+  }
+
+  setFileData(event, field: string, isImage) {
+    return new Promise((resolve, reject) => {
+      if (event && event.target && event.target.files && event.target.files[0]) {
+        const file = event.target.files[0];
+        if (isImage && !/^image\//.test(file.type)) {
+          reject(`File was expected to be an image but was found to be ${file.type}`);
+        } else {
+          const filedContentType: string = field + 'ContentType';
+          const filedName: string = field + 'Name';
+          this.dataUtils.toBase64(file, base64Data => {
+            this.actualizarAdjunto = true;
+            this.editForm.patchValue({
+              [field]: base64Data,
+              [filedContentType]: file.type,
+              [filedName]: file.name
+            });
+          });
+        }
+      } else {
+        reject(`Base64 data was not set as file could not be extracted from passed parameter: ${event}`);
+      }
+    }).then(
+      () => console.log('blob added'), // sucess
+      this.onError
+    );
+  }
+
+  clearInputImage(field: string, fieldContentType: string, idInput: string) {
+    this.editForm.patchValue({
+      [field]: null,
+      [fieldContentType]: null
+    });
+    if (this.elementRef && idInput && this.elementRef.nativeElement.querySelector('#' + idInput)) {
+      this.elementRef.nativeElement.querySelector('#' + idInput).value = null;
+    }
+  }
+
+  byteSize(field) {
+    return this.dataUtils.byteSize(field);
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProductoImagen>>) {

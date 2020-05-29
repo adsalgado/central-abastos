@@ -1,7 +1,7 @@
 <div>
     <h2 id="page-heading">
-        <span jhiTranslate="abastosApp.productoImagen.home.title">Producto Imagens</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-producto-imagen" [routerLink]="['/producto-imagen/new']">
+        <span >Imágenes del producto</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-producto-imagen" [routerLink]="['/main/entities/producto-imagen/producto-proveedor', productoProveedorId ,'new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span  jhiTranslate="abastosApp.productoImagen.home.createLabel">
             Create a new Producto Imagen
@@ -18,46 +18,36 @@
             <thead>
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="abastosApp.productoImagen.fechaAlta">Fecha Alta</span></th>
-            <th><span jhiTranslate="abastosApp.productoImagen.usuarioAlta">Usuario Alta</span></th>
-            <th><span jhiTranslate="abastosApp.productoImagen.producto">Producto</span></th>
-            <th><span jhiTranslate="abastosApp.productoImagen.adjunto">Adjunto</span></th>
+            <th><span >Producto</span></th>
+            <th><span >Imagen</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let productoImagen of productoImagens ;trackBy: trackId">
-                <td><a [routerLink]="['/producto-imagen', productoImagen.id, 'view' ]">{{productoImagen.id}}</a></td>
-                <td>{{productoImagen.fechaAlta | date:'medium'}}</td>
+                <td><a [routerLink]="['/main/entities/producto-imagen/producto-proveedor', productoProveedorId, productoImagen.id, 'view' ]">{{productoImagen.id}}</a></td>
+                <td>{{productoImagen.productoProveedor?.producto?.nombre}}</td>
                 <td>
-                    {{productoImagen.usuarioAltaId}}
-                </td>
-                <td>
-                    <div *ngIf="productoImagen.productoId">
-                        <a [routerLink]="['/producto', productoImagen.productoId , 'view' ]" >{{productoImagen.productoId}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="productoImagen.adjuntoId">
-                        <a [routerLink]="['/adjunto', productoImagen.adjuntoId , 'view' ]" >{{productoImagen.adjuntoId}}</a>
+                    <div class="container-card" *ngIf="productoImagen.adjuntoId">
+                        <img style="max-height: 55px;" src="{{env.getImagenIndividual}}{{productoImagen.adjuntoId}}" />
                     </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['/main/entities/producto-imagen', productoImagen.id, 'view' ]"
+                                [routerLink]="['/main/entities/producto-imagen/producto-proveedor', productoProveedorId , productoImagen.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/main/entities/producto-imagen', productoImagen.id, 'edit']"
+                                [routerLink]="['/main/entities/producto-imagen/producto-proveedor', productoProveedorId , productoImagen.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/main/entities/producto-imagen', productoImagen.id, 'delete']"
+                                [routerLink]="['/main/entities/producto-imagen/producto-proveedor', productoProveedorId , productoImagen.id, 'delete']"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

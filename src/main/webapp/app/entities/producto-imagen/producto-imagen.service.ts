@@ -45,29 +45,28 @@ export class ProductoImagenService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
+  findByProductpProveedorId(productoProveedorId?: number): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<IProductoImagen[]>(`${this.resourceUrl}/producto-proveedor/${productoProveedorId}`, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   protected convertDateFromClient(productoImagen: IProductoImagen): IProductoImagen {
-    const copy: IProductoImagen = Object.assign({}, productoImagen, {
-      fechaAlta: productoImagen.fechaAlta != null && productoImagen.fechaAlta.isValid() ? productoImagen.fechaAlta.toJSON() : null
-    });
+    const copy: IProductoImagen = Object.assign({}, productoImagen, {});
     return copy;
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
-    if (res.body) {
-      res.body.fechaAlta = res.body.fechaAlta != null ? moment(res.body.fechaAlta) : null;
-    }
     return res;
   }
 
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
-      res.body.forEach((productoImagen: IProductoImagen) => {
-        productoImagen.fechaAlta = productoImagen.fechaAlta != null ? moment(productoImagen.fechaAlta) : null;
-      });
+      res.body.forEach((productoImagen: IProductoImagen) => {});
     }
     return res;
   }

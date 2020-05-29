@@ -10,34 +10,42 @@ import java.util.Optional;
  */
 public interface ProductoImagenService {
 
-    /**
-     * Save a productoImagen.
-     *
-     * @param productoImagenDTO the entity to save.
-     * @return the persisted entity.
-     */
-    ProductoImagenDTO save(ProductoImagenDTO productoImagenDTO);
+	/**
+	 * Save a productoImagen.
+	 *
+	 * @param productoImagenDTO the entity to save.
+	 * @return the persisted entity.
+	 */
+	ProductoImagenDTO save(ProductoImagenDTO productoImagenDTO);
 
-    /**
-     * Get all the productoImagens.
-     *
-     * @return the list of entities.
-     */
-    List<ProductoImagenDTO> findAll();
+	/**
+	 * Get all the productoImagens.
+	 *
+	 * @return the list of entities.
+	 */
+	List<ProductoImagenDTO> findAll();
 
+	/**
+	 * Get the "id" productoImagen.
+	 *
+	 * @param id the id of the entity.
+	 * @return the entity.
+	 */
+	Optional<ProductoImagenDTO> findOne(Long id);
 
-    /**
-     * Get the "id" productoImagen.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
-    Optional<ProductoImagenDTO> findOne(Long id);
+	/**
+	 * Delete the "id" productoImagen.
+	 *
+	 * @param id the id of the entity.
+	 */
+	void delete(Long id);
 
-    /**
-     * Delete the "id" productoImagen.
-     *
-     * @param id the id of the entity.
-     */
-    void delete(Long id);
+	/**
+	 * Get all the productoImagens by productoProveedorId.
+	 *
+	 * @param productoProveedorId
+	 * @return the list of entities.
+	 */
+	List<ProductoImagenDTO> findByProductoProveedorId(Long productoProveedorId);
+	
 }
