@@ -2,21 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../environments/environment.prod';
 
-import { ICategoria } from 'app/shared/model/categoria.model';
+import { IPromocion } from 'app/shared/model/promocion.model';
 
 @Component({
-  selector: 'jhi-categoria-detail',
-  templateUrl: './categoria-detail.component.html'
+  selector: 'jhi-promocion-detail',
+  templateUrl: './promocion-detail.component.html'
 })
-export class CategoriaDetailComponent implements OnInit {
-  categoria: ICategoria;
+export class PromocionDetailComponent implements OnInit {
+  promocion: IPromocion;
   public env: any = environment;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.activatedRoute.data.subscribe(({ categoria }) => {
-      this.categoria = categoria;
+    this.activatedRoute.data.subscribe(({ promocion }) => {
+      this.promocion = promocion;
     });
   }
 

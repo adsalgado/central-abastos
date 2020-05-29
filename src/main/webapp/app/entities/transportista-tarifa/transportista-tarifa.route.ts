@@ -17,6 +17,7 @@ export class TransportistaTarifaResolve implements Resolve<ITransportistaTarifa>
   constructor(private service: TransportistaTarifaService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ITransportistaTarifa> {
+    console.log(route);
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
@@ -30,7 +31,7 @@ export class TransportistaTarifaResolve implements Resolve<ITransportistaTarifa>
 
 export const transportistaTarifaRoute: Routes = [
   {
-    path: '',
+    path: 'transportista/:transportistaId',
     component: TransportistaTarifaComponent,
     data: {
       authorities: ['ROLE_USER'],
@@ -51,7 +52,7 @@ export const transportistaTarifaRoute: Routes = [
     canActivate: [UserRouteAccessService]
   },
   {
-    path: 'new',
+    path: 'transportista/:transportistaId/new',
     component: TransportistaTarifaUpdateComponent,
     resolve: {
       transportistaTarifa: TransportistaTarifaResolve
@@ -63,7 +64,7 @@ export const transportistaTarifaRoute: Routes = [
     canActivate: [UserRouteAccessService]
   },
   {
-    path: ':id/edit',
+    path: 'transportista/:transportistaId/:id/edit',
     component: TransportistaTarifaUpdateComponent,
     resolve: {
       transportistaTarifa: TransportistaTarifaResolve
@@ -78,7 +79,7 @@ export const transportistaTarifaRoute: Routes = [
 
 export const transportistaTarifaPopupRoute: Routes = [
   {
-    path: ':id/delete',
+    path: 'transportista/:transportistaId/:id/delete',
     component: TransportistaTarifaDeletePopupComponent,
     resolve: {
       transportistaTarifa: TransportistaTarifaResolve

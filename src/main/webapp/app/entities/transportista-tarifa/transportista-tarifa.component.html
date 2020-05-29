@@ -1,10 +1,10 @@
 <div>
     <h2 id="page-heading">
-        <span jhiTranslate="abastosApp.transportistaTarifa.home.title">Transportista Tarifas</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-transportista-tarifa" [routerLink]="['/transportista-tarifa/new']">
+        <span>Tarifas del transportista</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-transportista-tarifa" [routerLink]="['/main/entities/transportista-tarifa/transportista', transportistaId ,'new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="abastosApp.transportistaTarifa.home.createLabel">
-            Create a new Transportista Tarifa
+            <span >
+            Crear nueva tarifa
             </span>
         </button>
     </h2>
@@ -17,41 +17,33 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="abastosApp.transportistaTarifa.rangoMinimo">Rango Minimo</span></th>
-            <th><span jhiTranslate="abastosApp.transportistaTarifa.rangoMaximo">Rango Maximo</span></th>
-            <th><span jhiTranslate="abastosApp.transportistaTarifa.precio">Precio</span></th>
-            <th><span jhiTranslate="abastosApp.transportistaTarifa.transportista">Transportista</span></th>
+            <th><span >Rango Mínimo (Km)</span></th>
+            <th><span >Rango Máximo (Km)</span></th>
+            <th><span >Precio</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let transportistaTarifa of transportistaTarifas ;trackBy: trackId">
-                <td><a [routerLink]="['/transportista-tarifa', transportistaTarifa.id, 'view' ]">{{transportistaTarifa.id}}</a></td>
                 <td>{{transportistaTarifa.rangoMinimo}}</td>
                 <td>{{transportistaTarifa.rangoMaximo}}</td>
                 <td>{{transportistaTarifa.precio}}</td>
-                <td>
-                    <div *ngIf="transportistaTarifa.transportistaId">
-                        <a [routerLink]="['/transportista', transportistaTarifa.transportistaId , 'view' ]" >{{transportistaTarifa.transportistaId}}</a>
-                    </div>
-                </td>
                 <td class="text-right">
                     <div class="btn-group">
-                        <button type="submit"
+                        <!--<button type="submit"
                                 [routerLink]="['/main/entities/transportista-tarifa', transportistaTarifa.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
+                        </button>-->
                         <button type="submit"
-                                [routerLink]="['/main/entities/transportista-tarifa', transportistaTarifa.id, 'edit']"
+                                [routerLink]="['/main/entities/transportista-tarifa/transportista', transportistaId , transportistaTarifa.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/main/entities/transportista-tarifa', transportistaTarifa.id, 'delete']"
+                                [routerLink]="['/main/entities/transportista-tarifa/transportista', transportistaId , transportistaTarifa.id, 'delete']"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

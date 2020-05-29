@@ -1,24 +1,21 @@
 import { IProducto } from 'app/shared/model/producto.model';
-import { ICategoria } from './categoria.model';
 import { IAdjunto } from './adjunto.model';
 
-export interface ITipoArticulo {
+export interface IPromocion {
   id?: number;
-  nombre?: string;
+  titulo?: string;
   descripcion?: string;
-  categoriaId?: number;
-  categoria?: ICategoria;
+  link?: string;
   adjuntoId?: number;
   adjunto?: IAdjunto;
 }
 
-export class TipoArticulo implements ITipoArticulo {
+export class Promocion implements IPromocion {
   constructor(
     public id?: number,
-    public nombre?: string,
+    public titulo?: string,
     public descripcion?: string,
-    public categoriaId?: number,
-    public categoria?: ICategoria,
+    public link?: string,
     public adjuntoId?: number,
     public adjunto?: IAdjunto
   ) {}

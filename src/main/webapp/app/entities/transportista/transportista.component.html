@@ -17,35 +17,30 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="abastosApp.transportista.nombre">Nombre</span></th>
-            <th><span jhiTranslate="abastosApp.transportista.fechaAlta">Fecha Alta</span></th>
-            <th><span jhiTranslate="abastosApp.transportista.fechaModificacion">Fecha Modificacion</span></th>
-            <th><span jhiTranslate="abastosApp.transportista.usuarioAlta">Usuario Alta</span></th>
-            <th><span jhiTranslate="abastosApp.transportista.usuarioModificacion">Usuario Modificacion</span></th>
-            <th><span jhiTranslate="abastosApp.transportista.empresa">Empresa</span></th>
-            <th></th>
+            <th><span >ID</span></th>
+            <th><span >Nombre</span></th>
+            <th><span >Usuario</span></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let transportista of transportistas ;trackBy: trackId">
                 <td><a [routerLink]="['/transportista', transportista.id, 'view' ]">{{transportista.id}}</a></td>
                 <td>{{transportista.nombre}}</td>
-                <td>{{transportista.fechaAlta | date:'medium'}}</td>
-                <td>{{transportista.fechaModificacion | date:'medium'}}</td>
                 <td>
-                    {{transportista.usuarioAltaId}}
-                </td>
-                <td>
-                    {{transportista.usuarioModificacionId}}
-                </td>
-                <td>
-                    <div *ngIf="transportista.empresaId">
-                        <a [routerLink]="['/empresa', transportista.empresaId , 'view' ]" >{{transportista.empresaId}}</a>
-                    </div>
+                    <span *ngIf="transportista.usuario">
+                        {{transportista.usuario.firstName}} {{transportista.usuario.lastName}}
+                    </span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/main/entities/transportista-tarifa/transportista', transportista.id]"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" >Tarifas transportista</span>
+                        </button>
+
+                        <!--
                         <button type="submit"
                                 [routerLink]="['/main/entities/transportista', transportista.id, 'view' ]"
                                 class="btn btn-info btn-sm">
@@ -66,6 +61,7 @@
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                         </button>
+                        -->
                     </div>
                 </td>
             </tr>

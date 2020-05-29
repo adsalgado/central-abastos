@@ -24,5 +24,7 @@ public interface TransportistaTarifaRepository extends JpaRepository<Transportis
 			"AND  		?3 <= tt.rango_maximo\n" + 
 			"ORDER BY tt.precio DESC", nativeQuery = true)
 	List<TransportistaTarifa> findTarifaTransportista(Long transportistaId, BigDecimal valor, BigDecimal valorDup);
-	
+
+	List<TransportistaTarifa> findByTransportistaIdOrderByRangoMinimo(Long transportistaId);
+
 }

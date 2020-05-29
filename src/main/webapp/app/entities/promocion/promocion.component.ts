@@ -4,38 +4,38 @@ import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import { ITipoArticulo } from 'app/shared/model/tipo-articulo.model';
+import { IPromocion } from 'app/shared/model/promocion.model';
 import { AccountService } from 'app/core';
-import { TipoArticuloService } from './tipo-articulo.service';
 import { environment } from '../../../environments/environment.prod';
+import { PromocionService } from './promocion.service';
 
 @Component({
-  selector: 'jhi-tipo-articulo',
-  templateUrl: './tipo-articulo.component.html'
+  selector: 'jhi-promocion',
+  templateUrl: './promocion.component.html'
 })
-export class TipoArticuloComponent implements OnInit, OnDestroy {
-  tipoArticulos: ITipoArticulo[];
+export class PromocionComponent implements OnInit, OnDestroy {
+  promociones: IPromocion[];
   currentAccount: any;
   eventSubscriber: Subscription;
   public env: any = environment;
 
   constructor(
-    protected tipoArticuloService: TipoArticuloService,
+    protected promocionService: PromocionService,
     protected jhiAlertService: JhiAlertService,
     protected eventManager: JhiEventManager,
     protected accountService: AccountService
   ) {}
 
   loadAll() {
-    this.tipoArticuloService
+    this.promocionService
       .query()
       .pipe(
-        filter((res: HttpResponse<ITipoArticulo[]>) => res.ok),
-        map((res: HttpResponse<ITipoArticulo[]>) => res.body)
+        filter((res: HttpResponse<IPromocion[]>) => res.ok),
+        map((res: HttpResponse<IPromocion[]>) => res.body)
       )
       .subscribe(
-        (res: ITipoArticulo[]) => {
-          this.tipoArticulos = res;
+        (res: IPromocion[]) => {
+          this.promociones = res;
         },
         (res: HttpErrorResponse) => this.onError(res.message)
       );
@@ -46,19 +46,19 @@ export class TipoArticuloComponent implements OnInit, OnDestroy {
     this.accountService.identity().then(account => {
       this.currentAccount = account;
     });
-    this.registerChangeInTipoArticulos();
+    this.registerChangeInPromocions();
   }
 
   ngOnDestroy() {
     this.eventManager.destroy(this.eventSubscriber);
   }
 
-  trackId(index: number, item: ITipoArticulo) {
+  trackId(index: number, item: IPromocion) {
     return item.id;
   }
 
-  registerChangeInTipoArticulos() {
-    this.eventSubscriber = this.eventManager.subscribe('tipoArticuloListModification', response => this.loadAll());
+  registerChangeInPromocions() {
+    this.eventSubscriber = this.eventManager.subscribe('promocionListModification', response => this.loadAll());
   }
 
   protected onError(errorMessage: string) {

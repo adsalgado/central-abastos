@@ -3,29 +3,32 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ITipoArticulo, TipoArticulo } from 'app/shared/model/tipo-articulo.model';
-import { TipoArticuloService } from './tipo-articulo.service';
-import { ICategoria } from 'app/shared/model/categoria.model';
-import { JhiDataUtils, JhiAlertService } from 'ng-jhipster';
-import { CategoriaService } from '../categoria';
-import { IAdjunto, Adjunto } from 'app/shared/model/adjunto.model';
-import { AdjuntoService } from '../adjunto/adjunto.service';
 import { filter, map } from 'rxjs/operators';
+import { JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import { IPromocion, Promocion } from 'app/shared/model/promocion.model';
+import { PromocionService } from './promocion.service';
+import { IEmpresa } from 'app/shared/model/empresa.model';
+import { EmpresaService } from 'app/entities/empresa';
+import { environment } from '../../../environments/environment.prod';
+import { AdjuntoService } from '../adjunto/adjunto.service';
+import { IAdjunto, Adjunto } from 'app/shared/model/adjunto.model';
 
 @Component({
-  selector: 'jhi-tipo-articulo-update',
-  templateUrl: './tipo-articulo-update.component.html'
+  selector: 'jhi-promocion-update',
+  templateUrl: './promocion-update.component.html'
 })
-export class TipoArticuloUpdateComponent implements OnInit {
+export class PromocionUpdateComponent implements OnInit {
   isSaving: boolean;
-  categorias: ICategoria[];
+  empresas: IEmpresa[];
+  env: any = environment;
   actualizarAdjunto: boolean;
 
   editForm = this.fb.group({
     id: [],
-    nombre: [null, [Validators.required, Validators.maxLength(128)]],
+    titulo: [null, [Validators.required, Validators.maxLength(128)]],
     descripcion: [null, [Validators.maxLength(128)]],
-    categoriaId: [],
+    link: [],
+    empresaId: [],
     adjuntoId: [],
     file: [],
     fileName: [],
@@ -35,8 +38,8 @@ export class TipoArticuloUpdateComponent implements OnInit {
   constructor(
     protected dataUtils: JhiDataUtils,
     protected jhiAlertService: JhiAlertService,
-    protected tipoArticuloService: TipoArticuloService,
-    protected categoriaService: CategoriaService,
+    protected promocionService: PromocionService,
+    protected empresaService: EmpresaService,
     protected adjuntoService: AdjuntoService,
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
@@ -46,42 +49,41 @@ export class TipoArticuloUpdateComponent implements OnInit {
   ngOnInit() {
     this.isSaving = false;
     this.actualizarAdjunto = false;
-
-    this.activatedRoute.data.subscribe(({ tipoArticulo }) => {
-      if (tipoArticulo.adjuntoId) {
-        this.adjuntoService.find(tipoArticulo.adjuntoId).subscribe(
+    this.activatedRoute.data.subscribe(({ promocion }) => {
+      if (promocion.adjuntoId) {
+        this.adjuntoService.find(promocion.adjuntoId).subscribe(
           (res: HttpResponse<IAdjunto>) => {
-            tipoArticulo.adjunto = res.body;
-            this.updateForm(tipoArticulo);
+            promocion.adjunto = res.body;
+            this.updateForm(promocion);
           },
           (error: HttpErrorResponse) => console.log(error)
         );
       } else {
-        this.updateForm(tipoArticulo);
+        this.updateForm(promocion);
       }
     });
-    this.categoriaService
+    this.empresaService
       .query()
       .pipe(
-        filter((mayBeOk: HttpResponse<ICategoria[]>) => mayBeOk.ok),
-        map((response: HttpResponse<ICategoria[]>) => response.body)
+        filter((mayBeOk: HttpResponse<IEmpresa[]>) => mayBeOk.ok),
+        map((response: HttpResponse<IEmpresa[]>) => response.body)
       )
-      .subscribe((res: ICategoria[]) => (this.categorias = res), (res: HttpErrorResponse) => this.onError(res.message));
+      .subscribe((res: IEmpresa[]) => (this.empresas = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
-  updateForm(tipoArticulo: ITipoArticulo) {
+  updateForm(promocion: IPromocion) {
     this.editForm.patchValue({
-      id: tipoArticulo.id,
-      nombre: tipoArticulo.nombre,
-      descripcion: tipoArticulo.descripcion,
-      categoriaId: tipoArticulo.categoriaId,
-      adjuntoId: tipoArticulo.adjuntoId
+      id: promocion.id,
+      titulo: promocion.titulo,
+      descripcion: promocion.descripcion,
+      link: promocion.link,
+      adjuntoId: promocion.adjuntoId
     });
-    if (tipoArticulo.adjunto) {
+    if (promocion.adjunto) {
       this.editForm.patchValue({
-        file: tipoArticulo.adjunto.file,
-        fileContentType: tipoArticulo.adjunto.fileContentType,
-        fileName: tipoArticulo.adjunto.fileName
+        file: promocion.adjunto.file,
+        fileContentType: promocion.adjunto.fileContentType,
+        fileName: promocion.adjunto.fileName
       });
     }
   }
@@ -92,37 +94,35 @@ export class TipoArticuloUpdateComponent implements OnInit {
 
   save() {
     this.isSaving = true;
-    const tipoArticulo = this.createFromForm();
-    if (tipoArticulo.id !== undefined) {
-      this.subscribeToSaveResponse(this.tipoArticuloService.update(tipoArticulo));
+    const promocion = this.createFromForm();
+    if (promocion.id !== undefined) {
+      this.subscribeToSaveResponse(this.promocionService.update(promocion));
     } else {
-      this.subscribeToSaveResponse(this.tipoArticuloService.create(tipoArticulo));
+      this.subscribeToSaveResponse(this.promocionService.create(promocion));
     }
   }
 
-  private createFromForm(): ITipoArticulo {
-    let tipoArticulo = {
-      ...new TipoArticulo(),
+  private createFromForm(): IPromocion {
+    let promocion = {
+      ...new Promocion(),
       id: this.editForm.get(['id']).value,
-      nombre: this.editForm.get(['nombre']).value,
+      titulo: this.editForm.get(['titulo']).value,
       descripcion: this.editForm.get(['descripcion']).value,
-      categoriaId: this.editForm.get(['categoriaId']).value,
+      link: this.editForm.get(['link']).value,
       adjuntoId: this.editForm.get(['adjuntoId']).value
     };
 
     if (this.actualizarAdjunto && this.editForm.get(['file'])) {
-      let adjunto = {
-        ...new Adjunto(),
-        id: this.editForm.get(['adjuntoId']).value,
-        file: this.editForm.get(['file']).value,
-        contentType: this.editForm.get(['fileContentType']).value,
-        fileContentType: this.editForm.get(['fileContentType']).value,
-        fileName: this.editForm.get(['fileName']).value
-      };
-      tipoArticulo.adjunto = adjunto;
+      let adjunto = new Adjunto();
+      adjunto.id = this.editForm.get(['adjuntoId']).value;
+      adjunto.file = this.editForm.get(['file']).value;
+      adjunto.contentType = this.editForm.get(['fileContentType']).value;
+      adjunto.fileContentType = this.editForm.get(['fileContentType']).value;
+      adjunto.fileName = this.editForm.get(['fileName']).value;
+      promocion.adjunto = adjunto;
     }
 
-    return tipoArticulo;
+    return promocion;
   }
 
   setFileData(event, field: string, isImage) {
@@ -167,7 +167,7 @@ export class TipoArticuloUpdateComponent implements OnInit {
     return this.dataUtils.byteSize(field);
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<ITipoArticulo>>) {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IPromocion>>) {
     result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
   }
 
@@ -179,8 +179,11 @@ export class TipoArticuloUpdateComponent implements OnInit {
   protected onSaveError() {
     this.isSaving = false;
   }
-
   protected onError(errorMessage: string) {
     this.jhiAlertService.error(errorMessage, null, null);
+  }
+
+  trackEmpresaById(index: number, item: IEmpresa) {
+    return item.id;
   }
 }

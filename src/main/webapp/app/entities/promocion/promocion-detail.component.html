@@ -1,26 +1,30 @@
 <div class="row justify-content-center">
     <div class="col-8">
-        <div *ngIf="tipoArticulo">
-            <h2><span jhiTranslate="abastosApp.tipoArticulo.detail.title">Tipo Articulo</span> {{tipoArticulo.id}}</h2>
+        <div *ngIf="promocion">
+            <h2><span>Promoción</span> {{promocion.id}}</h2>
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
                 <dt><span >Nombre</span></dt>
                 <dd>
-                    <span>{{tipoArticulo.nombre}}</span>
+                    <span>{{promocion.nombre}}</span>
+                </dd>
+                <dt><span >Título</span></dt>
+                <dd>
+                    <span>{{promocion.titulo}}</span>
                 </dd>
                 <dt><span >Descripción</span></dt>
                 <dd>
-                    <span>{{tipoArticulo.descripcion}}</span>
+                    <span>{{promocion.descripcion}}</span>
                 </dd>
-                <dt><span >Categoria</span></dt>
+                <dt><span>Link</span></dt>
                 <dd>
-                    <span>{{tipoArticulo.categoria.nombre}}</span>
+                    <span>{{promocion.link}}</span>
                 </dd>
                 <dt><span>Imagen</span></dt>
                 <dd>
-                    <div class="container-card" *ngIf="tipoArticulo.adjuntoId">
-                        <img style="width: 55px;" src="{{env.getImagenIndividual}}{{tipoArticulo.adjuntoId}}" />
+                    <div class="container-card" *ngIf="promocion.adjuntoId">
+                        <img style="max-height: 100px;" src="{{env.getImagenIndividual}}{{promocion.adjuntoId}}" />
                     </div>
                 </dd>
             </dl>
@@ -32,7 +36,7 @@
             </button>
 
             <button type="button"
-                    [routerLink]="['/main/entities/tipo-articulo', tipoArticulo.id, 'edit']"
+                    [routerLink]="['/main/entities/promocion', promocion.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>

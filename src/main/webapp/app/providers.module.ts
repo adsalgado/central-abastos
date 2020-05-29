@@ -29,6 +29,7 @@ import { SeccionResolve, SeccionService } from './entities/seccion';
 import { RecolectorService, RecolectorResolve } from './entities/recolector';
 import { RecolectorTarifaService, RecolectorTarifaResolve } from './entities/recolector-tarifa';
 import { QuejaService, QuejaResolve } from './entities/queja';
+import { PromocionService, PromocionResolve } from './entities/promocion';
 import { ProveedorService, ProveedorResolve } from './entities/proveedor';
 import { ProductoService, ProductoResolve } from './entities/producto';
 import { ProductoImagenService, ProductoImagenResolve } from './entities/producto-imagen';
@@ -121,6 +122,8 @@ import { QRCodeModule } from 'angularx-qrcode';
     QuejaResolve,
     ProveedorService,
     ProveedorResolve,
+    PromocionService,
+    PromocionResolve,
     ProductoService,
     ProductoResolve,
     ProductoImagenService,

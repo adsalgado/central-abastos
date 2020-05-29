@@ -7,10 +7,13 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.sharkit.domain.Adjunto;
 import mx.com.sharkit.domain.Promocion;
+import mx.com.sharkit.repository.AdjuntoRepository;
 import mx.com.sharkit.repository.PromocionRepository;
 import mx.com.sharkit.service.PromocionService;
 import mx.com.sharkit.service.dto.PromocionDTO;
@@ -29,6 +32,9 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long>
 	private final PromocionRepository promocionRepository;
 
 	private final PromocionMapper promocionMapper;
+	
+	@Autowired
+	private AdjuntoRepository adjuntoRepository;
 
 	public PromocionServiceImpl(PromocionRepository promocionRepository,
 			PromocionMapper promocionMapper) {
@@ -47,6 +53,33 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long>
 		log.debug("Request to save Promocion : {}", promocionDTO);
 		Promocion promocion = promocionMapper.toEntity(promocionDTO);
 		promocion = promocionRepository.save(promocion);
+		
+		if (promocionDTO.getAdjunto() != null) {
+			Adjunto adjunto = null;
+			if (promocionDTO.getAdjunto().getId() != null) {
+				adjunto = adjuntoRepository.findById(promocionDTO.getAdjunto().getId()).orElse(null);
+				if (adjunto != null) {
+					adjunto.setFileName(promocionDTO.getAdjunto().getFileName());
+					adjunto.setFile(promocionDTO.getAdjunto().getFile());
+					adjunto.setContentType(promocionDTO.getAdjunto().getContentType());
+					adjunto.setFileContentType(promocionDTO.getAdjunto().getFileContentType());
+					adjunto.setSize(promocionDTO.getAdjunto().getSize());
+				}
+			}
+
+			if (adjunto == null) {
+				adjunto = new Adjunto();
+				adjunto.setFileName(promocionDTO.getAdjunto().getFileName());
+				adjunto.setFile(promocionDTO.getAdjunto().getFile());
+				adjunto.setContentType(promocionDTO.getAdjunto().getContentType());
+				adjunto.setFileContentType(promocionDTO.getAdjunto().getFileContentType());
+				adjunto.setSize(promocionDTO.getAdjunto().getSize());
+				adjuntoRepository.save(adjunto);
+			}
+
+			promocion.setAdjuntoId(adjunto.getId());
+		}
+		
 		return promocionMapper.toDto(promocion);
 	}
 

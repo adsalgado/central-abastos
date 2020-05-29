@@ -16,8 +16,8 @@ import { TransportistaService } from 'app/entities/transportista';
 })
 export class TransportistaTarifaUpdateComponent implements OnInit {
   isSaving: boolean;
-
   transportistas: ITransportista[];
+  transportistaId: number;
 
   editForm = this.fb.group({
     id: [],
@@ -37,6 +37,13 @@ export class TransportistaTarifaUpdateComponent implements OnInit {
 
   ngOnInit() {
     this.isSaving = false;
+    let sId = this.activatedRoute.snapshot.paramMap.get('transportistaId');
+    if (!isNaN(Number(sId))) {
+      this.transportistaId = Number(sId);
+    } else {
+      console.log('Not a Number');
+    }
+
     this.activatedRoute.data.subscribe(({ transportistaTarifa }) => {
       this.updateForm(transportistaTarifa);
     });
@@ -55,7 +62,7 @@ export class TransportistaTarifaUpdateComponent implements OnInit {
       rangoMinimo: transportistaTarifa.rangoMinimo,
       rangoMaximo: transportistaTarifa.rangoMaximo,
       precio: transportistaTarifa.precio,
-      transportistaId: transportistaTarifa.transportistaId
+      transportistaId: this.transportistaId
     });
   }
 
