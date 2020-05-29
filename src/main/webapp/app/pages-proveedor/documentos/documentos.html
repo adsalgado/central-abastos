@@ -1,0 +1,77 @@
+<div>
+
+  <div *ngIf="documentos && documentos?.length > 0">
+
+    <mat-list *ngIf="!fromPop">
+      <mat-list-item *ngFor="let d of documentos" style="    margin-bottom: 55px;">
+        <div style="display: inline-block;width: 10%;">
+
+          <div id="uno1" *ngIf="!d.image">
+            <label for="files_{{d.documentoId}}" class="btn" style="background-color: #fff0;
+                    border-color: #fff0;
+                    box-shadow: none;
+                    padding: 0px;">
+              <img style="width: 66px;
+    height: 66px;
+    vertical-align: bottom;
+    border-radius: 50%;" src="../../../content/imgs/perfil/social-media.png"
+                alt="">
+            </label>
+            <input id="files_{{d.documentoId}}" style="visibility:hidden;" type="file" accept="image/x-png,image/jpeg,image/jpg"
+              (change)="changeFile($event, d)">
+          </div>
+
+          <div id="uno2" *ngIf="d.image">
+            <label for="files_{{d.documentoId}}" class="btn" style="background-color: #fff0;
+                      border-color: #fff0;
+                      box-shadow: none;
+                      padding: 0px;">
+              <img style="width: 66px;
+    height: 66px;
+    vertical-align: bottom;
+    border-radius: 50%;" src="{{d.image}}"
+                alt="">
+            </label>
+            <input id="files_{{d.documentoId}}" style="visibility:hidden;" type="file" accept="image/x-png,image/jpeg,image/jpg"
+              (change)="changeFile($event, d)">
+          </div>
+
+
+        </div>
+        <div class="datos-tarjetas" style="display: inline-block;
+        width: 40%;">
+          <div class="name" style="font-size:17px">Documento</div>
+          <div class="name" style="font-size:15px"><strong>{{d.nombre}}</strong></div>
+        </div>
+        <div style="width: 50%;
+        display: inline-block;
+        text-align: -webkit-right;">
+
+
+          <button class="botoni" (click)="actualizar(d)" color="danger" style="background-color: #22aeff;
+          border: 1px solid #924709;
+          width: 49%;
+          display: inline-block;
+          padding: 15px;
+          color: #fff;
+          font-size: 17px;">
+            <i class="material-icons" style="vertical-align: middle;">close</i>
+            Editar
+          </button>
+          <button class="botoni" (click)="borrar(d)" color="danger" style="background-color: #FF5722;
+          border: 1px solid #924709;
+          width: 49%;
+          display: inline-block;
+          padding: 15px;
+          color: #fff;
+          font-size: 17px;">
+            <i class="material-icons" style="vertical-align: middle;">close</i>
+            Borrar
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+
+  </div>
+
+</div>

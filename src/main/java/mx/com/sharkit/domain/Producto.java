@@ -60,10 +60,6 @@ public class Producto implements Serializable {
     @Column(name = "fecha_modificacion")
     private LocalDateTime fechaModificacion;
 
-    @ManyToOne
-    @JoinColumn(name = "adjunto_id", insertable = false, updatable = false)
-    private Adjunto adjunto;
-
     @Column(name = "adjunto_id")
     private Long adjuntoId;
 
@@ -262,19 +258,6 @@ public class Producto implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Adjunto getAdjunto() {
-        return adjunto;
-    }
-
-    public Producto adjunto(Adjunto adjunto) {
-        this.adjunto = adjunto;
-        return this;
-    }
-
-    public void setAdjunto(Adjunto adjunto) {
-        this.adjunto = adjunto;
-    }
-
     public User getUsuarioAlta() {
         return usuarioAlta;
     }
@@ -362,7 +345,7 @@ public class Producto implements Serializable {
 	public String toString() {
 		return "Producto [id=" + id + ", sku=" + sku + ", nombre=" + nombre + ", descripcion=" + descripcion
 				+ ", caracteristicas=" + caracteristicas + ", precioSinIva=" + precioSinIva + ", precio=" + precio
-				+ ", fechaAlta=" + fechaAlta + ", fechaModificacion=" + fechaModificacion + ", adjunto=" + adjunto
+				+ ", fechaAlta=" + fechaAlta + ", fechaModificacion=" + fechaModificacion 
 				+ ", adjuntoId=" + adjuntoId + ", usuarioAlta=" + usuarioAlta + ", usuarioAltaId=" + usuarioAltaId
 				+ ", usuarioModificacion=" + usuarioModificacion + ", usuarioModificacionId=" + usuarioModificacionId
 				+ ", tipoArticulo=" + tipoArticulo + ", tipoArticuloId=" + tipoArticuloId + ", estatus=" + estatus

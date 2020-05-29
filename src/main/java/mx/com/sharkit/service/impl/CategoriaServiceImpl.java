@@ -1,13 +1,15 @@
 package mx.com.sharkit.service.impl;
 
 import mx.com.sharkit.service.CategoriaService;
+import mx.com.sharkit.domain.Adjunto;
 import mx.com.sharkit.domain.Categoria;
+import mx.com.sharkit.repository.AdjuntoRepository;
 import mx.com.sharkit.repository.CategoriaRepository;
 import mx.com.sharkit.service.dto.CategoriaDTO;
 import mx.com.sharkit.service.mapper.CategoriaMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,9 @@ public class CategoriaServiceImpl implements CategoriaService {
     private final CategoriaRepository categoriaRepository;
 
     private final CategoriaMapper categoriaMapper;
+    
+	@Autowired
+	private AdjuntoRepository adjuntoRepository;
 
     public CategoriaServiceImpl(CategoriaRepository categoriaRepository, CategoriaMapper categoriaMapper) {
         this.categoriaRepository = categoriaRepository;
@@ -45,6 +50,32 @@ public class CategoriaServiceImpl implements CategoriaService {
         log.debug("Request to save Categoria : {}", categoriaDTO);
         Categoria categoria = categoriaMapper.toEntity(categoriaDTO);
         categoria = categoriaRepository.save(categoria);
+		if (categoriaDTO.getAdjunto() != null) {
+			Adjunto adjunto = null;
+			if (categoriaDTO.getAdjunto().getId() != null) {
+				adjunto = adjuntoRepository.findById(categoriaDTO.getAdjunto().getId()).orElse(null);
+				if (adjunto != null) {
+					adjunto.setFileName(categoriaDTO.getAdjunto().getFileName());
+					adjunto.setFile(categoriaDTO.getAdjunto().getFile());
+					adjunto.setContentType(categoriaDTO.getAdjunto().getContentType());
+					adjunto.setFileContentType(categoriaDTO.getAdjunto().getFileContentType());
+					adjunto.setSize(categoriaDTO.getAdjunto().getSize());
+				}
+			}
+
+			if (adjunto == null) {
+				adjunto = new Adjunto();
+				adjunto.setFileName(categoriaDTO.getAdjunto().getFileName());
+				adjunto.setFile(categoriaDTO.getAdjunto().getFile());
+				adjunto.setContentType(categoriaDTO.getAdjunto().getContentType());
+				adjunto.setFileContentType(categoriaDTO.getAdjunto().getFileContentType());
+				adjunto.setSize(categoriaDTO.getAdjunto().getSize());
+				adjuntoRepository.save(adjunto);
+			}
+
+			categoria.setAdjuntoId(adjunto.getId());
+		}
+
         return categoriaMapper.toDto(categoria);
     }
 

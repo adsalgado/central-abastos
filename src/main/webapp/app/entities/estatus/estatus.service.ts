@@ -11,7 +11,7 @@ type EntityArrayResponseType = HttpResponse<IEstatus[]>;
 
 @Injectable()
 export class EstatusService {
-  public resourceUrl = SERVER_API_URL + 'api/estatuses';
+  public resourceUrl = SERVER_API_URL + 'api/estatus';
 
   constructor(protected http: HttpClient) {}
 
@@ -30,6 +30,10 @@ export class EstatusService {
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IEstatus[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  findByTipoEstatus(tipoEstatus?: string): Observable<EntityArrayResponseType> {
+    return this.http.get<IEstatus[]>(`${this.resourceUrl}/tipoEstatus/${tipoEstatus}`, { observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<any>> {

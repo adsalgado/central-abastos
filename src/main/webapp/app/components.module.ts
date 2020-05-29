@@ -65,6 +65,9 @@ import { FabButton } from 'ionic-angular';
 import { DetalleTarjetaPage } from './pages/detalle-tarjeta/detalle-tarjeta';
 import { TarjetasFrecuentesPage } from './pages/tarjetas-frecuentes/tarjetas-frecuentes';
 import { FabComponent } from './components/fab-button/fab.component';
+import { RegistroPage } from './pages/registro/registro';
+import { DocumentosPage } from './pages-proveedor/documentos/documentos';
+import { HomeProveedorPage } from './pages-proveedor/home-proveedor/home-proveedor';
 
 //import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 
@@ -128,7 +131,11 @@ import { FabComponent } from './components/fab-button/fab.component';
     FabComponent,
 
     DetalleTarjetaPage,
-    TarjetasFrecuentesPage
+    TarjetasFrecuentesPage,
+    RegistroPage,
+
+    DocumentosPage,
+    HomeProveedorPage
 
     // UserMgmtComponent,
     /*AuditsComponent,
@@ -201,7 +208,13 @@ import { FabComponent } from './components/fab-button/fab.component';
     FabComponent,
 
     DetalleTarjetaPage,
-    TarjetasFrecuentesPage
+    TarjetasFrecuentesPage,
+
+    RegistroPage,
+
+    DocumentosPage,
+    HomeProveedorPage
+
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,

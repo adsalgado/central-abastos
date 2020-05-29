@@ -1,7 +1,6 @@
 package mx.com.sharkit.service.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import mx.com.sharkit.domain.Seccion;
 import mx.com.sharkit.service.dto.SeccionDTO;
@@ -12,10 +11,8 @@ import mx.com.sharkit.service.dto.SeccionDTO;
 @Mapper(componentModel = "spring", uses = {EmpresaMapper.class})
 public interface SeccionMapper extends EntityMapper<SeccionDTO, Seccion> {
 
-    @Mapping(source = "empresa.id", target = "empresaId")
     SeccionDTO toDto(Seccion seccion);
 
-    @Mapping(source = "empresaId", target = "empresa")
     Seccion toEntity(SeccionDTO seccionDTO);
 
     default Seccion fromId(Long id) {

@@ -55,6 +55,9 @@ public class Seccion implements Serializable {
     @Column(name = "empresa_id")
     private Long empresaId;
 
+    @Column(name = "adjunto_id")
+    private Long adjuntoId;
+
     @Column(name = "usuario_alta_id")
     private Long usuarioAltaId;
 
@@ -156,6 +159,14 @@ public class Seccion implements Serializable {
 		this.usuarioModificacionId = usuarioModificacionId;
 	}
 
+	public Long getAdjuntoId() {
+		return adjuntoId;
+	}
+
+	public void setAdjuntoId(Long adjuntoId) {
+		this.adjuntoId = adjuntoId;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -172,11 +183,12 @@ public class Seccion implements Serializable {
         return 31;
     }
 
-    @Override
-    public String toString() {
-        return "Seccion{" +
-            "id=" + getId() +
-            ", nombre='" + getNombre() + "'" +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "Seccion [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", icono=" + icono
+				+ ", fechaAlta=" + fechaAlta + ", fechaModificacion=" + fechaModificacion + ", empresa=" + empresa
+				+ ", empresaId=" + empresaId + ", adjuntoId=" + adjuntoId + ", usuarioAltaId=" + usuarioAltaId
+				+ ", usuarioModificacionId=" + usuarioModificacionId + "]";
+	}
+
 }

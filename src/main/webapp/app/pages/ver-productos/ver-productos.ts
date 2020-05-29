@@ -1,3 +1,4 @@
+import { LocalStorageEncryptService } from 'app/services/local-storage-encrypt-service';
 import { GenericService } from './../../services/generic.service';
 import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
@@ -14,7 +15,12 @@ export class VerProductosPage implements OnDestroy {
   public pedidos: any = null;
 
   public env: any = environment;
-  constructor(public navCtrl: NavParams, private genericService: GenericService, private alertaService: AlertService) {
+  constructor(
+    public navCtrl: NavParams,
+    private genericService: GenericService,
+    private alertaService: AlertService,
+    private localStorageEncryptService: LocalStorageEncryptService
+  ) {
     this.pedidos = navCtrl.get('pedidos');
     this.pedidos.pedidoProveedores[0].pedidoDetalles.forEach(element => {
       element.activado = false;
@@ -45,8 +51,10 @@ export class VerProductosPage implements OnDestroy {
     if (nada > 0) {
       this.alertaService.warn('Debe confirmar cada artículo para poder confirmar su pedido');
     } else {
-      switch (environment.perfil.activo) {
-        case 2:
+      let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
+      //if (user.tipo_usuario == 4) {
+      switch (user.tipo_usuario) {
+        case 3:
           let body: any = {
             pedidoProveedorId: this.pedidos.pedidoProveedores[0].id,
             estatusId: 13
@@ -62,7 +70,7 @@ export class VerProductosPage implements OnDestroy {
             }
           );
           break;
-        case 3:
+        case 4:
           let body2: any = {
             pedidoProveedorId: this.pedidos.pedidoProveedores[0].id,
             estatusId: 14

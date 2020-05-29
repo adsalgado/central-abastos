@@ -25,14 +25,13 @@ public class PushNotificationsService {
 	private final Logger log = LoggerFactory.getLogger(PushNotificationsService.class);
 
 	private static final String FIREBASE_SERVER_KEY_CLIENTE_ANDROID = "AAAAKsiEY9M:APA91bF7qUMreQg_e9awGaJ_hVT8OI55FEXLEp0U71UE2bvgJBs9pZpQVItNKa7kxMrF_09EmAnIxfzm-oR9eoZKueVfn5WC2j8ysVo7ZLq4D1lieIetwRMPfaHM-xWZSBBVlPArYYLl";
-//	private static final String FIREBASE_SERVER_KEY_CLIENTE_ANDROID = "AIzaSyCA4iHXRLkp6uYcguXjdCyLkamJ6RgD9P4";
-	private static final String FIREBASE_SERVER_KEY_CLIENTE_IOS = "AIzaSyBQc4pUXm9D7T6tt5X3_CMcex7Ws4rurB0";
+//	private static final String FIREBASE_SERVER_KEY_CLIENTE_IOS = "AAAAKsiEY9M:APA91bF7qUMreQg_e9awGaJ_hVT8OI55FEXLEp0U71UE2bvgJBs9pZpQVItNKa7kxMrF_09EmAnIxfzm-oR9eoZKueVfn5WC2j8ysVo7ZLq4D1lieIetwRMPfaHM-xWZSBBVlPArYYLl";
 
-	private static final String FIREBASE_SERVER_KEY_PROVEEDOR_ANDROID = "AIzaSyDFhkAV8mw8GOqbHOKX5DRvri8RrMz6XkM";
-	private static final String FIREBASE_SERVER_KEY_PROVEEDOR_IOS = "AIzaSyAggkHkTPFTHnRM3Yju_pSESwYZIcokZDU";
+	private static final String FIREBASE_SERVER_KEY_PROVEEDOR_ANDROID = "AAAAyXhJM2k:APA91bER-GZBce0B61SCwr-K4VrMJOVFfv61IiWE5LNwrcSIKMkZrFH_2ze9oqvwIEh6mjqc5qnv76_AjFbf8w-jPNEKt6g-L3RYaGGZly4krIBScHs3uDS_Po-wftER2IjuyKGZDTOR";
+//	private static final String FIREBASE_SERVER_KEY_PROVEEDOR_IOS = "AAAAyXhJM2k:APA91bER-GZBce0B61SCwr-K4VrMJOVFfv61IiWE5LNwrcSIKMkZrFH_2ze9oqvwIEh6mjqc5qnv76_AjFbf8w-jPNEKt6g-L3RYaGGZly4krIBScHs3uDS_Po-wftER2IjuyKGZDTOR";
 
-	private static final String FIREBASE_SERVER_KEY_TRANSPORTISTA_ANDROID = "AIzaSyB7Sr7KtiCGtjkmKl_PLQEUN2MDUeDwYFE";
-	private static final String FIREBASE_SERVER_KEY_TRANSPORTISTA_IOS = "AIzaSyBcH69SA5lJb7kexuVixaUDlfofzOk73Fg";
+	private static final String FIREBASE_SERVER_KEY_TRANSPORTISTA_ANDROID = "AAAAqVNWOAE:APA91bE90QKFWN_hNPw2Hsz6m0lHbpLe3XBDGwNJ9PmflK0kLwxRwWY4IBGDoJIL3O-HsealVGeLhEc0pP3xeeqhUH05q5rXiEl73_j98AYwicOiyXP9J8YOuLYOPxLvsNCakrsEwBOq";
+//	private static final String FIREBASE_SERVER_KEY_TRANSPORTISTA_IOS = "AAAAqVNWOAE:APA91bE90QKFWN_hNPw2Hsz6m0lHbpLe3XBDGwNJ9PmflK0kLwxRwWY4IBGDoJIL3O-HsealVGeLhEc0pP3xeeqhUH05q5rXiEl73_j98AYwicOiyXP9J8YOuLYOPxLvsNCakrsEwBOq";
 
 	private static final String FIREBASE_API_URL = "https://fcm.googleapis.com/fcm/send";
 
@@ -42,19 +41,15 @@ public class PushNotificationsService {
 		RestTemplate restTemplate = new RestTemplate();
 
 		String fireBaseKeyAndroid = "";
-		String fireBaseKeyIOS = "";
 		
 		if (TipoUsuario.CLIENTE.equals(tipoUsuario)) {
 			fireBaseKeyAndroid = FIREBASE_SERVER_KEY_CLIENTE_ANDROID;
-			fireBaseKeyIOS = FIREBASE_SERVER_KEY_CLIENTE_IOS;
 
 		} else if (TipoUsuario.PROVEEDOR.equals(tipoUsuario)) {
 			fireBaseKeyAndroid = FIREBASE_SERVER_KEY_PROVEEDOR_ANDROID;
-			fireBaseKeyIOS = FIREBASE_SERVER_KEY_PROVEEDOR_IOS;
 			
 		} else if (TipoUsuario.TRANSPORTISTA.equals(tipoUsuario)) {
 			fireBaseKeyAndroid = FIREBASE_SERVER_KEY_TRANSPORTISTA_ANDROID;
-			fireBaseKeyIOS = FIREBASE_SERVER_KEY_TRANSPORTISTA_IOS;
 			
 		}
 

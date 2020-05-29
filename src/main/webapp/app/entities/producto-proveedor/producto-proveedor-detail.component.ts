@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../environments/environment.prod';
 
 import { IProductoProveedor } from 'app/shared/model/producto-proveedor.model';
 
@@ -9,6 +10,7 @@ import { IProductoProveedor } from 'app/shared/model/producto-proveedor.model';
 })
 export class ProductoProveedorDetailComponent implements OnInit {
   productoProveedor: IProductoProveedor;
+  public env: any = environment;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 

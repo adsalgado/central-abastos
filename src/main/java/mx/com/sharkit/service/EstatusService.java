@@ -1,9 +1,10 @@
 package mx.com.sharkit.service;
 
-import mx.com.sharkit.service.dto.EstatusDTO;
-
 import java.util.List;
 import java.util.Optional;
+
+import mx.com.sharkit.domain.enumeration.TipoEstatus;
+import mx.com.sharkit.service.dto.EstatusDTO;
 
 /**
  * Service Interface for managing {@link mx.com.sharkit.domain.Estatus}.
@@ -40,4 +41,12 @@ public interface EstatusService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    /**
+     * Get all the estatuses by tipoEstatus.
+     *
+     * @return the list of entities.
+     */
+    List<EstatusDTO> findAllByTipoEstatus(TipoEstatus tipoEstatus);
+
 }

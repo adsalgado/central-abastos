@@ -1,10 +1,14 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="productoProveedor">
-            <h2><span jhiTranslate="abastosApp.productoProveedor.detail.title">Producto</span> {{productoProveedor.id}}</h2>
+            <h2><span jhiTranslate="abastosApp.productoProveedor.detail.title">Producto</span> {{productoProveedor.producto?.sku}}</h2>
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
+                <dt><span>SKU</span></dt>
+                <dd>
+                    <span>{{productoProveedor.producto?.sku}}</span>
+                </dd>
                 <dt><span jhiTranslate="abastosApp.producto.nombre">Nombre</span></dt>
                 <dd>
                     <span>{{productoProveedor.producto.nombre}}</span>
@@ -39,10 +43,10 @@
                         <span>{{productoProveedor.producto.unidadMedida.nombre}}</span>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="abastosApp.producto.adjunto">Adjunto</span></dt>
+                <dt><span>Imagen</span></dt>
                 <dd>
-                    <div *ngIf="productoProveedor.producto.adjuntoId">
-                        <a [routerLink]="['/main/entities/adjunto', productoProveedor.producto.adjuntoId, 'view']">{{productoProveedor.producto?.adjuntoId}}</a>
+                    <div class="container-card" *ngIf="productoProveedor.producto.adjuntoId">
+                        <img style="width: 55px;" src="{{env.getImagenIndividual}}{{productoProveedor.producto.adjuntoId}}" />
                     </div>
                 </dd>
             </dl>

@@ -87,8 +87,10 @@ export class ChatPage implements OnDestroy {
   }
 
   verChat() {
-    switch (environment.perfil.activo) {
-      case 1:
+    let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    //if (user.tipo_usuario == 4) {
+    switch (user.tipo_usuario) {
+      case 2:
         if (this.subscription) {
           this.subscription.unsubscribe();
         }
@@ -106,7 +108,7 @@ export class ChatPage implements OnDestroy {
         );
         break;
 
-      case 2:
+      case 3:
         if (this.subscription) {
           this.subscription.unsubscribe();
         }
@@ -125,7 +127,7 @@ export class ChatPage implements OnDestroy {
             }
           );
         break;
-      case 3:
+      case 4:
         if (this.subscription) {
           this.subscription.unsubscribe();
         }
@@ -159,10 +161,11 @@ export class ChatPage implements OnDestroy {
 
       text: this.mensaje.toString()
     };
-
-    if (environment.perfil.activo == 1) {
+    let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    //if (user.tipo_usuario == 4) {
+    if (user.tipo_usuario == 2) {
       body.to = `${this.chat.chatDetalles[0].usuarioEmisorLogin}`;
-    } else if (environment.perfil.activo == 2) {
+    } else if (user.tipo_usuario == 3) {
       body.to = `${this.pedido.cliente.login}`;
     }
 

@@ -1,4 +1,5 @@
-<div>
+<div style="height: 450px;
+overflow-y: scroll;">
   <div class="contenedor-chat">
     <div class="cont-msj">
       <div class="msj" style="margin-bottom: 10px;" [ngClass]="{'msj' : user.username == c.usuarioEmisorLogin, 'msj-r' : user.username != c.usuarioEmisorLogin}"
@@ -34,10 +35,10 @@
 </div>
 <div class="footer-chat">
   <div>
-   
-    <input type="text" style="width:89%" placeholder="Escribe un mensaje aquí" [(ngModel)]="mensaje">
-    <div>
-      <button (click)="sendMessage()">
+
+    <input type="text" style="width:96%" placeholder="Escribe un mensaje aquí" [(ngModel)]="mensaje">
+    <div style="width:3%">
+      <button (click)="sendMessage()" style="border: none;    width: 100%;">
         <i class="material-icons">send</i>
       </button>
     </div>

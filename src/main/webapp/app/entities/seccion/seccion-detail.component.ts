@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../environments/environment.prod';
 
 import { ISeccion } from 'app/shared/model/seccion.model';
 
@@ -9,6 +10,7 @@ import { ISeccion } from 'app/shared/model/seccion.model';
 })
 export class SeccionDetailComponent implements OnInit {
   seccion: ISeccion;
+  public env: any = environment;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 

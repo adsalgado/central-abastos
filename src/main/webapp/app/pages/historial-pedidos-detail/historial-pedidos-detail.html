@@ -10,12 +10,12 @@
 
   <section class="mapa">
 
-    <div class="direccion" [ngStyle]="{'color' : genericService.getColorHex()}" *ngIf="tipoUsuario == 3">Proveedor</div>
-    <div class="direct" *ngIf="tipoUsuario == 3">{{pedido.cliente.firstName}}
+    <div class="direccion" [ngStyle]="{'color' : genericService.getColorHex()}" *ngIf="tipoUsuario == 4">Proveedor</div>
+    <div class="direct" *ngIf="tipoUsuario == 4">{{pedido.cliente.firstName}}
       {{pedido.cliente.lastName}}</div>
 
-    <div class="direccion" [ngStyle]="{'color' : genericService.getColorHex()}" *ngIf="tipoUsuario == 2 || tipoUsuario == 3">Cliente</div>
-    <div class="direct" *ngIf="tipoUsuario == 2 || tipoUsuario == 3">{{pedido.cliente.firstName}}
+    <div class="direccion" [ngStyle]="{'color' : genericService.getColorHex()}" *ngIf="tipoUsuario == 3 || tipoUsuario == 4">Cliente</div>
+    <div class="direct" *ngIf="tipoUsuario == 3 || tipoUsuario == 4">{{pedido.cliente.firstName}}
       {{pedido.cliente.lastName}}</div>
 
     <div class="direccion" [ngStyle]="{'color' : genericService.getColorHex()}" *ngIf="pedido.direccionContacto">Dirección de entrega</div>
@@ -23,7 +23,7 @@
     <div id="map_canvas" class="mapita-google" (click)="verMapa()"></div>
   </section>
 
-  <section class="botones" *ngIf="tipoUsuario == 1">
+  <section class="botones" *ngIf="tipoUsuario == 2">
    <button class="boton-detalle" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verDetalle()">
      <i class="material-icons">date_range</i>Ver detalle
     </button>
@@ -35,7 +35,7 @@
     </button>
   </section>
 
-  <section class="botones" *ngIf="tipoUsuario == 2" style="    margin-top: 84%;">
+  <section class="botones" *ngIf="tipoUsuario == 3" >
     <button class="boton-terminar" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verProductos()">
      <i class="material-icons">date_range</i>Ver productos
     </button>
@@ -53,7 +53,7 @@
     </button>
   </section>
 
-  <section class="botones" *ngIf="tipoUsuario == 3" style="    margin-top: 84%;">
+  <section class="botones" *ngIf="tipoUsuario == 4" >
     <button class="boton-terminar" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verProductos()">
      <i class="material-icons">date_range</i>Ver productos
     </button>

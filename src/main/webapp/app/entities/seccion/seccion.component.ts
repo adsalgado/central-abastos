@@ -7,6 +7,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { ISeccion } from 'app/shared/model/seccion.model';
 import { AccountService } from 'app/core';
 import { SeccionService } from './seccion.service';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'jhi-seccion',
@@ -16,6 +17,7 @@ export class SeccionComponent implements OnInit, OnDestroy {
   seccions: ISeccion[];
   currentAccount: any;
   eventSubscriber: Subscription;
+  public env: any = environment;
 
   constructor(
     protected seccionService: SeccionService,

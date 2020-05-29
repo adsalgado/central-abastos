@@ -1,0 +1,79 @@
+<div style="padding:20px">
+
+  <div class="contenedor-step-3">
+    <div class="sub-contenedor">
+      <div class="avatar">
+        <div class="imagen">
+
+          <div id="uno1" *ngIf="!photo_url">
+            <label for="files" class="btn" style="background-color: #fff0;
+            border-color: #fff0;
+            box-shadow: none;
+            padding: 0px;">
+              <img style="width: 66px;" src="../../../content/imgs/perfil/social-media.png" alt="">
+            </label>
+            <input id="files" style="visibility:hidden;" type="file" accept="image/x-png,image/jpeg,image/jpg"
+              (change)="changeFile($event)">
+          </div>
+
+          <div id="uno2" *ngIf="photo_url">
+            <label for="files" class="btn" style="background-color: #fff0;
+          border-color: #fff0;
+          box-shadow: none;
+          padding: 0px;">
+              <img style="width: 66px;" src="{{photo_url}}" alt="">
+            </label>
+            <input id="files" style="visibility:hidden;" type="file" accept="image/x-png,image/jpeg,image/jpg"
+              (change)="changeFile($event)">
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="formulario" *ngIf="formGroup">
+        <form [formGroup]="formGroup">
+          <div *ngFor="let dato of objetoRegistro;let i = index" class="contenedor-input">
+
+            <div style="width: 100%;font-size: 14px;color: #123;">
+              {{dato.name}}
+            </div>
+
+            <input class="inp" [attr.disabled]="dato.disabled ? '' : null" (keyup)="ejecutaValidator()"
+              formControlName="{{dato.formName}}" type="{{dato.type}}" [(ngModel)]="dato.value"
+              maxlength="{{dato.length}}"
+              *ngIf="dato.type != 'date' && dato.type != 'checkbox' && dato.type != 'select'"
+              [ngStyle]="{'width': dato.name == 'Dirección' ? '88%' : '100%'}" placeholder="{{dato.name}}">
+
+            <div class="direc" *ngIf="dato.name == 'Dirección'" (click)="getMapa()" style="display: inline-block;
+                width: 10%;
+                vertical-align: bottom;">
+              <img style="width: 33px;" src="../../../content/imgs/direcciones/home-run.png" alt="">
+            </div>
+
+            <input id="{{dato.formName}}" class="dt" [(ngModel)]="dato.value" formControlName="{{dato.formName}}"
+              text-left type="date" (change)="ejecutaValidator()" *ngIf="dato.type == 'date'"
+              placeholder="{{dato.name}}"></input>
+
+
+            <select class="dt" *ngIf="dato.type == 'select'" [(ngModel)]="dato.value" (change)="ejecutaValidator()"
+              formControlName="{{dato.formName}}">
+              <option *ngFor="let op of dato.opts" [value]="op.id">
+                {{op.value}}
+              </option>
+            </select>
+
+            <app-control-messages [control]="formGroup.controls[dato.formName]" [clase]="'validators2'">
+            </app-control-messages>
+          </div>
+          <div class="contenedor-boton">
+            <button [disabled]="btnHabilitado" (click)="registrar()"
+              [ngStyle]="{'background-color': genericService.getColorHex()}">Aceptar</button>
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>

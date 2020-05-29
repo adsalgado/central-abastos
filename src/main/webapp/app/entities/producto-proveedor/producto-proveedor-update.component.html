@@ -105,6 +105,30 @@
                         <option [ngValue]="unidadMedidaOption.id" *ngFor="let unidadMedidaOption of unidadmedidas; trackBy: trackUnidadMedidaById">{{unidadMedidaOption.nombre}}</option>
                     </select>
                 </div>
+
+                <div class="form-group" >
+                    <label class="form-control-label" for="field_file">Imagen</label>
+                    <div>
+                        <img [src]="'data:' + editForm.get('fileContentType').value + ';base64,' + editForm.get('file').value"
+                            style="max-height: 100px;" *ngIf="editForm.get('file').value" alt="adjunto image" />
+                        <div *ngIf="editForm.get('file').value" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{editForm.get('fileContentType').value}},
+                                {{byteSize(editForm.get('file').value)}}</span>
+                            <button type="button" (click)="clearInputImage('file', 'fileContentType', 'fileImage')"
+                                class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_file" (change)="setFileData($event, 'file', true)" accept="image/*"
+                            jhiTranslate="entity.action.addimage" />
+                    </div>
+                    <input type="hidden" class="form-control" name="adjuntoId" id="field_adjuntoId" formControlName="adjuntoId" />
+                    <input type="hidden" class="form-control" name="fileName" id="field_name" formControlName="fileName" />
+                    <input type="hidden" class="form-control" name="file" id="field_file" formControlName="file" />
+                    <input type="hidden" class="form-control" name="fileContentType" id="field_fileContentType"
+                        formControlName="fileContentType" />
+                </div>
+
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

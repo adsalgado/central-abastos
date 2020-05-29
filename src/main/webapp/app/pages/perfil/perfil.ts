@@ -151,8 +151,9 @@ export class PerfilPage implements OnInit {
         }
         this.objetoRegistro[4].value = response.telefono ? response.telefono : null;
         this.objetoRegistro[5].value = response.genero ? response.genero : null;
-
-        if (environment.perfil.activo == 2) {
+        let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
+        //if (user.tipo_usuario == 4) {
+        if (user.tipo_usuario == 3) {
           this.objetoRegistro.push({
             name: 'Tipo persona',
             required: true,
@@ -196,7 +197,7 @@ export class PerfilPage implements OnInit {
           });
 
           this.data = response.direccion ? response.direccion : null;
-        } else if (environment.perfil.activo == 3) {
+        } else if (user.tipo_usuario == 4) {
           this.objetoRegistro.push({
             name: 'Tipo persona',
             required: true,
@@ -336,8 +337,9 @@ export class PerfilPage implements OnInit {
               size: 0
             }
     };
-
-    if (environment.perfil.activo == 2) {
+    let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    //if (user.tipo_usuario == 4) {
+    if (user.tipo_usuario == 3) {
       body.direccion = {
         codigoPostal: this.data.codigoPostal,
         direccion: this.data.direccion,
@@ -347,7 +349,7 @@ export class PerfilPage implements OnInit {
 
       body.tipoPersonaId = this.objetoRegistro[6].value;
       body.razonSocial = this.objetoRegistro[7].value;
-    } else if (environment.perfil.activo == 3) {
+    } else if (user.tipo_usuario == 4) {
       body.tipoPersonaId = this.objetoRegistro[6].value;
       body.razonSocial = this.objetoRegistro[7].value;
     }

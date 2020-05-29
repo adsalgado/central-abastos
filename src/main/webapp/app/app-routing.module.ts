@@ -38,6 +38,9 @@ import { ContactPage } from './pages/contact/contact';
 import { TerminosCondicionesPage } from './pages/terminos-condiciones/terminos-condiciones';
 import { TarjetasFrecuentesPage } from './pages/tarjetas-frecuentes/tarjetas-frecuentes';
 import { DetalleTarjetaPage } from './pages/detalle-tarjeta/detalle-tarjeta';
+import { RegistroPage } from './pages/registro/registro';
+import { DocumentosPage } from './pages-proveedor/documentos/documentos';
+import { HomeProveedorPage } from './pages-proveedor/home-proveedor/home-proveedor';
 
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const ADMIN_ROUTES = [auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, ...userMgmtRoute, metricsRoute];
@@ -86,6 +89,11 @@ const routes: Routes = [
 
       { path: 'direccion-frecuente', component: DireccionesPage },
 
+      { path: 'registro', component: RegistroPage },
+
+      { path: 'documentos-proveedor', component: DocumentosPage },
+
+      { path: 'pedidos-proveedor', component: HomeProveedorPage },
       {
         path: 'admin',
         loadChildren: () => import('./admin/admin.module').then(m => m.AbastosAdminModule)

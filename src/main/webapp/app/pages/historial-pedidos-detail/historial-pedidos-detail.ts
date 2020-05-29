@@ -22,7 +22,7 @@ export class HistorialPedidosDetailPage implements OnInit {
   public pedido: any = null;
   public map: any;
 
-  public tipoUsuario: any = environment.perfil.activo;
+  public tipoUsuario: any = 0;
 
   public ref: any;
 
@@ -35,6 +35,7 @@ export class HistorialPedidosDetailPage implements OnInit {
     private httpClient: HttpClient
   ) {
     this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    this.tipoUsuario = this.user.tipo_usuario;
     this.pedido = navCtrl.get('pedido');
     console.log(this.pedido);
   }
@@ -179,7 +180,9 @@ export class HistorialPedidosDetailPage implements OnInit {
   }
 
   verMapa() {
-    if (environment.perfil.activo == 3) {
+    let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    //if (user.tipo_usuario == 4) {
+    if (user.tipo_usuario == 4) {
       //http://google.com/maps/@?api=1&map_action=map&center=-33.712206,150.311941&zoom=1
       let latitude = this.pedido.direccionContacto.latitud;
       let longitude = this.pedido.direccionContacto.longitud;
@@ -188,8 +191,10 @@ export class HistorialPedidosDetailPage implements OnInit {
   }
 
   verChat() {
-    switch (environment.perfil.activo) {
-      case 1:
+    let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    //if (user.tipo_usuario == 4) {
+    switch (user.tipo_usuario) {
+      case 2:
         if (!this.pedido.pedidoProveedores[0].chatProveedorid) {
           this.alertaService.warn('El proveedor aun no inicia el chat, espera a que él se comunique contigo');
         } else {
@@ -207,11 +212,11 @@ export class HistorialPedidosDetailPage implements OnInit {
         }
         break;
 
-      case 2:
+      case 3:
         this.loadingService.show();
         this.genericService.sendGetRequest(`${environment.chatsProveedor}${this.pedido.pedidoProveedores[0].id}/tipoChat/1`).subscribe(
           (response: any) => {
-            this.navCtrl.push('chat', { chat: response, pedido: this.pedido });
+            this.navCtrl.push('/main/chat', { chat: response, pedido: this.pedido });
             this.loadingService.hide();
           },
           (error: HttpErrorResponse) => {
@@ -221,11 +226,11 @@ export class HistorialPedidosDetailPage implements OnInit {
           }
         );
         break;
-      case 3:
+      case 4:
         this.loadingService.show();
         this.genericService.sendGetRequest(`${environment.chatsProveedor}${this.pedido.pedidoProveedores[0].id}/tipoChat/2`).subscribe(
           (response: any) => {
-            this.navCtrl.push('chat', { chat: response, pedido: this.pedido });
+            this.navCtrl.push('/main/chat', { chat: response, pedido: this.pedido });
             this.loadingService.hide();
           },
           (error: HttpErrorResponse) => {
