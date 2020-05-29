@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-transportista-tarifa-heading" jhiTranslate="abastosApp.transportistaTarifa.home.createOrEditLabel">Create or edit a Transportista Tarifa</h2>
+            <h2 id="jhi-transportista-tarifa-heading">Crear o editar tarifa</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
                 <div class="form-group" [hidden]="!editForm.get('id').value">
@@ -9,6 +9,15 @@
                     <input type="text" class="form-control" id="id" name="id" formControlName="id"
                         readonly />
                 </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="abastosApp.transportistaTarifa.transportista" for="field_transportista">Transportista</label>
+                    <select class="form-control" id="field_transportista" name="transportista" formControlName="transportistaId" readonly disabled>
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="transportistaOption.id" *ngFor="let transportistaOption of transportistas; trackBy: trackTransportistaById">{{transportistaOption.nombre}}</option>
+                    </select>
+                </div>
+ 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="abastosApp.transportistaTarifa.rangoMinimo" for="field_rangoMinimo">Rango Minimo</label>
                     <input type="number" class="form-control" name="rangoMinimo" id="field_rangoMinimo"
@@ -55,13 +64,6 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="abastosApp.transportistaTarifa.transportista" for="field_transportista">Transportista</label>
-                    <select class="form-control" id="field_transportista" name="transportista" formControlName="transportistaId">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="transportistaOption.id" *ngFor="let transportistaOption of transportistas; trackBy: trackTransportistaById">{{transportistaOption.id}}</option>
-                    </select>
-                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

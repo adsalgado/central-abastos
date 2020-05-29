@@ -37,6 +37,7 @@ public class PromocionDTO implements Serializable {
     
     private Long adjuntoId;
 
+    private AdjuntoDTO adjunto;
 
     public Long getId() {
         return id;
@@ -108,6 +109,14 @@ public class PromocionDTO implements Serializable {
 
 	public void setLink(String link) {
 		this.link = link;
+	}
+
+	public AdjuntoDTO getAdjunto() {
+		return adjunto;
+	}
+
+	public void setAdjunto(AdjuntoDTO adjunto) {
+		this.adjunto = adjunto;
 	}
 
 	@Override

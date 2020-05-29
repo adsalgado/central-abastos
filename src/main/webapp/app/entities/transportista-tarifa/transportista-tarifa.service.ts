@@ -32,6 +32,10 @@ export class TransportistaTarifaService {
     return this.http.get<ITransportistaTarifa[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
+  findByTransportistaId(transportistaId: number): Observable<EntityArrayResponseType> {
+    return this.http.get<ITransportistaTarifa[]>(`${this.resourceUrl}/transportista/${transportistaId}`, { observe: 'response' });
+  }
+
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

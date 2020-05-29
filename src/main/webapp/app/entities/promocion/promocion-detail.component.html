@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="promocion">
+            <h2><span>Promoción</span> {{promocion.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span >Nombre</span></dt>
+                <dd>
+                    <span>{{promocion.nombre}}</span>
+                </dd>
+                <dt><span >Título</span></dt>
+                <dd>
+                    <span>{{promocion.titulo}}</span>
+                </dd>
+                <dt><span >Descripción</span></dt>
+                <dd>
+                    <span>{{promocion.descripcion}}</span>
+                </dd>
+                <dt><span>Link</span></dt>
+                <dd>
+                    <span>{{promocion.link}}</span>
+                </dd>
+                <dt><span>Imagen</span></dt>
+                <dd>
+                    <div class="container-card" *ngIf="promocion.adjuntoId">
+                        <img style="max-height: 100px;" src="{{env.getImagenIndividual}}{{promocion.adjuntoId}}" />
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/main/entities/promocion', promocion.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

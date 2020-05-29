@@ -7,6 +7,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { ITransportistaTarifa } from 'app/shared/model/transportista-tarifa.model';
 import { AccountService } from 'app/core';
 import { TransportistaTarifaService } from './transportista-tarifa.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'jhi-transportista-tarifa',
@@ -16,17 +17,19 @@ export class TransportistaTarifaComponent implements OnInit, OnDestroy {
   transportistaTarifas: ITransportistaTarifa[];
   currentAccount: any;
   eventSubscriber: Subscription;
+  transportistaId: number;
 
   constructor(
     protected transportistaTarifaService: TransportistaTarifaService,
     protected jhiAlertService: JhiAlertService,
     protected eventManager: JhiEventManager,
-    protected accountService: AccountService
+    protected accountService: AccountService,
+    protected route: ActivatedRoute
   ) {}
 
   loadAll() {
     this.transportistaTarifaService
-      .query()
+      .findByTransportistaId(this.transportistaId)
       .pipe(
         filter((res: HttpResponse<ITransportistaTarifa[]>) => res.ok),
         map((res: HttpResponse<ITransportistaTarifa[]>) => res.body)
@@ -40,6 +43,12 @@ export class TransportistaTarifaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    let sId = this.route.snapshot.paramMap.get('transportistaId');
+    if (!isNaN(Number(sId))) {
+      this.transportistaId = Number(sId);
+    } else {
+      console.log('Not a Number');
+    }
     this.loadAll();
     this.accountService.identity().then(account => {
       this.currentAccount = account;

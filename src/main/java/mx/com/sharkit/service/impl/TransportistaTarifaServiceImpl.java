@@ -91,13 +91,27 @@ public class TransportistaTarifaServiceImpl implements TransportistaTarifaServic
 	public BigDecimal calculaTarifaTransportista(Long transportistaId, BigDecimal valor) {
 		BigDecimal tarifa = BigDecimal.ZERO;
 		if (transportistaId != null) {
-			List<TransportistaTarifaDTO> lstTarifas = transportistaTarifaRepository.findTarifaTransportista(transportistaId, valor, valor).stream()
+			List<TransportistaTarifaDTO> lstTarifas = transportistaTarifaRepository
+					.findTarifaTransportista(transportistaId, valor, valor).stream()
 					.map(transportistaTarifaMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
-			
-			if(!lstTarifas.isEmpty()) {
+
+			if (!lstTarifas.isEmpty()) {
 				tarifa = lstTarifas.get(0).getPrecio();
-			}			
+			}
 		}
 		return tarifa;
+	}
+
+	/**
+	 * Get all the transportistaTarifas by transportistaId.
+	 *
+	 * @param transportistaId
+	 * @return the list of entities.
+	 */
+	@Override
+	public List<TransportistaTarifaDTO> findAllByTransportistaId(Long transportistaId) {
+		log.debug("Request to get all TransportistaTarifas by transportistaId: {}");
+		return transportistaTarifaRepository.findByTransportistaIdOrderByRangoMinimo(transportistaId).stream()
+				.map(transportistaTarifaMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
 	}
 }

@@ -29,6 +29,10 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./seccion/seccion.module').then(m => m.AbastosSeccionModule)
       },
       {
+        path: 'promocion',
+        loadChildren: () => import('./promocion/promocion.module').then(m => m.AbastosPromocionModule)
+      },
+      {
         path: 'estatus',
         loadChildren: () => import('./estatus/estatus.module').then(m => m.AbastosEstatusModule)
       },
