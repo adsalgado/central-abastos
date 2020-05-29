@@ -196,7 +196,7 @@ export class GenericService {
   getUser() {
     let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
     //console.log(user);
-    return user;
+    return user == null ? { tipo_usuario: -1 } : user;
   }
 
   getTypeUser() {
