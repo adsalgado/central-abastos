@@ -85,6 +85,28 @@ public class ProveedorResource {
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, proveedorDTO.getId().toString()))
             .body(result);
     }
+    
+    /**
+     * {@code PUT  /proveedores/transportista} : Updates the trasportista of proveedor.
+     *
+     * @param proveedorDTO the proveedorDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated proveedorDTO,
+     * or with status {@code 400 (Bad Request)} if the proveedorDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the proveedorDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PutMapping("/proveedores/transportista")
+    public ResponseEntity<ProveedorDTO> updateTransportistaProveedor(@Valid @RequestBody ProveedorDTO proveedorDTO) throws URISyntaxException {
+        log.debug("REST request to update Proveedor : {}", proveedorDTO);
+        if (proveedorDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        ProveedorDTO result = proveedorService.updateTransportistaProveedor(proveedorDTO);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, proveedorDTO.getId().toString()))
+            .body(result);
+    }
+
 
     /**
      * {@code GET  /proveedores} : get all the proveedors.
@@ -120,6 +142,19 @@ public class ProveedorResource {
     public ResponseEntity<ProveedorDTO> getProveedor(@PathVariable Long id) {
         log.debug("REST request to get Proveedor : {}", id);
         Optional<ProveedorDTO> proveedorDTO = proveedorService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(proveedorDTO);
+    }
+
+    /**
+     * {@code GET  /proveedores/usuario/:login} : get the proveedor by userName.
+     *
+     * @param id the id of the proveedorDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the proveedorDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/proveedores/usuario/{userName}")
+    public ResponseEntity<ProveedorDTO> getProveedor(@PathVariable String userName) {
+        log.debug("REST request to get Proveedor by userName: {}", userName);
+        Optional<ProveedorDTO> proveedorDTO = proveedorService.findOneByUserName(userName);
         return ResponseUtil.wrapOrNotFound(proveedorDTO);
     }
 

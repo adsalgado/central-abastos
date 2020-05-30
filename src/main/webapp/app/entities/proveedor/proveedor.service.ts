@@ -14,7 +14,7 @@ type EntityArrayResponseType = HttpResponse<IProveedor[]>;
 
 @Injectable()
 export class ProveedorService {
-  public resourceUrl = SERVER_API_URL + 'api/proveedors';
+  public resourceUrl = SERVER_API_URL + 'api/proveedores';
 
   constructor(protected http: HttpClient) {}
 
@@ -22,6 +22,13 @@ export class ProveedorService {
     const copy = this.convertDateFromClient(proveedor);
     return this.http
       .post<IProveedor>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  updateTransportistaProveedor(proveedor: IProveedor): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(proveedor);
+    return this.http
+      .put<IProveedor>(`${this.resourceUrl}/transportista`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
@@ -35,6 +42,12 @@ export class ProveedorService {
   find(id: number): Observable<EntityResponseType> {
     return this.http
       .get<IProveedor>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  findByUserName(userName: string): Observable<EntityResponseType> {
+    return this.http
+      .get<IProveedor>(`${this.resourceUrl}/usuario/${userName}`, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
