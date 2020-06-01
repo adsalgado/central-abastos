@@ -36,7 +36,7 @@ export class AuthServerProvider {
       //console.log(resp.body);
       component.localStorageEncryptService.setToLocalStorage('userSession', resp.body);
       component.events.broadcast({ name: 'armaMenu', content: {} });
-
+      component.events.broadcast({ name: 'totalCarrito', content: {} });
       //this.events.broadcast({ name: 'updateProductos', content: productoDelete });
       const bearerToken = resp.headers.get('Authorization');
       if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {

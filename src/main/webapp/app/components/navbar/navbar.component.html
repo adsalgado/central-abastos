@@ -12,9 +12,10 @@
         <button style="width: 5%;
     background-color: #f0f8ff00;
     border: none;    position: absolute;
-    right: 16px;" (click)="a()"
-            [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
-            <i class="material-icons">notification_important</i>
+    right: 16px;"
+            (click)="a()" [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}"
+            *ngIf="genericService.getUser() && genericService.getUser().tipo_usuario != 3">
+            <i class="material-icons">shopping_cart</i>
             <div class="badge2" style="position: absolute;
             top: -8px;
             right: 4px;
@@ -23,15 +24,27 @@
             padding-left: 6px;
             padding-right: 6px;
             border-radius: 53%;
-            font-weight: 600;" *ngIf="totalCarrito > 0">{{totalCarrito}}</div>
+            font-weight: 600;"
+                *ngIf="totalCarrito > 0">{{totalCarrito}}</div>
         </button>
 
         <button style="width: 5%;
+        background-color: #f0f8ff00;
+        border: none;    position: absolute;
+        right: 85px;"
+            (click)="a()" [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
+            <i class="material-icons">notification_important</i>
+
+        </button>
+        <button style="width: 5%;
     background-color: #f0f8ff00;
     border: none;position: absolute;
-    right: 50px;" (click)="b()" [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
+    right: 50px;"
+            (click)="b()" [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
             <i class="material-icons">more_vert</i>
         </button>
+
+        
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
             <!-- <form class="navbar-form">
                 <div class="input-group no-border">
