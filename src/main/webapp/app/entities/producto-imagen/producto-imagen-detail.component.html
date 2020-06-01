@@ -16,13 +16,13 @@
                 <dt><span jhiTranslate="abastosApp.productoImagen.producto">Producto</span></dt>
                 <dd>
                     <div *ngIf="productoImagen.productoId">
-                        <a [routerLink]="['/producto', productoImagen.productoId, 'view']">{{productoImagen.productoId}}</a>
+                        <a [routerLink]="['/main/entities/producto-imagen/producto-proveedor', productoProveedorId, productoImagen.id, 'view']">{{productoImagen.productoId}}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="abastosApp.productoImagen.adjunto">Adjunto</span></dt>
+                <dt><span>Imagen</span></dt>
                 <dd>
-                    <div *ngIf="productoImagen.adjuntoId">
-                        <a [routerLink]="['/adjunto', productoImagen.adjuntoId, 'view']">{{productoImagen.adjuntoId}}</a>
+                    <div class="container-card" *ngIf="productoImagen.adjuntoId">
+                        <img style="width: 55px;" src="{{env.getImagenIndividual}}{{productoImagen.adjuntoId}}" />
                     </div>
                 </dd>
             </dl>
@@ -34,7 +34,7 @@
             </button>
 
             <button type="button"
-                    [routerLink]="['/producto-imagen', productoImagen.id, 'edit']"
+                    [routerLink]="['/main/entities/producto-imagen/producto-proveedor', productoProveedorId, productoImagen.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>

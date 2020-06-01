@@ -51,6 +51,17 @@
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
+                                [routerLink]="['/main/entities/producto-imagen/producto-proveedor', productoProveedor.id]"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" >Imágenes</span>
+                        </button>
+                    </div>
+                </td>
+                
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
                                 [routerLink]="['/main/entities/producto-proveedor', productoProveedor.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>

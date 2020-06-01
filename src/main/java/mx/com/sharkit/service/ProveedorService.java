@@ -3,6 +3,8 @@ package mx.com.sharkit.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import mx.com.sharkit.domain.Proveedor;
 import mx.com.sharkit.service.dto.ProveedorDTO;
 
@@ -57,5 +59,20 @@ public interface ProveedorService extends BaseService<Proveedor, Long> {
      */
     Optional<ProveedorDTO> findOneByusuarioId(Long usuarioId);
 
+    /**
+     * Get the proveedor by userName.
+     *
+     * @param userName the userName of the user.
+     * @return the entity.
+     */
+	Optional<ProveedorDTO> findOneByUserName(String userName);
+
+	/**
+     * Update the transportista of a proveedor.
+     *
+     * @param proveedorDTO the entity to save.
+     * @return the persisted entity.
+     */
+    ProveedorDTO updateTransportistaProveedor(@Valid ProveedorDTO proveedorDTO);
     
 }

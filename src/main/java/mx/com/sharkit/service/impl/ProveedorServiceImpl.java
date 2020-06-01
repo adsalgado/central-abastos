@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 /**
  * Service Implementation for managing {@link Proveedor}.
  */
@@ -102,5 +104,33 @@ public class ProveedorServiceImpl extends BaseServiceImpl<Proveedor, Long> imple
 	public Optional<ProveedorDTO> findOneByusuarioId(Long usuarioId) {
 		log.debug("Request to get Proveedor : {}", usuarioId);
 		return proveedorRepository.findOneByusuarioId(usuarioId).map(proveedorMapper::toDto);
+	}
+
+    /**
+     * Get the proveedor by userName.
+     *
+     * @param userName the userName of the user.
+     * @return the entity.
+     */
+	@Override
+	public Optional<ProveedorDTO> findOneByUserName(String userName) {
+		log.debug("Request to get Proveedor by userName : {}", userName);
+		return proveedorRepository.findOneByUserName(userName).map(proveedorMapper::toDto);
+	}
+
+	/**
+     * Update the transportista of a proveedor.
+     *
+     * @param proveedorDTO the entity to save.
+     * @return the persisted entity.
+     */    
+	@Override
+	public ProveedorDTO updateTransportistaProveedor(@Valid ProveedorDTO proveedorDTO) {
+		Proveedor proveedor = proveedorRepository.findById(proveedorDTO.getId()).orElse(null);
+		if (proveedor != null) {
+			proveedor.setNombre(proveedorDTO.getNombre());
+			proveedor.setTransportistaId(proveedorDTO.getTransportistaId());
+		}
+		return proveedorMapper.toDto(proveedor);
 	}
 }

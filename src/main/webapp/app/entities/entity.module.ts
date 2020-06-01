@@ -9,6 +9,11 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./producto-proveedor/producto-proveedor.module').then(m => m.AbastosProductoProveedorModule)
       },
       {
+        path: 'proveedor-transportista',
+        loadChildren: () =>
+          import('./proveedor-transportista/proveedor-transportista.module').then(m => m.AbastosProveedorTransportistaModule)
+      },
+      {
         path: 'producto',
         loadChildren: () => import('./producto/producto.module').then(m => m.AbastosProductoModule)
       },

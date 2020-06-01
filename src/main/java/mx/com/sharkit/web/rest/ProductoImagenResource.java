@@ -115,4 +115,17 @@ public class ProductoImagenResource {
         productoImagenService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
+    
+    /**
+     * {@code GET  /producto-imagens/producto-proveedor/{productoProveedorId}} : get all the productoImagens.
+     *
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of productoImagens in body.
+     */
+    @GetMapping("/producto-imagens/producto-proveedor/{productoProveedorId}")
+    public List<ProductoImagenDTO> getAllProductoImagensByProductoProveedorId(@PathVariable Long productoProveedorId) {
+        log.debug("REST request to get all ProductoImagens by productoProveedorId: {}", productoProveedorId);
+        return productoImagenService.findByProductoProveedorId(productoProveedorId);
+    }
+
 }

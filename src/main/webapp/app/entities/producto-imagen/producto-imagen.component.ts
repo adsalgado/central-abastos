@@ -3,10 +3,12 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { environment } from '../../../environments/environment.prod';
 
 import { IProductoImagen } from 'app/shared/model/producto-imagen.model';
 import { AccountService } from 'app/core';
 import { ProductoImagenService } from './producto-imagen.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'jhi-producto-imagen',
@@ -16,17 +18,20 @@ export class ProductoImagenComponent implements OnInit, OnDestroy {
   productoImagens: IProductoImagen[];
   currentAccount: any;
   eventSubscriber: Subscription;
+  productoProveedorId: number;
+  public env: any = environment;
 
   constructor(
     protected productoImagenService: ProductoImagenService,
     protected jhiAlertService: JhiAlertService,
     protected eventManager: JhiEventManager,
-    protected accountService: AccountService
+    protected accountService: AccountService,
+    protected route: ActivatedRoute
   ) {}
 
   loadAll() {
     this.productoImagenService
-      .query()
+      .findByProductpProveedorId(this.productoProveedorId)
       .pipe(
         filter((res: HttpResponse<IProductoImagen[]>) => res.ok),
         map((res: HttpResponse<IProductoImagen[]>) => res.body)
@@ -40,6 +45,12 @@ export class ProductoImagenComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    let sId = this.route.snapshot.paramMap.get('productoProveedorId');
+    if (!isNaN(Number(sId))) {
+      this.productoProveedorId = Number(sId);
+    } else {
+      console.log('Not a Number');
+    }
     this.loadAll();
     this.accountService.identity().then(account => {
       this.currentAccount = account;

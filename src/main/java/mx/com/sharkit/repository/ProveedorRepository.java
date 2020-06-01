@@ -2,6 +2,7 @@ package mx.com.sharkit.repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -27,5 +28,12 @@ public interface ProveedorRepository extends IBaseRepositorio<Proveedor, Long>, 
 	List<Proveedor> findByProductoId(Long productoId);
 	
 	Optional<Proveedor> findOneByusuarioId(Long usuarioId);
+
+	@Query(value = "SELECT pr.*\n" + 
+			"FROM		jhi_user us\n" + 
+			"INNER JOIN proveedor pr\n" + 
+			"	ON (pr.usuario_id = us.id)\n" + 
+			"WHERE us.login = ?1", nativeQuery = true)
+	Optional<Proveedor> findOneByUserName(String userName);
 	
 }

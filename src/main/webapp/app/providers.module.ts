@@ -53,6 +53,8 @@ import { CarritoHistoricoService, CarritoHistoricoResolve } from './entities/car
 import { CarritoHistoricoDetalleService, CarritoHistoricoDetalleResolve } from './entities/carrito-historico-detalle';
 import { CarritoCompraService, CarritoCompraResolve } from './entities/carrito-compra';
 import { AdjuntoService, AdjuntoResolve } from './entities/adjunto';
+import { ProveedorTransportistaResolve } from './entities/proveedor-transportista';
+
 import {
   UserService,
   JhiTrackerService,
@@ -128,6 +130,7 @@ import { QRCodeModule } from 'angularx-qrcode';
     ProductoResolve,
     ProductoImagenService,
     ProductoImagenResolve,
+    ProveedorTransportistaResolve,
     PedidoService,
     PedidoResolve,
     PedidoResolve,
