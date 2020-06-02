@@ -107,15 +107,19 @@ export class DocumentosPage {
   }
 
   borrar(documento: any) {
-    this.genericService.sendDeleteRequest(`${environment.usuarioDocumentos}/${documento.usuarioDocumentoId}`).subscribe(
-      (response: any) => {
-        documento.image = null;
-        this.alertaService.success('Tu documento se eliminó correctamente');
-      },
-      (error: HttpErrorResponse) => {
-        this.alertaService.error('No se ha podido borrar tu documento, intenta nuevamente');
-      }
-    );
+    if (documento.usuarioDocumentoId) {
+      this.genericService.sendDeleteRequest(`${environment.usuarioDocumentos}/${documento.usuarioDocumentoId}`).subscribe(
+        (response: any) => {
+          documento.image = null;
+          this.alertaService.success('Tu documento se eliminó correctamente');
+        },
+        (error: HttpErrorResponse) => {
+          this.alertaService.error('No se ha podido borrar tu documento, intenta nuevamente');
+        }
+      );
+    } else {
+      this.alertaService.warn('Aún no has cargado un documento');
+    }
   }
 
   getBase64(file, componente, documentoto: any) {

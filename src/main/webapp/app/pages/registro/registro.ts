@@ -12,7 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
 import * as moment from 'moment';
 import { GenericService } from 'app/services/generic.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterStateSnapshot, Router } from '@angular/router';
 
 @Component({
   selector: 'page-registro',
@@ -134,129 +134,224 @@ export class RegistroPage {
     private alertaService: AlertService,
     private genericService: GenericService,
     private loadingService: LoadingService,
-    private modalController: NgbModal
+    private modalController: NgbModal,
+    private router: Router
   ) {
     this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
     let putObj: any = {};
 
     this.route.queryParams.subscribe(params => {
       this.tipoUsuario = params['tipoUsuario'];
+      this.formGroup = null;
+      putObj = {};
+      this.photo_url = null;
+      this.onlyPhoto = false;
+      this.resetObjetoRegistro();
+      switch (this.tipoUsuario) {
+        case '3':
+          this.objetoRegistro.splice(7, 0, {
+            name: 'Tipo persona',
+            required: true,
+            length: 11,
+            type: 'select',
+            formName: 'typpe',
+            value: 0,
+            opts: [
+              {
+                id: 0,
+                value: '[--Tipo persona--]'
+              },
+              {
+                id: 1,
+                value: 'Persona física'
+              },
+              {
+                id: 2,
+                value: 'Persona moral'
+              }
+            ]
+          });
+
+          this.objetoRegistro.splice(8, 0, {
+            name: 'Razón Social',
+            required: true,
+            length: 50,
+            type: 'text',
+            formName: 'rz',
+            value: null
+          });
+
+          this.objetoRegistro.push({
+            name: 'Dirección',
+            required: true,
+            length: 200,
+            type: 'text',
+            formName: 'direc',
+            value: null,
+            disabled: true
+          });
+          break;
+
+        case '4':
+          this.objetoRegistro.splice(7, 0, {
+            name: 'Tipo persona',
+            required: true,
+            length: 11,
+            type: 'select',
+            formName: 'typpe',
+            value: 0,
+            opts: [
+              {
+                id: 0,
+                value: '[--Tipo persona--]'
+              },
+              {
+                id: 1,
+                value: 'Persona física'
+              },
+              {
+                id: 2,
+                value: 'Persona moral'
+              }
+            ]
+          });
+
+          this.objetoRegistro.splice(8, 0, {
+            name: 'Razón Social',
+            required: true,
+            length: 50,
+            type: 'text',
+            formName: 'rz',
+            value: null
+          });
+          break;
+      }
+
+      this.objetoRegistro.forEach(item => {
+        let tmp: any[] = [];
+        tmp[0] = null;
+        tmp[1] = [];
+        if (item.required) {
+          tmp[1].push(Validators.required);
+        }
+
+        if (item.type == 'number') {
+          tmp[1].push(ValidationService.phoneValidator);
+          tmp[1].push(ValidationService.maxLengthValidator);
+          tmp[1].push(ValidationService.minLengthValidator);
+        }
+
+        if (item.type == 'email') {
+          tmp[1].push(ValidationService.emailValidator);
+        }
+
+        if (item.type == 'password') {
+          tmp[1].push(ValidationService.passwordValidator);
+        }
+
+        if (item.type == 'select') {
+          tmp[0] = item.opts[0].value;
+        }
+
+        if (this.user) {
+        }
+
+        putObj[item.formName] = tmp;
+      });
+
+      this.formGroup = this.formBuilder.group(putObj);
     });
-    console.log('tipoUsuario: ' + this.tipoUsuario);
+  }
 
-    switch (this.tipoUsuario) {
-      case '3':
-        this.objetoRegistro.splice(7, 0, {
-          name: 'Tipo persona',
-          required: true,
-          length: 11,
-          type: 'select',
-          formName: 'typpe',
-          value: 0,
-          opts: [
-            {
-              id: 0,
-              value: '[--Tipo persona--]'
-            },
-            {
-              id: 1,
-              value: 'Persona física'
-            },
-            {
-              id: 2,
-              value: 'Persona moral'
-            }
-          ]
-        });
-
-        this.objetoRegistro.splice(8, 0, {
-          name: 'Razón Social',
-          required: true,
-          length: 50,
-          type: 'text',
-          formName: 'rz',
-          value: null
-        });
-
-        this.objetoRegistro.push({
-          name: 'Dirección',
-          required: true,
-          length: 200,
-          type: 'text',
-          formName: 'direc',
-          value: null,
-          disabled: true
-        });
-        break;
-
-      case '4':
-        this.objetoRegistro.splice(7, 0, {
-          name: 'Tipo persona',
-          required: true,
-          length: 11,
-          type: 'select',
-          formName: 'typpe',
-          value: 0,
-          opts: [
-            {
-              id: 0,
-              value: '[--Tipo persona--]'
-            },
-            {
-              id: 1,
-              value: 'Persona física'
-            },
-            {
-              id: 2,
-              value: 'Persona moral'
-            }
-          ]
-        });
-
-        this.objetoRegistro.splice(8, 0, {
-          name: 'Razón Social',
-          required: true,
-          length: 50,
-          type: 'text',
-          formName: 'rz',
-          value: null
-        });
-        break;
-    }
-
-    this.objetoRegistro.forEach(item => {
-      let tmp: any[] = [];
-      tmp[0] = null;
-      tmp[1] = [];
-      if (item.required) {
-        tmp[1].push(Validators.required);
+  resetObjetoRegistro() {
+    this.objetoRegistro = [
+      {
+        name: 'Nombre',
+        required: true,
+        length: 50,
+        type: 'text',
+        formName: 'name',
+        value: null
+      },
+      {
+        name: 'Apellido paterno',
+        required: true,
+        length: 50,
+        type: 'text',
+        formName: 'ap',
+        value: null
+      },
+      {
+        name: 'Apellido materno',
+        required: true,
+        length: 50,
+        type: 'text',
+        formName: 'am',
+        value: null
+      },
+      {
+        name: 'Fecha de nacimiento',
+        required: true,
+        length: 10,
+        type: 'date',
+        formName: 'fecha',
+        value: null
+      },
+      {
+        name: 'Teléfono',
+        required: true,
+        length: 10,
+        type: 'number',
+        formName: 'tel',
+        value: null
+      },
+      {
+        name: 'Género',
+        required: true,
+        length: 11,
+        type: 'select',
+        formName: 'sex',
+        value: 0,
+        opts: [
+          {
+            id: 0,
+            value: '[--Género--]'
+          },
+          {
+            id: 'M',
+            value: 'Hombre'
+          },
+          {
+            id: 'F',
+            value: 'Mujer'
+          }
+        ]
+      },
+      {
+        name: 'Correo electrónico',
+        required: true,
+        length: 100,
+        type: 'email',
+        formName: 'email',
+        value: null
+      },
+      {
+        name: 'Contraseña',
+        required: true,
+        length: 50,
+        type: 'password',
+        formName: 'pass',
+        value: null
+      },
+      {
+        name: 'Confirmar contraseña',
+        required: true,
+        length: 50,
+        type: 'password',
+        formName: 'passC',
+        value: null
       }
-
-      if (item.type == 'number') {
-        tmp[1].push(ValidationService.phoneValidator);
-        tmp[1].push(ValidationService.maxLengthValidator);
-        tmp[1].push(ValidationService.minLengthValidator);
-      }
-
-      if (item.type == 'email') {
-        tmp[1].push(ValidationService.emailValidator);
-      }
-
-      if (item.type == 'password') {
-        tmp[1].push(ValidationService.passwordValidator);
-      }
-
-      if (item.type == 'select') {
-        tmp[0] = item.opts[0].value;
-      }
-
-      if (this.user) {
-      }
-
-      putObj[item.formName] = tmp;
-    });
-
-    this.formGroup = this.formBuilder.group(putObj);
+    ];
   }
 
   getBase64(file, componente) {
