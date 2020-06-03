@@ -2,6 +2,7 @@ package mx.com.sharkit.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,12 +42,14 @@ import mx.com.sharkit.pushnotif.service.PushNotificationsService;
 import mx.com.sharkit.repository.ProveedorRepository;
 import mx.com.sharkit.repository.TransportistaRepository;
 import mx.com.sharkit.service.CarritoCompraService;
+import mx.com.sharkit.service.NotificacionAsyncService;
 import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.StripeService;
 import mx.com.sharkit.service.UserService;
 import mx.com.sharkit.service.dto.ChargeRequestDTO;
 import mx.com.sharkit.service.dto.ChargeRequestDTO.Currency;
+import mx.com.sharkit.service.dto.NotificacionDTO;
 import mx.com.sharkit.service.dto.PedidoAltaDTO;
 import mx.com.sharkit.service.dto.PedidoDTO;
 import mx.com.sharkit.service.dto.PedidoPagoDTO;
@@ -80,6 +83,9 @@ public class PedidoResource {
 	private final TransportistaRepository transportistaRepository;
 
 	private final PushNotificationsService pushNotificationsService;
+	
+	@Autowired
+	private NotificacionAsyncService notificacionAsyncService;
 
 	@Autowired
 	private CarritoCompraService carritoCompraService;
@@ -427,7 +433,7 @@ public class PedidoResource {
 	
 	@Async
 	private void sendPushNotificationPedidoPagado(PedidoDTO pedido) {
-
+		
 		List<PedidoProveedorDTO> lstPprov = pedidoProveedorService.findByPedidoId(pedido.getId());
 		for (PedidoProveedorDTO pprov : lstPprov) {
 			try {
@@ -436,6 +442,7 @@ public class PedidoResource {
 				mapData.put("pedidoId", pedido.getId());
 				mapData.put("pedidoProveedorId", pprov.getId());
 				
+				// Notificación Push
 				HttpEntity<String> request = pushNotificationsService.createRequestNotification(
 						pprov.getProveedor().getUsuario().getToken(),
 						String.format("El pedido es %s", pedido.getFolio()),
@@ -444,6 +451,18 @@ public class PedidoResource {
 						String.format("El cliente %s %s ha solicitado un pedido %s", pedido.getCliente().getFirstName(),
 								pedido.getCliente().getLastName(), pedido.getFolio()),
 						EnumPantallas.SOLICITUD_PEDIDO.getView(), mapData);
+				
+				// Notificación Web
+				NotificacionDTO notificacionDTO = new NotificacionDTO();
+				notificacionDTO.setTitulo(String.format("Nuevo pedido: %s", pedido.getFolio()));
+				notificacionDTO.setDescripcion(String.format("El cliente %s %s ha solicitado un pedido", pedido.getCliente().getFirstName(),
+						pedido.getCliente().getLastName()));
+				notificacionDTO.setEstatus(0);
+				notificacionDTO.setFechaNotificacion(LocalDateTime.now());
+				notificacionDTO.setUsuarioId(pprov.getProveedor().getUsuario().getId());
+				notificacionDTO.setViewId(EnumPantallas.SOLICITUD_PEDIDO.getView());
+				notificacionAsyncService.save(notificacionDTO);
+
 
 				log.debug("request: {}", request);
 				CompletableFuture<String> pushNotification = pushNotificationsService.send(request, TipoUsuario.PROVEEDOR);

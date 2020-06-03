@@ -6,11 +6,11 @@ import { environment } from '../../../environments/environment.prod';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from 'app/services/alert.service';
 
-@Component({
+/*@Component({
   selector: 'page-ver-productos',
   templateUrl: 'ver-productos.html',
   styleUrls: ['./ver-productos.scss']
-})
+})*/
 export class VerProductosPage implements OnDestroy {
   public pedidos: any = null;
 

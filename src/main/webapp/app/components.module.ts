@@ -135,7 +135,10 @@ import { VerProductosPage } from './pages-proveedor/ver-productos/ver-productos'
     RegistroPage,
 
     DocumentosPage,
-    HomeProveedorPage
+    HomeProveedorPage,
+
+    JhiMainComponent,
+    FooterComponentJHI
 
     // UserMgmtComponent,
     /*AuditsComponent,

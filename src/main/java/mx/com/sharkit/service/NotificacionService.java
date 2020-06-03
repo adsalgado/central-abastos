@@ -1,9 +1,9 @@
 package mx.com.sharkit.service;
 
-import mx.com.sharkit.service.dto.NotificacionDTO;
-
 import java.util.List;
 import java.util.Optional;
+
+import mx.com.sharkit.service.dto.NotificacionDTO;
 
 /**
  * Service Interface for managing {@link mx.com.sharkit.domain.Notificacion}.
@@ -40,4 +40,11 @@ public interface NotificacionService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    /**
+     * Get all the notificacions by usuarioId.
+     *
+     * @return the list of entities.
+     */
+    List<NotificacionDTO> findByUsuarioId(Long usuarioId);
 }
