@@ -206,7 +206,7 @@ public class PedidoProveedorResource {
 		if (usuarioId == 0) {
 			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
 		}
-		Optional<Proveedor> proveedor = proveedorRepository.findOneByusuarioId(usuarioId);
+		Optional<Proveedor> proveedor = proveedorRepository.findOneByUsuarioId(usuarioId);
 		Long proveedorId = proveedor.isPresent() ? proveedor.get().getId() : 0L;
 		if (proveedorId == 0) {
 			throw new BadRequestAlertException("El usuario no es proveedor", ENTITY_NAME, "idnull");

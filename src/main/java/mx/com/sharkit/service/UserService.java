@@ -441,7 +441,7 @@ public class UserService {
 					}
 					
 					if (user.getTipoUsuarioId() == TipoUsuario.PROVEEDOR) {
-						Proveedor proveedor = proveedorRepository.findOneByusuarioId(userDTO.getId()).orElse(null);
+						Proveedor proveedor = proveedorRepository.findOneByUsuarioId(userDTO.getId()).orElse(null);
 
 						if (userDTO.getDireccion() != null ) {
 							if (proveedor != null) {

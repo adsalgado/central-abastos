@@ -27,7 +27,7 @@ public interface ProveedorRepository extends IBaseRepositorio<Proveedor, Long>, 
 			"ORDER BY prv.nombre", nativeQuery = true)
 	List<Proveedor> findByProductoId(Long productoId);
 	
-	Optional<Proveedor> findOneByusuarioId(Long usuarioId);
+	Optional<Proveedor> findOneByUsuarioId(Long usuarioId);
 
 	@Query(value = "SELECT pr.*\n" + 
 			"FROM		jhi_user us\n" + 

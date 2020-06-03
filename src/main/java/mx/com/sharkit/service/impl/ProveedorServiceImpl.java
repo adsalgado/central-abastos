@@ -103,7 +103,7 @@ public class ProveedorServiceImpl extends BaseServiceImpl<Proveedor, Long> imple
 	@Override
 	public Optional<ProveedorDTO> findOneByusuarioId(Long usuarioId) {
 		log.debug("Request to get Proveedor : {}", usuarioId);
-		return proveedorRepository.findOneByusuarioId(usuarioId).map(proveedorMapper::toDto);
+		return proveedorRepository.findOneByUsuarioId(usuarioId).map(proveedorMapper::toDto);
 	}
 
     /**

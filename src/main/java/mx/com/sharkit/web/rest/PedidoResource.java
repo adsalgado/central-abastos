@@ -314,7 +314,7 @@ public class PedidoResource {
 		if (usuarioId == 0) {
 			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
 		}
-		Optional<Proveedor> proveedor = proveedorRepository.findOneByusuarioId(usuarioId);
+		Optional<Proveedor> proveedor = proveedorRepository.findOneByUsuarioId(usuarioId);
 		Long proveedorId = proveedor.isPresent() ? proveedor.get().getId() : 0L;
 		if (proveedorId == 0) {
 			throw new BadRequestAlertException("El usuario no es proveedor", ENTITY_NAME, "idnull");
@@ -345,7 +345,7 @@ public class PedidoResource {
 		if (usuarioId == 0) {
 			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
 		}
-		Optional<Proveedor> proveedor = proveedorRepository.findOneByusuarioId(usuarioId);
+		Optional<Proveedor> proveedor = proveedorRepository.findOneByUsuarioId(usuarioId);
 		Long proveedorId = proveedor.isPresent() ? proveedor.get().getId() : 0L;
 		if (proveedorId == 0) {
 			throw new BadRequestAlertException("El usuario no es proveedor", ENTITY_NAME, "idnull");
@@ -390,6 +390,40 @@ public class PedidoResource {
 
 		return lstPedidos;
 	}
+	
+	/**
+	 * {@code GET /transportista/pedidos/{pedidoId}} : get the pedidos of proveedor by
+	 * pedidoId.
+	 *
+	 * 
+	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+	 *         of pedidos in body.
+	 */
+	@GetMapping("transportista/pedidos/{pedidoId}")
+	public ResponseEntity<PedidoDTO> getPedidoTransportista(@PathVariable Long pedidoId) {
+		log.debug("REST request to get Pedido by transportistaId");
+		
+		Optional<User> user = userService.getUserWithAuthorities();
+		Long usuarioId = user.isPresent() ? user.get().getId() : 0L;
+		if (usuarioId == 0) {
+			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
+		}
+		Optional<Transportista> transportista = transportistaRepository.findOneByusuarioId(usuarioId);
+		Long transportistaId = transportista.isPresent() ? transportista.get().getId() : 0L;
+		if (transportistaId == 0) {
+			throw new BadRequestAlertException("El usuario no es transportistaId", ENTITY_NAME, "idnull");
+		}
+
+		PedidoDTO pedidoDTO = pedidoService.findOne(pedidoId).orElse(null);
+		if (pedidoDTO != null) {
+			pedidoDTO.setPedidoProveedores(
+					pedidoProveedorService.findByPedidoIdAndTransportistaId(pedidoDTO.getId(), transportistaId));
+
+		}
+
+		return ResponseEntity.ok().body(pedidoDTO);
+	}
+
 	
 	@Async
 	private void sendPushNotificationPedidoPagado(PedidoDTO pedido) {
