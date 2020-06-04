@@ -6,11 +6,23 @@ import { JhiLanguageHelper } from 'app/core';
 import { AbastosSharedModule } from 'app/shared';
 import { ReporteCostosComponent, reporteCostosRoute } from './';
 import { CalendarModule } from 'primeng/calendar';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DropdownModule } from 'primeng/dropdown';
 
 const ENTITY_STATES = [...reporteCostosRoute];
 
 @NgModule({
-  imports: [AbastosSharedModule, RouterModule.forChild(ENTITY_STATES), CalendarModule],
+  imports: [
+    AbastosSharedModule,
+    RouterModule.forChild(ENTITY_STATES),
+    CalendarModule,
+    InputTextModule,
+    ButtonModule,
+    InputTextareaModule,
+    DropdownModule
+  ],
   declarations: [ReporteCostosComponent],
   entryComponents: [ReporteCostosComponent],
   providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],

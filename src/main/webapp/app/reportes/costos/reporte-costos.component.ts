@@ -28,6 +28,24 @@ export class ReporteCostosComponent implements OnInit {
 
   public value: any = null;
 
+  selectedState: any = null;
+
+  states: any[] = [
+    { name: 'Arizona', code: 'Arizona' },
+    { name: 'California', value: 'California' },
+    { name: 'Florida', code: 'Florida' },
+    { name: 'Ohio', code: 'Ohio' },
+    { name: 'Washington', code: 'Washington' }
+  ];
+
+  cities1: any[] = [];
+
+  cities2: any[] = [];
+
+  city1: any = null;
+
+  city2: any = null;
+
   editForm = this.fb.group({
     id: [],
     nombre: [null, [Validators.required, Validators.maxLength(256)]],
