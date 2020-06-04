@@ -105,6 +105,10 @@ const routes: Routes = [
         loadChildren: () => import('./entities/entity.module').then(m => m.AbastosEntityModule)
       },
       {
+        path: 'reportes',
+        loadChildren: () => import('./reportes/reportes.module').then(m => m.ReportesModule)
+      },
+      {
         path: 'reset/finish',
         component: PasswordResetFinishComponent
       }

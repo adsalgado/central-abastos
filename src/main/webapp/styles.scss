@@ -3,6 +3,11 @@
 @import './assets/css/demo';
 @import './custom-theme';
 @import './app/animations';
+// Import PrimeNG source files
+@import '~primeng/resources/primeng.min.css';
+@import '~primeng/resources/themes/nova-light/theme.css';
+@import '~primeicons/primeicons.css';
+
 .clases {
   width: 100% !important;
   background-color: red;
