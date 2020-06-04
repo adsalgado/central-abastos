@@ -5,11 +5,12 @@ import { JhiLanguageHelper } from 'app/core';
 
 import { AbastosSharedModule } from 'app/shared';
 import { ReporteCostosComponent, reporteCostosRoute } from './';
+import { CalendarModule } from 'primeng/calendar';
 
 const ENTITY_STATES = [...reporteCostosRoute];
 
 @NgModule({
-  imports: [AbastosSharedModule, RouterModule.forChild(ENTITY_STATES)],
+  imports: [AbastosSharedModule, RouterModule.forChild(ENTITY_STATES), CalendarModule],
   declarations: [ReporteCostosComponent],
   entryComponents: [ReporteCostosComponent],
   providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],

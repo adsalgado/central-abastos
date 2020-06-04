@@ -26,6 +26,8 @@ export class ReporteCostosComponent implements OnInit {
   transportistas: ITransportista[];
   user: User = null;
 
+  public value: any = null;
+
   editForm = this.fb.group({
     id: [],
     nombre: [null, [Validators.required, Validators.maxLength(256)]],
