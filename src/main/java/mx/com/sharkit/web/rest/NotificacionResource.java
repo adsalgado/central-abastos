@@ -122,7 +122,8 @@ public class NotificacionResource {
 		}
 
 		List<NotificacionDTO> notificaciones = notificacionService.findByUsuarioId(usuarioId).stream()
-				.filter(not -> not.getEstatus().equals(0)).collect(Collectors.toCollection(LinkedList::new));
+				.filter(notif -> (notif.getEstatus() == null || notif.getEstatus().equals(0)))
+				.collect(Collectors.toCollection(LinkedList::new));
 
 		for (NotificacionDTO notificacionDTO : notificaciones) {
 			if (notificacionDTO.getParametros() != null && !StringUtils.isAllBlank(notificacionDTO.getParametros())) {

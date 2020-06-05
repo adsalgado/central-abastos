@@ -21,6 +21,8 @@ public class PedidoProveedorDTO implements Serializable {
 
 	private String folio;
 
+	private PedidoDTO pedido;
+
 	private Long pedidoId;
 
 	private ProveedorDTO proveedor;
@@ -96,6 +98,14 @@ public class PedidoProveedorDTO implements Serializable {
 
 	public Long getPedidoId() {
 		return pedidoId;
+	}
+
+	public PedidoDTO getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(PedidoDTO pedido) {
+		this.pedido = pedido;
 	}
 
 	public void setPedidoId(Long pedidoId) {
@@ -325,17 +335,17 @@ public class PedidoProveedorDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PedidoProveedorDTO [id=" + id + ", folio=" + folio + ", pedidoId=" + pedidoId + ", proveedor="
-				+ proveedor + ", proveedorId=" + proveedorId + ", estatus=" + estatus + ", estatusId=" + estatusId
-				+ ", transportistaId=" + transportistaId + ", recolectorId=" + recolectorId + ", total=" + total
-				+ ", totalSinIva=" + totalSinIva + ", comisionTransportista=" + comisionTransportista
-				+ ", comisionPreparador=" + comisionPreparador + ", distanciaEntregaKm=" + distanciaEntregaKm
-				+ ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta=" + fechaAlta + ", usuarioModificacionId="
-				+ usuarioModificacionId + ", fechaModificacion=" + fechaModificacion + ", pedidoDetalles="
-				+ pedidoDetalles + ", fechaPreparacion=" + fechaPreparacion + ", fechaEnvio=" + fechaEnvio
-				+ ", fechaEntrega=" + fechaEntrega + ", personaEntrega=" + personaEntrega + ", chatProveedorid="
-				+ chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + ", token=" + token
-				+ ", calificacionServicio=" + calificacionServicio + ", comentarios=" + comentarios + "]";
+		return "PedidoProveedorDTO [id=" + id + ", folio=" + folio + ", pedido=" + pedido + ", pedidoId=" + pedidoId
+				+ ", proveedor=" + proveedor + ", proveedorId=" + proveedorId + ", estatus=" + estatus + ", estatusId="
+				+ estatusId + ", transportistaId=" + transportistaId + ", recolectorId=" + recolectorId + ", total="
+				+ total + ", totalSinIva=" + totalSinIva + ", comisionTransportista=" + comisionTransportista
+				+ ", comisionPreparador=" + comisionPreparador + ", usuarioAltaId=" + usuarioAltaId + ", fechaAlta="
+				+ fechaAlta + ", usuarioModificacionId=" + usuarioModificacionId + ", fechaModificacion="
+				+ fechaModificacion + ", pedidoDetalles=" + pedidoDetalles + ", fechaPreparacion=" + fechaPreparacion
+				+ ", fechaEnvio=" + fechaEnvio + ", fechaEntrega=" + fechaEntrega + ", personaEntrega=" + personaEntrega
+				+ ", chatProveedorid=" + chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + ", token="
+				+ token + ", calificacionServicio=" + calificacionServicio + ", comentarios=" + comentarios
+				+ ", distanciaEntregaKm=" + distanciaEntregaKm + "]";
 	}
 
 }
