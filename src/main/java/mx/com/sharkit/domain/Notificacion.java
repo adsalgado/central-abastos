@@ -29,35 +29,36 @@ public class Notificacion implements Serializable {
     private User usuario;
     
     @Column(name = "view_id")
-    private int viewId;
+    private Integer viewId;
     
 	@Size(max = 128)
-    @Column(name = "titulo", length = 128, nullable = false)
+    @Column(name = "titulo", length = 128)
     private String titulo;
 
 	@Size(max = 256)
-    @Column(name = "descripcion", length = 256, nullable = false)
+    @Column(name = "descripcion", length = 256)
     private String descripcion;
-    
+
+	@Size(max = 256)
+    @Column(name = "parametros", length = 256)
+    private String parametros;
+
     @Column(name = "fecha_notificacion")
     private LocalDateTime fechaNotificacion;
     
     @Column(name = "estatus")
-    private int estatus;
+    private Integer estatus;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
-    public Long getId() {
-        return id;
-    }
+ 
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Long getUsuarioId() {
+	public Long getUsuarioId() {
 		return usuarioId;
 	}
 
@@ -73,11 +74,11 @@ public class Notificacion implements Serializable {
 		this.usuario = usuario;
 	}
 
-	public int getViewId() {
+	public Integer getViewId() {
 		return viewId;
 	}
 
-	public void setViewId(int viewId) {
+	public void setViewId(Integer viewId) {
 		this.viewId = viewId;
 	}
 
@@ -97,6 +98,14 @@ public class Notificacion implements Serializable {
 		this.descripcion = descripcion;
 	}
 
+	public String getParametros() {
+		return parametros;
+	}
+
+	public void setParametros(String parametros) {
+		this.parametros = parametros;
+	}
+
 	public LocalDateTime getFechaNotificacion() {
 		return fechaNotificacion;
 	}
@@ -105,11 +114,11 @@ public class Notificacion implements Serializable {
 		this.fechaNotificacion = fechaNotificacion;
 	}
 
-	public int getEstatus() {
+	public Integer getEstatus() {
 		return estatus;
 	}
 
-	public void setEstatus(int estatus) {
+	public void setEstatus(Integer estatus) {
 		this.estatus = estatus;
 	}
 
@@ -132,8 +141,8 @@ public class Notificacion implements Serializable {
 	@Override
 	public String toString() {
 		return "Notificacion [id=" + id + ", usuarioId=" + usuarioId + ", usuario=" + usuario + ", viewId=" + viewId
-				+ ", titulo=" + titulo + ", descripcion=" + descripcion + ", fechaNotificacion=" + fechaNotificacion
-				+ ", estatus=" + estatus + "]";
+				+ ", titulo=" + titulo + ", descripcion=" + descripcion + ", parametros=" + parametros
+				+ ", fechaNotificacion=" + fechaNotificacion + ", estatus=" + estatus + "]";
 	}
 
 }

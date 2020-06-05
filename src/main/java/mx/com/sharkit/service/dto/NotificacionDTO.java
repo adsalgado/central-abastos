@@ -18,27 +18,28 @@ public class NotificacionDTO implements Serializable {
     
     private UserDTO usuario;
     
-    private int viewId;
+    private Integer viewId;
     
     private String titulo;
 
     private String descripcion;
+  
+    private String parametros;
     
     @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
     private LocalDateTime fechaNotificacion;
     
-    private int estatus;
-
-
+    private Integer estatus;
+ 
     public Long getId() {
-        return id;
-    }
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Long getUsuarioId() {
+	public Long getUsuarioId() {
 		return usuarioId;
 	}
 
@@ -54,11 +55,11 @@ public class NotificacionDTO implements Serializable {
 		this.usuario = usuario;
 	}
 
-	public int getViewId() {
+	public Integer getViewId() {
 		return viewId;
 	}
 
-	public void setViewId(int viewId) {
+	public void setViewId(Integer viewId) {
 		this.viewId = viewId;
 	}
 
@@ -78,6 +79,14 @@ public class NotificacionDTO implements Serializable {
 		this.descripcion = descripcion;
 	}
 
+	public String getParametros() {
+		return parametros;
+	}
+
+	public void setParametros(String parametros) {
+		this.parametros = parametros;
+	}
+
 	public LocalDateTime getFechaNotificacion() {
 		return fechaNotificacion;
 	}
@@ -86,11 +95,11 @@ public class NotificacionDTO implements Serializable {
 		this.fechaNotificacion = fechaNotificacion;
 	}
 
-	public int getEstatus() {
+	public Integer getEstatus() {
 		return estatus;
 	}
 
-	public void setEstatus(int estatus) {
+	public void setEstatus(Integer estatus) {
 		this.estatus = estatus;
 	}
 
@@ -118,8 +127,9 @@ public class NotificacionDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "NotificacionDTO [id=" + id + ", usuarioId=" + usuarioId + ", usuario=" + usuario + ", viewId=" + viewId
-				+ ", titulo=" + titulo + ", descripcion=" + descripcion + ", fechaNotificacion=" + fechaNotificacion
-				+ ", estatus=" + estatus + "]";
+				+ ", titulo=" + titulo + ", descripcion=" + descripcion + ", parametros=" + parametros
+				+ ", fechaNotificacion=" + fechaNotificacion + ", estatus=" + estatus + "]";
 	}
+
 
 }

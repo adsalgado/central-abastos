@@ -85,7 +85,11 @@ public class NotificacionServiceImpl implements NotificacionService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Notificacion : {}", id);
-        notificacionRepository.deleteById(id);
+        Notificacion notify = notificacionRepository.findById(id).orElse(null);
+        if (notify != null) {
+        	notify.setEstatus(1);
+        }
+//        notificacionRepository.deleteById(id);
     }
 
     /**
@@ -100,4 +104,5 @@ public class NotificacionServiceImpl implements NotificacionService {
             .map(notificacionMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
 	}
+	
 }
