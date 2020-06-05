@@ -32,10 +32,26 @@
         background-color: #f0f8ff00;
         border: none;    position: absolute;
         right: 85px;"
-            (click)="a()" [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
+            (click)="activated()" [ngStyle]="{'color': genericService.getColorHex(), 'border-color': genericService.getColorHex()}">
             <i class="material-icons">notification_important</i>
-
+            <div class="badge2" style="position: absolute;
+            top: -8px;
+            right: 4px;
+            padding: 0px;
+            background-color: #fbffff;
+            padding-left: 6px;
+            padding-right: 6px;
+            border-radius: 53%;
+            font-weight: 600;">{{totalNot}}</div>
         </button>
+
+        <div class="cuadro-mando animated fadeIn" *ngIf="show" id="cuadro-mando">
+            <div class="contenedor" *ngFor="let n of notificaciones" (click)="open(n)">
+                <i class="material-icons">info</i> {{n.descripcion}}
+            </div>
+        </div>
+
+
         <button style="width: 5%;
     background-color: #f0f8ff00;
     border: none;position: absolute;

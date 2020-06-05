@@ -1,3 +1,4 @@
+import { CalificacionPage } from './pages/calificacion/calificacion';
 import { ListaCarritoComprasPage } from './pages/lista-carrito-compras/lista-carrito-compras';
 import { ChatPage } from './pages/chat/chat';
 import { ProblemasPedidoPage } from './pages/problemas-pedido/problemas-pedido';
@@ -76,6 +77,7 @@ const routes: Routes = [
       { path: 'chat', component: ChatPage },
 
       { path: 'lista-carrito', component: ListaCarritoComprasPage },
+      { path: 'calificacion', component: CalificacionPage },
       { path: 'carrito-historico', component: CarritoHistoricoPage },
 
       { path: 'proveedores', component: ProveedorPage },

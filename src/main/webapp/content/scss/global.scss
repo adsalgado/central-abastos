@@ -16,6 +16,34 @@ Bootstrap tweaks
   height: 90%;
   padding: 9px;
 }
+.cuadro-mando {
+  position: absolute;
+  top: 32px;
+  right: 0;
+  background-color: #f07c1cbf;
+  padding: 20px;
+  z-index: 99999999;
+  width: 325px;
+  height: 250px;
+  border: 2px solid #d66100;
+  border-radius: 4px 0px 4px 4px;
+  overflow-y: scroll;
+  .contenedor {
+    background-color: #ffffffcf;
+    padding: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #aeafaf;
+    margin-bottom: 10px;
+  }
+
+  i {
+    vertical-align: text-top;
+  }
+}
 
 .gm-bundled-control-on-bottom {
   .gmnoprint {

@@ -17,6 +17,8 @@ export const environment = {
   categorias: `${pathPrincipal}categorias`,
   proveedores: `${pathPrincipal}proveedors`,
 
+  notificaciones: `${pathPrincipal}notificaciones`,
+  transportista: `${pathPrincipal}transportista`,
   proveedoresFull: `${pathPrincipal}proveedores`,
   proveedor: `${pathPrincipal}proveedor`,
   proveedoresProducto: `${pathPrincipal}proveedores/producto/`,

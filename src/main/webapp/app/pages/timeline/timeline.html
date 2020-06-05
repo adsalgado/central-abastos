@@ -1,0 +1,31 @@
+
+<div>
+  <div style="text-align: center;
+  padding: 15px;
+  font-size: 20px;
+  font-weight: 400;">{{nombre}}</div>
+  <div class="vendor" *ngIf="!pedido">
+    <img src="../../../content/imgs/chat/vendor.png" alt="">
+  </div>
+  <div class="vendor" *ngIf="pedido">
+    <img src="../../../content/imgs/chat/vendor.png" *ngIf="!p.proveedor.transportista.usuario.adjuntoId">
+    <img src="{{env.getImagenIndividual}}{{p.proveedor.transportista.usuario.adjuntoId}}" *ngIf="p.proveedor.transportista.usuario.adjuntoId"/>
+  </div>
+  <div class="calificacion">
+    <div class="texto">{{calificacionActual}}</div>
+    <div class="contenedor-stars">
+      <div *ngFor="let s of stars" class="estrella" [ngStyle]="{'color': genericService.getColorHex()}" (click)="selecciona(s)">
+        <!-- <ion-icon name="ios-star" ></ion-icon> -->
+        <i class="material-icons" *ngIf="s.selected" (click)="selecciona(s)">add</i>
+        <i class="material-icons" *ngIf="!s.selected" (click)="selecciona(s)">add</i>
+        <!-- <ion-icon name="ios-star-outline" ></ion-icon> -->
+      </div>
+    </div>
+    <div class="queja">
+      <textarea name="" id="" cols="30" rows="4" [(ngModel)]="queja" placeholder="Escríbe aquí que salió bien o mal"></textarea>
+    </div>
+  </div>
+</div>
+<div class="footer-button-class">
+  <button (tap)="enviar()" [ngStyle]="{'background-color': genericService.getColorHex()}" style="width:100%;font-size: 20px;">Enviar</button>
+</div>

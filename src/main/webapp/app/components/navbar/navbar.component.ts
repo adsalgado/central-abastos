@@ -1,5 +1,6 @@
+import { LoadingService } from 'app/services/loading-service';
 import { environment } from './../../../environments/environment.prod';
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
@@ -22,10 +23,18 @@ export class NavbarComponentMain implements OnInit {
   private sidebarVisible: boolean;
 
   public totalCarrito: any = 0;
+  public totalNot: any = 0;
 
   public user: any = null;
 
   public miEvents: any = {};
+
+  public show: boolean = false;
+
+  public notificaciones: any[] = [];
+
+  public chatId: any = null;
+  @ViewChild('insideElement', null) insideElement;
   constructor(
     location: Location,
     private element: ElementRef,
@@ -34,54 +43,43 @@ export class NavbarComponentMain implements OnInit {
     private events: JhiEventManager,
     private localStorageEncryptService: LocalStorageEncryptService,
     private navParams: NavParamsService,
-    private alertaService: AlertService
+    private alertaService: AlertService,
+    private loadingService: LoadingService
   ) {
     this.location = location;
     this.sidebarVisible = false;
     this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    this.getNotifications();
+    setInterval(() => {
+      //this.getNotifications();
+    }, 2500);
   }
 
-  ngOnDestroy() {
-    //this.events.destroy(this.miEvents.uno);
-    //this.events.destroy(this.miEvents.dos);
-    //this.events.destroy(this.miEvents.tres);
+  /* @HostListener('document:click', ['$event.target'])
+ clickout(event) {
+   let clase:any = this;
+   window.addEventListener('click', function(e){   
+     let mando:any = document.getElementById('cuadro-mando');
+     console.log(e.target);
+     
+     if (clase.getShow() && !mando.contains(e.target)){
+       // Clicked in box
+     } else{
+       console.log("--->");
+       clase.activated();
+       window.addEventListener("click", null, true);
+     }
+   });
+
+   
+ }  */
+
+  setShow(s) {
+    this.show = s;
   }
 
-  getTotalCarrito(fromLogin: boolean = false) {
-    this.genericService.sendGetRequest(environment.carritoCompras).subscribe(
-      (response: any) => {
-        this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, response);
-        this.totalCarrito = response.length;
-        console.log(this.totalCarrito);
-      },
-      (error: HttpErrorResponse) => {}
-    );
-  }
-
-  a() {
-    //if (this.genericService.getTotalCarrito() > 0) {
-
-    //nav.pop();
-    this.cargarProductosCarrito();
-
-    //}
-  }
-
-  cargarProductosCarrito() {
-    this.genericService.sendGetRequest(environment.carritoCompras).subscribe(
-      (response: any) => {
-        this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
-        this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, response);
-        this.navParams.push('main/carrito-compras');
-      },
-      (error: HttpErrorResponse) => {
-        this.alertaService.warn('Agrega artículos al carrito');
-      }
-    );
-  }
-
-  b() {
-    console.log('b');
+  getShow() {
+    return this.show;
   }
 
   ngOnInit() {
@@ -129,6 +127,224 @@ export class NavbarComponentMain implements OnInit {
     if (this.user) {
       this.getTotalCarrito();
     }
+  }
+
+  activated() {
+    this.show = !this.show;
+    console.log('->');
+  }
+
+  ngOnDestroy() {
+    //this.events.destroy(this.miEvents.uno);
+    //this.events.destroy(this.miEvents.dos);
+    //this.events.destroy(this.miEvents.tres);
+  }
+
+  getTotalCarrito(fromLogin: boolean = false) {
+    this.genericService.sendGetRequest(environment.carritoCompras).subscribe(
+      (response: any) => {
+        this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, response);
+        this.totalCarrito = response.length;
+        console.log(this.totalCarrito);
+      },
+      (error: HttpErrorResponse) => {}
+    );
+  }
+
+  a() {
+    //if (this.genericService.getTotalCarrito() > 0) {
+
+    //nav.pop();
+    this.cargarProductosCarrito();
+
+    //}
+  }
+
+  getNotifications() {
+    this.genericService.sendGetRequest(environment.notificaciones).subscribe(
+      (response: any) => {
+        this.notificaciones = response;
+        this.totalNot = this.notificaciones.length;
+      },
+      (error: HttpErrorResponse) => {
+        this.totalNot = 0;
+        //this.alertaService.warn('Agrega artículos al carrito');
+      }
+    );
+  }
+
+  goToPedido(id: any, goToChat: boolean = false) {
+    this.loadingService.show();
+
+    let path: any = `${environment.pedidos}/`;
+    if (environment.perfil.activo == 2) {
+      path = `${environment.proveedor}/pedidos/`;
+    } else if (environment.perfil.activo == 3) {
+      path = `${environment.transportista}/pedidos/`;
+    }
+
+    this.genericService.sendGetRequest(`${path}${id}`).subscribe(
+      (response: any) => {
+        if (goToChat) {
+          this.activated();
+          this.verChat(response);
+        } else {
+          this.loadingService.hide();
+          /* let nav: any = this.app.getActiveNav();
+        nav.push(HistorialPedidosDetailPage, { pedido: response }); */
+          this.activated();
+          this.navParams.push('main/detalle-pedido', { pedido: response });
+        }
+      },
+      (error: HttpErrorResponse) => {
+        this.loadingService.hide();
+        let err: any = error.error;
+        this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+      }
+    );
+  }
+
+  goToPedidoCalificar(id: any) {
+    this.loadingService.show();
+
+    let path: any = `${environment.pedidos}/`;
+    if (environment.perfil.activo == 2 || environment.perfil.activo == 3) {
+      path = `${environment.proveedor}/pedidos/`;
+    }
+
+    this.genericService.sendGetRequest(`${path}${id}`).subscribe(
+      (response: any) => {
+        this.loadingService.hide();
+        /* let nav: any = this.app.getActiveNav();
+      nav.push(CalificacionPage, { pedido: response });
+*/
+        this.navParams.push('main/calificacion', { pedido: response });
+      },
+      (error: HttpErrorResponse) => {
+        this.loadingService.hide();
+        let err: any = error.error;
+        this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+      }
+    );
+  }
+
+  verChat(pedido: any) {
+    switch (environment.perfil.activo) {
+      case 1:
+        this.genericService.sendGetRequest(`${environment.chats}/${this.chatId}`).subscribe(
+          (response: any) => {
+            //nav.push(ChatPage, { chat: response, pedido });
+
+            //this.navCtrl.push(ListaChatPage, { chats: this.pedido.pedidoProveedores, pedido: this.pedido });
+            this.navParams.push('main/chat', { chat: response, pedido: pedido });
+            this.loadingService.hide();
+          },
+          (error: HttpErrorResponse) => {
+            this.loadingService.hide();
+            let err: any = error.error;
+            this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+          }
+        );
+
+        break;
+
+      case 2:
+        this.genericService.sendGetRequest(`${environment.chatsProveedor}${pedido.pedidoProveedores[0].id}/tipoChat/1`).subscribe(
+          (response: any) => {
+            //nav.push(ChatPage, { chat: response, pedido });
+            this.navParams.push('main/chat', { chat: response, pedido: pedido });
+            this.loadingService.hide();
+          },
+          (error: HttpErrorResponse) => {
+            this.loadingService.hide();
+            let err: any = error.error;
+            this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+          }
+        );
+        break;
+      case 3:
+        this.genericService.sendGetRequest(`${environment.chatsProveedor}${pedido.pedidoProveedores[0].id}/tipoChat/2`).subscribe(
+          (response: any) => {
+            this.navParams.push('main/chat', { chat: response, pedido: pedido });
+            //this.navCtrl.push(ChatPage, { chat: response, pedido: this.pedido });
+            this.loadingService.hide();
+          },
+          (error: HttpErrorResponse) => {
+            this.loadingService.hide();
+            let err: any = error.error;
+            this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+          }
+        );
+        break;
+    }
+  }
+
+  open(n: any) {
+    this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    //window.location.href
+    let currentPage: any = window.location.href;
+    this.loadingService.show();
+    this.genericService.sendDeleteRequest(`${environment.notificaciones}/${n.id}`).subscribe(
+      (response: any) => {
+        this.loadingService.hide();
+        switch (Number(n.viewId)) {
+          case 1:
+            let pedido: any = null;
+            if (n.data) {
+              pedido = n.data.pedidoId;
+            }
+            this.events.broadcast({ name: 'cargarPedidos', content: {} });
+            this.goToPedido(Number(pedido));
+            break;
+          case 10:
+            let chatId: any = n.data.chatId;
+            let pedidoId: any = n.data.pedidoId;
+            this.chatId = chatId;
+            this.goToPedido(Number(pedidoId), true);
+            break;
+          case 2:
+            let pedido2: any = n.data.pedidoId;
+            let pedidoProveedor: any = n.data.pedidoProveedorId;
+            this.goToPedido(Number(pedido2));
+            break;
+          case 3:
+            let pedido3: any = n.data.pedidoId;
+            let pedidoProveedor3: any = n.data.pedidoProveedorId;
+            this.goToPedido(Number(pedido3));
+            break;
+          case 6:
+            let pedido6: any = n.data.pedidoId;
+            let pedidoProveedor6: any = n.data.pedidoProveedorId;
+            this.goToPedido(Number(pedido6));
+            break;
+          case 4:
+            let pedido4: any = n.data.pedidoId;
+            this.goToPedidoCalificar(Number(pedido4));
+            break;
+        }
+      },
+      (error: HttpErrorResponse) => {
+        this.loadingService.hide();
+        this.alertaService.error('Ocurrió un error intenta nuevamente');
+      }
+    );
+  }
+
+  cargarProductosCarrito() {
+    this.genericService.sendGetRequest(environment.carritoCompras).subscribe(
+      (response: any) => {
+        this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
+        this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, response);
+        this.navParams.push('main/carrito-compras');
+      },
+      (error: HttpErrorResponse) => {
+        this.alertaService.warn('Agrega artículos al carrito');
+      }
+    );
+  }
+
+  b() {
+    console.log('b');
   }
 
   sidebarOpen() {

@@ -68,6 +68,7 @@ import { RegistroPage } from './pages/registro/registro';
 import { DocumentosPage } from './pages-proveedor/documentos/documentos';
 import { HomeProveedorPage } from './pages-proveedor/home-proveedor/home-proveedor';
 import { VerProductosPage } from './pages-proveedor/ver-productos/ver-productos';
+import { CalificacionPage } from './pages/calificacion/calificacion';
 
 //import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 
@@ -136,7 +137,7 @@ import { VerProductosPage } from './pages-proveedor/ver-productos/ver-productos'
 
     DocumentosPage,
     HomeProveedorPage,
-
+    CalificacionPage,
     JhiMainComponent,
     FooterComponentJHI
 
@@ -216,8 +217,8 @@ import { VerProductosPage } from './pages-proveedor/ver-productos/ver-productos'
     RegistroPage,
 
     DocumentosPage,
-    HomeProveedorPage
-
+    HomeProveedorPage,
+    CalificacionPage
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,

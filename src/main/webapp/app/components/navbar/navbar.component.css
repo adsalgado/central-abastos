@@ -9,3 +9,27 @@
   border-radius: 53%;
   font-weight: 600;
 }
+
+.cuadro-mando {
+  position: absolute;
+  top: 32px;
+  right: 0;
+  background-color: #f07c1cbf;
+  padding: 20px;
+  z-index: 99999999;
+  width: 325px;
+  height: 250px;
+  border: 2px solid #d66100;
+  border-radius: 4px 0px 4px 4px;
+}
+
+.contenedor {
+  background-color: #ffffffcf;
+  padding: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #aeafaf;
+}
