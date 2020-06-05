@@ -2,6 +2,7 @@ package mx.com.sharkit.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import mx.com.sharkit.domain.Estatus;
@@ -41,11 +45,13 @@ import mx.com.sharkit.pushnotif.service.EnumPantallas;
 import mx.com.sharkit.pushnotif.service.PushNotificationsService;
 import mx.com.sharkit.repository.ProveedorRepository;
 import mx.com.sharkit.repository.TransportistaRepository;
+import mx.com.sharkit.service.NotificacionAsyncService;
 import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.UserService;
 import mx.com.sharkit.service.dto.CalificacionPedidoProveedorDTO;
 import mx.com.sharkit.service.dto.ChangeEstatusPedidoProveedorDTO;
+import mx.com.sharkit.service.dto.NotificacionDTO;
 import mx.com.sharkit.service.dto.PedidoDTO;
 import mx.com.sharkit.service.dto.PedidoProveedorDTO;
 import mx.com.sharkit.service.dto.TerminarServicioPedidoProveedorDTO;
@@ -88,6 +94,9 @@ public class PedidoProveedorResource {
 
 	@Autowired
 	private PushNotificationsService pushNotificationsService;
+	
+	@Autowired
+	private NotificacionAsyncService notificacionAsyncService;
 
 	public PedidoProveedorResource(PedidoProveedorService pedidoProveedorService, UserService userService,
 			ProveedorRepository proveedorRepository, TransportistaRepository transportistaRepository) {
@@ -325,6 +334,17 @@ public class PedidoProveedorResource {
 					HttpEntity<String> requestCliente = pushNotificationsService.createRequestNotification(toCliente,
 							notificationTitle, notificationBody, messageTitle, EnumPantallas.PEDIDO_ENTREGADO.getView(),
 							mapData);
+					
+					// Notificación Web
+					NotificacionDTO notificacionDTO = new NotificacionDTO();
+					notificacionDTO.setTitulo(notificationTitle);
+					notificacionDTO.setDescripcion(notificationBody);
+					notificacionDTO.setEstatus(0);
+					notificacionDTO.setFechaNotificacion(LocalDateTime.now());
+					notificacionDTO.setUsuarioId(pedido.getCliente().getId());
+					notificacionDTO.setViewId(EnumPantallas.PEDIDO_ENTREGADO.getView());
+					notificacionDTO.setParametros(new ObjectMapper().writeValueAsString(mapData));
+					notificacionAsyncService.save(notificacionDTO);
 
 					log.debug("requestCliente: {}", requestCliente);
 					CompletableFuture<String> pushNotificationCliente = pushNotificationsService.send(requestCliente,
@@ -344,6 +364,8 @@ public class PedidoProveedorResource {
 					}
 				} catch (JSONException e) {
 					log.debug("JSONException e: {}", e);
+				} catch (JsonProcessingException e1) {
+					log.debug("JsonProcessingException e: {}", e1);
 				}
 
 			}
@@ -380,6 +402,17 @@ public class PedidoProveedorResource {
 					HttpEntity<String> requestCliente = pushNotificationsService.createRequestNotification(toCliente,
 							notificationTitle, notificationBody, messageTitle,
 							EnumPantallas.PEDIDO_CONFIRMADO_CLIENTE.getView(), mapData);
+					
+					// Notificación Web
+					NotificacionDTO notificacionDTO = new NotificacionDTO();
+					notificacionDTO.setTitulo(notificationBody);
+					notificacionDTO.setDescripcion(notificationTitle);
+					notificacionDTO.setEstatus(0);
+					notificacionDTO.setFechaNotificacion(LocalDateTime.now());
+					notificacionDTO.setUsuarioId(pedido.getCliente().getId());
+					notificacionDTO.setViewId(EnumPantallas.PEDIDO_CONFIRMADO_CLIENTE.getView());
+					notificacionDTO.setParametros(new ObjectMapper().writeValueAsString(mapData));
+					notificacionAsyncService.save(notificacionDTO);
 
 					log.debug("requestCliente: {}", requestCliente);
 					CompletableFuture<String> pushNotificationCliente = pushNotificationsService.send(requestCliente,
@@ -389,6 +422,17 @@ public class PedidoProveedorResource {
 					HttpEntity<String> requestTransportista = pushNotificationsService.createRequestNotification(
 							toTransportista, notificationTitle, notificationBody, messageTitle,
 							EnumPantallas.PEDIDO_CONFIRMADO_TRANSPORTISTA.getView(), mapData);
+
+					// Notificación Web
+					notificacionDTO = new NotificacionDTO();
+					notificacionDTO.setTitulo(notificationBody);
+					notificacionDTO.setDescripcion(notificationTitle);
+					notificacionDTO.setEstatus(0);
+					notificacionDTO.setFechaNotificacion(LocalDateTime.now());
+					notificacionDTO.setUsuarioId(pprovDTO.getProveedor().getTransportista().getUsuario().getId());
+					notificacionDTO.setViewId(EnumPantallas.PEDIDO_CONFIRMADO_TRANSPORTISTA.getView());
+					notificacionDTO.setParametros(new ObjectMapper().writeValueAsString(mapData));
+					notificacionAsyncService.save(notificacionDTO);
 
 					log.debug("request: {}", requestTransportista);
 					CompletableFuture<String> pushNotificationTransportista = pushNotificationsService
@@ -414,6 +458,8 @@ public class PedidoProveedorResource {
 					log.debug("JSONException e: {}", e);
 				} catch (HttpClientErrorException e) {
 					log.debug("HttpClientErrorException e: {}", e);
+				} catch (JsonProcessingException e1) {
+					log.debug("JsonProcessingException e: {}", e1);
 				}
 
 			}
@@ -467,6 +513,17 @@ public class PedidoProveedorResource {
 					HttpEntity<String> requestProveedor = pushNotificationsService.createRequestNotification(
 							toProveedor, notificationTitle, notificationBody, messageTitle,
 							EnumPantallas.PEDIDO_CALIFICADO.getView(), mapData);
+					
+					// Notificación Web
+					NotificacionDTO notificacionDTO = new NotificacionDTO();
+					notificacionDTO.setTitulo(notificationTitle);
+					notificacionDTO.setDescripcion(notificationBody);
+					notificacionDTO.setEstatus(0);
+					notificacionDTO.setFechaNotificacion(LocalDateTime.now());
+					notificacionDTO.setUsuarioId(pprovDTO.getProveedor().getUsuario().getId());
+					notificacionDTO.setViewId(EnumPantallas.PEDIDO_CALIFICADO.getView());
+					notificacionDTO.setParametros(new ObjectMapper().writeValueAsString(mapData));
+					notificacionAsyncService.save(notificacionDTO);
 
 					log.debug("requestProveedor: {}", requestProveedor);
 					CompletableFuture<String> pushNotificationProveedor = pushNotificationsService
@@ -476,6 +533,17 @@ public class PedidoProveedorResource {
 					HttpEntity<String> requestTransportista = pushNotificationsService.createRequestNotification(
 							toTransportista, notificationTitle, notificationBody, messageTitle,
 							EnumPantallas.PEDIDO_CALIFICADO.getView(), mapData);
+					
+					// Notificación Web
+					notificacionDTO = new NotificacionDTO();
+					notificacionDTO.setTitulo(notificationTitle);
+					notificacionDTO.setDescripcion(notificationBody);
+					notificacionDTO.setEstatus(0);
+					notificacionDTO.setFechaNotificacion(LocalDateTime.now());
+					notificacionDTO.setUsuarioId(pprovDTO.getProveedor().getTransportista().getUsuario().getId());
+					notificacionDTO.setViewId(EnumPantallas.PEDIDO_CALIFICADO.getView());
+					notificacionDTO.setParametros(new ObjectMapper().writeValueAsString(mapData));
+					notificacionAsyncService.save(notificacionDTO);
 
 					log.debug("request: {}", requestTransportista);
 					CompletableFuture<String> pushNotificationTransportista = pushNotificationsService
@@ -501,6 +569,8 @@ public class PedidoProveedorResource {
 					log.debug("JSONException e: {}", e);
 				} catch (HttpClientErrorException e) {
 					log.debug("HttpClientErrorException e: {}", e);
+				} catch (JsonProcessingException e1) {
+					log.debug("JsonProcessingException e: {}", e1);
 				}
 
 			}

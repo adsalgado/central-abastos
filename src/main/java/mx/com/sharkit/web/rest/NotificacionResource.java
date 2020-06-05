@@ -1,26 +1,39 @@
 package mx.com.sharkit.web.rest;
 
-import mx.com.sharkit.domain.User;
-import mx.com.sharkit.service.NotificacionService;
-import mx.com.sharkit.service.UserService;
-import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
-import mx.com.sharkit.service.dto.NotificacionDTO;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import mx.com.sharkit.domain.User;
+import mx.com.sharkit.service.NotificacionService;
+import mx.com.sharkit.service.UserService;
+import mx.com.sharkit.service.dto.NotificacionDTO;
+import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
+import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 
 /**
  * REST controller for managing {@link mx.com.sharkit.domain.Notificacion}.
@@ -108,8 +121,23 @@ public class NotificacionResource {
 			throw new BadRequestAlertException("El cliente es requerido", ENTITY_NAME, "idnull");
 		}
 
-		return notificacionService.findByUsuarioId(usuarioId).stream().filter(not -> not.getEstatus().equals(0))
-				.collect(Collectors.toCollection(LinkedList::new));
+		List<NotificacionDTO> notificaciones = notificacionService.findByUsuarioId(usuarioId).stream()
+				.filter(not -> not.getEstatus().equals(0)).collect(Collectors.toCollection(LinkedList::new));
+
+		for (NotificacionDTO notificacionDTO : notificaciones) {
+			if (notificacionDTO.getParametros() != null && !StringUtils.isAllBlank(notificacionDTO.getParametros())) {
+				ObjectMapper mapper = new ObjectMapper();
+				try {
+					Map<String, Object> data = mapper.readValue(notificacionDTO.getParametros(),
+							new TypeReference<Map<String, Object>>() {
+							});
+					notificacionDTO.setData(data);
+				} catch (IOException e) {
+					log.error("Error en conversion JSON: {}", e);
+				}
+			}
+		}
+		return notificaciones;
 	}
 
 	/**

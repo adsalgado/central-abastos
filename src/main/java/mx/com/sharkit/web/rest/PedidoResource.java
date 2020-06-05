@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 
@@ -461,6 +463,7 @@ public class PedidoResource {
 				notificacionDTO.setFechaNotificacion(LocalDateTime.now());
 				notificacionDTO.setUsuarioId(pprov.getProveedor().getUsuario().getId());
 				notificacionDTO.setViewId(EnumPantallas.SOLICITUD_PEDIDO.getView());
+				notificacionDTO.setParametros(new ObjectMapper().writeValueAsString(mapData));
 				notificacionAsyncService.save(notificacionDTO);
 
 
@@ -482,6 +485,8 @@ public class PedidoResource {
 
 			} catch (JSONException e) {
 				log.debug("JSONException e: {}", e);
+			} catch (JsonProcessingException e1) {
+				log.debug("JsonProcessingException e: {}", e1);
 			} 
 
 		}

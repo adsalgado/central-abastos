@@ -2,6 +2,7 @@ package mx.com.sharkit.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import mx.com.sharkit.domain.TipoUsuario;
@@ -37,9 +41,11 @@ import mx.com.sharkit.pushnotif.service.PushNotificationsService;
 import mx.com.sharkit.repository.UserRepository;
 import mx.com.sharkit.service.ChatDetalleService;
 import mx.com.sharkit.service.ChatService;
+import mx.com.sharkit.service.NotificacionAsyncService;
 import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.dto.ChatDTO;
 import mx.com.sharkit.service.dto.ChatDetalleDTO;
+import mx.com.sharkit.service.dto.NotificacionDTO;
 import mx.com.sharkit.service.dto.PedidoProveedorDTO;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 import mx.com.sharkit.web.websocket.dto.MessageChatDTO;
@@ -68,6 +74,9 @@ public class ChatResource {
 
 	@Autowired
 	private PedidoProveedorService pedidoProveedorService;
+	
+	@Autowired
+	private NotificacionAsyncService notificacionAsyncService;
 	
 	public ChatResource(ChatService chatService, ChatDetalleService chatDetalleService, UserRepository userRepository,
 			PushNotificationsService pushNotificationsService) {
@@ -243,6 +252,17 @@ public class ChatResource {
 
 				HttpEntity<String> request = pushNotificationsService.createRequestNotification(userTo.getToken(),
 						title, msgChatDTO.getText(), title, EnumPantallas.CHAT.getView(), mapData);
+				
+				// Notificación Web
+				NotificacionDTO notificacionDTO = new NotificacionDTO();
+				notificacionDTO.setTitulo(title);
+				notificacionDTO.setDescripcion(msgChatDTO.getText());
+				notificacionDTO.setEstatus(0);
+				notificacionDTO.setFechaNotificacion(LocalDateTime.now());
+				notificacionDTO.setUsuarioId(userTo.getId());
+				notificacionDTO.setViewId(EnumPantallas.CHAT.getView());
+				notificacionDTO.setParametros(new ObjectMapper().writeValueAsString(mapData));
+				notificacionAsyncService.save(notificacionDTO);
 
 				log.debug("request: {}", request);
 				CompletableFuture<String> pushNotification = pushNotificationsService.send(request, userTo.getTipoUsuarioId());
@@ -261,6 +281,8 @@ public class ChatResource {
 				log.debug("JSONException e: {}", e);
 			} catch (HttpClientErrorException e) {
 				log.debug("HttpClientErrorException e: {}", e);
+			} catch (JsonProcessingException e1) {
+				log.debug("JsonProcessingException e: {}", e1);
 			}
 
 		}
