@@ -9,21 +9,21 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.codec.binary.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.sharkit.domain.Estatus;
 import mx.com.sharkit.domain.Pedido;
 import mx.com.sharkit.domain.PedidoProveedor;
-import mx.com.sharkit.domain.ProductoProveedor;
 import mx.com.sharkit.repository.PedidoDetalleRepository;
 import mx.com.sharkit.repository.PedidoProveedorRepository;
 import mx.com.sharkit.repository.PedidoRepository;
 import mx.com.sharkit.service.PedidoDetalleService;
+import mx.com.sharkit.service.PedidoProveedorHistoricoService;
 import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.dto.CalificacionPedidoProveedorDTO;
 import mx.com.sharkit.service.dto.PedidoProveedorDTO;
@@ -49,6 +49,9 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 	private final PedidoDetalleRepository pedidoDetalleRepository;
 
 	private final PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private PedidoProveedorHistoricoService pedidoProveedorHistoricoService;
 
 	public PedidoProveedorServiceImpl(PedidoProveedorRepository pedidoProveedorRepository,
 			PedidoProveedorMapper pedidoProveedorMapper, PedidoDetalleService pedidoDetalleService,
@@ -146,9 +149,9 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 		LocalDateTime now = LocalDateTime.now();
 		PedidoProveedor pedidoProveedor = pedidoProveedorRepository.findById(pedidoProveedorId).orElse(null);
 		if (pedidoProveedor != null) {
-			pedidoDetalleRepository.findByPedidoProveedorId(pedidoProveedorId).forEach(pd -> {
-				pd.setEstatusId(estatus);
-			});
+			pedidoDetalleRepository.findByPedidoProveedorId(pedidoProveedorId).forEach(
+					pd -> pd.setEstatusId(estatus)
+			);
 			pedidoProveedor.setEstatusId(estatus);
 			pedidoProveedor.setUsuarioModificacionId(usuarioEstatus);
 			pedidoProveedor.setFechaModificacion(now);
@@ -160,6 +163,8 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 			} else if (estatus.equals(Estatus.PEDIDO_ENTREGADO)) {
 				pedidoProveedor.setFechaEntrega(now);
 			}
+			
+			pedidoProveedorHistoricoService.savePedidoProveedorHistorico(pedidoProveedor);
 
 			List<PedidoProveedor> listPedidoPrv = pedidoProveedorRepository
 					.findByPedidoId(pedidoProveedor.getPedidoId());
@@ -173,6 +178,7 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 		}
 		return pedidoProveedorMapper.toDto(pedidoProveedor);
 	}
+	
 
 	@Override
 	public List<PedidoProveedorDTO> findByPedidoIdAndTransportistaId(Long pedidoId, Long transportistaId) {
@@ -241,7 +247,6 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 		criteria.createAlias("pedido.cliente", "cliente");
 		criteria.createAlias("proveedor", "proveedor");
 		criteria.createAlias("proveedor.transportista", "transportista");
-		
 
 		params.keySet().forEach(key -> {
 			switch (key) {
