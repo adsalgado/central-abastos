@@ -33,7 +33,7 @@ overflow-y: scroll;">
 
 
 </div>
-<div class="footer-chat">
+<div class="footer-chat" *ngIf="user && user.tipo_usuario > 1">
   <div>
 
     <input type="text" style="width:96%" placeholder="Escribe un mensaje aquí" [(ngModel)]="mensaje">

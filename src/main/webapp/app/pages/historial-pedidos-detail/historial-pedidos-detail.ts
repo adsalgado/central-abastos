@@ -49,9 +49,10 @@ export class HistorialPedidosDetailPage implements OnInit {
       console.log(this.pedidoAdmin);
 
       this.pedido = this.pedidoAdmin.pedido;
+      console.log(this.pedido);
+
       this.timeline();
     }
-    console.log(this.pedido);
   }
 
   ngOnInit() {
@@ -295,6 +296,40 @@ export class HistorialPedidosDetailPage implements OnInit {
         this.verTimeLine = false;
         let err: any = error.error;
         //this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+      }
+    );
+  }
+
+  verChatProveedor() {
+    this.loadingService.show();
+    console.log(this.pedido);
+
+    this.genericService.sendGetRequest(`${environment.chats}/${this.pedidoAdmin.chatProveedorid}`).subscribe(
+      (response: any) => {
+        this.navCtrl.push('/main/chat', { chat: response, pedidoc: this.pedido });
+        this.loadingService.hide();
+      },
+      (error: HttpErrorResponse) => {
+        this.loadingService.hide();
+        let err: any = error.error;
+        this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+      }
+    );
+  }
+
+  verChatTransportista() {
+    this.loadingService.show();
+    console.log(this.pedido);
+
+    this.genericService.sendGetRequest(`${environment.chats}/${this.pedidoAdmin.chatTransportistaId}`).subscribe(
+      (response: any) => {
+        this.navCtrl.push('/main/chat', { chat: response, pedidoc: this.pedido });
+        this.loadingService.hide();
+      },
+      (error: HttpErrorResponse) => {
+        this.loadingService.hide();
+        let err: any = error.error;
+        this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
       }
     );
   }

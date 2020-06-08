@@ -20,6 +20,9 @@ export const environment = {
   notificaciones: `${pathPrincipal}notificaciones`,
   transportista: `${pathPrincipal}transportista`,
   proveedoresFull: `${pathPrincipal}proveedores`,
+
+  reportes: `${pathPrincipal}reportes`,
+
   proveedor: `${pathPrincipal}proveedor`,
   proveedoresProducto: `${pathPrincipal}proveedores/producto/`,
 

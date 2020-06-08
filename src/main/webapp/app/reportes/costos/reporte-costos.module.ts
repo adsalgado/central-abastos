@@ -1,3 +1,4 @@
+import { TableModule } from 'primeng/table';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { JhiLanguageService } from 'ng-jhipster';
@@ -25,7 +26,8 @@ const ENTITY_STATES = [...reporteCostosRoute];
     InputTextareaModule,
     DropdownModule,
     PanelModule,
-    ToastModule
+    ToastModule,
+    TableModule
   ],
   declarations: [ReporteCostosComponent],
   entryComponents: [ReporteCostosComponent],

@@ -43,9 +43,13 @@ export class ChatPage implements OnDestroy {
     private alertaService: AlertService
   ) {
     this.chat = navParams.get('chat');
-    this.pedido = navParams.get('pedido');
 
     this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    if (this.user.tipo_usuario <= 1) {
+      this.pedido = navParams.get('pedidoc');
+    } else {
+      this.pedido = navParams.get('pedido');
+    }
 
     if (this.localStorageEncryptService.getFromLocalStorage('theme')) {
       this.color = this.localStorageEncryptService.getFromLocalStorage('theme');

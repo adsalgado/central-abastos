@@ -72,18 +72,18 @@
   </section>
 
   <section class="botones" *ngIf="tipoUsuario <= 1">
-    <button class="boton-detalle" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verDetalle()">
+    <!-- <button class="boton-detalle" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verDetalle()">
       <i class="material-icons">date_range</i>Ver detalle
-    </button>
+    </button> -->
     <button class="boton-recibo" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verRecibo()">
       <i class="material-icons">date_range</i>Ver recibo
     </button>
-    <button class="boton-chat" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verChat()"
+    <button class="boton-chat" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verChatTransportista()"
      *ngIf="pedidoAdmin.chatTransportistaId">
 
       <i class="material-icons">date_range</i>Chat Transportista
     </button>
-    <button class="boton-chat" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verChat()"
+    <button class="boton-chat" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verChatProveedor()"
     *ngIf="pedidoAdmin.chatProveedorid">
 
       <i class="material-icons">date_range</i>Chat Proveedor

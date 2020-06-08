@@ -1,3 +1,6 @@
+import { environment } from '../../../environments/environment.prod';
+import { LoadingService } from 'app/services/loading-service';
+import { GenericService } from './../../services/generic.service';
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -37,6 +40,8 @@ export class ReporteCostosComponent implements OnInit {
     fechaFinal: []
   });
 
+  public dataReponse: any = null;
+
   constructor(
     protected jhiAlertService: JhiAlertService,
     private localStorageEncryptService: LocalStorageEncryptService,
@@ -45,7 +50,9 @@ export class ReporteCostosComponent implements OnInit {
     protected transportistaService: TransportistaService,
     protected activatedRoute: ActivatedRoute,
     protected messageService: MessageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private genericService: GenericService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit() {
@@ -76,14 +83,37 @@ export class ReporteCostosComponent implements OnInit {
     if (!selectedProveedor.id) {
       this.messageService.add({ severity: 'error', summary: 'Success', detail: 'El proveedor es requerido.' });
     }
-    let reporteCostosRequest = {
-      ...new ReporteCostosRequest(),
+    let reporteCostosRequest: any = {
+      claveReporte: 'REPORTE_COSTOS',
       proveedorId: selectedProveedor.id,
-      fechaInicial: this.editForm.get(['fechaInicial']).value,
-      fechaFinal: this.editForm.get(['proveedorId']).value
+      fechaInicial: this.editForm.get(['fechaInicial']).value
+        ? moment(this.editForm.get(['fechaInicial']).value).format('YYYY/MM/DD')
+        : null,
+      fechaFinal: this.editForm.get(['fechaFinal']).value ? moment(this.editForm.get(['fechaFinal']).value).format('YYYY/MM/DD') : null
     };
 
-    console.log(reporteCostosRequest);
+    this.loadingService.show();
+    this.genericService.sendPostRequest(`${environment.reportes}`, reporteCostosRequest).subscribe(
+      (response: any) => {
+        this.loadingService.hide();
+        console.log(response);
+        if (response.error) {
+          this.messageService.add({ severity: 'error', summary: 'Success', detail: `${response.messageError}` });
+        } else {
+          this.dataReponse = response.data;
+        }
+        console.log(this.dataReponse);
+      },
+      (error: HttpErrorResponse) => {
+        this.loadingService.hide();
+        this.dataReponse = null;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Success',
+          detail: 'No se ha podido obtener tu reporte, intenta nuevamente'
+        });
+      }
+    );
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProveedor>>) {
