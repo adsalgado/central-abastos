@@ -343,12 +343,13 @@ public class PedidoServiceImpl implements PedidoService {
 		}
 
 		pedidoEntity.setFolio("P" + StringUtils.leftPad(pedidoEntity.getId().toString(), 9, "0"));
+		pedidoEntity.setComisionTransportista(comisionTransportista);
 		
 		totalSinComision = totalProductos.add(comisionTransportista);
 		comisionStripe = totalSinComision.multiply(new BigDecimal("0.036")).add(new BigDecimal("3"));
 		total = totalSinComision.add(comisionStripe);
 		
-		
+
 		pedidoEntity.setTotalSinIva(totalSinComision);
 		pedidoEntity.setTotalSinComision(totalSinComision);
 		pedidoEntity.setComisionStripe(comisionStripe);

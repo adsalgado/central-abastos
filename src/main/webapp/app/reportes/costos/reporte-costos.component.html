@@ -1,74 +1,45 @@
-
-<div class="ui-fluid p-formgrid p-grid">
-    <div class="p-field p-col-12 p-md-6">
-        <label for="firstname6">Firstname</label>
-        <input id="firstname6" type="text" pInputText> 
-    </div>
-    <div class="p-field p-col-12 p-md-6">
-        <label for="lastname6">Lastname</label>
-        <input id="lastname6" type="text" pInputText> 
-    </div>
-    <div class="p-field p-col-12">
-        <label for="address">Address</label>
-        <textarea id="address" type="text" rows="4" pInputTextarea></textarea>
-    </div>
-    <div class="p-field p-col-12 p-md-6">
-        <label for="city">City</label>
-        <input id="city" type="text" pInputText> 
-    </div>
-    <div class="p-field p-col-12 p-md-3">
-        <label for="state">State</label>
-        <p-dropdown inputId="state" [options]="states" [(ngModel)]="selectedState" placeholder="Select" optionLabel="name"></p-dropdown>
-    </div>
-    <div class="p-field p-col-12 p-md-3">
-        <label for="zip">Zip</label>
-        <input id="zip" type="text" pInputText> 
-    </div>
-</div>
-<p-button label="Click" ></p-button>
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
 
 <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-12">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-proveedor-heading" >Editar transportista</h2>
-            <div>
-                <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!editForm.get('id').value">
-                    <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
-                        readonly />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="abastosApp.proveedor.nombre" for="field_nombre">Nombre</label>
-                    <input type="text" class="form-control" name="nombre" id="field_nombre"
-                           formControlName="nombre"/>
-                    <div *ngIf="editForm.get('nombre').invalid && (editForm.get('nombre').dirty || editForm.get('nombre').touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('nombre').errors.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('nombre').errors.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 256 }">
-                        This field cannot be longer than 256 characters.
-                        </small>
+            <p-panel header="Reporte de costos">
+                <div class="ui-fluid p-formgrid p-grid">
+
+                    <div class="p-field p-col-12">
+                        <label for="proveedor">Proveedor</label>
+                        <p-dropdown id="proveedor" inputId="proveedorId" [options]="proveedores" placeholder="Seleccione proveedor..." optionLabel="nombre"
+                        formControlName="proveedorId">
+                        </p-dropdown>
+                        <p-message severity="error" text="Proveedor es requerido" *ngIf="!editForm.controls['proveedorId'].valid&&editForm.controls['proveedorId'].dirty"></p-message>
                     </div>
+
+                    <div class="p-field p-col-12 p-md-6">
+                        <label for="fechaInicial">Fecha inicial</label>
+                        <p-calendar id="fechaInicial" dateFormat="dd/mm/yyyy" showButtonBar="true" placeholder="Fecha inicial" formControlName="fechaInicial"></p-calendar>
+                    </div>
+                    
+                    <div class="p-field p-col-12 p-md-6">
+                        <label for="fechaFinal">Fecha final</label>
+                        <p-calendar id="fechaFinal" dateFormat="dd/mm/yyyy" showButtonBar="true" placeholder="Fecha final" formControlName="fechaFinal"></p-calendar>
+                    </div>
+                    
                 </div>
-                <div class="form-group">
-                    <label class="form-control-label" for="field_transportista">Transportista</label>
-                    <select class="form-control" id="field_transportista" name="transportistaId" formControlName="transportistaId">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="transportistaOption.id" *ngFor="let transportistaOption of transportistas; trackBy: trackEmpresaById">{{transportistaOption.nombre}}</option>
-                    </select>
-                </div>
-            </div>
-            <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-                </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-                </button>
-            </div>
+                <p-footer>
+                    <button pButton type="submit" icon="pi pi-check" label="Generar reporte" [disabled]="!editForm.valid" class="ui-button-secondary">
+                    </button>
+                    <button *ngIf="false" type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                        <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                    </button>
+                    <button *ngIf="false" type="submit" id="save-entity" [disabled]="editForm.invalid" class="btn btn-primary">
+                        <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span >Generar</span>
+                    </button>
+
+                </p-footer>
+            </p-panel>
+            
         </form>
     </div>
 </div>
+
+

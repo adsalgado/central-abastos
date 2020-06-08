@@ -16,6 +16,9 @@ import { User } from '../../models/User';
 import { ITransportista } from 'app/shared/model/transportista.model';
 import { ProveedorService } from '../../entities/proveedor/proveedor.service';
 import { TransportistaService } from '../../entities/transportista/transportista.service';
+import { SelectItem } from 'primeng/components/common/selectitem';
+import { MessageService } from 'primeng/api';
+import { ReporteCostosRequest } from 'app/shared/model/reporte-costos-request.model';
 
 @Component({
   selector: 'jhi-reporte-costos',
@@ -24,32 +27,14 @@ import { TransportistaService } from '../../entities/transportista/transportista
 export class ReporteCostosComponent implements OnInit {
   isSaving: boolean;
   transportistas: ITransportista[];
+  proveedores: IProveedor[];
   user: User = null;
-
-  public value: any = null;
-
-  selectedState: any = null;
-
-  states: any[] = [
-    { name: 'Arizona', code: 'Arizona' },
-    { name: 'California', value: 'California' },
-    { name: 'Florida', code: 'Florida' },
-    { name: 'Ohio', code: 'Ohio' },
-    { name: 'Washington', code: 'Washington' }
-  ];
-
-  cities1: any[] = [];
-
-  cities2: any[] = [];
-
-  city1: any = null;
-
-  city2: any = null;
+  submitted: boolean = false;
 
   editForm = this.fb.group({
-    id: [],
-    nombre: [null, [Validators.required, Validators.maxLength(256)]],
-    transportistaId: []
+    proveedorId: [Validators.required],
+    fechaInicial: [],
+    fechaFinal: []
   });
 
   constructor(
@@ -59,6 +44,7 @@ export class ReporteCostosComponent implements OnInit {
     protected userService: UserService,
     protected transportistaService: TransportistaService,
     protected activatedRoute: ActivatedRoute,
+    protected messageService: MessageService,
     private fb: FormBuilder
   ) {}
 
@@ -68,33 +54,17 @@ export class ReporteCostosComponent implements OnInit {
     console.log(this.user);
 
     this.proveedorService
-      .findByUserName(this.user.username)
-      .pipe(
-        filter((response: HttpResponse<Proveedor>) => response.ok),
-        map((proveedor: HttpResponse<Proveedor>) => proveedor.body)
-      )
-      .subscribe(
-        (res: IProveedor) => {
-          this.updateForm(res);
-        },
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
-
-    this.transportistaService
       .query()
       .pipe(
         filter((mayBeOk: HttpResponse<ITransportista[]>) => mayBeOk.ok),
         map((response: HttpResponse<ITransportista[]>) => response.body)
       )
-      .subscribe((res: ITransportista[]) => (this.transportistas = res), (res: HttpErrorResponse) => this.onError(res.message));
+      .subscribe((res: IProveedor[]) => (this.proveedores = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
-  updateForm(proveedor: IProveedor) {
-    this.editForm.patchValue({
-      id: proveedor.id,
-      nombre: proveedor.nombre,
-      transportistaId: proveedor.transportistaId
-    });
+  onSubmit(value: string) {
+    this.submitted = true;
+    this.messageService.add({ severity: 'info', summary: 'Success', detail: 'Form Submitted' });
   }
 
   previousState() {
@@ -102,22 +72,18 @@ export class ReporteCostosComponent implements OnInit {
   }
 
   save() {
-    this.isSaving = true;
-    const proveedor = this.createFromForm();
-    if (proveedor.id !== undefined) {
-      this.subscribeToSaveResponse(this.proveedorService.updateTransportistaProveedor(proveedor));
-    } else {
-      this.subscribeToSaveResponse(this.proveedorService.create(proveedor));
+    let selectedProveedor = this.editForm.get(['proveedorId']).value;
+    if (!selectedProveedor.id) {
+      this.messageService.add({ severity: 'error', summary: 'Success', detail: 'El proveedor es requerido.' });
     }
-  }
-
-  private createFromForm(): IProveedor {
-    return {
-      ...new Proveedor(),
-      id: this.editForm.get(['id']).value,
-      nombre: this.editForm.get(['nombre']).value,
-      transportistaId: this.editForm.get(['transportistaId']).value
+    let reporteCostosRequest = {
+      ...new ReporteCostosRequest(),
+      proveedorId: selectedProveedor.id,
+      fechaInicial: this.editForm.get(['fechaInicial']).value,
+      fechaFinal: this.editForm.get(['proveedorId']).value
     };
+
+    console.log(reporteCostosRequest);
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProveedor>>) {

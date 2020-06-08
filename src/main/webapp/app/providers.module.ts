@@ -84,6 +84,7 @@ import { AuthService } from './services/auth.service';
 import { MessagingService } from './services/firebase.service';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { QRCodeModule } from 'angularx-qrcode';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   providers: [
@@ -197,6 +198,7 @@ import { QRCodeModule } from 'angularx-qrcode';
     ActivateService,
     AuthService,
     GenericService,
+    MessageService,
     CurrencyPipe,
     {
       provide: HTTP_INTERCEPTORS,

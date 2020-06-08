@@ -10,6 +10,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DropdownModule } from 'primeng/dropdown';
+import { PanelModule } from 'primeng/panel';
+import { ToastModule } from 'primeng/toast';
 
 const ENTITY_STATES = [...reporteCostosRoute];
 
@@ -21,7 +23,9 @@ const ENTITY_STATES = [...reporteCostosRoute];
     InputTextModule,
     ButtonModule,
     InputTextareaModule,
-    DropdownModule
+    DropdownModule,
+    PanelModule,
+    ToastModule
   ],
   declarations: [ReporteCostosComponent],
   entryComponents: [ReporteCostosComponent],
