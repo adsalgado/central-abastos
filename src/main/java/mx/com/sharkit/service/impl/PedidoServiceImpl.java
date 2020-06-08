@@ -29,6 +29,7 @@ import mx.com.sharkit.repository.PedidoRepository;
 import mx.com.sharkit.repository.UserRepository;
 import mx.com.sharkit.service.DireccionService;
 import mx.com.sharkit.service.GoogleService;
+import mx.com.sharkit.service.PedidoProveedorHistoricoService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.ProductoProveedorService;
 import mx.com.sharkit.service.TransportistaTarifaService;
@@ -81,6 +82,9 @@ public class PedidoServiceImpl implements PedidoService {
 
 	@Autowired
 	private TransportistaTarifaService transportistaTarifaService;
+	
+	@Autowired
+	private PedidoProveedorHistoricoService pedidoProveedorHistoricoService;
 
 	public PedidoServiceImpl(PedidoRepository pedidoRepository, PedidoMapper pedidoMapper,
 			ProductoProveedorService productoProveedorService, PedidoProveedorRepository pedidoProveedorRepository,
@@ -196,6 +200,8 @@ public class PedidoServiceImpl implements PedidoService {
 					pedidoProveedorDTO.setComisionPreparador(BigDecimal.ZERO);
 					pedidoProveedorDTO.setFechaAlta(fechaAlta);
 					pedidoProveedorDTO.setUsuarioAltaId(pedidoAltaDTO.getUsuarioId());
+					pedidoProveedorDTO.setFechaModificacion(fechaAlta);
+					pedidoProveedorDTO.setUsuarioModificacionId(pedidoAltaDTO.getUsuarioId());
 					pedidoProveedorDTO.setProveedorId(proveedorDTO.getId());
 					pedidoProveedorDTO.setTransportistaId(proveedorDTO.getTransportistaId());
 
@@ -315,6 +321,9 @@ public class PedidoServiceImpl implements PedidoService {
 			log.debug("pedidoProveedor to save: {}", pedidoProveedor);
 			pedidoProveedor = pedidoProveedorRepository.save(pedidoProveedor);
 			pedidoProveedor.setFolio("PV" + StringUtils.leftPad(pedidoProveedor.getId().toString(), 10, "0"));
+			
+			// Guardando en el histórico de pedido proveedores
+			pedidoProveedorHistoricoService.savePedidoProveedorHistorico(pedidoProveedor);
 
 			PedidoProveedorDTO pedProvSaved = pedidoProveedorMapper.toDto(pedidoProveedor);
 			pedido.getPedidoProveedores().add(pedProvSaved);
@@ -392,10 +401,12 @@ public class PedidoServiceImpl implements PedidoService {
 				pp.setEstatusId(estatus);
 				pp.setUsuarioModificacionId(usuarioEstatus);
 				pp.setFechaModificacion(now);
+				
+				pedidoProveedorHistoricoService.savePedidoProveedorHistorico(pp);
 
-				pedidoDetalleRepository.findByPedidoProveedorId(pp.getId()).forEach(pd -> {
-					pd.setEstatusId(estatus);
-				});
+				pedidoDetalleRepository.findByPedidoProveedorId(pp.getId()).forEach(pd -> 
+					pd.setEstatusId(estatus)
+				);
 			});
 		}
 

@@ -3,12 +3,16 @@ package mx.com.sharkit.service.impl;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.codec.binary.StringUtils;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +23,7 @@ import mx.com.sharkit.repository.PedidoDetalleRepository;
 import mx.com.sharkit.repository.PedidoProveedorRepository;
 import mx.com.sharkit.repository.PedidoRepository;
 import mx.com.sharkit.service.PedidoDetalleService;
+import mx.com.sharkit.service.PedidoProveedorHistoricoService;
 import mx.com.sharkit.service.PedidoProveedorService;
 import mx.com.sharkit.service.dto.CalificacionPedidoProveedorDTO;
 import mx.com.sharkit.service.dto.PedidoProveedorDTO;
@@ -44,6 +49,9 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 	private final PedidoDetalleRepository pedidoDetalleRepository;
 
 	private final PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private PedidoProveedorHistoricoService pedidoProveedorHistoricoService;
 
 	public PedidoProveedorServiceImpl(PedidoProveedorRepository pedidoProveedorRepository,
 			PedidoProveedorMapper pedidoProveedorMapper, PedidoDetalleService pedidoDetalleService,
@@ -141,9 +149,9 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 		LocalDateTime now = LocalDateTime.now();
 		PedidoProveedor pedidoProveedor = pedidoProveedorRepository.findById(pedidoProveedorId).orElse(null);
 		if (pedidoProveedor != null) {
-			pedidoDetalleRepository.findByPedidoProveedorId(pedidoProveedorId).forEach(pd -> {
-				pd.setEstatusId(estatus);
-			});
+			pedidoDetalleRepository.findByPedidoProveedorId(pedidoProveedorId).forEach(
+					pd -> pd.setEstatusId(estatus)
+			);
 			pedidoProveedor.setEstatusId(estatus);
 			pedidoProveedor.setUsuarioModificacionId(usuarioEstatus);
 			pedidoProveedor.setFechaModificacion(now);
@@ -155,6 +163,8 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 			} else if (estatus.equals(Estatus.PEDIDO_ENTREGADO)) {
 				pedidoProveedor.setFechaEntrega(now);
 			}
+			
+			pedidoProveedorHistoricoService.savePedidoProveedorHistorico(pedidoProveedor);
 
 			List<PedidoProveedor> listPedidoPrv = pedidoProveedorRepository
 					.findByPedidoId(pedidoProveedor.getPedidoId());
@@ -168,6 +178,7 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 		}
 		return pedidoProveedorMapper.toDto(pedidoProveedor);
 	}
+	
 
 	@Override
 	public List<PedidoProveedorDTO> findByPedidoIdAndTransportistaId(Long pedidoId, Long transportistaId) {
@@ -221,6 +232,50 @@ public class PedidoProveedorServiceImpl extends BaseServiceImpl<PedidoProveedor,
 		}
 
 		return pedidoProveedorMapper.toDto(pedidoProveedor);
+	}
+
+	/**
+	 * Get all the pedidoProveedors by searchParams.
+	 *
+	 * @param params
+	 * @return the list of entities.
+	 */
+	@Override
+	public List<PedidoProveedorDTO> searchProductos(Map<String, Object> params) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(PedidoProveedor.class);
+		criteria.createAlias("pedido", "pedido");
+		criteria.createAlias("pedido.cliente", "cliente");
+		criteria.createAlias("proveedor", "proveedor");
+		criteria.createAlias("proveedor.transportista", "transportista");
+
+		params.keySet().forEach(key -> {
+			switch (key) {
+			case "proveedorId":
+				criteria.add(Restrictions.eq("proveedorId", Long.parseLong((String) params.get(key))));
+				break;
+			case "pedidoId":
+				criteria.add(Restrictions.eq("pedidoId", Long.parseLong((String) params.get(key))));
+				break;
+			case "folio":
+				criteria.add(Restrictions.eq("pedido.folio", (String) params.get(key)));
+				break;
+			case "clienteId":
+				criteria.add(Restrictions.eq("cliente.id", Long.parseLong((String) params.get(key))));
+				break;
+			case "transportistaId":
+				criteria.add(Restrictions.eq("transportista.id", Long.parseLong((String) params.get(key))));
+				break;
+			case "estatusId":
+				criteria.add(Restrictions.eq("estatusId", Long.parseLong((String) params.get(key))));
+				break;
+			default:
+				break;
+			}
+
+		});
+		return this.findByCriteria(criteria).stream().map(pedidoProveedorMapper::toDto)
+				.collect(Collectors.toCollection(LinkedList::new));
+
 	}
 
 }
