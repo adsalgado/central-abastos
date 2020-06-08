@@ -20,12 +20,14 @@ declare var google;
 export class HistorialPedidosDetailPage implements OnInit {
   public user: User = null;
   public pedido: any = null;
+  public pedidoAdmin: any = null;
   public map: any;
 
   public tipoUsuario: any = 0;
 
   public ref: any;
-
+  public verTimeLine: boolean = false;
+  public timelineList: any = null;
   constructor(
     public navCtrl: NavParamsService,
     private genericService: GenericService,
@@ -36,7 +38,19 @@ export class HistorialPedidosDetailPage implements OnInit {
   ) {
     this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
     this.tipoUsuario = this.user.tipo_usuario;
+    console.log(this.tipoUsuario);
+    if (!this.tipoUsuario) {
+      this.tipoUsuario = 1;
+    }
     this.pedido = navCtrl.get('pedido');
+
+    if (this.tipoUsuario <= 1) {
+      this.pedidoAdmin = this.pedido;
+      console.log(this.pedidoAdmin);
+
+      this.pedido = this.pedidoAdmin.pedido;
+      this.timeline();
+    }
     console.log(this.pedido);
   }
 
@@ -193,6 +207,10 @@ export class HistorialPedidosDetailPage implements OnInit {
   verChat() {
     let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
     //if (user.tipo_usuario == 4) {
+    if (!user.tipo_usuario) {
+      user.tipo_usuario = 1;
+    }
+
     switch (user.tipo_usuario) {
       case 2:
         if (!this.pedido.pedidoProveedores[0].chatProveedorid) {
@@ -226,6 +244,22 @@ export class HistorialPedidosDetailPage implements OnInit {
           }
         );
         break;
+      case 1:
+        this.loadingService.show();
+        console.log(this.pedido);
+
+        this.genericService.sendGetRequest(`${environment.chatsProveedor}${this.pedido.pedidoProveedores[0].id}/tipoChat/1`).subscribe(
+          (response: any) => {
+            this.navCtrl.push('/main/chat', { chat: response, pedido: this.pedido });
+            this.loadingService.hide();
+          },
+          (error: HttpErrorResponse) => {
+            this.loadingService.hide();
+            let err: any = error.error;
+            this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+          }
+        );
+        break;
       case 4:
         this.loadingService.show();
         this.genericService.sendGetRequest(`${environment.chatsProveedor}${this.pedido.pedidoProveedores[0].id}/tipoChat/2`).subscribe(
@@ -241,5 +275,27 @@ export class HistorialPedidosDetailPage implements OnInit {
         );
         break;
     }
+  }
+
+  timeline() {
+    //this.loadingService.show();
+    this.genericService.sendGetRequest(`${environment.timeline}${this.pedido.id}`).subscribe(
+      (response: any) => {
+        //console.log(response);
+        this.verTimeLine = true;
+        if (response.length <= 0) {
+          this.timelineList = response;
+          this.verTimeLine = false;
+        }
+        //this.navCtrl.push('/main/timeline', { pedido: response });
+        //this.loadingService.hide();
+      },
+      (error: HttpErrorResponse) => {
+        //this.loadingService.hide();
+        this.verTimeLine = false;
+        let err: any = error.error;
+        //this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+      }
+    );
   }
 }

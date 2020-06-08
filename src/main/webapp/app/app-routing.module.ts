@@ -42,6 +42,7 @@ import { RegistroPage } from './pages/registro/registro';
 import { DocumentosPage } from './pages-proveedor/documentos/documentos';
 import { HomeProveedorPage } from './pages-proveedor/home-proveedor/home-proveedor';
 import { VerProductosPage } from './pages-proveedor/ver-productos/ver-productos';
+import { Timeline } from './pages/timeline/timeline';
 
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const ADMIN_ROUTES = [auditsRoute, configurationRoute, docsRoute, healthRoute, logsRoute, trackerRoute, ...userMgmtRoute, metricsRoute];
@@ -96,6 +97,8 @@ const routes: Routes = [
       { path: 'documentos-proveedor', component: DocumentosPage },
 
       { path: 'pedidos-proveedor', component: HomeProveedorPage },
+
+      { path: 'timeline', component: Timeline },
 
       { path: 'checklist-proveedor', component: VerProductosPage },
       {

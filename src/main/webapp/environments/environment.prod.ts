@@ -34,6 +34,12 @@ export const environment = {
   direcciones: `${pathPrincipal}usuario-direcciones`,
   tipoDirecciones: `${pathPrincipal}tipo-direcciones`,
   pedidos: `${pathPrincipal}pedidos`,
+
+  timeline: `${pathPrincipal}historico-pedido-proveedores/pedido-proveedor/`,
+
+  pedidosAdmin: `${pathPrincipal}seguimiento-pedidos`,
+  estatus: `${pathPrincipal}estatus/tipoEstatus/ESTATUS_PEDIDO`,
+
   pedidosProveedor: `${pathPrincipal}proveedor/pedidos`,
   pedidosTransportista: `${pathPrincipal}transportista/pedidos`,
 

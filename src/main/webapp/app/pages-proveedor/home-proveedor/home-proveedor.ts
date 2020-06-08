@@ -2,7 +2,7 @@ import { GenericService } from './../../services/generic.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from '../../models/User';
 import { environment } from '../../../environments/environment.prod';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import * as moment from 'moment';
 import { HistorialPedidosDetailPage } from '../../pages/historial-pedidos-detail/historial-pedidos-detail';
 import { NavParamsService } from 'app/services/nav-params.service';
@@ -30,6 +30,18 @@ export class HomeProveedorPage implements OnInit, OnDestroy {
   public dataEvents: any = {
     uno: null
   };
+
+  public dataModels: any = {
+    status: [],
+    proveedores: [],
+    estatus: 0,
+    proveedor: 0,
+    folio: '',
+    date: null
+  };
+
+  public subscripcion: any = null;
+
   constructor(
     public navCtrl: NavParamsService,
     private localStorageEncryptService: LocalStorageEncryptService,
@@ -42,12 +54,51 @@ export class HomeProveedorPage implements OnInit, OnDestroy {
     this.user = this.localStorageEncryptService.getFromLocalStorage(`userSession`);
 
     this.cargarPedidos();
-
+    this.cargaEstatus();
+    this.cargaProveedores();
     this.dataEvents.uno = this.events.subscribe('cargarPedidos', data => {
       try {
         this.cargarPedidos();
       } catch (error) {}
     });
+  }
+
+  cargaEstatus() {
+    this.genericService.sendGetRequest(environment.estatus).subscribe(
+      (response: any) => {
+        this.dataModels.status.push({
+          id: 0,
+          nombre: '[--Seleccione--]'
+        });
+        response.forEach(element => {
+          this.dataModels.status.push(element);
+        });
+      },
+      (error: HttpErrorResponse) => {
+        let err: any = error.error;
+        //this.pedidos = null;
+        //this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+      }
+    );
+  }
+
+  cargaProveedores() {
+    this.genericService.sendGetRequest(environment.proveedoresFull).subscribe(
+      (response: any) => {
+        this.dataModels.proveedores.push({
+          id: 0,
+          nombre: '[--Seleccione--]'
+        });
+        response.forEach(element => {
+          this.dataModels.proveedores.push(element);
+        });
+      },
+      (error: HttpErrorResponse) => {
+        let err: any = error.error;
+        //this.pedidos = null;
+        //this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+      }
+    );
   }
 
   ngOnInit() {}
@@ -56,26 +107,72 @@ export class HomeProveedorPage implements OnInit, OnDestroy {
     this.events.destroy(this.dataEvents.uno);
   }
 
-  cargarPedidos() {
+  clearFilters() {
+    this.dataModels.estatus = 0;
+    this.dataModels.proveedor = 0;
+    this.dataModels.folio = '';
+    this.dataModels.date = null;
+    this.cargarPedidos(true);
+  }
+
+  cargarPedidos(sinCarga: boolean = false) {
     let path: string = `${environment.pedidosProveedor}`;
     let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    let params = new HttpParams();
+
+    if (this.subscripcion) {
+      console.log(this.subscripcion);
+
+      this.subscripcion.unsubscribe();
+      this.loadingService.hide();
+    }
+    let dejamever: any = null;
+    dejamever = this.genericService.sendGetRequest(path);
     if (user.tipo_usuario == 4) {
       path = `${environment.pedidosTransportista}`;
+      dejamever = this.genericService.sendGetRequest(path);
+    } else if (user.tipo_usuario == 1 || !user.tipo_usuario) {
+      path = `${environment.pedidosAdmin}`;
+
+      if (this.dataModels.folio && this.dataModels.folio.length > 0) {
+        params = params.set('folio', this.dataModels.folio && this.dataModels.folio.length > 0 ? this.dataModels.folio.toString() : '');
+      }
+      if (this.dataModels.proveedor && this.dataModels.proveedor > 0) {
+        params = params.set(
+          'proveedorId',
+          this.dataModels.proveedor && this.dataModels.proveedor > 0 ? this.dataModels.proveedor.toString() : ''
+        );
+      }
+      if (this.dataModels.estatus && this.dataModels.estatus > 0) {
+        params = params.set('estatusId', this.dataModels.estatus && this.dataModels.estatus > 0 ? this.dataModels.estatus.toString() : '');
+      }
+
+      if (this.dataModels.date) {
+        let fecha: any = moment(this.dataModels.date).format('DD/MM/yyyy');
+        params = params.set('fecha', fecha);
+      }
+
+      dejamever = this.genericService.sendGetParams(path, params);
+      if (!sinCarga) {
+        this.loadingService.show();
+      }
     }
 
-    this.genericService.sendGetRequest(path).subscribe(
+    this.subscripcion = dejamever.subscribe(
       (response: any) => {
         this.pedidos = response;
-        if (this.pedidos.length <= 0) {
+        if (this.pedidos.length <= 0 && user.tipo_usuario > 1) {
           this.pedidos = null;
           this.alertaService.warn('Aún no cuentas con historial de pedidos');
           this.navCtrl.push('main/public-home');
         }
+        this.loadingService.hide();
         this.pedidosReplica = this.pedidos;
       },
       (error: HttpErrorResponse) => {
         let err: any = error.error;
         this.pedidos = null;
+        this.loadingService.hide();
         this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
       }
     );
@@ -83,6 +180,15 @@ export class HomeProveedorPage implements OnInit, OnDestroy {
 
   viewDetail(pedido: any) {
     //this.navCtrl.push(HistorialPedidosDetailPage, { pedido });
+    console.log(pedido);
+
+    this.navCtrl.push('main/detalle-pedido', { pedido: pedido });
+  }
+
+  viewDetail2(pedido: any) {
+    //this.navCtrl.push(HistorialPedidosDetailPage, { pedido });
+    console.log(pedido);
+
     this.navCtrl.push('main/detalle-pedido', { pedido: pedido });
   }
 

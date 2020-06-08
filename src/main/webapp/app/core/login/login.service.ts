@@ -12,7 +12,8 @@ export class LoginService {
     private trackerService: JhiTrackerService,
     private eventManager: JhiEventManager,
     private authServerProvider: AuthServerProvider,
-    private localStorageEncryptService: LocalStorageEncryptService
+    private localStorageEncryptService: LocalStorageEncryptService,
+    private events: JhiEventManager
   ) {}
 
   login(credentials, callback?) {
@@ -46,6 +47,7 @@ export class LoginService {
   logout() {
     this.authServerProvider.logout().subscribe(null, null, () => this.accountService.authenticate(null));
     this.localStorageEncryptService.clearProperty('userSession');
+    this.events.broadcast({ name: 'intervalando', content: {} });
     this.eventManager.broadcast({
       name: 'logoutSuccess',
       content: 'Sending Logout Success'

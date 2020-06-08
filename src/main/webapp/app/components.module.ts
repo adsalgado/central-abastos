@@ -69,7 +69,8 @@ import { DocumentosPage } from './pages-proveedor/documentos/documentos';
 import { HomeProveedorPage } from './pages-proveedor/home-proveedor/home-proveedor';
 import { VerProductosPage } from './pages-proveedor/ver-productos/ver-productos';
 import { CalificacionPage } from './pages/calificacion/calificacion';
-
+import { TableModule } from 'primeng/table';
+import { Timeline } from './pages/timeline/timeline';
 //import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 
 @NgModule({
@@ -139,7 +140,8 @@ import { CalificacionPage } from './pages/calificacion/calificacion';
     HomeProveedorPage,
     CalificacionPage,
     JhiMainComponent,
-    FooterComponentJHI
+    FooterComponentJHI,
+    Timeline
 
     // UserMgmtComponent,
     /*AuditsComponent,
@@ -218,7 +220,8 @@ import { CalificacionPage } from './pages/calificacion/calificacion';
 
     DocumentosPage,
     HomeProveedorPage,
-    CalificacionPage
+    CalificacionPage,
+    Timeline
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,

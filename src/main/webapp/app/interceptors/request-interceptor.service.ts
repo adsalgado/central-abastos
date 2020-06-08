@@ -1,3 +1,4 @@
+import { LocalStorageEncryptService } from 'app/services/local-storage-encrypt-service';
 import { HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/observable/throw';
@@ -13,7 +14,11 @@ import { JhiEventManager } from 'ng-jhipster';
  */
 @Injectable()
 export class RequestInterceptorService implements HttpInterceptor {
-  constructor(public auth: AuthService, private eventManager: JhiEventManager) {}
+  constructor(
+    public auth: AuthService,
+    private eventManager: JhiEventManager,
+    private localStorageEncryptService: LocalStorageEncryptService
+  ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let chequeo: any = this.auth.getToken();
@@ -34,8 +39,12 @@ export class RequestInterceptorService implements HttpInterceptor {
         headers.Authorization = `Bearer ${this.auth.getToken()}`;
         break;
     } */
-
-    if (request.url == 'https://maps.googleapis.com/maps/api/geocode/json') {
+    let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    if (
+      request.url == 'https://maps.googleapis.com/maps/api/geocode/json' ||
+      (!user && request.url == 'https://dev-cabasto.sharktech.com.mx/api/notificaciones')
+    ) {
+      this.eventManager.broadcast({ name: 'intervalando', content: { a: 1 } });
       return next.handle(request);
     } else {
       request = request.clone({

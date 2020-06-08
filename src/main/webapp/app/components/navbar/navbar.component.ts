@@ -1,6 +1,6 @@
 import { LoadingService } from 'app/services/loading-service';
 import { environment } from './../../../environments/environment.prod';
-import { Component, OnInit, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, HostListener, ViewChild, OnDestroy } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { AlertService } from 'app/services/alert.service';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html'
 })
-export class NavbarComponentMain implements OnInit {
+export class NavbarComponentMain implements OnInit, OnDestroy {
   private listTitles: any[];
   location: Location;
   mobile_menu_visible: any = 0;
@@ -35,6 +35,8 @@ export class NavbarComponentMain implements OnInit {
 
   public chatId: any = null;
   @ViewChild('insideElement', null) insideElement;
+
+  public intervalo: any = null;
   constructor(
     location: Location,
     private element: ElementRef,
@@ -50,9 +52,21 @@ export class NavbarComponentMain implements OnInit {
     this.sidebarVisible = false;
     this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
     this.getNotifications();
-    setInterval(() => {
-      //this.getNotifications();
+    this.intervalo = setInterval(() => {
+      this.getNotifications();
     }, 2500);
+    //this.eventManager.broadcast({ name: 'userListModification', content: 'Deleted a user' });
+
+    this.miEvents.uno = this.events.subscribe('intervalando', data => {
+      console.log('jejeje');
+
+      try {
+        if (this.intervalo) {
+          clearInterval(this.intervalo);
+          this.intervalo = null;
+        }
+      } catch (error) {}
+    });
   }
 
   /* @HostListener('document:click', ['$event.target'])

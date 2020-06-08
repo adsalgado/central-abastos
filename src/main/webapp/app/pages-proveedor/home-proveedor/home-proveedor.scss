@@ -18,4 +18,23 @@ ion-avatar {
     background-color: rgba(255, 255, 255, 0.27);
     border-radius: 4px;
   }
+
+  .boton {
+    display: inline-block;
+    width: 100%;
+    padding: 7px;
+    font-size: 21px;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.27);
+    border-radius: 4px;
+    border: 1px solid #a04901;
+  }
+}
+
+.input-filtro {
+  width: 100%;
+  padding: 6px;
+  border-radius: 3px;
+  border: 1px solid #c1c5ca;
+  margin-bottom: 10px;
 }

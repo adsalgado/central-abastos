@@ -3,7 +3,7 @@
     <app-spinner></app-spinner>
   </div>
 
-  <div class="filtros" [ngStyle]="{'background-color' : genericService.getColorHex()}" *ngIf="pedidos && pedidos?.length > 0">
+  <div class="filtros" [ngStyle]="{'background-color' : genericService.getColorHex()}" *ngIf="pedidos && pedidos?.length > 0 && user.tipo_usuario > 1">
     <button (click)="ordenPor(1)" *ngIf="!botones.boton1">
       <div style="font-size: 9px;">Fecha solicitud</div>
       <i class="material-icons">more_vert</i>
@@ -30,7 +30,48 @@
     </button>
   </div>
 
-  <div *ngIf="pedidos && pedidos?.length > 0">
+  <div class="filtros" [ngStyle]="{'background-color' : genericService.getColorHex()}" *ngIf="user.tipo_usuario <= 1">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <input type="text" placeholder="Folio" class="input-filtro" [(ngModel)]="dataModels.folio">
+        </div>
+        <div class="col-sm">
+          <select [(ngModel)]="dataModels.estatus" class="input-filtro">
+            <option *ngFor="let estatus of dataModels.status" [value]="estatus.id">{{estatus.nombre}}</option>
+          </select>
+        </div>
+        <div class="col-sm">
+          <select [(ngModel)]="dataModels.proveedor" class="input-filtro">
+            <option *ngFor="let estatus of dataModels.proveedores" [value]="estatus.id">{{estatus.nombre}}</option>
+          </select>
+        </div>
+        <div class="col-sm">
+          <input class="input-filtro" type="date" data-date="" data-date-format="DD MMMM YYYY" value="2015-08-09"
+            [(ngModel)]="dataModels.date">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+
+        </div>
+        <div class="col-sm">
+
+        </div>
+        <div class="col-sm">
+          <button class="boton" (click)="clearFilters()">Limpiar</button>
+        </div>
+        <div class="col-sm">
+          <button class="boton" (click)="cargarPedidos()">Buscar</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="pedidos && pedidos?.length > 0 && user.tipo_usuario > 1">
     <div class="item-list-card" *ngFor="let p of pedidos" (click)="viewDetail(p)" style="    vertical-align: baseline;
         border-bottom: 1px solid #cacaca;">
       <div style="    width: 10%;
@@ -51,5 +92,26 @@
       </div>
 
     </div>
+  </div>
+
+  <div *ngIf="pedidos && pedidos?.length > 0 && user.tipo_usuario <= 1">
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr style="text-align: center;">
+          <th scope="col" style="font-weight: 700;">Pedido</th>
+          <th scope="col" style="font-weight: 700;">Proveedor</th>
+          <th scope="col" style="font-weight: 700;">Fecha Solicitud</th>
+          <th scope="col" style="font-weight: 700;">Estatus</th>
+        </tr>
+      </thead>
+      <tbody style="text-align: center;">
+        <tr *ngFor="let p of pedidos" (click)="viewDetail2(p)">
+          <th scope="row">{{p.pedido.folio}}</th>
+          <td>{{p.proveedor.nombre}}</td>
+          <td>{{p.fechaAlta}}</td>
+          <td>{{p.estatus.nombre}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

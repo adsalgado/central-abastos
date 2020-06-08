@@ -1,8 +1,7 @@
-
 <div style="padding:20px">
 
   <section class="estatus">
-    <div class="number">Costo <strong>{{pedido.total | currency}}</strong></div>
+    <div class="number">Costo <strong>{{pedido.total | currency:'MXN'}}</strong></div>
     <div class="number">Fecha Solicitud <strong>{{pedido.fechaAlta}}</strong></div>
     <div class="number" *ngIf="pedido.fechaEntrega">Fecha Entrega <strong>{{pedido.fechaEntrega}}</strong></div>
     <div class="number">Estatus <strong>{{pedido.estatus.nombre}}</strong></div>
@@ -10,37 +9,39 @@
 
   <section class="mapa">
 
-    <div class="direccion" [ngStyle]="{'color' : genericService.getColorHex()}" *ngIf="tipoUsuario == 4">Proveedor</div>
-    <div class="direct" *ngIf="tipoUsuario == 4">{{pedido.cliente.firstName}}
+    <div class="direccion" [ngStyle]="{'color' : genericService.getColorHex()}" *ngIf="tipoUsuario == 4 || tipoUsuario == 1">Proveedor</div>
+    <div class="direct" *ngIf="tipoUsuario == 4 || tipoUsuario == 1">{{pedido.cliente.firstName}}
       {{pedido.cliente.lastName}}</div>
 
-    <div class="direccion" [ngStyle]="{'color' : genericService.getColorHex()}" *ngIf="tipoUsuario == 3 || tipoUsuario == 4">Cliente</div>
-    <div class="direct" *ngIf="tipoUsuario == 3 || tipoUsuario == 4">{{pedido.cliente.firstName}}
+    <div class="direccion" [ngStyle]="{'color' : genericService.getColorHex()}" *ngIf="tipoUsuario == 3 || tipoUsuario == 4 || tipoUsuario == 1">Cliente</div>
+    <div class="direct" *ngIf="tipoUsuario == 3 || tipoUsuario == 4 || tipoUsuario == 1">{{pedido.cliente.firstName}}
       {{pedido.cliente.lastName}}</div>
 
-    <div class="direccion" [ngStyle]="{'color' : genericService.getColorHex()}" *ngIf="pedido.direccionContacto">Dirección de entrega</div>
+    <div class="direccion" [ngStyle]="{'color' : genericService.getColorHex()}" *ngIf="pedido.direccionContacto">Dirección
+      de entrega</div>
     <div class="direct" *ngIf="pedido.direccionContacto">{{pedido.direccionContacto.direccion}}</div>
     <div id="map_canvas" class="mapita-google" (click)="verMapa()"></div>
   </section>
 
   <section class="botones" *ngIf="tipoUsuario == 2">
-   <button class="boton-detalle" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verDetalle()">
-     <i class="material-icons">date_range</i>Ver detalle
+    <button class="boton-detalle" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verDetalle()">
+      <i class="material-icons">date_range</i>Ver detalle
     </button>
     <button class="boton-recibo" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verRecibo()">
       <i class="material-icons">date_range</i>Ver recibo
     </button>
-    <button class="boton-problemas" style="font-size: 10px;" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="problemasPedido()">
+    <button class="boton-problemas" style="font-size: 10px;" [ngStyle]="{'background-color' : genericService.getColorHex()}"
+      (click)="problemasPedido()">
       <i class="material-icons">date_range</i>Problemas con pedido
     </button>
   </section>
 
-  <section class="botones" *ngIf="tipoUsuario == 3" >
+  <section class="botones" *ngIf="tipoUsuario == 3">
     <button class="boton-terminar" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verProductos()">
-     <i class="material-icons">date_range</i>Ver productos
+      <i class="material-icons">date_range</i>Ver productos
     </button>
     <button class="boton-chat" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verChat()">
-     
+
       <i class="material-icons">date_range</i>Chat
     </button>
     <button class="boton-recibo" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="enviarPedido()"
@@ -53,19 +54,47 @@
     </button>
   </section>
 
-  <section class="botones" *ngIf="tipoUsuario == 4" >
+  <section class="botones" *ngIf="tipoUsuario == 4">
     <button class="boton-terminar" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verProductos()">
-     <i class="material-icons">date_range</i>Ver productos
+      <i class="material-icons">date_range</i>Ver productos
     </button>
     <button class="boton-chat" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verChat()">
-     
+
       <i class="material-icons">date_range</i>Chat
     </button>
     <button class="boton-problemas2" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="presentActionSheet()">
       <i class="material-icons">date_range</i>Terminar pedido
     </button>
-    <button class="boton-problemas2" style="font-size: 10px;" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="problemasPedido()">
+    <button class="boton-problemas2" style="font-size: 10px;" [ngStyle]="{'background-color' : genericService.getColorHex()}"
+      (click)="problemasPedido()">
       <i class="material-icons">date_range</i>Problemas con pedido
     </button>
   </section>
+
+  <section class="botones" *ngIf="tipoUsuario <= 1">
+    <button class="boton-detalle" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verDetalle()">
+      <i class="material-icons">date_range</i>Ver detalle
+    </button>
+    <button class="boton-recibo" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verRecibo()">
+      <i class="material-icons">date_range</i>Ver recibo
+    </button>
+    <button class="boton-chat" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verChat()"
+     *ngIf="pedidoAdmin.chatTransportistaId">
+
+      <i class="material-icons">date_range</i>Chat Transportista
+    </button>
+    <button class="boton-chat" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verChat()"
+    *ngIf="pedidoAdmin.chatProveedorid">
+
+      <i class="material-icons">date_range</i>Chat Proveedor
+    </button>
+  </section>
+
+  <div *ngIf="verTimeLine">
+    <main>
+      <p *ngFor="let p of timelineList"> <strong style="    font-size: 8px;
+            font-weight: 800;">{{p.fecha}}</strong>
+        {{p.descripcion}}</p>
+    </main>
+  </div>
 </div>

@@ -1,31 +1,12 @@
-
-<div>
-  <div style="text-align: center;
-  padding: 15px;
-  font-size: 20px;
-  font-weight: 400;">{{nombre}}</div>
-  <div class="vendor" *ngIf="!pedido">
-    <img src="../../../content/imgs/chat/vendor.png" alt="">
-  </div>
-  <div class="vendor" *ngIf="pedido">
-    <img src="../../../content/imgs/chat/vendor.png" *ngIf="!p.proveedor.transportista.usuario.adjuntoId">
-    <img src="{{env.getImagenIndividual}}{{p.proveedor.transportista.usuario.adjuntoId}}" *ngIf="p.proveedor.transportista.usuario.adjuntoId"/>
-  </div>
-  <div class="calificacion">
-    <div class="texto">{{calificacionActual}}</div>
-    <div class="contenedor-stars">
-      <div *ngFor="let s of stars" class="estrella" [ngStyle]="{'color': genericService.getColorHex()}" (click)="selecciona(s)">
-        <!-- <ion-icon name="ios-star" ></ion-icon> -->
-        <i class="material-icons" *ngIf="s.selected" (click)="selecciona(s)">add</i>
-        <i class="material-icons" *ngIf="!s.selected" (click)="selecciona(s)">add</i>
-        <!-- <ion-icon name="ios-star-outline" ></ion-icon> -->
-      </div>
-    </div>
-    <div class="queja">
-      <textarea name="" id="" cols="30" rows="4" [(ngModel)]="queja" placeholder="Escríbe aquí que salió bien o mal"></textarea>
-    </div>
-  </div>
-</div>
-<div class="footer-button-class">
-  <button (tap)="enviar()" [ngStyle]="{'background-color': genericService.getColorHex()}" style="width:100%;font-size: 20px;">Enviar</button>
-</div>
+<main>
+  <p>Doggo ipsum long bois lotsa pats blep. What a nice floof ruff super chub very good spot, the neighborhood pupper
+    lotsa pats. Borkdrive shibe shoober what a nice floof, borking doggo.</p>
+  <p>Shoober shooberino adorable doggo many pats, heckin good boys many pats pupper wrinkler, corgo maximum borkdrive.
+    A frighten puggo wow very biscit.</p>
+  <p>Big ol h*ck adorable doggo vvv smol borking doggo with a long snoot for pats big ol, he made many woofs doing me a
+    frighten puggo wow very biscit, ruff fat boi ruff long doggo. </p>
+  <p>Long bois mlem I am bekom fat wrinkler puggo maximum borkdrive big ol pupper I am bekom fat, fluffer vvv adorable
+    doggo lotsa pats snoot. I am bekom fat ur givin me a spook length boy wow very biscit very good spot.</p>
+  <p>Doggo ipsum long bois lotsa pats blep. What a nice floof ruff super chub very good spot, the neighborhood pupper
+    lotsa pats. Borkdrive shibe shoober what a nice floof, borking doggo.</p>
+</main>

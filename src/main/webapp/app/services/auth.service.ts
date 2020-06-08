@@ -1,3 +1,4 @@
+import { JhiEventManager } from 'ng-jhipster';
 import { GenericService } from './generic.service';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -12,7 +13,8 @@ export class AuthService {
   constructor(
     private http: GenericService,
     private localStorageEncryptService: LocalStorageEncryptService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private events: JhiEventManager
   ) {}
 
   /**Método que retorna si el usuario esta logueado */
@@ -30,6 +32,8 @@ export class AuthService {
   /**Método de logout, cierra sesión */
   logout() {
     this.localStorageEncryptService.clearProperty(`userSession`);
+
+    this.events.broadcast({ name: 'intervalando', content: {} });
     //this.app.getRootNav().push(LoginPage);
   }
 

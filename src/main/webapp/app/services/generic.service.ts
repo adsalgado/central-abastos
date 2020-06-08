@@ -70,6 +70,9 @@ export class GenericService {
     //return this.http.get(webservice_URL, params).timeout(TIME_OUT);
     let options: any = {};
     options.params = params;
+    console.log('---->');
+    console.log(options);
+
     return this.http.get(webservice_URL, options);
   }
 

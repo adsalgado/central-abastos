@@ -76,19 +76,25 @@ export class HistorialPedidosPage implements OnInit, OnDestroy {
   }
 
   viewDetail(pedido: any) {
-    this.loadingService.show();
-    this.genericService.sendGetRequest(`${environment.pedidos}/${pedido.id}`).subscribe(
-      (response: any) => {
-        this.loadingService.hide();
-        //this.navCtrl.push(HistorialPedidosDetailPage, { pedido: response });
-        this.navParams.push('main/detalle-pedido', { pedido: response });
-      },
-      (error: HttpErrorResponse) => {
-        let err: any = error.error;
-        this.loadingService.hide();
-        this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
-      }
-    );
+    console.log(this.user);
+
+    if (this.user.tipo_usuario > 1) {
+      this.loadingService.show();
+      this.genericService.sendGetRequest(`${environment.pedidos}/${pedido.id}`).subscribe(
+        (response: any) => {
+          this.loadingService.hide();
+          //this.navCtrl.push(HistorialPedidosDetailPage, { pedido: response });
+          this.navParams.push('main/detalle-pedido', { pedido: response });
+        },
+        (error: HttpErrorResponse) => {
+          let err: any = error.error;
+          this.loadingService.hide();
+          this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
+        }
+      );
+    } else {
+      this.navParams.push('main/detalle-pedido', { pedido: pedido });
+    }
   }
 
   ordenPor(opc) {
