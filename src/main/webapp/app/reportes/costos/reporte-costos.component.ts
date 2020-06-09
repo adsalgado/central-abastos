@@ -81,7 +81,7 @@ export class ReporteCostosComponent implements OnInit {
   save() {
     let selectedProveedor = this.editForm.get(['proveedorId']).value;
     if (!selectedProveedor.id) {
-      this.messageService.add({ severity: 'error', summary: 'Success', detail: 'El proveedor es requerido.' });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El proveedor es requerido.' });
       return;
     }
     let reporteCostosRequest: any = {
@@ -97,7 +97,7 @@ export class ReporteCostosComponent implements OnInit {
         this.loadingService.hide();
         console.log(response);
         if (response.error) {
-          this.messageService.add({ severity: 'error', summary: 'Success', detail: `${response.messageError}` });
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: `${response.messageError}` });
         } else {
           this.dataReponse = response.data;
         }
