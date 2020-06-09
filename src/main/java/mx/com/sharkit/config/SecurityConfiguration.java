@@ -57,15 +57,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		
 		http.csrf().disable().addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-				.exceptionHandling().authenticationEntryPoint(problemSupport).accessDeniedHandler(problemSupport).and()
-				.headers()
-				.contentSecurityPolicy(
+				.exceptionHandling().authenticationEntryPoint(problemSupport).accessDeniedHandler(problemSupport)
+//				.and()
+//				.headers()
+//				.contentSecurityPolicy(
 //						"default-src 'self' *.sharktech.com.mx; script-src 'self' *.sharktech.com.mx 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com data:")
-						"default-src 'self' *.sharktech.com.mx; script-src * 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src *; font-src 'self' https://fonts.gstatic.com data:")
-				.and().referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN).and()
-				.featurePolicy(
-						"geolocation 'self' https://dev-cabasto.sharktech.com.mx/; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'")
-				.and().frameOptions().deny().and().sessionManagement()
+//				.and().referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN).and()
+//				.featurePolicy(
+//						"geolocation 'self' https://dev-cabasto.sharktech.com.mx/; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'")
+//				.and().frameOptions().deny()
+				.and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers("/api/adjuntos/**").permitAll()
 				.antMatchers("/api/productos/**").permitAll()
