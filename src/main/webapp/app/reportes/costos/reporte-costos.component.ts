@@ -82,14 +82,13 @@ export class ReporteCostosComponent implements OnInit {
     let selectedProveedor = this.editForm.get(['proveedorId']).value;
     if (!selectedProveedor.id) {
       this.messageService.add({ severity: 'error', summary: 'Success', detail: 'El proveedor es requerido.' });
+      return;
     }
     let reporteCostosRequest: any = {
       claveReporte: 'REPORTE_COSTOS',
       proveedorId: selectedProveedor.id,
-      fechaInicial: this.editForm.get(['fechaInicial']).value
-        ? moment(this.editForm.get(['fechaInicial']).value).format('YYYY/MM/DD')
-        : null,
-      fechaFinal: this.editForm.get(['fechaFinal']).value ? moment(this.editForm.get(['fechaFinal']).value).format('YYYY/MM/DD') : null
+      fechaIni: this.editForm.get(['fechaInicial']).value ? moment(this.editForm.get(['fechaInicial']).value).format('YYYY-MM-DD') : null,
+      fechaFin: this.editForm.get(['fechaFinal']).value ? moment(this.editForm.get(['fechaFinal']).value).format('YYYY-MM-DD') : null
     };
 
     this.loadingService.show();

@@ -16,13 +16,13 @@
 
                     <div class="p-field p-col-12 p-md-6">
                         <label for="fechaInicial">Fecha inicial</label>
-                        <p-calendar id="fechaInicial" dateFormat="dd/mm/yyyy" showButtonBar="true" placeholder="Fecha inicial"
+                        <p-calendar id="fechaInicial" dateFormat="dd/mm/yy" showButtonBar="true" placeholder="Fecha inicial"
                             formControlName="fechaInicial"></p-calendar>
                     </div>
 
                     <div class="p-field p-col-12 p-md-6">
                         <label for="fechaFinal">Fecha final</label>
-                        <p-calendar id="fechaFinal" dateFormat="dd/mm/yyyy" showButtonBar="true" placeholder="Fecha final"
+                        <p-calendar id="fechaFinal" dateFormat="dd/mm/yy" showButtonBar="true" placeholder="Fecha final"
                             formControlName="fechaFinal"></p-calendar>
                     </div>
 
@@ -45,24 +45,26 @@
         </form>
 
     </div>
-    <div class="col-12">
-        <p-table [value]="dataReponse">
+    <div class="col-12" *ngIf="dataReponse && !dataReponse.error">
+        <p-table [value]="dataReponse" [paginator]="true" [rows]="25">
             <ng-template pTemplate="header">
                 <tr>
+                    <th>Pedido</th>
+                    <th>Estatus</th>
                     <th>Cliente</th>
                     <th>Proveedor</th>
-                    <th>Folio</th>
-                    <th>Total</th>
-                    <th>Estatus</th>
+                    <th>Importe</th>
+                    <th>Com. Transportista</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-persona>
                 <tr>
+                    <td>{{persona.folio}}</td>
+                    <td>{{persona.estatus}}</td>
                     <td>{{persona.first_name}} {{persona.last_name}}</td>
                     <td>{{persona.proveedor}}</td>
-                    <td>{{persona.folio}}</td>
                     <td>{{persona.total}}</td>
-                    <td>{{persona.estatus}}</td>
+                    <td>{{persona.comision_transportista}}</td>
                 </tr>
             </ng-template>
         </p-table>
