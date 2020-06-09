@@ -80,7 +80,7 @@
             <app-control-messages [control]="formGroup.controls[dato.formName]" [clase]="'validators2'">
             </app-control-messages>
           </div>
-          <div class="contenedor-boton">
+          <div class="contenedor-boton" *ngIf="user.tipo_usuario && user.tipo_usuario != 1">
             <button [disabled]="btnHabilitado" (click)="cambiarPerfil()" [ngStyle]="{'background-color': genericService.getColorHex()}">Aceptar</button>
           </div>
         </form>

@@ -725,6 +725,12 @@ export class CarritoHistoricoPage implements OnDestroy {
     this.objetoRegistroCopy.push({ value: this.formGroup.controls['tel'].value });
     this.objetoRegistroCopy.push({ value: this.formGroup.controls['email'].value });
 
+    console.log(this.objetoRegistro[3].value);
+    let h: any = null;
+    if (this.totales.listHistoricoProveedores.length > 1) {
+      h = true;
+    }
+
     let body: any = {
       nombreContacto: this.objetoRegistroCopy[0].value,
       telefonoContacto: this.objetoRegistroCopy[1].value,
@@ -733,7 +739,8 @@ export class CarritoHistoricoPage implements OnDestroy {
         this.objetoRegistro[3].value == 'true' ||
         this.objetoRegistro[3].value == true ||
         this.objetoRegistro[3].value == 'false' ||
-        this.objetoRegistro[3].value == false
+        this.objetoRegistro[3].value == false ||
+        h
           ? {
               id: this.data.id ? this.data.id : null,
               codigoPostal: this.data.codigoPostal,

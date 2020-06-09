@@ -107,6 +107,8 @@ export class PerfilPage implements OnInit {
   public env: any = environment;
 
   public data: any = null;
+
+  public perfil: any = null;
   constructor(
     public navCtrl: NavParamsService,
     public formBuilder: FormBuilder,
@@ -125,6 +127,8 @@ export class PerfilPage implements OnInit {
         this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
       } catch (error) {}
     });
+
+    this.perfil = this.navCtrl.get('perfil');
   }
 
   ngOnInit() {
@@ -134,7 +138,15 @@ export class PerfilPage implements OnInit {
 
   getDataUsuario() {
     this.loadingService.show();
-    this.genericService.sendGetRequest(`${environment.users}/${this.user.username}`).subscribe(
+    let completaPath = null;
+    completaPath = this.user.username;
+    console.log();
+
+    if ((!this.user.tipo_usuario || this.user.tipo_usuario == 1) && this.perfil) {
+      completaPath = this.perfil.login;
+    }
+
+    this.genericService.sendGetRequest(`${environment.users}/${completaPath}`).subscribe(
       (response: any) => {
         this.objetoRegistro[0].value = response.firstName;
         this.objetoRegistro[1].value = response.lastName;
@@ -153,7 +165,7 @@ export class PerfilPage implements OnInit {
         this.objetoRegistro[5].value = response.genero ? response.genero : null;
         let user: any = this.localStorageEncryptService.getFromLocalStorage('userSession');
         //if (user.tipo_usuario == 4) {
-        if (user.tipo_usuario == 3) {
+        if (user.tipo_usuario == 3 || (user.tipo_usuario == 1 && response.tipoUsuarioId == 3)) {
           this.objetoRegistro.push({
             name: 'Tipo persona',
             required: true,
@@ -197,7 +209,7 @@ export class PerfilPage implements OnInit {
           });
 
           this.data = response.direccion ? response.direccion : null;
-        } else if (user.tipo_usuario == 4) {
+        } else if (user.tipo_usuario == 4 || (user.tipo_usuario == 1 && response.tipoUsuarioId == 4)) {
           this.objetoRegistro.push({
             name: 'Tipo persona',
             required: true,

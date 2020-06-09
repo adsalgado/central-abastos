@@ -1,6 +1,6 @@
 import { JhiEventManager } from 'ng-jhipster';
 import { GenericService } from './../../services/generic.service';
-import { Component, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, Content } from 'ionic-angular';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
@@ -13,7 +13,7 @@ import { NavParamsService } from 'app/services/nav-params.service';
   templateUrl: 'chat.html',
   styleUrls: ['./chat.scss']
 })
-export class ChatPage implements OnDestroy {
+export class ChatPage implements OnDestroy, OnInit {
   public chat: any = null;
 
   public pedido: any = null;
@@ -81,9 +81,7 @@ export class ChatPage implements OnDestroy {
     this.mensaje = this.mensaje + ' ' + event.char;
   }
 
-  ionViewDidLoad() {
-    let claseTabs: any = document.getElementsByClassName('tabbar');
-    claseTabs[0].style.display = 'none';
+  ngOnInit() {
     window.scrollTo(0, document.body.scrollHeight);
     this.intervalo = setInterval(() => {
       this.verChat();

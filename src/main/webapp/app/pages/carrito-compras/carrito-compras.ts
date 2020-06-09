@@ -867,7 +867,12 @@ export class CarritoComprasPage implements OnDestroy {
     this.objetoRegistroCopy.push({ value: this.formGroup.controls['name'].value });
     this.objetoRegistroCopy.push({ value: this.formGroup.controls['tel'].value });
     this.objetoRegistroCopy.push({ value: this.formGroup.controls['email'].value });
+    let h: any = null;
+    console.log(this.totales.listCarritoProveedores);
 
+    if (this.totales.listCarritoProveedores.length > 1) {
+      h = true;
+    }
     let body: any = {
       nombreContacto: this.objetoRegistroCopy[0].value,
       telefonoContacto: this.objetoRegistroCopy[1].value,
@@ -876,7 +881,8 @@ export class CarritoComprasPage implements OnDestroy {
         this.objetoRegistro[3].value == 'true' ||
         this.objetoRegistro[3].value == true ||
         this.objetoRegistro[3].value == 'false' ||
-        this.objetoRegistro[3].value == false
+        this.objetoRegistro[3].value == false ||
+        h
           ? {
               id: this.data.id ? this.data.id : null,
               codigoPostal: this.data.codigoPostal,

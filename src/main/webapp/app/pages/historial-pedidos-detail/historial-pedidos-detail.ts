@@ -280,12 +280,13 @@ export class HistorialPedidosDetailPage implements OnInit {
 
   timeline() {
     //this.loadingService.show();
-    this.genericService.sendGetRequest(`${environment.timeline}${this.pedido.id}`).subscribe(
+    this.genericService.sendGetRequest(`${environment.timeline}${this.pedidoAdmin.id}`).subscribe(
       (response: any) => {
-        //console.log(response);
+        console.log(response);
         this.verTimeLine = true;
+        this.timelineList = response;
         if (response.length <= 0) {
-          this.timelineList = response;
+          this.timelineList = null;
           this.verTimeLine = false;
         }
         //this.navCtrl.push('/main/timeline', { pedido: response });
@@ -332,5 +333,13 @@ export class HistorialPedidosDetailPage implements OnInit {
         this.alertaService.errorAlertGeneric(err.message ? err.message : 'Ocurrió un error en el servicio, intenta nuevamente');
       }
     );
+  }
+
+  verProveedor() {
+    this.navCtrl.push('main/perfil', { perfil: this.pedidoAdmin.proveedor.usuario });
+  }
+
+  verCliente() {
+    this.navCtrl.push('main/perfil', { perfil: this.pedidoAdmin.pedido.cliente });
   }
 }

@@ -88,6 +88,18 @@
 
       <i class="material-icons">date_range</i>Chat Proveedor
     </button>
+
+    <button class="boton-chat" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verProveedor()"
+    *ngIf="pedidoAdmin.proveedor.usuario">
+
+      <i class="material-icons">date_range</i>Datos Proveedor
+    </button>
+
+    <button class="boton-chat" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verCliente()"
+    *ngIf="pedidoAdmin.pedido.cliente">
+
+      <i class="material-icons">date_range</i>Datos Cliente
+    </button>
   </section>
 
   <div *ngIf="verTimeLine">

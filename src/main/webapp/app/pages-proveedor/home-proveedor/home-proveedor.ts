@@ -68,7 +68,7 @@ export class HomeProveedorPage implements OnInit, OnDestroy {
       (response: any) => {
         this.dataModels.status.push({
           id: 0,
-          nombre: '[--Seleccione--]'
+          nombre: '[--Estatus--]'
         });
         response.forEach(element => {
           this.dataModels.status.push(element);
@@ -87,7 +87,7 @@ export class HomeProveedorPage implements OnInit, OnDestroy {
       (response: any) => {
         this.dataModels.proveedores.push({
           id: 0,
-          nombre: '[--Seleccione--]'
+          nombre: '[--Proveedores--]'
         });
         response.forEach(element => {
           this.dataModels.proveedores.push(element);
