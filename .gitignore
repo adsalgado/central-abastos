@@ -145,3 +145,10 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
+
+#####################
+# Settings exclude
+####################
+src/main/resources/config/application-dev.yml
+src/main/webapp/environments/environment.prod.ts
+
