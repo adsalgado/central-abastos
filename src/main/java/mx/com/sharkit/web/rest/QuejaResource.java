@@ -1,22 +1,34 @@
 package mx.com.sharkit.web.rest;
 
-import mx.com.sharkit.service.QuejaService;
-import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
-import mx.com.sharkit.service.dto.QuejaDTO;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import java.util.List;
-import java.util.Optional;
+import mx.com.sharkit.domain.Estatus;
+import mx.com.sharkit.domain.User;
+import mx.com.sharkit.service.QuejaService;
+import mx.com.sharkit.service.UserService;
+import mx.com.sharkit.service.dto.QuejaDTO;
+import mx.com.sharkit.service.mapper.UserMapper;
+import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
 
 /**
  * REST controller for managing {@link mx.com.sharkit.domain.Queja}.
@@ -31,6 +43,9 @@ public class QuejaResource {
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
+
+    @Autowired
+    private UserService userService;
 
     private final QuejaService quejaService;
 
@@ -51,13 +66,34 @@ public class QuejaResource {
         if (quejaDTO.getId() != null) {
             throw new BadRequestAlertException("A new queja cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        
+        Optional<User> user = userService.getUserWithAuthorities();
+		User usuario = user.isPresent() ? user.get() : null;
+		if (usuario == null) {
+			throw new BadRequestAlertException("El usuario es requerido", ENTITY_NAME, "idnull");
+		}
+		
+        quejaDTO.setEstatusId(Estatus.QUEJA_ABIERTA);
+        quejaDTO.setUsuarioId(usuario.getId());
+        quejaDTO.setTipoUsuarioId(usuario.getTipoUsuarioId());
+        quejaDTO.setFechaAlta(LocalDateTime.now());
         QuejaDTO result = quejaService.save(quejaDTO);
+        
+        if (result != null) {
+        	sendPushNotification(result);
+        }
+        
         return ResponseEntity.created(new URI("/api/quejas/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
-    /**
+    private void sendPushNotification(QuejaDTO result) {
+		log.debug("SEND PUSH NOTIFICATION ...");
+		
+	}
+
+	/**
      * {@code PUT  /quejas} : Updates an existing queja.
      *
      * @param quejaDTO the quejaDTO to update.
@@ -87,7 +123,7 @@ public class QuejaResource {
     @GetMapping("/quejas")
     public List<QuejaDTO> getAllQuejas() {
         log.debug("REST request to get all Quejas");
-        return quejaService.findAll();
+        return quejaService.findAllDTO();
     }
 
     /**

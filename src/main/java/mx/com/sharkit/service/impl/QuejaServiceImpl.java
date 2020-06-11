@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-public class QuejaServiceImpl implements QuejaService {
+public class QuejaServiceImpl extends BaseServiceImpl<Queja, Long> implements QuejaService {
 
     private final Logger log = LoggerFactory.getLogger(QuejaServiceImpl.class);
 
@@ -55,7 +55,7 @@ public class QuejaServiceImpl implements QuejaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<QuejaDTO> findAll() {
+    public List<QuejaDTO> findAllDTO() {
         log.debug("Request to get all Quejas");
         return quejaRepository.findAll().stream()
             .map(quejaMapper::toDto)

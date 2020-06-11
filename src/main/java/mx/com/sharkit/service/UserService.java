@@ -402,6 +402,9 @@ public class UserService {
 					if (userDTO.getToken() != null) {
 						user.setToken(userDTO.getToken());
 					}
+					if (userDTO.getTokenWeb() != null) {
+						user.setTokenWeb(userDTO.getTokenWeb());
+					}
 					if (userDTO.getTelefono() != null) {
 						user.setTelefono(userDTO.getTelefono());
 					}
