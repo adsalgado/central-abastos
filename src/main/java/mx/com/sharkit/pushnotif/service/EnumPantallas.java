@@ -7,7 +7,8 @@ public enum EnumPantallas {
 	PEDIDO_CONFIRMADO_TRANSPORTISTA(3),
 	PEDIDO_ENTREGADO(4),
 	PEDIDO_CALIFICADO(5),
-	CHAT(10);
+	CHAT(10),
+	CONTACT_CENTER(11);
 	
 	private int view;
 	
