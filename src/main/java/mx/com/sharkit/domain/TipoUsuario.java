@@ -24,6 +24,7 @@ public class TipoUsuario implements Serializable {
     public static final Long CLIENTE = 2L;
     public static final Long PROVEEDOR = 3L;
     public static final Long TRANSPORTISTA = 4L;
+    public static final Long CONTACT_CENTER = 5L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

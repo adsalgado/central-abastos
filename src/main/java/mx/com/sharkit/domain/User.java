@@ -104,6 +104,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "token")
     private String token;
 
+    @Column(name = "token_web")
+    private String tokenWeb;
+
     @Column(name = "adjunto_id")
     private Long adjuntoId;
 
@@ -288,6 +291,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
 	public void setTipoPersonaId(Long tipoPersonaId) {
 		this.tipoPersonaId = tipoPersonaId;
+	}
+
+	public String getTokenWeb() {
+		return tokenWeb;
+	}
+
+	public void setTokenWeb(String tokenWeb) {
+		this.tokenWeb = tokenWeb;
 	}
 
 	@Override
