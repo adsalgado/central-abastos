@@ -55,6 +55,8 @@ export const environment = {
 
   usuarioDocumentos: `${pathPrincipal}usuario-documentos`,
 
+  queja: `${pathPrincipal}quejas`,
+
   users: `${pathPrincipal}users`,
 
   chats: `${pathPrincipal}chats`,

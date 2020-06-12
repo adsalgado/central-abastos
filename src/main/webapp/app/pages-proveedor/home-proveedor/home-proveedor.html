@@ -3,7 +3,7 @@
     <app-spinner></app-spinner>
   </div>
 
-  <div class="filtros" [ngStyle]="{'background-color' : genericService.getColorHex()}" *ngIf="pedidos && pedidos?.length > 0 && user.tipo_usuario > 1">
+  <div class="filtros" [ngStyle]="{'background-color' : genericService.getColorHex()}" *ngIf="pedidos && pedidos?.length > 0 && user.tipo_usuario > 1 && user.tipo_usuario < 5">
     <button (click)="ordenPor(1)" *ngIf="!botones.boton1">
       <div style="font-size: 9px;">Fecha solicitud</div>
       <i class="material-icons">more_vert</i>
@@ -30,7 +30,7 @@
     </button>
   </div>
 
-  <div class="filtros" [ngStyle]="{'background-color' : genericService.getColorHex()}" *ngIf="user.tipo_usuario <= 1">
+  <div class="filtros" [ngStyle]="{'background-color' : genericService.getColorHex()}" *ngIf="user.tipo_usuario <= 1 || user.tipo_usuario == 5">
 
     <div class="container">
       <div class="row">
@@ -71,7 +71,7 @@
     </div>
   </div>
 
-  <div *ngIf="pedidos && pedidos?.length > 0 && user.tipo_usuario > 1">
+  <div *ngIf="pedidos && pedidos?.length > 0 && user.tipo_usuario > 1 && user.tipo_usuario < 5">
     <div class="item-list-card" *ngFor="let p of pedidos" (click)="viewDetail(p)" style="    vertical-align: baseline;
         border-bottom: 1px solid #cacaca;">
       <div style="    width: 10%;
@@ -94,7 +94,7 @@
     </div>
   </div>
 
-  <div *ngIf="pedidos && pedidos?.length > 0 && user.tipo_usuario <= 1">
+  <div *ngIf="pedidos && pedidos?.length > 0 && user.tipo_usuario <= 1 || user.tipo_usuario == 5">
     <table class="table table-hover table-striped">
       <thead>
         <tr style="text-align: center;">

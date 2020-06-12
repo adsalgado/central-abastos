@@ -108,4 +108,19 @@ export class PedidosDetailPage {
   calificar(pedido: any) {
     this.navCtrl.push('main/calificacion', { pedido });
   }
+
+  queja(p) {
+    let body: any = {
+      pedidoProveedorId: p.id
+    };
+
+    this.genericService.sendPostRequest(`${environment.queja}`, body).subscribe(
+      (response: any) => {
+        this.alertaService.success('Un contact center te atenderá en breve');
+      },
+      (error: HttpErrorResponse) => {
+        this.alertaService.error('No se ha podido contactar al administrador, intenta nuevamente');
+      }
+    );
+  }
 }

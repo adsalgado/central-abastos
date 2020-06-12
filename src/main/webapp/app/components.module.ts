@@ -71,6 +71,7 @@ import { VerProductosPage } from './pages-proveedor/ver-productos/ver-productos'
 import { CalificacionPage } from './pages/calificacion/calificacion';
 import { TableModule } from 'primeng/table';
 import { Timeline } from './pages/timeline/timeline';
+import { CenterPage } from './pages/center/center';
 //import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 
 @NgModule({
@@ -141,7 +142,8 @@ import { Timeline } from './pages/timeline/timeline';
     CalificacionPage,
     JhiMainComponent,
     FooterComponentJHI,
-    Timeline
+    Timeline,
+    CenterPage
 
     // UserMgmtComponent,
     /*AuditsComponent,
