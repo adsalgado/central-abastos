@@ -149,6 +149,6 @@ Desktop.ini
 #####################
 # Settings exclude
 ####################
-src/main/resources/config/application-dev.yml
-src/main/webapp/environments/environment.prod.ts
+/src/main/resources/config/*
+/src/main/webapp/environments/*
 
