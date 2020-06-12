@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -39,6 +41,7 @@ import mx.com.sharkit.security.SecurityUtils;
 import mx.com.sharkit.service.dto.AdjuntoDTO;
 import mx.com.sharkit.service.dto.DireccionDTO;
 import mx.com.sharkit.service.dto.UserDTO;
+import mx.com.sharkit.service.mapper.UserMapper;
 import mx.com.sharkit.service.util.RandomUtil;
 import mx.com.sharkit.web.rest.errors.EmailAlreadyUsedException;
 import mx.com.sharkit.web.rest.errors.InvalidPasswordException;
@@ -66,8 +69,11 @@ public class UserService {
 	private final ProveedorRepository proveedorRepository;
 
 	private final DireccionService direccionService;
-	
+
 	private final TransportistaRepository transportistaRepository;
+
+	@Autowired
+	private UserMapper userMapper;
 
 	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
 			AuthorityRepository authorityRepository, UsuarioImagenRepository usuarioImagenRepository,
@@ -144,12 +150,12 @@ public class UserService {
 		String langKey = StringUtils.isAllBlank(userDTO.getLangKey()) ? Constants.DEFAULT_LANGUAGE
 				: userDTO.getLangKey();
 		newUser.setLangKey(langKey);
-		
+
 		Long tipoPersonaId = (userDTO.getTipoPersonaId() != null && userDTO.getTipoPersonaId() > 0)
 				? userDTO.getTipoPersonaId()
 				: TipoPersona.FISICA;
 		newUser.setTipoPersonaId(tipoPersonaId);
-		
+
 		// new user is not active
 		newUser.setActivated(isActivated);
 		newUser.setTipoUsuarioId(TipoUsuario.CLIENTE);
@@ -176,7 +182,8 @@ public class UserService {
 		return newUser;
 	}
 
-	public User registerUserProveedor(UserDTO userDTO, String razonSocial, String password, boolean isActivated, AdjuntoDTO adjunto) {
+	public User registerUserProveedor(UserDTO userDTO, String razonSocial, String password, boolean isActivated,
+			AdjuntoDTO adjunto) {
 		userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).ifPresent(existingUser -> {
 			boolean removed = removeNonActivatedUser(existingUser);
 			if (!removed) {
@@ -252,7 +259,8 @@ public class UserService {
 		return newUser;
 	}
 
-	public User registerUserTransportista(UserDTO userDTO, String razonSocial, String password, boolean isActivated, AdjuntoDTO adjunto) {
+	public User registerUserTransportista(UserDTO userDTO, String razonSocial, String password, boolean isActivated,
+			AdjuntoDTO adjunto) {
 		userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).ifPresent(existingUser -> {
 			boolean removed = removeNonActivatedUser(existingUser);
 			if (!removed) {
@@ -402,6 +410,9 @@ public class UserService {
 					if (userDTO.getToken() != null) {
 						user.setToken(userDTO.getToken());
 					}
+					if (userDTO.getTokenWeb() != null) {
+						user.setTokenWeb(userDTO.getTokenWeb());
+					}
 					if (userDTO.getTelefono() != null) {
 						user.setTelefono(userDTO.getTelefono());
 					}
@@ -439,36 +450,36 @@ public class UserService {
 							user.setAdjuntoId(adjunto.getId());
 						}
 					}
-					
+
 					if (user.getTipoUsuarioId() == TipoUsuario.PROVEEDOR) {
 						Proveedor proveedor = proveedorRepository.findOneByUsuarioId(userDTO.getId()).orElse(null);
 
-						if (userDTO.getDireccion() != null ) {
+						if (userDTO.getDireccion() != null) {
 							if (proveedor != null) {
-								DireccionDTO direccion = direccionService.save(userDTO.getDireccion()); 
+								DireccionDTO direccion = direccionService.save(userDTO.getDireccion());
 								proveedor.setDireccionId(direccion.getId());
-							}	
+							}
 						}
-						
+
 						if (userDTO.getRazonSocial() != null) {
 							proveedor.setNombre(userDTO.getRazonSocial());
 						}
-						
-					} else if (user.getTipoUsuarioId() == TipoUsuario.TRANSPORTISTA) {
-						Transportista transportista = transportistaRepository.findOneByusuarioId(userDTO.getId()).orElse(null);
 
-						if (userDTO.getDireccion() != null ) {
+					} else if (user.getTipoUsuarioId() == TipoUsuario.TRANSPORTISTA) {
+						Transportista transportista = transportistaRepository.findOneByusuarioId(userDTO.getId())
+								.orElse(null);
+
+						if (userDTO.getDireccion() != null) {
 							if (transportista != null) {
-								DireccionDTO direccion = direccionService.save(userDTO.getDireccion()); 
+								DireccionDTO direccion = direccionService.save(userDTO.getDireccion());
 								transportista.setDireccionId(direccion.getId());
-							}	
+							}
 						}
-						
+
 						if (userDTO.getRazonSocial() != null) {
 							transportista.setNombre(userDTO.getRazonSocial());
 						}
 					}
-					
 
 					log.debug("Changed Information for User: {}", user);
 					return user;
@@ -563,6 +574,10 @@ public class UserService {
 	 */
 	public List<String> getAuthorities() {
 		return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+	}
+
+	public List<UserDTO> findAllByTipoUsuarioId(Long tipoUsuarioId) {
+		return userMapper.usersToUserDTOs(userRepository.findAllByTipoUsuarioId(tipoUsuarioId));
 	}
 
 }

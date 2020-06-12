@@ -77,6 +77,8 @@ public class UserDTO implements Serializable {
     private Long tipoUsuarioId;
     
     private String token;
+    
+    private String tokenWeb;
 
     private Long adjuntoId;
     
@@ -111,6 +113,7 @@ public class UserDTO implements Serializable {
             this.lastModifiedBy = user.getLastModifiedBy();
             this.lastModifiedDate = user.getLastModifiedDate();
             this.token = user.getToken();
+            this.tokenWeb = user.getTokenWeb();
             this.tipoUsuarioId = user.getTipoUsuarioId();
             this.tipoPersonaId = user.getTipoPersonaId();
             this.adjuntoId = user.getAdjuntoId();
@@ -271,6 +274,14 @@ public class UserDTO implements Serializable {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getTokenWeb() {
+		return tokenWeb;
+	}
+
+	public void setTokenWeb(String tokenWeb) {
+		this.tokenWeb = tokenWeb;
 	}
 
 	public Long getAdjuntoId() {

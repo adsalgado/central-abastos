@@ -33,7 +33,9 @@ public class Estatus implements Serializable {
     public static final Long PEDIDO_RECHAZADO = 16L;
     public static final Long PEDIDO_ERROR_PAGO = 17L;
     public static final Long ENVIADO_A_TRANSPORTISTA = 18L;
-    
+
+    public static final Long QUEJA_ABIERTA = 19L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

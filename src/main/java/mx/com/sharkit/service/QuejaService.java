@@ -1,14 +1,15 @@
 package mx.com.sharkit.service;
 
-import mx.com.sharkit.service.dto.QuejaDTO;
-
 import java.util.List;
 import java.util.Optional;
+
+import mx.com.sharkit.domain.Queja;
+import mx.com.sharkit.service.dto.QuejaDTO;
 
 /**
  * Service Interface for managing {@link mx.com.sharkit.domain.Queja}.
  */
-public interface QuejaService {
+public interface QuejaService extends BaseService<Queja, Long> {
 
     /**
      * Save a queja.
@@ -23,7 +24,7 @@ public interface QuejaService {
      *
      * @return the list of entities.
      */
-    List<QuejaDTO> findAll();
+    List<QuejaDTO> findAllDTO();
 
 
     /**
