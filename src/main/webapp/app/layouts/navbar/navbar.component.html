@@ -1,7 +1,7 @@
 <nav class="navbar navbar-dark navbar-expand-md bg-dark" style="background-color: #f07c1c !important">
-    <a class="navbar-brand logo" routerLink="public-home" (click)="collapseNavbar()">
+    <a class="navbar-brand logo" (click)="collapseNavbar()">
         <span class="logo-img"></span>
-        <span jhiTranslate="global.title" class="navbar-title">Abastos</span> <span class="navbar-version">1.0.0</span>
+        <span jhiTranslate="global.title" class="navbar-title">Abastos</span> <span class="navbar-version">2.3.8</span>
     </a>
     <a style="background: #f07c1c; 
     border: none;" class="navbar-toggler d-lg-none" href="javascript:void(0);"
@@ -21,7 +21,7 @@
                 </a>
             </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-            <div *ngIf="genericService.getUser() && genericService.getUser().tipo_usuario == 1 || genericService.getUser().tipo_usuario == 3">
+            <div style="display:none" *ngIf="genericService.getUser() && genericService.getUser().tipo_usuario == 1 || genericService.getUser().tipo_usuario == 3">
                 <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" display="dynamic"
                     routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                     <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
@@ -117,7 +117,7 @@
                 </li>
             </div>
 
-            <div *ngIf="genericService.getUser() && genericService.getUser().tipo_usuario == 1">
+            <div style="display:none" *ngIf="genericService.getUser() && genericService.getUser().tipo_usuario == 1">
                 <li *ngSwitchCase="true"
                     ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active"
                     [routerLinkActiveOptions]="{exact: true}">
@@ -142,7 +142,7 @@
                 </li>
             </div>
 
-            <div *ngIf="genericService.getUser() && genericService.getUser().tipo_usuario == 1">
+            <div style="display:none" *ngIf="genericService.getUser() && genericService.getUser().tipo_usuario == 1">
                 <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active"
                     [routerLinkActiveOptions]="{exact: true}" *ngIf="isAuthenticated()">
                     <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
@@ -213,7 +213,7 @@
                 </li>
             </div>
 
-            <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
+            <li style="display:none" ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
                     <span>
                         <fa-icon icon="flag"></fa-icon>
@@ -284,7 +284,7 @@
     <div class="colores" style=" 
     border: none;" id="navbarResponsiveBig" [ngSwitch]="isAuthenticated()">
         <ul style="height:auto" class="navbar-nav ml-auto">
-            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <li style="display:none" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="public-home" (click)="collapseNavbar()">
                     <span>
                         <fa-icon icon="home"></fa-icon>
@@ -293,7 +293,7 @@
                 </a>
             </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-            <div *ngIf="genericService.getUser() && genericService.getUser().tipo_usuario == 1 || genericService.getUser().tipo_usuario == 3">
+            <div style="display:none" *ngIf="genericService.getUser() && genericService.getUser().tipo_usuario == 1 || genericService.getUser().tipo_usuario == 3">
                 <li *ngSwitchCase="true"
                     ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active"
                     [routerLinkActiveOptions]="{exact: true}">
@@ -389,7 +389,7 @@
                 </li>
             </div>
 
-            <div *ngIf="genericService.getUser() && genericService.getUser().tipo_usuario == 1">
+            <div style="display:none" *ngIf="genericService.getUser() && genericService.getUser().tipo_usuario == 1">
                 <li *ngSwitchCase="true"
                     ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active"
                     [routerLinkActiveOptions]="{exact: true}">
@@ -414,7 +414,7 @@
                 </li>
             </div>
 
-            <div *ngIf="genericService.getUser() && genericService.getUser().tipo_usuario == 1">
+            <div style="display:none" *ngIf="genericService.getUser() && genericService.getUser().tipo_usuario == 1">
                 <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active"
                     [routerLinkActiveOptions]="{exact: true}" *ngIf="isAuthenticated()">
                     <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
@@ -484,7 +484,7 @@
                     </ul>
                 </li>
             </div>
-            <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
+            <li style="display:none" ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
                     <span>
                         <fa-icon icon="flag"></fa-icon>

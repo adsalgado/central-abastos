@@ -1,6 +1,6 @@
 <div>
   <mat-list *ngIf="!fromPop">
-    <mat-list-item *ngFor="let p of detalle" style="    margin-bottom: 55px;">
+    <mat-list-item *ngFor="let p of detalle" style="    margin-bottom: 55px;position: relative;">
       <div class="datos-tarjetas" (click)="verProductos(p)">
         <div class="name">{{p.proveedor?.nombre}}</div>
         <div class="number">{{p.total | currency}}</div>
@@ -11,6 +11,7 @@
         <button class="botoni" (click)="terminarServicio(p)">
           <i class="material-icons">close</i>
           Terminar pedido</button>
+        
         <button class="botoni" (click)="calificar(p)" *ngIf="!p.calificacionServicio && p.estatusId == 15">
           <i class="material-icons">create</i>
           Calificar pedido</button>
@@ -26,6 +27,17 @@
           Chat transportista
         </button>
       </div>
+
+      <button class="botoni" (click)="queja(p)" style="    background-color: red;
+      position: absolute;
+      width: 7%;
+      border-radius: 50%;
+      padding: 12px;
+      padding-top: 14px;
+      top: -45px;
+      right: 0px;
+      box-shadow: 1px 1px 4px #fff;">
+          <i class="material-icons">announcement</i>
     </mat-list-item>
   </mat-list>
 

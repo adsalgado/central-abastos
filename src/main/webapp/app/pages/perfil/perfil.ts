@@ -142,7 +142,7 @@ export class PerfilPage implements OnInit {
     completaPath = this.user.username;
     console.log();
 
-    if ((!this.user.tipo_usuario || this.user.tipo_usuario == 1) && this.perfil) {
+    if ((!this.user.tipo_usuario || this.user.tipo_usuario == 1 || this.user.tipo_usuario == 5) && this.perfil) {
       completaPath = this.perfil.login;
     }
 

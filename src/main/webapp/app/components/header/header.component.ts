@@ -67,14 +67,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getTotalCarrito(fromLogin: boolean = false) {
-    this.genericService.sendGetRequest(environment.carritoCompras).subscribe(
-      (response: any) => {
-        this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, response);
-        this.totalCarrito = response.length;
-        console.log(this.totalCarrito);
-      },
-      (error: HttpErrorResponse) => {}
-    );
+    this.user = this.localStorageEncryptService.getFromLocalStorage('userSession');
+    if (this.user) {
+      this.genericService.sendGetRequest(environment.carritoCompras).subscribe(
+        (response: any) => {
+          this.localStorageEncryptService.setToLocalStorage(`${this.user.id_token}`, response);
+          this.totalCarrito = response.length;
+          console.log(this.totalCarrito);
+        },
+        (error: HttpErrorResponse) => {}
+      );
+    }
   }
 
   a() {

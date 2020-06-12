@@ -10,6 +10,7 @@ import { SessionStorageService } from 'ngx-webstorage';
 import { VERSION } from 'app/app.constants';
 import { JhiLanguageHelper, AccountService, LoginModalService, LoginService } from 'app/core';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
+import { LocalStorageEncryptService } from 'app/services/local-storage-encrypt-service';
 
 @Component({
   selector: 'jhi-navbar',
@@ -36,7 +37,8 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     private navParamsService: NavParamsService,
     private genericService: GenericService,
-    private authService: AuthService
+    private authService: AuthService,
+    private localStorageEncryptService: LocalStorageEncryptService
   ) {
     this.version = VERSION ? 'v' + VERSION : '';
     this.isNavbarCollapsed = true;
@@ -60,6 +62,13 @@ export class NavbarComponent implements OnInit {
 
   collapseNavbar() {
     this.isNavbarCollapsed = true;
+    let user = this.localStorageEncryptService.getFromLocalStorage('userSession');
+
+    if (user.tipo_usuario <= 1 || user.tipo_usuario == 5 || user.tipo_usuario == 3) {
+      this.navParamsService.push('/main/pedidos-proveedor');
+    } else {
+      this.navParamsService.push('/main/public-home');
+    }
   }
 
   isAuthenticated() {

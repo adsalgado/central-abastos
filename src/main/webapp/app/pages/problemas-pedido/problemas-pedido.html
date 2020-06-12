@@ -6,7 +6,7 @@
     text-align: center;">
         <img style="width: 36%;" src="{{genericService.imgProblema()}}" alt="">
     </div>
-    <button [ngStyle]="{'background-color': genericService.getColorHex()}">
+    <button [ngStyle]="{'background-color': genericService.getColorHex()}" (click)="queja()">
       Deseo reportar una queja al Contact Center
     </button>
   </div>
