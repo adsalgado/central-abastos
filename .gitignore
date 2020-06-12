@@ -149,6 +149,4 @@ Desktop.ini
 #####################
 # Settings exclude
 ####################
-/src/main/resources/config/*
-/src/main/webapp/environments/*
 
