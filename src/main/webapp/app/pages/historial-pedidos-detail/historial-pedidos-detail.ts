@@ -44,7 +44,7 @@ export class HistorialPedidosDetailPage implements OnInit {
     }
     this.pedido = navCtrl.get('pedido');
 
-    if (this.tipoUsuario <= 1) {
+    if (this.tipoUsuario <= 1 || this.tipoUsuario == 5) {
       this.pedidoAdmin = this.pedido;
       console.log(this.pedidoAdmin);
 
@@ -112,7 +112,7 @@ export class HistorialPedidosDetailPage implements OnInit {
   }
 
   problemasPedido() {
-    this.navCtrl.push('main/problemas-pedido');
+    this.navCtrl.push('main/problemas-pedido', { pedidoProblem: this.pedido });
   }
 
   verProductos() {
@@ -246,6 +246,7 @@ export class HistorialPedidosDetailPage implements OnInit {
         );
         break;
       case 1:
+      case 5:
         this.loadingService.show();
         console.log(this.pedido);
 

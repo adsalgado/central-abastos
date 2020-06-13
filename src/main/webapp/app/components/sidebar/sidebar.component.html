@@ -14,12 +14,13 @@ background-position: center center;height: 103px;position: relative;">
         white-space: nowrap;
         overflow: hidden;
         width: 240px;
-        margin-left: 8px;">Central de Abastos</div>
+        margin-left: 8px;">Central
+            de Abastos</div>
     </a>
 </div>
 <div class="sidebar-wrapper" style="background-color: #ffffff;">
-  <div *ngIf="isMobileMenu()" style="display:none !important">
-    <!-- <form class="navbar-form">
+    <div *ngIf="isMobileMenu()" style="display:none !important">
+        <!-- <form class="navbar-form">
       <span class="bmd-form-group">
         <div class="input-group no-border">
           <input type="text" value="" class="form-control" placeholder="Search...">
@@ -30,53 +31,53 @@ background-position: center center;height: 103px;position: relative;">
         </div>
       </span>
     </form> -->
-    <ul class="nav navbar-nav nav-mobile-menu">
-        <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0)">
-                <i class="material-icons">dashboard</i>
-                <p>
-                    <span class="d-lg-none d-md-block">Stats</span>
-                </p>
-            </a>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="material-icons">notifications</i>
-                <span class="notification">5</span>
-                <p>
-                    <span class="d-lg-none d-md-block">Some Actions</span>
-                </p>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Mike John responded to your email</a>
-                <a class="dropdown-item" href="#">You have 5 new tasks</a>
-                <a class="dropdown-item" href="#">You're now friend with Andrew</a>
-                <a class="dropdown-item" href="#">Another Notification</a>
-                <a class="dropdown-item" href="#">Another One</a>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0)">
-                <i class="material-icons">person</i>
-                <p>
-                    <span class="d-lg-none d-md-block">Account</span>
-                </p>
-            </a>
-        </li>
-    </ul>
-  </div>
-    <ul class="nav" style="margin-top:0px">
-        <li routerLinkActive="active" *ngFor="let menuItem of menu" class="{{menuItem.class}} nav-item"
-        style="padding:0px">
-            <div class="nav-link" (click)="goTo(menuItem)" style="padding-top: 10px;padding-bottom: 10px;
-            border-bottom: 1px solid #ddd;">
-                <img src="{{menuItem.iconName}}" alt="" style="display: inline-block;
-                width: 10%;
-                vertical-align: sub;">
-                <p style="display: inline-block;
-                width: 88%;
-                font-size: 18px;">{{menuItem.displayName}}</p>
-            </div>
-        </li>
-    </ul>
+        <ul class="nav navbar-nav nav-mobile-menu">
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)">
+                    <i class="material-icons">dashboard</i>
+                    <p>
+                        <span class="d-lg-none d-md-block">Stats</span>
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)">
+                    <i class="material-icons">person</i>
+                    <p>
+                        <span class="d-lg-none d-md-block">Account</span>
+                    </p>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="dropdown" *ngFor="let menuItem of menu">
+        <button class="btn btn-default " id="{{menuItem.id}}" data-toggle="dropdown" 
+        [ngClass]="{'dropdown-toggle': menuItem.children && menuItem.children.length > 0}"
+            style="background-color: #f07c1c00;
+            width: 100%;
+            margin: 0px;
+            border-radius: 0px;
+            color: #000;
+            text-align: initial;
+            box-shadow: none;
+            border-bottom: 1px solid #dedede;"
+            (click)="goTo(menuItem)"
+            >
+            <img src="{{menuItem.iconName}}" alt="" style="display: inline-block;
+        width: 10%;
+        vertical-align: sub;">
+            <div style="display: inline-block;
+            font-size: 10px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 88%;
+            overflow: hidden;">{{menuItem.displayName}}</div>
+        </button>
+        <ul  class="dropdown-menu" role="menu" *ngIf="menuItem.children && menuItem.children.length > 0"
+                [attr.aria-labelledby]="menuItem.id" style="width: 100%;">
+            <li role="presentation" *ngFor="let subMenu of menuItem.children" (click)="goTo(subMenu)"><a role="menuitem" tabindex="-1">{{subMenu.displayName}}</a></li>
+        </ul>
+    </div>
+
 </div>

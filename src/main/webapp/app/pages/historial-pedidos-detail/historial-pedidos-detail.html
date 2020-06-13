@@ -30,10 +30,10 @@
     <button class="boton-recibo" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verRecibo()">
       <i class="material-icons">date_range</i>Ver recibo
     </button>
-    <button class="boton-problemas" style="font-size: 10px;" [ngStyle]="{'background-color' : genericService.getColorHex()}"
+    <!-- <button class="boton-problemas" style="font-size: 10px;" [ngStyle]="{'background-color' : genericService.getColorHex()}"
       (click)="problemasPedido()">
       <i class="material-icons">date_range</i>Problemas con pedido
-    </button>
+    </button> -->
   </section>
 
   <section class="botones" *ngIf="tipoUsuario == 3">
@@ -71,7 +71,7 @@
     </button>
   </section>
 
-  <section class="botones" *ngIf="tipoUsuario <= 1">
+  <section class="botones" *ngIf="tipoUsuario <= 1 || tipoUsuario == 5">
     <!-- <button class="boton-detalle" [ngStyle]="{'background-color' : genericService.getColorHex()}" (click)="verDetalle()">
       <i class="material-icons">date_range</i>Ver detalle
     </button> -->

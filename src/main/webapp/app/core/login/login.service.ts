@@ -32,7 +32,7 @@ export class LoginService {
           return cb();
         },
         err => {
-          this.logout();
+          //this.logout();
           reject(err);
           return cb(err);
         }

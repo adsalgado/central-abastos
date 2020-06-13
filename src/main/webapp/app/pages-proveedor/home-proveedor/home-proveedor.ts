@@ -128,10 +128,10 @@ export class HomeProveedorPage implements OnInit, OnDestroy {
     }
     let dejamever: any = null;
     dejamever = this.genericService.sendGetRequest(path);
-    if (user.tipo_usuario == 4) {
+    if (user && user.tipo_usuario == 4) {
       path = `${environment.pedidosTransportista}`;
       dejamever = this.genericService.sendGetRequest(path);
-    } else if (user.tipo_usuario == 1 || !user.tipo_usuario) {
+    } else if ((user && user.tipo_usuario == 1) || !user.tipo_usuario || user.tipo_usuario == 5) {
       path = `${environment.pedidosAdmin}`;
 
       if (this.dataModels.folio && this.dataModels.folio.length > 0) {
@@ -161,7 +161,7 @@ export class HomeProveedorPage implements OnInit, OnDestroy {
     this.subscripcion = dejamever.subscribe(
       (response: any) => {
         this.pedidos = response;
-        if (this.pedidos.length <= 0 && user.tipo_usuario > 1) {
+        if (this.pedidos.length <= 0 && user.tipo_usuario > 1 && user.tipo_usuario < 5) {
           this.pedidos = null;
           this.alertaService.warn('Aún no cuentas con historial de pedidos');
           this.navCtrl.push('main/public-home');

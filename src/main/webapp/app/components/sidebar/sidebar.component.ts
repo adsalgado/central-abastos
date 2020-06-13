@@ -63,41 +63,142 @@ export class SidebarComponent implements OnInit {
     console.log(user);
 
     switch (user.tipo_usuario) {
+      case 5:
+        this.menu.push(
+          new Menu('1-m1', 'Mi historial', false, '../../../content/imgs/menu/historial.png', '/main/pedidos-proveedor', null)
+        );
+        this.menu.push(
+          new Menu(
+            '1-m2',
+            'Titulo pendiente',
+            false,
+            '../../../content/imgs/contact-center/technical-support.png',
+            '/main/contact-center',
+            null
+          )
+        );
+        this.navParams.push('/main/pedidos-proveedor');
+        break;
       case 1:
-        this.menu.push(new Menu('Mi historial', false, '../../../content/imgs/menu/historial.png', '/main/pedidos-proveedor', null));
+        this.menu.push(
+          new Menu('1-m3', 'Mi historial', false, '../../../content/imgs/menu/historial.png', '/main/pedidos-proveedor', null)
+        );
+        this.menu.push(
+          new Menu('1-m4', 'Catálogos', false, '../../../content/imgs/menu/historial.png', null, [
+            new Menu('1-sm4', 'Promociones', false, '../../../content/imgs/menu/historial.png', '/main/entities/promocion', null),
+            new Menu('1-sm4', 'Unidad Medida', false, '../../../content/imgs/menu/historial.png', '/main/entities/unidad-medida', null),
+            new Menu('1-sm4', 'Tipo Artículo', false, '../../../content/imgs/menu/historial.png', '/main/entities/tipo-articulo', null),
+            new Menu('1-sm4', 'Categoría', false, '../../../content/imgs/menu/historial.png', '/main/entities/categoria', null),
+            new Menu('1-sm4', 'Sección', false, '../../../content/imgs/menu/historial.png', '/main/entities/seccion', null),
+            new Menu('1-sm4', 'Estatus', false, '../../../content/imgs/menu/historial.png', '/main/entities/estatus', null),
+            new Menu('1-sm4', 'Proveedor', false, '../../../content/imgs/menu/historial.png', '/main/entities/proveedor', null),
+            new Menu('1-sm4', 'Transportista', false, '../../../content/imgs/menu/historial.png', '/main/entities/transportista', null),
+            new Menu(
+              '1-sm4',
+              'Parámetros aplicación',
+              false,
+              '../../../content/imgs/menu/historial.png',
+              '/main/entities/parametros-aplicacion',
+              null
+            ),
+            new Menu('1-sm4', 'Empresa', false, '../../../content/imgs/menu/historial.png', '/main/entities/empresa', null)
+          ])
+        );
+
+        this.menu.push(
+          new Menu('1-m35', 'Administración', false, '../../../content/imgs/menu/historial.png', null, [
+            new Menu(
+              '1-sm4',
+              'Gestión de usuarios',
+              false,
+              '../../../content/imgs/menu/historial.png',
+              '/main/admin/user-management',
+              null
+            ),
+            new Menu('1-sm4', 'User Tracker', false, '../../../content/imgs/menu/historial.png', '/main/admin/jhi-tracker', null),
+            new Menu('1-sm4', 'Métricas', false, '../../../content/imgs/menu/historial.png', '/main/admin/jhi-metrics', null),
+
+            new Menu('1-sm4', 'Salud', false, '../../../content/imgs/menu/historial.png', '/main/admin/jhi-health', null),
+            new Menu('1-sm4', 'Configuración', false, '../../../content/imgs/menu/historial.png', '/main/admin/audits', null),
+            new Menu('1-sm4', 'Métricas', false, '../../../content/imgs/menu/historial.png', '/main/admin/logs', null),
+            new Menu('1-sm4', 'Métricas', false, '../../../content/imgs/menu/historial.png', '/main/admin/docs', null)
+          ])
+        );
+
+        this.menu.push(
+          new Menu('1-m36', 'Reportes', false, '../../../content/imgs/menu/historial.png', null, [
+            new Menu('1-sm4', 'Costo proveedor', false, '../../../content/imgs/menu/historial.png', '/main/reportes/reporte-costos', null)
+          ])
+        );
+        this.navParams.push('/main/pedidos-proveedor');
         break;
       case 2:
-        this.menu.push(new Menu('Mi perfil', false, '../../../content/imgs/perfil/social-media.png', '/main/perfil', null));
+        this.menu.push(new Menu('1-m5', 'Mi perfil', false, '../../../content/imgs/perfil/social-media.png', '/main/perfil', null));
         this.menu.push(
-          new Menu('Lista de carrito frecuentes', false, '../../../content/imgs/lista-carrito/trolley.png', '/main/lista-carrito', null)
+          new Menu(
+            '1-m6',
+            'Lista de carrito frecuentes',
+            false,
+            '../../../content/imgs/lista-carrito/trolley.png',
+            '/main/lista-carrito',
+            null
+          )
         );
-        this.menu.push(new Menu('Tarjetas', false, '../../../content/imgs/menu/card.png', '/main/tarjeta-frecuente', null));
+        this.menu.push(new Menu('1-m7', 'Tarjetas', false, '../../../content/imgs/menu/card.png', '/main/tarjeta-frecuente', null));
         this.menu.push(
-          new Menu('Direcciones frecuentes', false, '../../../content/imgs/direcciones/markerD.png', '/main/direccion-frecuente', null)
+          new Menu(
+            '1-m8',
+            'Direcciones frecuentes',
+            false,
+            '../../../content/imgs/direcciones/markerD.png',
+            '/main/direccion-frecuente',
+            null
+          )
         );
-        this.menu.push(new Menu('Mi historial', false, '../../../content/imgs/menu/historial.png', '/main/pedidos', null));
-        this.menu.push(new Menu('Proveedores', false, '../../../content/imgs/menu/give.png', '/main/proveedores', null));
+        this.menu.push(new Menu('1-m9', 'Mi historial', false, '../../../content/imgs/menu/historial.png', '/main/pedidos', null));
+        this.menu.push(new Menu('1-m10', 'Proveedores', false, '../../../content/imgs/menu/give.png', '/main/proveedores', null));
 
-        this.menu.push(new Menu('Acerca de', false, '../../../content/imgs/menu/interface.png', '/main/acercade', null));
-        this.menu.push(new Menu('Información de la app', false, '../../../content/imgs/menu/signs.png', '/main/informacion', null));
-        this.menu.push(new Menu('Contacto', false, '../../../content/imgs/menu/logotype.png', '/main/contacto', null));
+        this.menu.push(new Menu('1-m11', 'Acerca de', false, '../../../content/imgs/menu/interface.png', '/main/acercade', null));
         this.menu.push(
-          new Menu('Términos y condiciones', false, '../../../content/imgs/menu/contrato.png', '/main/terminos-condiciones', null)
+          new Menu('1-m12', 'Información de la app', false, '../../../content/imgs/menu/signs.png', '/main/informacion', null)
+        );
+        this.menu.push(new Menu('1-m13', 'Contacto', false, '../../../content/imgs/menu/logotype.png', '/main/contacto', null));
+        this.menu.push(
+          new Menu('1-m14', 'Términos y condiciones', false, '../../../content/imgs/menu/contrato.png', '/main/terminos-condiciones', null)
         );
         break;
 
       case 3:
         //this.menu.push(new Menu("Mi perfil", "assets/imgs/perfil/social-media.png", "#7d3a63", PerfilPage));
-        this.menu.push(new Menu('Mi perfil', false, '../../../content/imgs/perfil/social-media.png', '/main/perfil', null));
-        this.menu.push(new Menu('Mis documentos', false, '../../../content/imgs/menu/file.png', '/main/documentos-proveedor', null));
-
-        this.menu.push(new Menu('Mi historial', false, '../../../content/imgs/menu/historial.png', '/main/pedidos-proveedor', null));
-
-        this.menu.push(new Menu('Acerca de', false, '../../../content/imgs/menu/interface.png', '/main/acercade', null));
-        this.menu.push(new Menu('Información de la app', false, '../../../content/imgs/menu/signs.png', '/main/informacion', null));
-        this.menu.push(new Menu('Contacto', false, '../../../content/imgs/menu/logotype.png', '/main/contacto', null));
+        this.menu.push(new Menu('1-m15', 'Mi perfil', false, '../../../content/imgs/perfil/social-media.png', '/main/perfil', null));
         this.menu.push(
-          new Menu('Términos y condiciones', false, '../../../content/imgs/menu/contrato.png', '/main/terminos-condiciones', null)
+          new Menu('1-m16', 'Mis documentos', false, '../../../content/imgs/menu/file.png', '/main/documentos-proveedor', null)
+        );
+
+        this.menu.push(
+          new Menu('1-m17', 'Mi historial', false, '../../../content/imgs/menu/historial.png', '/main/pedidos-proveedor', null)
+        );
+
+        this.menu.push(new Menu('1-m18', 'Acerca de', false, '../../../content/imgs/menu/interface.png', '/main/acercade', null));
+        this.menu.push(
+          new Menu('1-m19', 'Información de la app', false, '../../../content/imgs/menu/signs.png', '/main/informacion', null)
+        );
+        this.menu.push(new Menu('1-m20', 'Contacto', false, '../../../content/imgs/menu/logotype.png', '/main/contacto', null));
+        this.menu.push(
+          new Menu('1-m21', 'Términos y condiciones', false, '../../../content/imgs/menu/contrato.png', '/main/terminos-condiciones', null)
+        );
+
+        this.menu.push(
+          new Menu('1-m467', 'Catálogos', false, '../../../content/imgs/menu/historial.png', null, [
+            new Menu(
+              '1-sm478',
+              'Productos proveedores',
+              false,
+              '../../../content/imgs/menu/historial.png',
+              '/main/entities/producto-proveedor',
+              null
+            )
+          ])
         );
 
         this.navParams.push('/main/pedidos-proveedor');
