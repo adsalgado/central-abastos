@@ -81,7 +81,7 @@ import { Register, PasswordService, PasswordResetInitService, PasswordResetFinis
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RequestInterceptorService } from './interceptors/request-interceptor.service';
 import { AuthService } from './services/auth.service';
-import { MessagingService } from './services/firebase.service';
+import { MessagingService } from './services/messaging.service';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { QRCodeModule } from 'angularx-qrcode';
 import { MessageService } from 'primeng/api';

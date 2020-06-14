@@ -6,7 +6,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { LoginModalService } from './core';
 import swal, { SweetAlertOptions } from 'sweetalert2';
 import { LoadingService } from './services/loading-service';
-import { MessagingService } from './services/firebase.service';
+import { MessagingService } from './services/messaging.service';
 import { NavParamsService } from './services/nav-params.service';
 
 @Component({

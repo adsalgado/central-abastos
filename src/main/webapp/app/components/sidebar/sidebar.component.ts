@@ -70,7 +70,7 @@ export class SidebarComponent implements OnInit {
         this.menu.push(
           new Menu(
             '1-m2',
-            'Titulo pendiente',
+            'Seguimiento a Quejas',
             false,
             '../../../content/imgs/contact-center/technical-support.png',
             '/main/contact-center',
