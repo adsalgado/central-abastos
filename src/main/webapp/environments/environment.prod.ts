@@ -1,7 +1,7 @@
-//export const pathPrincipal = 'http://localhost:8080/api/';
-export const pathPrincipal = 'https://dev-cabasto.sharktech.com.mx/api/';
-export const pathChat = 'https://dev-cabasto.sharktech.com.mx/';
-//export const pathChat = 'http://localhost:8080/';
+export const pathPrincipal = 'http://localhost:8080/api/';
+//export const pathPrincipal = 'https://dev-cabasto.sharktech.com.mx/api/';
+//export const pathChat = 'https://dev-cabasto.sharktech.com.mx/';
+export const pathChat = 'http://localhost:8080/';
 
 export const appCliente = 1;
 export const appProveedor = 2;
