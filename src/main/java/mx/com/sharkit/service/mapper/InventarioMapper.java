@@ -1,7 +1,6 @@
 package mx.com.sharkit.service.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import mx.com.sharkit.domain.Inventario;
 import mx.com.sharkit.service.dto.InventarioDTO;
@@ -14,8 +13,6 @@ public interface InventarioMapper extends EntityMapper<InventarioDTO, Inventario
 
     InventarioDTO toDto(Inventario inventario);
 
-    @Mapping(target = "inventarioHistoricos", ignore = true)
-    @Mapping(target = "removeInventarioHistorico", ignore = true)
     Inventario toEntity(InventarioDTO inventarioDTO);
 
     default Inventario fromId(Long id) {

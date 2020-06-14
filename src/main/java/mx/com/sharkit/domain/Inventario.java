@@ -1,8 +1,6 @@
 package mx.com.sharkit.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -28,10 +25,6 @@ public class Inventario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(name = "total", precision = 21, scale = 2, nullable = false)
-    private BigDecimal total;
-
     @ManyToOne
     @JoinColumn(name = "producto_proveedor_id", insertable = false, updatable = false)
     private ProductoProveedor productoProveedor;
@@ -39,59 +32,26 @@ public class Inventario implements Serializable {
     @Column(name = "producto_proveedor_id")
     private Long productoProveedorId;
 
-    @OneToMany(mappedBy = "inventario")
-    private Set<InventarioHistorico> inventarioHistoricos = new HashSet<>();
+    @NotNull
+    @Column(name = "total", precision = 21, scale = 2, nullable = false)
+    private BigDecimal total;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "inventario_minimo", precision = 21, scale = 2)
+    private BigDecimal inventarioMinimo;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "inventario_maximo", precision = 21, scale = 2)
+    private BigDecimal inventarioMaximo;
 
-    public BigDecimal getTotal() {
-        return total;
-    }
 
-    public Inventario total(BigDecimal total) {
-        this.total = total;
-        return this;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Set<InventarioHistorico> getInventarioHistoricos() {
-        return inventarioHistoricos;
-    }
-
-    public Inventario inventarioHistoricos(Set<InventarioHistorico> inventarioHistoricos) {
-        this.inventarioHistoricos = inventarioHistoricos;
-        return this;
-    }
-
-    public Inventario addInventarioHistorico(InventarioHistorico inventarioHistorico) {
-        this.inventarioHistoricos.add(inventarioHistorico);
-        inventarioHistorico.setInventario(this);
-        return this;
-    }
-
-    public Inventario removeInventarioHistorico(InventarioHistorico inventarioHistorico) {
-        this.inventarioHistoricos.remove(inventarioHistorico);
-        inventarioHistorico.setInventario(null);
-        return this;
-    }
-
-    public void setInventarioHistoricos(Set<InventarioHistorico> inventarioHistoricos) {
-        this.inventarioHistoricos = inventarioHistoricos;
-    }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
-
-    public ProductoProveedor getProductoProveedor() {
+	public ProductoProveedor getProductoProveedor() {
 		return productoProveedor;
 	}
 
@@ -105,6 +65,30 @@ public class Inventario implements Serializable {
 
 	public void setProductoProveedorId(Long productoProveedorId) {
 		this.productoProveedorId = productoProveedorId;
+	}
+
+	public BigDecimal getTotal() {
+		return total;
+	}
+
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+
+	public BigDecimal getInventarioMinimo() {
+		return inventarioMinimo;
+	}
+
+	public void setInventarioMinimo(BigDecimal inventarioMinimo) {
+		this.inventarioMinimo = inventarioMinimo;
+	}
+
+	public BigDecimal getInventarioMaximo() {
+		return inventarioMaximo;
+	}
+
+	public void setInventarioMaximo(BigDecimal inventarioMaximo) {
+		this.inventarioMaximo = inventarioMaximo;
 	}
 
 	@Override
@@ -125,7 +109,9 @@ public class Inventario implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Inventario [id=" + id + ", total=" + total + ", productoProveedorId=" + productoProveedorId + "]";
+		return "Inventario [id=" + id + ", productoProveedor=" + productoProveedor + ", productoProveedorId="
+				+ productoProveedorId + ", total=" + total + ", inventarioMinimo=" + inventarioMinimo
+				+ ", inventarioMaximo=" + inventarioMaximo + "]";
 	}
 
 }
