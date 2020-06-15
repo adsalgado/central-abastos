@@ -1,0 +1,40 @@
+<div *ngIf="isVisible" class="modal" tabindex="-1" role="dialog" 
+      [ngClass]="{'fade show' : isVisible == true}" >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Nuevo Reclamo</h5>
+            <button type="button" class="close" (click)= "close()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Estimado telemarketing, hay una nueva reclamación
+            </p>
+              <div class="container">
+                  <div class="row">
+                      <div class="col-6">
+                          <div class="row">Nombre Cliente</div>
+                          <div class="row">Mensaje</div>
+                          <div class="row">Evidencia</div>
+                      </div>
+                      <div class="col-6">
+                            <div class="row">{{claim.requestedBy.fullName}}</div>
+                            <div class="row">{{claim.claimMessage}}</div>
+                            
+                      </div>
+                  </div>
+                  <div class="row text-center">
+                      <img class="img-evidence" [src]="claim.evidence">
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button> -->
+          </div>
+        </div>
+      </div>
+</div>
+
+

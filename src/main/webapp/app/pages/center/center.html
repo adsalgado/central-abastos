@@ -1,5 +1,145 @@
+<mat-sidenav-container [hasBackdrop]="true" class="h-100">
+
+  <mat-sidenav-content class="pb-3">
+        <div class="container-fluid mt-5">
+          <mat-card class="btn-group" class="mat-elevation-z8" >
+              <mat-card-title>Reclamos</mat-card-title>
+              <mat-card-content>
+                <section class="container-fluid">
+                      <div class="border-gray-bottom title-filters">Filtros Disponibles</div>
+                      <form class="border-gray-bottom pt-3">
+                          <div class="form-row">
+                              <div class="form-group col-xl-4 col-md-6 col-sm-12">
+                                <select class="custom-select" id="select-profile">
+                                  <option selected disabled>Por Perfil</option>
+                                  <option value="provider">Proveedor</option>
+                                  <option value="customer">Cliente</option>
+                                  <option value="distributor">Distribuidor</option>
+                                </select>
+                              </div>
+
+                              <div class="form-group col-xl-4 col-md-6 col-sm-12">
+                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Por No. de Pedido">
+                              </div>
+                              <div class="form-group col-xl-4 col-md-6 col-sm-12">
+                                <select class="custom-select" id="select-status">
+                                  <option selected disabled>Por Estátus</option>
+                                  <option value="open">Abierto</option>
+                                  <option value="closed">Cerrado</option>
+                                  <option value="fail">Fallido</option>
+                                </select>
+                              </div>
+                        </div>
+                      </form>
+                </section>
+                
+                <mat-table [dataSource]="dataSource" matSort class="table-striped">
+                    <ng-container matColumnDef="claimId">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Reclamo ID </mat-header-cell>
+                        <mat-cell *matCellDef="let claim"> {{claim.claimId}} </mat-cell>
+                    </ng-container>
+          
+                    <ng-container matColumnDef="fullName">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header> Levantado por </mat-header-cell>
+                      <mat-cell *matCellDef="let claim"> 
+                        <span class="mr-3">{{claim.requestedBy.fullName}}</span> 
+                        
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="profile">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Profile</mat-header-cell>
+                          <mat-cell *matCellDef="let claim">
+                            <input type="hidden" [value]="claim.requestedBy.profile">
+                            <i class="fas " [ngClass]="{'fa-store' : claim.requestedBy.profile === 'provider',
+                                  'fa-motorcycle' : claim.requestedBy.profile === 'distributor',
+                                  'fa-user-tie' : claim.requestedBy.profile === 'customer'}"></i>
+                          </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="numeroPedido">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header> No. Pedido</mat-header-cell>
+                      <mat-cell *matCellDef="let claim"> {{claim.numeroPedido}} </mat-cell>
+                    </ng-container>
+          
+                    <ng-container matColumnDef="status">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                      <mat-cell *matCellDef="let claim"> {{claim.status}} </mat-cell>
+                    </ng-container>
+          
+        
+                    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: columnsToDisplay;" (click)="onRowSelected(row)"></mat-row>
+              </mat-table>
+              </mat-card-content>
+          </mat-card>
+        </div>
+  </mat-sidenav-content>
+  <mat-sidenav #sidenavDetails  mode="slide" position="end" *ngIf="claimSelected!=null" class="col-6">
+      <div class="container-fluid">
+        <div class="row">
+            <h5 class="col-12">Detalles del reclamo</h5>
+        </div>
+        <div class="row mt-3">
+              <div class="col-6">
+                  <span class="bolder">Registrado por:  </span> 
+                     {{claimSelected.requestedBy.fullName}} 
+                     <i class="fas " [ngClass]="{'fa-store' : claimSelected.requestedBy.profile === 'provider',
+                     'fa-motorcycle' : claimSelected.requestedBy.profile === 'distributor',
+                     'fa-user-tie' : claimSelected.requestedBy.profile === 'customer'}"></i>
+              </div>
+              <div class="col-6">
+                  <span class="bolder"> Status : </span> {{claimSelected.status}}
+              </div>
+              <div class="col-6">
+                <span class="bolder"> Fecha de registro: </span> {{claimSelected.createdAt | date: "d/M/yyyy"}} 
+              </div>
+              <div class="col-6">
+                <span class="bolder">Fecha de último seguimiento: </span> {{claimSelected.lastUpdated |  date: "d/M/yyyy"}} 
+              </div>
+        </div>
+        <div class="row mt-3">
+            <h5 class="col-12">Historial:</h5>
+        </div>
+        <div class="row">
+              <div class="container claims-log">
+                   <div class="list-group">
+                      <div class="list-group-item" *ngFor="let log of claimSelected.tracking">
+                            <div class="d-flex w-100 justify-content-between">
+                                <small class="w-100 ">{{log.date | date : "d/M/yyyy"}}</small>
+                            </div>
+                            <p class="mb-1"> {{log.text}} </p>
+                            <small>{{log.name}}</small>
+                      </div>
+                   </div>
+              </div>
+        </div>
+        <div *ngIf="claimSelected.status === 'abierto'" class="row mt-3"> 
+                <h5 class="col-12 mt-3"> Seguimiento a Reclamo</h5>
+                <form #claimForm class="col-12">  
+                    <div class="form-group col-12 pl-0 pr-0">
+                        <label for="tracking-text">Introduce el texto del seguimiento</label>
+                        <textarea class="form-control col-12"
+                                   rows="3" name="trackingText"
+                                   ngModel required></textarea>
+                    </div>
+                    <div class="col-12 d-flex w-100 justify-content-between">
+                      <button type="button"  class="btn primary bg-secondary" [disabled]="claimForm.trackingText.value == ''">Guardar</button>
+                        <button type="button" data-toggle="tooltip" 
+                                data-placement="top" 
+                                title="Resuelve el reclamo" class="btn primary bg-secondary">Cerrar</button>
+                        <button type="button"  class="btn primary bg-secondary">Fallido</button>
+                    </div>
+                    
+                </form>
+                
+        </div>
+      </div>
+  </mat-sidenav>
+</mat-sidenav-container>
 
 
-<div style="padding:20px">
-  <nav></nav>
-</div>
+
+
+<app-reclamo-dialog #modalClaim >
+</app-reclamo-dialog>

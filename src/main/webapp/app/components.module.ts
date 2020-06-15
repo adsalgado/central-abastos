@@ -73,6 +73,9 @@ import { TableModule } from 'primeng/table';
 import { Timeline } from './pages/timeline/timeline';
 import { CenterPage } from './pages/center/center';
 //import { JhiMainComponent, NavbarComponent, FooterComponentJHI, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { ReclamoDialogComponent } from './shared/reclamo-dialog/reclamo-dialog.component';
 
 @NgModule({
   declarations: [
@@ -143,7 +146,8 @@ import { CenterPage } from './pages/center/center';
     JhiMainComponent,
     FooterComponentJHI,
     Timeline,
-    CenterPage
+    CenterPage,
+    ReclamoDialogComponent
 
     // UserMgmtComponent,
     /*AuditsComponent,
@@ -223,7 +227,8 @@ import { CenterPage } from './pages/center/center';
     DocumentosPage,
     HomeProveedorPage,
     CalificacionPage,
-    Timeline
+    Timeline,
+    ReclamoDialogComponent
     // UserMgmtComponent,
     /*AuditsComponent,
     JhiConfigurationComponent,
