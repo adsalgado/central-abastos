@@ -34,13 +34,16 @@ import { environment } from '../environments/environment.prod';
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 
-import { MatInputModule } from '@angular/material/input';
-import { MatSortModule } from '@angular/material/sort';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTableModule } from '@angular/material/table';
+import { MaterialModule } from './material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+/*import { MatInputModule } from '@angular/material';
+import { MatSortModule } from '@angular/material';
+import { MatSidenavModule } from '@angular/material';
+import { MatTableModule } from '@angular/material';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material';
+import { MatCardModule } from '@angular/material';*/
 
 @NgModule({
   imports: [
@@ -58,13 +61,16 @@ import { MatCardModule } from '@angular/material/card';
     AngularFireMessagingModule,
     AngularFireModule.initializeApp(environment.firebase),
 
-    MatInputModule,
+    MaterialModule,
+    BrowserAnimationsModule
+
+    /* MatInputModule,
     MatSortModule,
     MatSidenavModule,
     MatTableModule,
     MatDialogModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule*/
   ],
 
   bootstrap: [AppComponent],

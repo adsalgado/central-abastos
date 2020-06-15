@@ -8,7 +8,6 @@
                 <section class="container-fluid">
                       <div class="border-gray-bottom title-filters">Filtros Disponibles</div>
                       <form class="border-gray-bottom pt-3">
-                          <div class="form-row">
                               <div class="form-group col-xl-4 col-md-6 col-sm-12">
                                 <select class="custom-select" id="select-profile">
                                   <option selected disabled>Por Perfil</option>
@@ -32,9 +31,9 @@
                         </div>
                       </form>
                 </section>
-                
+
                 <mat-table [dataSource]="dataSource" matSort class="table-striped">
-                    <ng-container matColumnDef="claimId">
+                   <ng-container matColumnDef="claimId">
                         <mat-header-cell *matHeaderCellDef mat-sort-header> Reclamo ID </mat-header-cell>
                         <mat-cell *matCellDef="let claim"> {{claim.claimId}} </mat-cell>
                     </ng-container>
@@ -70,11 +69,12 @@
         
                     <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: columnsToDisplay;" (click)="onRowSelected(row)"></mat-row>
-              </mat-table>
+                </mat-table>  
               </mat-card-content>
           </mat-card>
         </div>
   </mat-sidenav-content>
+
   <mat-sidenav #sidenavDetails  mode="slide" position="end" *ngIf="claimSelected!=null" class="col-6">
       <div class="container-fluid">
         <div class="row">
@@ -141,5 +141,5 @@
 
 
 
-<app-reclamo-dialog #modalClaim >
-</app-reclamo-dialog>
+<!-- <app-reclamo-dialog #modalClaim >
+</app-reclamo-dialog> -->

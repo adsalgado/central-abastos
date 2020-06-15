@@ -48,9 +48,39 @@ module.exports = (options) => ({
                     name: 'manifest.webapp'
                 }
             },
+            {
+                test: /.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+                use: [{
+                  loader: 'file-loader',
+                  options: {
+                    name: '[name].[ext]',
+                    outputPath: 'fonts/',    // where the fonts will go
+                    publicPath: '../'       // override the default path
+                  }
+                }]
+              },
             // Ignore warnings about System.import in Angular
             { test: /[\/\\]@angular[\/\\].+\.js$/, parser: { system: true } },
-        ]
+        ],
+       /* loaders: [{
+            test: /\.css$/,
+            loader: 'style!css?sourceMap'
+          }, {
+            test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url?limit=10000&mimetype=application/font-woff"
+          }, {
+            test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url?limit=10000&mimetype=application/font-woff"
+          }, {
+            test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url?limit=10000&mimetype=application/octet-stream"
+          }, {
+            test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "file"
+          }, {
+            test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url?limit=10000&mimetype=image/svg+xml"
+          }]*/
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -76,7 +106,8 @@ module.exports = (options) => ({
             { from: './src/main/webapp/favicon.ico', to: 'favicon.ico' },
             { from: './src/main/webapp/manifest.webapp', to: 'manifest.webapp' },
             { from: './src/main/webapp/firebase-messaging-sw.js', to: 'firebase-messaging-sw.js' },
-            // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
+            // { from: './node_modules/@fortawesome/fontawesome-free/webfonts', to: 'fonts'},
+            // jhipster-needle-add-assets-to-webpack - JHipster  will add/remove third-party resources in this array
             { from: './src/main/webapp/robots.txt', to: 'robots.txt' }
         ]),
         new MergeJsonWebpackPlugin({

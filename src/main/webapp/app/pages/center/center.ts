@@ -38,6 +38,7 @@ export class CenterPage implements OnInit {
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
+    this.messagingService.requestPermission();
     this.messagingService.receiveMessage();
     //TODO: Get data from real source.
     this.dataSource.data = [

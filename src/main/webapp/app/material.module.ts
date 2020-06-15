@@ -8,13 +8,27 @@ import {
   MatListModule,
   MatToolbarModule,
   MatCardModule,
-  MatInputModule
+  MatInputModule,
+  MatTableModule
 } from '@angular/material';
 
 @NgModule({
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatListModule,
+    MatCardModule,
+    MatInputModule
+  ],
   exports: [
     CommonModule,
     MatButtonModule,
+    MatTableModule,
     MatToolbarModule,
     MatNativeDateModule,
     MatIconModule,
