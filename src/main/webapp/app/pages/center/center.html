@@ -33,15 +33,15 @@
                 </section>
 
                 <mat-table [dataSource]="dataSource" matSort class="table-striped">
-                   <ng-container matColumnDef="claimId">
+                   <ng-container matColumnDef="id">
                         <mat-header-cell *matHeaderCellDef mat-sort-header> Reclamo ID </mat-header-cell>
-                        <mat-cell *matCellDef="let claim"> {{claim.claimId}} </mat-cell>
+                        <mat-cell *matCellDef="let claim"> {{claim.id}} </mat-cell>
                     </ng-container>
           
-                    <ng-container matColumnDef="fullName">
+                    <ng-container matColumnDef="usuario">
                       <mat-header-cell *matHeaderCellDef mat-sort-header> Levantado por </mat-header-cell>
                       <mat-cell *matCellDef="let claim"> 
-                        <span class="mr-3">{{claim.requestedBy.fullName}}</span> 
+                        <span class="mr-3">{{claim.requestedBy.firstName}} {{claim.requestedBy.lastName}}</span> 
                         
                       </mat-cell>
                     </ng-container>
@@ -49,21 +49,28 @@
                     <ng-container matColumnDef="profile">
                           <mat-header-cell *matHeaderCellDef mat-sort-header>Profile</mat-header-cell>
                           <mat-cell *matCellDef="let claim">
-                            <input type="hidden" [value]="claim.requestedBy.profile">
+                              {{claim.tipoUsuario}}
+                            <!-- <input type="hidden" [value]="claim.requestedBy.profile">
                             <i class="fas " [ngClass]="{'fa-store' : claim.requestedBy.profile === 'provider',
                                   'fa-motorcycle' : claim.requestedBy.profile === 'distributor',
-                                  'fa-user-tie' : claim.requestedBy.profile === 'customer'}"></i>
+                                  'fa-user-tie' : claim.requestedBy.profile === 'customer'}"></i> -->
                           </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="numeroPedido">
+                    <ng-container matColumnDef="folioPedido">
                       <mat-header-cell *matHeaderCellDef mat-sort-header> No. Pedido</mat-header-cell>
-                      <mat-cell *matCellDef="let claim"> {{claim.numeroPedido}} </mat-cell>
+                      <mat-cell *matCellDef="let claim"> {{claim.folioPedido}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="createdDate">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de registro </mat-header-cell>
+                      <mat-cell *matCellDef="let claim"> {{claim.createdAt | date: "dd/MM/yyyy hh:mm:ss" }} </mat-cell>
+                      16/06/2020 05:55:49
                     </ng-container>
           
                     <ng-container matColumnDef="status">
                       <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
-                      <mat-cell *matCellDef="let claim"> {{claim.status}} </mat-cell>
+                      <mat-cell *matCellDef="let claim"> {{claim.status.nombre}} </mat-cell>
                     </ng-container>
           
         

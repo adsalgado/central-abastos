@@ -1,32 +1,25 @@
 import { TrackingQueja } from 'app/models/tracking-queja';
-
-export interface UserTmp {
-  fullName: String;
-  profile: String;
-}
+import { User } from 'app/core/user/user.model';
+import { Estatus } from './estatus.model';
 
 export interface IQueja {
-  claimId?: Number;
+  id?: Number;
+  tipoUsuario?: String;
   createdAt?: Date;
-  lastUpdated?: Date;
-  tracking?: TrackingQueja[];
-  status?: String;
-  requestedBy?: UserTmp;
-  claimMessage?: String;
-  numeroPedido?: Number;
-  evidence?: String;
+  //tracking?: TrackingQueja[];
+  status?: Estatus;
+  requestedBy?: User;
+  folioPedido?: String;
 }
 
 export class Queja implements IQueja {
   constructor(
-    public claimId?: number,
+    public id?: number,
+    public tipoUsuario?: String,
     public createdAt?: Date,
-    public lastUpdated?: Date,
-    public tracking?: TrackingQueja[],
-    public status?: String,
-    public requestedBy?: UserTmp,
-    public claimMessage?: String,
-    public numeroPedido?: Number,
-    public evidence?: String
+    // public tracking?: TrackingQueja[],
+    public status?: Estatus,
+    public requestedBy?: User,
+    public folioPedido?: String
   ) {}
 }
