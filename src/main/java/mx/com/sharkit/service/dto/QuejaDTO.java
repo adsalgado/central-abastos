@@ -1,6 +1,7 @@
 package mx.com.sharkit.service.dto;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
@@ -12,7 +13,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 public class QuejaDTO implements Serializable {
 
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     @NotNull
     private Long tipoUsuarioId;
@@ -34,9 +40,11 @@ public class QuejaDTO implements Serializable {
 	private EstatusDTO estatus;
 
     private String tokenWeb;
-
+    
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss", locale = "es_MX")
 	private LocalDateTime fechaAlta;
+    
+    private List<TrackingQuejaDTO> tracking;
 
 
     public Long getId() {
@@ -125,6 +133,14 @@ public class QuejaDTO implements Serializable {
 
 	public void setTokenWeb(String tokenWeb) {
 		this.tokenWeb = tokenWeb;
+	}
+
+	public List<TrackingQuejaDTO> getTracking() {
+		return tracking;
+	}
+
+	public void setTracking(List<TrackingQuejaDTO> tracking) {
+		this.tracking = tracking;
 	}
 
 	@Override

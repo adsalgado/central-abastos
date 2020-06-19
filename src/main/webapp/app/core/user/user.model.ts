@@ -45,3 +45,12 @@ export class User implements IUser {
     this.password = password ? password : null;
   }
 }
+
+export interface TipoUsuarioI {
+  id?: Number;
+  nombre?: String;
+}
+
+export class TipoUsuario implements TipoUsuarioI {
+  constructor(public id?: Number, public nombre?: String) {}
+}

@@ -58,6 +58,7 @@
     "material-icons": "^0.3.1",
     "mdbootstrap": "^4.16.0",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.31",
     "ng-jhipster": "0.10.1",
     "ng2-ckeditor": "^1.2.6",
     "ngx-cookie": "4.0.2",
@@ -172,8 +173,8 @@
     "webpack:prod:main": "npm run webpack -- --config webpack/webpack.prod.js --profile",
     "webpack:prod": "npm run cleanup && npm run webpack:prod:main && npm run clean-www",
     "webpack:test": "npm run test",
-    "webpack-dev-server": "node --max_old_space_size=2048 node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "webpack": "node --max_old_space_size=2048 node_modules/webpack/bin/webpack.js"
+    "webpack-dev-server": "node --max_old_space_size=4096 node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js"
   },
   "jestSonar": {
     "reportPath": "target/test-results/jest",

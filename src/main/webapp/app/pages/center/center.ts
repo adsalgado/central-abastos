@@ -8,6 +8,9 @@ import { ReclamoDialogComponent } from 'app/shared/reclamo-dialog/reclamo-dialog
 import { QuejaService } from 'app/entities/queja';
 import { filter, map } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
+import { TrackingQueja } from 'app/models/tracking-queja';
+import { LocalStorageEncryptService } from 'app/services/local-storage-encrypt-service';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 const moment = require('moment');
 
 @Component({
@@ -27,7 +30,12 @@ export class CenterPage implements OnInit {
 
   columnsToDisplay = ['id', 'usuario', 'profile', 'folioPedido', 'createdDate', 'status'];
 
-  constructor(private messagingService: MessagingService, private zone: NgZone, private apiService: QuejaService) {}
+  constructor(
+    private messagingService: MessagingService,
+    private zone: NgZone,
+    private apiService: QuejaService,
+    private localStorageService: LocalStorageEncryptService
+  ) {}
 
   ngAfterViewInit(): void {
     this.messagingService.currentMessage.subscribe(claim => {
@@ -44,35 +52,28 @@ export class CenterPage implements OnInit {
     this.messagingService.requestPermission();
     this.messagingService.receiveMessage();
 
-    this.apiService
-      .query()
-      .pipe(
-        filter((res: any) => res.ok),
-        map((res: any) => {
-          let arrToReturn: Queja[] = [];
-          console.log(res.body);
-          res.body.forEach(element => {
-            arrToReturn.push(
-              new Queja(
-                element.id,
-                element.tipoUsuario.nombre,
-                moment(element.fechaAlta, 'DD/MM/YYYY HH:mm:SS'),
-                element.estatus,
-                element.usuario,
-                element.pedidoProveedor.folio
-              )
-            );
-          });
-          return arrToReturn;
-        })
-      )
-      .subscribe((response: any) => {
-        this.dataSource.data = response;
-      });
+    this.apiService.query().subscribe((response: any) => {
+      this.dataSource.data = response.body;
+      console.log(response.body);
+    });
   }
 
   onRowSelected(row) {
     this.claimSelected = row;
     this.sideNav.toggle();
+  }
+
+  saveTracking(trackingText) {
+    const user = this.localStorageService.getFromLocalStorage('userSession');
+    const trackingToSave = new TrackingQueja(moment().format('YYYY-MM-DD HH:mm'), trackingText, user, this.claimSelected.id);
+    console.log(trackingToSave);
+    this.apiService.addTracking(trackingToSave).subscribe(
+      resp => {
+        console.log(resp);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 }
