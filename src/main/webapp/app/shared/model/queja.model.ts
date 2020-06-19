@@ -20,16 +20,16 @@ export interface IQueja {
 
 export class Queja implements IQueja {
   constructor(
-    id?: Number,
-    tipoUsuarioId?: Number,
-    tipoUsuario?: TipoUsuario,
-    usuarioId?: Number,
-    usuario?: User,
-    pedidoProveedor?: any,
-    pedidoProveedorId?: Number,
-    estatusId?: Number,
-    estatus?: Estatus,
-    fechaAlta?: Date,
-    tracking?: TrackingQueja[]
+    public id?: Number,
+    public tipoUsuarioId?: Number,
+    public tipoUsuario?: TipoUsuario,
+    public usuarioId?: Number,
+    public usuario?: User,
+    public pedidoProveedor?: any,
+    public pedidoProveedorId?: Number,
+    public estatusId?: Number,
+    public estatus?: Estatus,
+    public fechaAlta?: Date,
+    public tracking?: TrackingQueja[]
   ) {}
 }

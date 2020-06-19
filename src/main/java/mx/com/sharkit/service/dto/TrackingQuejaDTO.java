@@ -36,7 +36,7 @@ public class TrackingQuejaDTO implements Serializable {
 
     private Long quejaId;
     
-    private QuejaDTO queja;
+    //private QuejaDTO queja;
 
     private UserDTO user;
     
@@ -100,13 +100,13 @@ public class TrackingQuejaDTO implements Serializable {
 	
 	
 
-	public QuejaDTO getQueja() {
-		return queja;
-	}
+//	public QuejaDTO getQueja() {
+//		return queja;
+//	}
 
-	public void setQueja(QuejaDTO queja) {
-		this.queja = queja;
-	}
+//	public void setQueja(QuejaDTO queja) {
+//		this.queja = queja;
+//	}
 
 	@Override
     public boolean equals(Object o) {

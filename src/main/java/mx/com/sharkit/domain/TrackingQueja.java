@@ -34,10 +34,10 @@ public class TrackingQueja implements Serializable {
     private LocalDateTime trackingDate;
 
     @OneToOne
-    @JoinColumn(name = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "user_id", insertable=false, updatable=false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "queja_id", insertable = false, updatable = false)
     private Queja queja;
 

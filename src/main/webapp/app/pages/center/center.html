@@ -28,7 +28,6 @@
                                   <option value="fail">Fallido</option>
                                 </select>
                               </div>
-                        </div>
                       </form>
                 </section>
 
@@ -111,12 +110,12 @@
         <div class="row">
               <div class="container claims-log">
                    <div class="list-group">
-                      <div class="list-group-item" *ngFor="let log of claimSelected.tracking">
+                      <div class="list-group-item" *ngFor="let log of claimSelected.tracking" [ngClass]="{'new-tracking-event' : log.isNew}">
                             <div class="d-flex w-100 justify-content-between">
-                                <small class="w-100 ">{{log.date}}</small>
+                                <small class="w-100 ">{{log.trackingDate}}</small>
                             </div>
-                            <p class="mb-1"> {{log.text}} </p>
-                            <small>{{log.name}}</small>
+                            <p class="mb-1"> {{log.trackingMessage}} </p>
+                          <small>{{log.user.firstName}} {{log.user.lastName}}</small>
                       </div>
                    </div>
               </div>

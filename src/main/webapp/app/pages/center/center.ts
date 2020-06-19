@@ -54,7 +54,6 @@ export class CenterPage implements OnInit {
 
     this.apiService.query().subscribe((response: any) => {
       this.dataSource.data = response.body;
-      console.log(response.body);
     });
   }
 
@@ -63,13 +62,14 @@ export class CenterPage implements OnInit {
     this.sideNav.toggle();
   }
 
-  saveTracking(trackingText) {
+  saveTracking(trackingText: String) {
     const user = this.localStorageService.getFromLocalStorage('userSession');
     const trackingToSave = new TrackingQueja(moment().format('YYYY-MM-DD HH:mm'), trackingText, user, this.claimSelected.id);
     console.log(trackingToSave);
     this.apiService.addTracking(trackingToSave).subscribe(
-      resp => {
-        console.log(resp);
+      (resp: TrackingQueja) => {
+        resp.isNew = true;
+        this.claimSelected.tracking.push(resp);
       },
       error => {
         console.log(error);

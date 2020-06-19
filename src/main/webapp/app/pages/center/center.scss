@@ -1,0 +1,36 @@
+mat-table {
+  width: 100%;
+}
+
+mat-tr.mat-footer-row {
+  font-weight: bold;
+}
+
+mat-table .mat-table-sticky {
+  border-top: 1px solid #e0e0e0;
+}
+
+.title-filters {
+  font-weight: bold;
+}
+
+.border-gray-bottom {
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.claims-log {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.new-tracking-event {
+  animation: blink 2s;
+}
+
+@keyframes blink {
+  50% {
+    background: green;
+    color: #000;
+  }
+}

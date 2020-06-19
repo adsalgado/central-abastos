@@ -2,11 +2,13 @@ package mx.com.sharkit.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -53,8 +55,8 @@ public class Queja implements Serializable {
 	@JoinColumn(name = "pedido_proveedor_id", insertable = false, updatable = false)
 	private PedidoProveedor pedidoProveedor;
     
-    @OneToMany(mappedBy="queja", cascade=CascadeType.ALL)
-    private Set<TrackingQueja> tracking;
+    @OneToMany(mappedBy="queja", cascade=CascadeType.ALL, fetch= FetchType.LAZY)
+    private List<TrackingQueja> tracking;
 
     @Column(name = "estatus_id")
     private Long estatusId;
@@ -145,6 +147,16 @@ public class Queja implements Serializable {
 
 	public void setFechaAlta(LocalDateTime fechaAlta) {
 		this.fechaAlta = fechaAlta;
+	}
+	
+	
+
+	public List<TrackingQueja> getTracking() {
+		return tracking;
+	}
+
+	public void setTracking(List<TrackingQueja> tracking) {
+		this.tracking = tracking;
 	}
 
 	@Override
