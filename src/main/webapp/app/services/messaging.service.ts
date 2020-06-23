@@ -4,7 +4,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { Queja } from 'app/shared/model/queja.model';
 @Injectable()
 export class MessagingService {
-  currentMessage = new Subject<Queja>();
+  currentMessage = new Subject<any>();
 
   constructor(private angularFireMessaging: AngularFireMessaging, private zone: NgZone) {}
 

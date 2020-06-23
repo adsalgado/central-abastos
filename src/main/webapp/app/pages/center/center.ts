@@ -28,7 +28,6 @@ export class CenterPage implements OnInit {
 
   constructor(
     private messagingService: MessagingService,
-    private zone: NgZone,
     private apiService: QuejaService,
     private localStorageService: LocalStorageEncryptService,
     private changeDetector: ChangeDetectorRef
@@ -74,7 +73,7 @@ export class CenterPage implements OnInit {
     this.changeDetector.detectChanges();
     this.sideNav.toggle();
 
-    this.openModal(this.claimSelected);
+    //this.openModal(this.claimSelected);
   }
 
   saveTracking(trackingText: String) {
