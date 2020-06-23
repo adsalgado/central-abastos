@@ -10,6 +10,9 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,6 +47,7 @@ import mx.com.sharkit.service.QuejaService;
 import mx.com.sharkit.service.UserService;
 import mx.com.sharkit.service.dto.NotificacionDTO;
 import mx.com.sharkit.service.dto.QuejaDTO;
+import mx.com.sharkit.service.dto.TrackingQuejaDTO;
 import mx.com.sharkit.service.dto.UserDTO;
 import mx.com.sharkit.service.mapper.UserMapper;
 import mx.com.sharkit.web.rest.errors.BadRequestAlertException;
@@ -244,5 +250,18 @@ public class QuejaResource {
 		}
 
 	}
+	
+	   /**
+     * 
+     * @ResponseBody
+     */
+    @ResponseBody
+    @PostMapping("/quejas/change-status")
+    public QuejaDTO updateTrackingStatus(@RequestBody QuejaDTO quejaDTO) {
+    	//Long quejaId = Long.parseLong(request.getParameter("quejaId"));
+    	//String newStatus = request.getParameter("newStatus");
+    	QuejaDTO updatedQueja = quejaService.changeStatus(quejaDTO.getId(), quejaDTO.getEstatus().getNombre());
+    	return updatedQueja; 	
+    }
 
 }

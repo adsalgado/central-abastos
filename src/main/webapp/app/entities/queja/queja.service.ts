@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
@@ -45,4 +45,8 @@ export class QuejaService {
   // getQuejas() : Observable<Queja[]> {
   //     return this.http.get<Queja[]>(this.resourceUrl);
   // }
+
+  updateStatus(queja: Queja) {
+    return this.http.post<Queja>(this.resourceUrl + '/change-status', queja);
+  }
 }

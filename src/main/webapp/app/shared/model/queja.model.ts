@@ -3,14 +3,14 @@ import { User, TipoUsuario } from 'app/core/user/user.model';
 import { Estatus } from './estatus.model';
 
 export interface IQueja {
-  id?: Number;
-  tipoUsuarioId?: Number;
+  id?: number;
+  tipoUsuarioId?: number;
   tipoUsuario?: TipoUsuario;
-  usuarioId?: Number;
+  usuarioId?: number;
   usuario?: User;
   pedidoProveedor?: any;
-  pedidoProveedorId?: Number;
-  estatusId?: Number;
+  pedidoProveedorId?: number;
+  estatusId?: number;
   estatus?: Estatus;
   fechaAlta?: Date;
   tracking?: TrackingQueja[];
@@ -20,14 +20,14 @@ export interface IQueja {
 
 export class Queja implements IQueja {
   constructor(
-    public id?: Number,
-    public tipoUsuarioId?: Number,
+    public id?: number,
+    public tipoUsuarioId?: number,
     public tipoUsuario?: TipoUsuario,
-    public usuarioId?: Number,
+    public usuarioId?: number,
     public usuario?: User,
     public pedidoProveedor?: any,
-    public pedidoProveedorId?: Number,
-    public estatusId?: Number,
+    public pedidoProveedorId?: number,
+    public estatusId?: number,
     public estatus?: Estatus,
     public fechaAlta?: Date,
     public tracking?: TrackingQueja[]

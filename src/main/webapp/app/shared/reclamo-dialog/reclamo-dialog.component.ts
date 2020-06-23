@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { Queja } from '../model/queja.model';
+import { Queja } from 'app/shared/model/queja.model';
 
 @Component({
   selector: 'app-reclamo-dialog',
   templateUrl: './reclamo-dialog.component.html',
-  styleUrls: ['./reclamo-dialog.component.scss']
+  styleUrls: ['./reclamo-dialog.component.css']
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReclamoDialogComponent {

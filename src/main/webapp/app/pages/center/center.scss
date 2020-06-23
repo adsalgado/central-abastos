@@ -28,6 +28,38 @@ mat-table .mat-table-sticky {
   animation: blink 2s;
 }
 
+.claim-status {
+  text-transform: lowercase;
+  display: inline-block;
+}
+.claim-status::first-letter {
+  text-transform: uppercase;
+}
+
+.claim-status.open {
+  color: #f9a602;
+}
+
+.claim-status.failed {
+  color: red;
+}
+
+.claim-status.closed {
+  color: green;
+}
+
+#filterInput {
+  box-shadow: none !important;
+}
+
+/*.mat-row:nth-child(even){
+          background-color:red;
+          }
+
+   .mat-row:nth-child(odd){
+          background-color:black;
+          }*/
+
 @keyframes blink {
   50% {
     background: green;

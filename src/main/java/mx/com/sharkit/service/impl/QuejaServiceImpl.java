@@ -1,9 +1,13 @@
 package mx.com.sharkit.service.impl;
 
 import mx.com.sharkit.service.QuejaService;
+import mx.com.sharkit.domain.Estatus;
 import mx.com.sharkit.domain.Queja;
+import mx.com.sharkit.domain.enumeration.TipoEstatus;
+import mx.com.sharkit.repository.EstatusRepository;
 import mx.com.sharkit.repository.QuejaRepository;
 import mx.com.sharkit.service.dto.QuejaDTO;
+import mx.com.sharkit.service.dto.TrackingQuejaDTO;
 import mx.com.sharkit.service.mapper.QuejaMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +32,17 @@ public class QuejaServiceImpl extends BaseServiceImpl<Queja, Long> implements Qu
     private final QuejaRepository quejaRepository;
 
     private final QuejaMapper quejaMapper;
+    
+    private final EstatusRepository statusRepository;
+    
+    
 
-    public QuejaServiceImpl(QuejaRepository quejaRepository, QuejaMapper quejaMapper) {
+    public QuejaServiceImpl(QuejaRepository quejaRepository, QuejaMapper quejaMapper, 
+    						EstatusRepository estatusRepository) {
         this.quejaRepository = quejaRepository;
         this.quejaMapper = quejaMapper;
+        
+        this.statusRepository = estatusRepository;
     }
 
     /**
@@ -86,5 +97,20 @@ public class QuejaServiceImpl extends BaseServiceImpl<Queja, Long> implements Qu
     public void delete(Long id) {
         log.debug("Request to delete Queja : {}", id);
         quejaRepository.deleteById(id);
+    }
+    
+    
+    @Override
+    public QuejaDTO changeStatus(Long quejaId, String newStatus){
+    	 Optional<Queja> queja = quejaRepository.findById(quejaId);
+    	 Optional<Estatus> estatus = statusRepository.findStatusByTipoEstatusAndNombre("ESTATUS_QUEJA", newStatus);
+    	 if(queja.isPresent()) {
+    		 Queja quejaObject =queja.get();
+    		 quejaObject.setEstatus(estatus.get());
+    		 quejaObject.setEstatusId(estatus.get().getId());
+    		 quejaObject = quejaRepository.save(quejaObject);
+    		 return quejaMapper.toDto(quejaObject);
+    	 }
+    	 return null;
     }
 }

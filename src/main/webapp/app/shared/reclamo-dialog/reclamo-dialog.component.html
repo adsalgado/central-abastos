@@ -9,29 +9,33 @@
             </button>
           </div>
           <div class="modal-body">
-            <p>Estimado telemarketing, hay una nueva reclamación
+            <p>Estimado Usuario de Conctact Center, hay una nueva reclamación
             </p>
               <div class="container">
                   <div class="row">
+                      <div class="col-6 font-weight-bold">
+                         Nombre Cliente
+                      </div>   
                       <div class="col-6">
-                          <div class="row">Nombre Cliente</div>
-                          <div class="row">Mensaje</div>
-                          <div class="row">Evidencia</div>
-                      </div>
-                      <div class="col-6">
-                            <div class="row">{{claim.requestedBy.fullName}}</div>
-                            <div class="row">{{claim.claimMessage}}</div>
-                            
-                      </div>
+                          {{claim.usuario.firstName}} {{claim.usuario.lastName}}
+                      </div> 
                   </div>
-                  <div class="row text-center">
-                      <img class="img-evidence" [src]="claim.evidence">
+                  <div class="row">
+                      <div class="col-6 font-weight-bold">
+                          Folio Pedido
+                      </div>   
+                      <div class="col-6">
+                          {{claim.pedidoProveedor.folio}}
+                      </div> 
                   </div>
               </div>
+              <!-- <div class="row text-center">
+                  <img class="img-evidence" [src]="claim.evidence">
+              </div> -->
           </div>
           <div class="modal-footer">
-            <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button> -->
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+               <button type="button" class="btn btn-primary">Ver quejas</button>
           </div>
         </div>
       </div>
