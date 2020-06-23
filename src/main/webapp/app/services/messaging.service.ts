@@ -4,18 +4,27 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { Queja } from 'app/shared/model/queja.model';
 import { SERVER_API_URL } from 'app/app.constants';
 import { HttpClient } from '@angular/common/http';
+import { LocalStorageEncryptService } from './local-storage-encrypt-service';
+import { User } from 'app/models/User';
 @Injectable()
 export class MessagingService {
   currentMessage = new Subject<any>();
 
   public resourceUrl = SERVER_API_URL + 'api/usuarios';
 
-  constructor(private angularFireMessaging: AngularFireMessaging, private zone: NgZone, private http: HttpClient) {}
+  constructor(
+    private angularFireMessaging: AngularFireMessaging,
+    private zone: NgZone,
+    private http: HttpClient,
+    private localStorageService: LocalStorageEncryptService
+  ) {}
 
   requestPermission() {
     this.angularFireMessaging.requestToken.subscribe(
       token => {
-        this.http.put<any>(this.resourceUrl, { tokenWeb: token }).subscribe(
+        const user = this.localStorageService.getFromLocalStorage('userSession');
+        user.tokenWeb = token;
+        this.http.put<User>(this.resourceUrl, user).subscribe(
           success => {
             console.log('REGRESA DE GUARDAR TOKEN EN BD');
             console.log(success);
