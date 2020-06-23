@@ -1,13 +1,15 @@
 import { LocalStorageEncryptService } from './services/local-storage-encrypt-service';
 import { AlertService } from './services/alert.service';
 import { JhiEventManager } from 'ng-jhipster';
-import { Component, OnDestroy, OnInit, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { LoginModalService } from './core';
 import swal, { SweetAlertOptions } from 'sweetalert2';
 import { LoadingService } from './services/loading-service';
 import { MessagingService } from './services/messaging.service';
 import { NavParamsService } from './services/nav-params.service';
+import { ReclamoDialogComponent } from './shared/reclamo-dialog/reclamo-dialog.component';
+import { Queja } from './shared/model/queja.model';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +19,9 @@ import { NavParamsService } from './services/nav-params.service';
 export class AppComponent implements OnDestroy, OnInit, AfterViewInit {
   title = 'basic-with-login';
   modalRef: NgbModalRef;
+
+  @ViewChild('modalClaim', { static: false }) modal: ReclamoDialogComponent;
+
   public eventoLogin: any = null;
   constructor(
     private eventManager: JhiEventManager,
@@ -59,6 +64,8 @@ export class AppComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.messagingService.requestPermission();
+    this.messagingService.receiveMessage();
     this.iniSlickJs();
   }
 
@@ -83,10 +90,13 @@ export class AppComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    //this.messagingService.requestPermission();
-    //this.messagingService.receiveMessage();
-    //console.log("*****************************************");
-    //console.log(this.messagingService.currentMessage);
+    this.messagingService.currentMessage.subscribe(claim => {
+      this.openModal(claim);
+    });
+  }
+
+  openModal(claim: Queja) {
+    this.modal.open(claim);
   }
 
   ngOnDestroy() {

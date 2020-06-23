@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, NgZone, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { MessagingService } from 'app/services/messaging.service';
 import { Queja, IQueja } from 'app/shared/model/queja.model';
 import { Subject } from 'rxjs';
 import { MatTableDataSource, MatSort, MatSidenav } from '@angular/material';
@@ -21,24 +20,18 @@ export class CenterPage implements OnInit {
   onClaimReceived = new Subject<String>();
   dataSource = new MatTableDataSource<Queja>();
 
-  @ViewChild('modalClaim', { static: false }) modal: ReclamoDialogComponent;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild('sidenavDetails', { static: false }) sideNav: MatSidenav;
 
   columnsToDisplay = ['id', 'usuario', 'profile', 'folioPedido', 'createdDate', 'status'];
 
   constructor(
-    private messagingService: MessagingService,
     private apiService: QuejaService,
     private localStorageService: LocalStorageEncryptService,
     private changeDetector: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit(): void {
-    this.messagingService.currentMessage.subscribe(claim => {
-      this.openModal(claim);
-    });
-
     this.dataSource.filterPredicate = (data, filter) => {
       const pattern =
         data.id +
@@ -55,15 +48,8 @@ export class CenterPage implements OnInit {
     };
   }
 
-  openModal(claim: Queja) {
-    this.modal.open(claim);
-  }
-
   ngOnInit() {
     this.dataSource.sort = this.sort;
-    this.messagingService.requestPermission();
-    this.messagingService.receiveMessage();
-
     this.apiService.query().subscribe((response: any) => {
       this.dataSource.data = response.body;
     });

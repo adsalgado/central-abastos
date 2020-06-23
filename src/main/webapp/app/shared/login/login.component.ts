@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { LoginService } from 'app/core/login/login.service';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
+import { MessagingService } from 'app/services/messaging.service';
 
 @Component({
   selector: 'jhi-login-modal',
@@ -27,7 +28,8 @@ export class JhiLoginModalComponent implements AfterViewInit {
     private renderer: Renderer,
     private router: Router,
     public activeModal: NgbActiveModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private messagingService: MessagingService
   ) {}
 
   ngAfterViewInit() {
@@ -69,6 +71,9 @@ export class JhiLoginModalComponent implements AfterViewInit {
           this.stateStorageService.storeUrl(null);
           this.router.navigateByUrl(redirect);
         }
+
+        //requires the authorization from the user to receive notifications
+        this.messagingService.requestPermission();
       })
       .catch(() => {
         this.authenticationError = true;
