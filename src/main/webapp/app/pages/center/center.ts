@@ -7,6 +7,7 @@ import { ReclamoDialogComponent } from 'app/shared/reclamo-dialog/reclamo-dialog
 import { QuejaService } from 'app/entities/queja';
 import { TrackingQueja } from 'app/models/tracking-queja';
 import { LocalStorageEncryptService } from 'app/services/local-storage-encrypt-service';
+import { NgForm } from '@angular/forms';
 const moment = require('moment');
 
 @Component({
@@ -76,14 +77,20 @@ export class CenterPage implements OnInit {
     //this.openModal(this.claimSelected);
   }
 
-  saveTracking(trackingText: String) {
+  saveTracking(trackingForm: NgForm) {
     const user = this.localStorageService.getFromLocalStorage('userSession');
-    const trackingToSave = new TrackingQueja(moment().format('YYYY-MM-DD HH:mm'), trackingText, user, this.claimSelected.id);
+    const trackingToSave = new TrackingQueja(
+      moment().format('YYYY-MM-DD HH:mm'),
+      trackingForm.value.trackingText,
+      user,
+      this.claimSelected.id
+    );
     console.log(trackingToSave);
     this.apiService.addTracking(trackingToSave).subscribe(
       (resp: TrackingQueja) => {
         resp.isNew = true;
         this.claimSelected.tracking.push(resp);
+        trackingForm.reset();
       },
       error => {
         moment().format('YYYY-MM-DD HH:mm');

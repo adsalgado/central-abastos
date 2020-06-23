@@ -135,7 +135,7 @@
         </div>
         <div *ngIf="claimSelected.estatus.nombre === 'ABIERTA'" class="row mt-3"> 
                 <h5 class="col-12 mt-3"> Seguimiento a Reclamo</h5>
-                <form #claimForm class="col-12">  
+                <form class="col-12" (submit)="saveTracking(trackingForm)" #trackingForm="ngForm" >  
                     <div class="form-group col-12 pl-0 pr-0">
                         <label for="tracking-text">Introduce el texto del seguimiento</label>
                         <textarea class="form-control col-12"
@@ -143,10 +143,11 @@
                                    ngModel required></textarea>
                     </div>
                     <div class="col-12 d-flex w-100 justify-content-between">
-                      <button type="button"  
+                        <button type="button"  
                               class="btn primary bg-secondary" 
-                              [disabled]="claimForm.trackingText.value == ''"
-                              (click) ="saveTracking(claimForm.trackingText.value)">Guardar</button>
+                              [disabled]="trackingForm.value.trackingText == ''"
+                              type="submit">Guardar
+                        </button>
                         <button type="button" 
                                 data-toggle="tooltip" 
                                 data-placement="top" 
