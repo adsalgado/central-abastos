@@ -114,6 +114,23 @@ public class PedidoProveedor implements Serializable {
     @Column(name = "distancia_entrega_km")
 	private BigDecimal distanciaEntregaKm;
 
+    @Column(name = "porcentaje_comision_proveedor")
+	private BigDecimal porcentajeComisionProveedor;
+    
+    @Column(name = "comision_proveedor")
+	private BigDecimal comisionProveedor;
+    
+    @Column(name = "total_depositar_proveedor")
+	private BigDecimal totalDepositarProveedor;
+
+    @Size(max = 1)
+    @Column(name = "depositado_proveedor", length = 1)
+    private String depositadoProveedor;
+    
+    @Size(max = 1)
+    @Column(name = "depositado_transportista", length = 512)
+    private String depositadoTransportista;
+
 	public Long getId() {
 		return id;
 	}
@@ -338,6 +355,46 @@ public class PedidoProveedor implements Serializable {
 		this.distanciaEntregaKm = distanciaEntregaKm;
 	}
 
+	public BigDecimal getPorcentajeComisionProveedor() {
+		return porcentajeComisionProveedor;
+	}
+
+	public void setPorcentajeComisionProveedor(BigDecimal porcentajeComisionProveedor) {
+		this.porcentajeComisionProveedor = porcentajeComisionProveedor;
+	}
+
+	public BigDecimal getComisionProveedor() {
+		return comisionProveedor;
+	}
+
+	public void setComisionProveedor(BigDecimal comisionProveedor) {
+		this.comisionProveedor = comisionProveedor;
+	}
+
+	public BigDecimal getTotalDepositarProveedor() {
+		return totalDepositarProveedor;
+	}
+
+	public void setTotalDepositarProveedor(BigDecimal totalDepositarProveedor) {
+		this.totalDepositarProveedor = totalDepositarProveedor;
+	}
+
+	public String getDepositadoProveedor() {
+		return depositadoProveedor;
+	}
+
+	public void setDepositadoProveedor(String depositadoProveedor) {
+		this.depositadoProveedor = depositadoProveedor;
+	}
+
+	public String getDepositadoTransportista() {
+		return depositadoTransportista;
+	}
+
+	public void setDepositadoTransportista(String depositadoTransportista) {
+		this.depositadoTransportista = depositadoTransportista;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -366,7 +423,10 @@ public class PedidoProveedor implements Serializable {
 				+ ", fechaEntrega=" + fechaEntrega + ", personaEntrega=" + personaEntrega + ", chatProveedorid="
 				+ chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + ", token=" + token
 				+ ", calificacionServicio=" + calificacionServicio + ", comentarios=" + comentarios
-				+ ", distanciaEntregaKm=" + distanciaEntregaKm + "]";
+				+ ", distanciaEntregaKm=" + distanciaEntregaKm + ", porcentajeComisionProveedor="
+				+ porcentajeComisionProveedor + ", comisionProveedor=" + comisionProveedor
+				+ ", totalDepositarProveedor=" + totalDepositarProveedor + ", depositadoProveedor="
+				+ depositadoProveedor + ", depositadoTransportista=" + depositadoTransportista + "]";
 	}
 
 }

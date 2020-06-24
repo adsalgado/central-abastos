@@ -224,24 +224,28 @@ public class PedidoResource {
 		Charge charge = null;
 		try {
 			charge = stripeService.charge(chargeRequest);
-//			pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
-//			//Envío de notificación push con Firebase
-//			sendPushNotificationPedidoPagado(pedido);
+			pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
+			if (pedido.getEstatusId().equals(Estatus.PEDIDO_PAGADO)) {
+				//Envío de notificación push con Firebase
+				sendPushNotificationPedidoPagado(pedido);
+				//Borrar el carrito de compras
+				carritoCompraService.deleteByClienteId(clienteId);
+			}
 			
 		} catch (StripeException e) {
 			log.error("Error Stripe: {}", e);
-//			throw new BadRequestAlertException("Error al procesar el pago.", ENTITY_NAME, "errorStripe");
+			throw new BadRequestAlertException("Error al procesar el pago.", ENTITY_NAME, "errorStripe");
 		}
 
-		if (charge == null) {
-			charge = new Charge();
-		}
-		pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
-		if (pedido.getEstatusId() == Estatus.PEDIDO_PAGADO) {
-			//Envío de notificación push con Firebase
-			sendPushNotificationPedidoPagado(pedido);
-			carritoCompraService.deleteByClienteId(clienteId);
-		}
+//		if (charge == null) {
+//			charge = new Charge();
+//		}
+//		pedido = pedidoService.registraPagoPedido(pedidopagoDTO.getPedidoId(), charge, clienteId);
+//		if (pedido.getEstatusId() == Estatus.PEDIDO_PAGADO) {
+//			//Envío de notificación push con Firebase
+//			sendPushNotificationPedidoPagado(pedido);
+//			carritoCompraService.deleteByClienteId(clienteId);
+//		}
 
 		return ResponseEntity.ok().body(pedido);
 	}

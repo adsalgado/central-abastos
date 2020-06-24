@@ -32,6 +32,7 @@ import mx.com.sharkit.service.GoogleService;
 import mx.com.sharkit.service.PedidoProveedorHistoricoService;
 import mx.com.sharkit.service.PedidoService;
 import mx.com.sharkit.service.ProductoProveedorService;
+import mx.com.sharkit.service.ProveedorTarifaService;
 import mx.com.sharkit.service.TransportistaTarifaService;
 import mx.com.sharkit.service.dto.DireccionDTO;
 import mx.com.sharkit.service.dto.PedidoAltaDTO;
@@ -41,6 +42,7 @@ import mx.com.sharkit.service.dto.PedidoDetalleDTO;
 import mx.com.sharkit.service.dto.PedidoProveedorDTO;
 import mx.com.sharkit.service.dto.ProductoProveedorDTO;
 import mx.com.sharkit.service.dto.ProveedorDTO;
+import mx.com.sharkit.service.dto.ProveedorTarifaDTO;
 import mx.com.sharkit.service.dto.UserDTO;
 import mx.com.sharkit.service.mapper.PedidoDetalleMapper;
 import mx.com.sharkit.service.mapper.PedidoMapper;
@@ -85,6 +87,9 @@ public class PedidoServiceImpl implements PedidoService {
 	
 	@Autowired
 	private PedidoProveedorHistoricoService pedidoProveedorHistoricoService;
+
+	@Autowired
+	private ProveedorTarifaService proveedorTarifaService;
 
 	public PedidoServiceImpl(PedidoRepository pedidoRepository, PedidoMapper pedidoMapper,
 			ProductoProveedorService productoProveedorService, PedidoProveedorRepository pedidoProveedorRepository,
@@ -271,6 +276,23 @@ public class PedidoServiceImpl implements PedidoService {
 			pedProv.setPedidoId(pedidoId);
 			pedProv.setTotal(sumaProveedor.get(pedProv.getProveedorId()));
 			pedProv.setTotalSinIva(sumaSinIvaProveedor.get(pedProv.getProveedorId()));
+			
+			// Calculo de la comisión cobrada al proveedor
+			ProveedorDTO proveedorDTO = mapProveedores.get(pedProv.getProveedorId());
+			log.debug("proveedorDTO. {}", proveedorDTO);
+
+			ProveedorTarifaDTO tarifaDTO = proveedorDTO.getProveedorTarifa();
+			BigDecimal porcentajeComision = BigDecimal.ZERO;
+			if (tarifaDTO != null) {
+				porcentajeComision = tarifaDTO.getPorcentajeComision();
+			}
+			BigDecimal comisionProveedor = pedProv.getTotal().multiply(porcentajeComision.divide(new BigDecimal(100))); 
+			
+			pedProv.setPorcentajeComisionProveedor(porcentajeComision);
+			pedProv.setComisionProveedor(comisionProveedor);
+			pedProv.setTotalDepositarProveedor(pedProv.getTotal().subtract(comisionProveedor));
+			pedProv.setDepositadoProveedor("N");
+			pedProv.setDepositadoTransportista("N");
 
 			// Generar token para la entrega
 			String token = RandomUtil.generateToken(SIZE_TOKEN_PEDIDO);
@@ -285,9 +307,6 @@ public class PedidoServiceImpl implements PedidoService {
 
 				// Calculo de distancia en kilometros y comisión de transportista
 				try {
-					ProveedorDTO proveedorDTO = mapProveedores.get(pedProv.getProveedorId());
-
-					log.debug("proveedorDTO. {}", proveedorDTO);
 
 					String direccionProveedor = String.format("%s,%s", proveedorDTO.getDireccion().getLatitud(),
 							proveedorDTO.getDireccion().getLongitud());
@@ -315,6 +334,12 @@ public class PedidoServiceImpl implements PedidoService {
 					log.error("Ocurrió un error al calcular la comisión del transporte. {}", e);
 				}
 
+			} else { // Guardar la dirección del proveedor en dirección de contacto
+								
+				if (proveedorDTO != null) {
+					pedidoEntity.setDireccionContactoId(proveedorDTO.getDireccionId());
+				}					
+				
 			}
 
 			PedidoProveedor pedidoProveedor = pedidoProveedorMapper.toEntity(pedProv);
@@ -328,6 +353,7 @@ public class PedidoServiceImpl implements PedidoService {
 			PedidoProveedorDTO pedProvSaved = pedidoProveedorMapper.toDto(pedidoProveedor);
 			pedido.getPedidoProveedores().add(pedProvSaved);
 
+			// Agregando el detalle del pedido por proveedor
 			pedProv.getPedidoDetalles().forEach(pedDet -> {
 				pedDet.setPedidoProveedorId(pedProvSaved.getId());
 
