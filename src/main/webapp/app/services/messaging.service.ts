@@ -23,19 +23,19 @@ export class MessagingService {
     this.angularFireMessaging.requestToken.subscribe(
       token => {
         const user = this.localStorageService.getFromLocalStorage('userSession');
-        user.login = user.username;
-        user.tokenWeb = token;
-        this.http.put<User>(this.resourceUrl, user).subscribe(
-          success => {
-            console.log('REGRESA DE GUARDAR TOKEN EN BD');
-            console.log(success);
-          },
-          error => {
-            console.log(error);
-          }
-        );
-        //Send the token to the server side.
-        console.log('TOKEN====> ' + token);
+        if (user) {
+          user.login = user.username;
+          user.tokenWeb = token;
+          this.http.put<User>(this.resourceUrl, user).subscribe(
+            success => {
+              console.log('REGRESA DE GUARDAR TOKEN EN BD');
+              console.log(success);
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        }
       },
       err => console.error('Unable to get permission to notify.', err)
     );
