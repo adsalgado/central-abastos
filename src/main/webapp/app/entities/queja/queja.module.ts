@@ -4,22 +4,26 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { JhiLanguageHelper } from 'app/core';
 
 import { AbastosSharedModule } from 'app/shared';
-import {
-  QuejaComponent,
-  QuejaDetailComponent,
-  QuejaUpdateComponent,
-  QuejaDeletePopupComponent,
-  QuejaDeleteDialogComponent,
-  quejaRoute,
-  quejaPopupRoute
-} from './';
+// import {
+//  // QuejaComponent,
+//  // QuejaDetailComponent,
+//  // QuejaUpdateComponent,
+//  // QuejaDeletePopupComponent,
+//  // QuejaDeleteDialogComponent,
+//   //quejaRoute,
+// //quejaPopupRoute
+// } from './';
 
-const ENTITY_STATES = [...quejaRoute, ...quejaPopupRoute];
+//const ENTITY_STATES = [...quejaRoute, ...quejaPopupRoute];
 
 @NgModule({
-  imports: [AbastosSharedModule, RouterModule.forChild(ENTITY_STATES)],
-  declarations: [QuejaComponent, QuejaDetailComponent, QuejaUpdateComponent, QuejaDeleteDialogComponent, QuejaDeletePopupComponent],
-  entryComponents: [QuejaComponent, QuejaUpdateComponent, QuejaDeleteDialogComponent, QuejaDeletePopupComponent],
+  imports: [AbastosSharedModule /*RouterModule.forChild(ENTITY_STATES)*/],
+  declarations: [
+    /*QuejaComponent, QuejaDetailComponent, QuejaUpdateComponent, QuejaDeleteDialogComponent, QuejaDeletePopupComponent*/
+  ],
+  entryComponents: [
+    /*QuejaComponent, QuejaUpdateComponent, QuejaDeleteDialogComponent, QuejaDeletePopupComponent*/
+  ],
   providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

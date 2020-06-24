@@ -28,7 +28,7 @@ import { TarjetaService, TarjetaResolve } from './entities/tarjeta';
 import { SeccionResolve, SeccionService } from './entities/seccion';
 import { RecolectorService, RecolectorResolve } from './entities/recolector';
 import { RecolectorTarifaService, RecolectorTarifaResolve } from './entities/recolector-tarifa';
-import { QuejaService, QuejaResolve } from './entities/queja';
+import { QuejaService } from './entities/queja';
 import { PromocionService, PromocionResolve } from './entities/promocion';
 import { ProveedorService, ProveedorResolve } from './entities/proveedor';
 import { ProductoService, ProductoResolve } from './entities/producto';
@@ -122,7 +122,6 @@ import { MessageService } from 'primeng/api';
     RecolectorTarifaService,
     RecolectorTarifaResolve,
     QuejaService,
-    QuejaResolve,
     ProveedorService,
     ProveedorResolve,
     PromocionService,
