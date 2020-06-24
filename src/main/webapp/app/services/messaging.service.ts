@@ -23,6 +23,7 @@ export class MessagingService {
     this.angularFireMessaging.requestToken.subscribe(
       token => {
         const user = this.localStorageService.getFromLocalStorage('userSession');
+        user.login = user.username;
         user.tokenWeb = token;
         this.http.put<User>(this.resourceUrl, user).subscribe(
           success => {

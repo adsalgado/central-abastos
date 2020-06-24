@@ -176,7 +176,7 @@ public class UserResource {
 	 */
 	@PutMapping("/usuarios")
 //    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
-	public ResponseEntity<UserDTO> updateUserToken(@Valid @RequestBody UserDTO userDTO) {
+	public ResponseEntity<UserDTO> updateUserToken(/*@Valid*/ @RequestBody UserDTO userDTO) {
 		log.debug("REST request to update User : {}", userDTO);
 		Optional<User> existingUser = userRepository.findOneByLogin(userDTO.getLogin().toLowerCase());
 		if (!existingUser.isPresent()) {
