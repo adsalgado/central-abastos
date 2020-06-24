@@ -75,9 +75,15 @@ public class Proveedor implements Serializable {
 
 	@Column(name = "transportista_id")
 	private Long transportistaId;
+	
+	@ManyToOne
+	@JoinColumn(name = "proveedor_tarifa_id", insertable = false, updatable = false)
+	private ProveedorTarifa proveedorTarifa;
 
-	// jhipster-needle-entity-add-field - JHipster will add fields here, do not
-	// remove
+	@Column(name = "proveedor_tarifa_id")
+	private Long proveedorTarifaId;
+	
+
 	public Long getId() {
 		return id;
 	}
@@ -170,9 +176,6 @@ public class Proveedor implements Serializable {
 		this.empresa = empresa;
 	}
 
-	// jhipster-needle-entity-add-getters-setters - JHipster will add getters and
-	// setters here, do not remove
-
 	public Long getEmpresaId() {
 		return empresaId;
 	}
@@ -213,6 +216,22 @@ public class Proveedor implements Serializable {
 		this.usuario = usuario;
 	}
 
+	public ProveedorTarifa getProveedorTarifa() {
+		return proveedorTarifa;
+	}
+
+	public void setProveedorTarifa(ProveedorTarifa proveedorTarifa) {
+		this.proveedorTarifa = proveedorTarifa;
+	}
+
+	public Long getProveedorTarifaId() {
+		return proveedorTarifaId;
+	}
+
+	public void setProveedorTarifaId(Long proveedorTarifaId) {
+		this.proveedorTarifaId = proveedorTarifaId;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -231,10 +250,12 @@ public class Proveedor implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Proveedor [id=" + id + ", nombre=" + nombre + ", fechaAlta=" + fechaAlta + ", fechaModificacion="
-				+ fechaModificacion + ", direccionId=" + direccionId + ", usuarioAltaId=" + usuarioAltaId
-				+ ", usuarioId=" + usuarioId + ", usuarioModificacionId=" + usuarioModificacionId + ", empresaId="
-				+ empresaId + ", transportistaId=" + transportistaId + "]";
+		return "Proveedor [id=" + id + ", usuario=" + usuario + ", usuarioId=" + usuarioId + ", nombre=" + nombre
+				+ ", fechaAlta=" + fechaAlta + ", fechaModificacion=" + fechaModificacion + ", direccion=" + direccion
+				+ ", direccionId=" + direccionId + ", usuarioAltaId=" + usuarioAltaId + ", usuarioModificacionId="
+				+ usuarioModificacionId + ", empresa=" + empresa + ", empresaId=" + empresaId + ", transportista="
+				+ transportista + ", transportistaId=" + transportistaId + ", proveedorTarifa=" + proveedorTarifa
+				+ ", proveedorTarifaId=" + proveedorTarifaId + "]";
 	}
 
 }

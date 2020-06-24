@@ -44,6 +44,10 @@ public class ProveedorDTO implements Serializable {
     private TransportistaDTO transportista;
 
     private Long transportistaId;
+    
+	private ProveedorTarifaDTO proveedorTarifa;
+
+	private Long proveedorTarifaId;
 
 
     public Long getId() {
@@ -158,6 +162,22 @@ public class ProveedorDTO implements Serializable {
 		this.usuario = usuario;
 	}
 
+	public ProveedorTarifaDTO getProveedorTarifa() {
+		return proveedorTarifa;
+	}
+
+	public void setProveedorTarifa(ProveedorTarifaDTO proveedorTarifa) {
+		this.proveedorTarifa = proveedorTarifa;
+	}
+
+	public Long getProveedorTarifaId() {
+		return proveedorTarifaId;
+	}
+
+	public void setProveedorTarifaId(Long proveedorTarifaId) {
+		this.proveedorTarifaId = proveedorTarifaId;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -185,7 +205,8 @@ public class ProveedorDTO implements Serializable {
 				+ ", fechaAlta=" + fechaAlta + ", fechaModificacion=" + fechaModificacion + ", empresa=" + empresa
 				+ ", empresaId=" + empresaId + ", direccion=" + direccion + ", direccionId=" + direccionId
 				+ ", usuarioAltaId=" + usuarioAltaId + ", usuarioModificacionId=" + usuarioModificacionId
-				+ ", transportista=" + transportista + ", transportistaId=" + transportistaId + "]";
+				+ ", transportista=" + transportista + ", transportistaId=" + transportistaId + ", proveedorTarifa="
+				+ proveedorTarifa + ", proveedorTarifaId=" + proveedorTarifaId + "]";
 	}
 
 }

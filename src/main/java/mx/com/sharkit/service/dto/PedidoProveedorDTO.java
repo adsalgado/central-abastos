@@ -80,6 +80,16 @@ public class PedidoProveedorDTO implements Serializable {
     
 	private BigDecimal distanciaEntregaKm;
 
+	private BigDecimal porcentajeComisionProveedor;
+    
+	private BigDecimal comisionProveedor;
+	
+	private BigDecimal totalDepositarProveedor;
+
+    private String depositadoProveedor;
+    
+    private String depositadoTransportista;
+
 	public Long getId() {
 		return id;
 	}
@@ -312,6 +322,46 @@ public class PedidoProveedorDTO implements Serializable {
 		this.distanciaEntregaKm = distanciaEntregaKm;
 	}
 
+	public BigDecimal getPorcentajeComisionProveedor() {
+		return porcentajeComisionProveedor;
+	}
+
+	public void setPorcentajeComisionProveedor(BigDecimal porcentajeComisionProveedor) {
+		this.porcentajeComisionProveedor = porcentajeComisionProveedor;
+	}
+
+	public BigDecimal getComisionProveedor() {
+		return comisionProveedor;
+	}
+
+	public void setComisionProveedor(BigDecimal comisionProveedor) {
+		this.comisionProveedor = comisionProveedor;
+	}
+
+	public BigDecimal getTotalDepositarProveedor() {
+		return totalDepositarProveedor;
+	}
+
+	public void setTotalDepositarProveedor(BigDecimal totalDepositarProveedor) {
+		this.totalDepositarProveedor = totalDepositarProveedor;
+	}
+
+	public String getDepositadoProveedor() {
+		return depositadoProveedor;
+	}
+
+	public void setDepositadoProveedor(String depositadoProveedor) {
+		this.depositadoProveedor = depositadoProveedor;
+	}
+
+	public String getDepositadoTransportista() {
+		return depositadoTransportista;
+	}
+
+	public void setDepositadoTransportista(String depositadoTransportista) {
+		this.depositadoTransportista = depositadoTransportista;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -345,7 +395,11 @@ public class PedidoProveedorDTO implements Serializable {
 				+ ", fechaEnvio=" + fechaEnvio + ", fechaEntrega=" + fechaEntrega + ", personaEntrega=" + personaEntrega
 				+ ", chatProveedorid=" + chatProveedorid + ", chatTransportistaId=" + chatTransportistaId + ", token="
 				+ token + ", calificacionServicio=" + calificacionServicio + ", comentarios=" + comentarios
-				+ ", distanciaEntregaKm=" + distanciaEntregaKm + "]";
+				+ ", distanciaEntregaKm=" + distanciaEntregaKm + ", porcentajeComisionProveedor="
+				+ porcentajeComisionProveedor + ", comisionProveedor=" + comisionProveedor
+				+ ", totalDepositarProveedor=" + totalDepositarProveedor + ", depositadoProveedor="
+				+ depositadoProveedor + ", depositadoTransportista=" + depositadoTransportista + "]";
 	}
+
 
 }
