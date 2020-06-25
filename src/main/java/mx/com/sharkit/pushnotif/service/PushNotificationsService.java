@@ -25,13 +25,12 @@ public class PushNotificationsService {
 	private final Logger log = LoggerFactory.getLogger(PushNotificationsService.class);
 
 	private static final String FIREBASE_SERVER_KEY_CLIENTE_ANDROID = "AAAAKsiEY9M:APA91bF7qUMreQg_e9awGaJ_hVT8OI55FEXLEp0U71UE2bvgJBs9pZpQVItNKa7kxMrF_09EmAnIxfzm-oR9eoZKueVfn5WC2j8ysVo7ZLq4D1lieIetwRMPfaHM-xWZSBBVlPArYYLl";
-//	private static final String FIREBASE_SERVER_KEY_CLIENTE_IOS = "AAAAKsiEY9M:APA91bF7qUMreQg_e9awGaJ_hVT8OI55FEXLEp0U71UE2bvgJBs9pZpQVItNKa7kxMrF_09EmAnIxfzm-oR9eoZKueVfn5WC2j8ysVo7ZLq4D1lieIetwRMPfaHM-xWZSBBVlPArYYLl";
 
 	private static final String FIREBASE_SERVER_KEY_PROVEEDOR_ANDROID = "AAAAyXhJM2k:APA91bER-GZBce0B61SCwr-K4VrMJOVFfv61IiWE5LNwrcSIKMkZrFH_2ze9oqvwIEh6mjqc5qnv76_AjFbf8w-jPNEKt6g-L3RYaGGZly4krIBScHs3uDS_Po-wftER2IjuyKGZDTOR";
-//	private static final String FIREBASE_SERVER_KEY_PROVEEDOR_IOS = "AAAAyXhJM2k:APA91bER-GZBce0B61SCwr-K4VrMJOVFfv61IiWE5LNwrcSIKMkZrFH_2ze9oqvwIEh6mjqc5qnv76_AjFbf8w-jPNEKt6g-L3RYaGGZly4krIBScHs3uDS_Po-wftER2IjuyKGZDTOR";
 
 	private static final String FIREBASE_SERVER_KEY_TRANSPORTISTA_ANDROID = "AAAAqVNWOAE:APA91bE90QKFWN_hNPw2Hsz6m0lHbpLe3XBDGwNJ9PmflK0kLwxRwWY4IBGDoJIL3O-HsealVGeLhEc0pP3xeeqhUH05q5rXiEl73_j98AYwicOiyXP9J8YOuLYOPxLvsNCakrsEwBOq";
-//	private static final String FIREBASE_SERVER_KEY_TRANSPORTISTA_IOS = "AAAAqVNWOAE:APA91bE90QKFWN_hNPw2Hsz6m0lHbpLe3XBDGwNJ9PmflK0kLwxRwWY4IBGDoJIL3O-HsealVGeLhEc0pP3xeeqhUH05q5rXiEl73_j98AYwicOiyXP9J8YOuLYOPxLvsNCakrsEwBOq";
+
+	private static final String FIREBASE_SERVER_KEY_CONTACT_CENTER = "AAAAKsiEY9M:APA91bFXky8WC-CKCA4jXHHi0KXoysjKmKfMN9Azdv_q_4exq6d1eCXzdv-l5VU3md9Fd3iDG80tTaoNM7zhY8K8Rqd0yPzAcb4yVbfOaxoN82XlUkmJ-_oANinvxg4-NRDxi_ueoNzg";
 
 	private static final String FIREBASE_API_URL = "https://fcm.googleapis.com/fcm/send";
 
@@ -50,6 +49,9 @@ public class PushNotificationsService {
 			
 		} else if (TipoUsuario.TRANSPORTISTA.equals(tipoUsuario)) {
 			fireBaseKeyAndroid = FIREBASE_SERVER_KEY_TRANSPORTISTA_ANDROID;
+			
+		} else if (TipoUsuario.CONTACT_CENTER.equals(tipoUsuario)) {
+			fireBaseKeyAndroid = FIREBASE_SERVER_KEY_CONTACT_CENTER;
 			
 		}
 
